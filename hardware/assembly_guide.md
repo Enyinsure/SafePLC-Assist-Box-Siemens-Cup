@@ -16,6 +16,16 @@ The terminal is designed to provide a product-like industrial interaction form w
 
 ---
 
+## Current Build Stage
+
+The current stage focuses on physical prototype planning and terminal layout design.
+
+The software system is already implemented and can run on the external computing host.
+
+The physical shell, labels, indicators, and final photos will be completed in the final prototype build stage.
+
+---
+
 ## Assembly Goal
 
 The goal of the physical prototype is to turn the software system into a visible industrial terminal form.
