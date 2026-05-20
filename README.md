@@ -1,30 +1,28 @@
 # SafePLC-Assist Box
 
-SafePLC-Assist Box 是面向西门子杯自由探索赛道的工业知识安全问答终端原型。
+SafePLC-Assist Box is a safety-aware industrial knowledge QA terminal prototype for the Siemens Cup Free Exploration Track.
 
-项目围绕西门子 S7-1500 / ET 200MP 等工业手册知识，构建一个具备安全边界、证据追溯、图文证据展示和答案一致性检查能力的产品化原型系统。
-
-English summary:  
-SafePLC-Assist Box is a safety-aware industrial knowledge QA terminal prototype for Siemens Cup, featuring evidence confidence, answer-evidence checking, visual evidence rendering, and a physical terminal design.
+The project focuses on Siemens S7-1500 / ET 200MP industrial manual knowledge and provides a productized prototype with safety boundary control, evidence tracing, visual evidence rendering, and answer-evidence consistency checking.
 
 ---
 
 ## Project Positioning
 
-本项目不是普通搜索引擎，也不是简单 RAG 问答页面。
+SafePLC-Assist Box is not a simple search engine or a basic RAG demo.
 
-它的目标是构建一个面向工业知识辅助的安全问答终端，重点包括：
+It is designed as a safety-aware industrial knowledge assistance terminal with the following capabilities:
 
-- 工业手册知识检索
-- 工业安全风险分级
-- 问题类型分类与路由
-- Evidence Confidence 证据置信度评估
-- Answer-Evidence Check 答案-证据一致性检查
-- V1.1 证据卡片面板
-- 图文证据图片展示
-- OFFLINE / READ-ONLY 安全边界
-- Streamlit 产品化前端
-- 外置计算主机 + 实体终端盒子方案
+- Industrial manual knowledge retrieval
+- Safety-aware question answering
+- Industrial safety risk classification
+- Question type classification and routing
+- Evidence confidence estimation
+- Answer-evidence consistency checking
+- Structured V1.1 evidence card panel
+- Visual evidence rendering
+- Offline / read-only safety boundary
+- Streamlit-based product interface
+- Physical terminal prototype with an external computing host
 
 ---
 
@@ -38,10 +36,7 @@ This system does not:
 - Collect real IT / OT network data
 - Replace Siemens official manuals, site safety rules, or certified engineers
 
-中文说明：
-
-本系统不连接真实 PLC，不接入 TIA Portal，不执行任何 PLC 下载、写入、启停或控制动作，不采集真实 IT / OT 网络数据。  
-系统定位为工业知识问答、证据追溯、安全提示和教学演示辅助工具。
+The system is positioned as an industrial knowledge QA, evidence tracing, safety reminder, and educational demonstration tool.
 
 ---
 
@@ -49,11 +44,13 @@ This system does not:
 
 ### 1. Safety-aware Industrial QA
 
-系统会对问题进行工业安全风险判断，区分普通知识问题、配置类问题、维护类问题和潜在高风险操作问题。
+The system classifies industrial questions and distinguishes between general knowledge questions, configuration-related questions, maintenance-related questions, and potentially high-risk operation questions.
 
 ### 2. Evidence Confidence
 
-系统会判断当前回答是否具备足够证据支撑，并输出证据置信度，例如：
+The system estimates whether the current answer is sufficiently supported by the retrieved evidence.
+
+Possible confidence levels include:
 
 - High
 - Medium
@@ -62,7 +59,9 @@ This system does not:
 
 ### 3. Answer-Evidence Check
 
-系统会检查答案中的关键声明是否能够被当前证据支持，并给出：
+The system checks whether key claims in the answer are supported by the current evidence.
+
+Possible checking results include:
 
 - PASS
 - REVIEW
@@ -70,7 +69,7 @@ This system does not:
 
 ### 4. V1.1 Evidence Card Panel
 
-系统会生成结构化证据卡片，包括：
+The system generates structured evidence cards with fields such as:
 
 - page
 - figure_id
@@ -83,48 +82,48 @@ This system does not:
 
 ### 5. Visual Evidence Rendering
 
-系统已经支持图文证据显示。
+The V1.1 evidence card panel supports visual evidence rendering.
 
-当证据卡片中包含页码或 figure_id，例如：
+When an evidence card contains a page number or a `figure_id`, for example:
 
 ```text
 page: 641
 figure_id: page_0641_visual
 ```
 
-前端会自动尝试查找对应图片：
+the front-end attempts to locate the corresponding image file:
 
 ```text
 page_0641.jpg
 ```
 
-并在 Streamlit 证据卡片面板中直接显示该图文证据。
+and renders it directly in the Streamlit evidence card panel.
 
-这使系统不只是显示文本证据，而是能够展示手册页面截图或图文证据页面，从而形成：
+This makes the system different from a plain text search engine. The evidence chain becomes:
 
 ```text
-回答结果
+Answer
 ↓
-证据置信度
+Evidence Confidence
 ↓
-答案一致性检查
+Answer-Evidence Check
 ↓
-结构化证据卡
+Structured Evidence Card
 ↓
-原始图文证据
+Original Visual Evidence
 ```
 
 ---
 
 ## Visual Evidence Assets
 
-在本地演示环境中，图文证据图片可存放于：
+In the local demo environment, visual evidence images can be stored under:
 
 ```text
 safeplc_assist_box/assets/visual_candidate_pages/
 ```
 
-或从本地多模态运行目录恢复，例如：
+or restored from local multimodal runtime directories, such as:
 
 ```text
 full_restore_agent_v2/s7_multimodal_v1/images/visual_candidate_pages/
@@ -133,9 +132,9 @@ release_selfcheck_format_opt_stress_ok/s7_multimodal_v1/images/visual_candidate_
 release_selfcheck_safety_guard_v1/s7_multimodal_v1/images/visual_candidate_pages/
 ```
 
-For repository size and copyright reasons, the public GitHub repository does not include full Siemens manuals, full OCR outputs, vector databases, or full visual evidence image assets.
+For repository size and copyright reasons, this public GitHub repository does not include full Siemens manuals, full OCR outputs, vector databases, or full visual evidence image assets.
 
-完整图文证据资产只在本地演示环境中使用，公开仓库仅保留代码逻辑、项目结构和必要说明。
+The full visual evidence assets are used only in the local demo environment. This public repository keeps the implementation logic, project structure, evaluation files, and documentation.
 
 ---
 
@@ -151,7 +150,7 @@ This public repository does not include:
 - Large compressed release packages
 - Private keys, tokens, or environment files
 
-The repository is intended to show:
+This repository is intended to show:
 
 - Front-end implementation
 - Safety-aware QA logic
@@ -202,45 +201,39 @@ safeplc_assist_box/
 
 ### Module Description
 
-- `app_assist_box.py`: Streamlit 产品化前端，包含安全边界、证据面板和图文证据显示
-- `question_classifier_v11.py`: 问题类型分类与路由
-- `safety_risk_guard_v11.py`: 工业安全风险分级
-- `evidence_confidence_v11.py`: 证据置信度评估
-- `answer_evidence_checker_v11.py`: 答案-证据一致性检查
-- `evidence_card_formatter.py`: 证据卡片格式化
-- `product_demo_mode.py`: 产品演示模式
-- `work_order_demo.py`: 工单式演示输出
-- `run_v11_eval.py`: V1.1 测试脚本
-- `run_v12_extended_eval.py`: V1.2 扩展测试脚本
+- `app_assist_box.py`: Streamlit product interface, safety boundary display, evidence panel, and visual evidence rendering
+- `question_classifier_v11.py`: Question type classification and routing
+- `safety_risk_guard_v11.py`: Industrial safety risk classification
+- `evidence_confidence_v11.py`: Evidence confidence estimation
+- `answer_evidence_checker_v11.py`: Answer-evidence consistency checking
+- `evidence_card_formatter.py`: Evidence card formatting
+- `product_demo_mode.py`: Product demo mode
+- `work_order_demo.py`: Work-order style demo output
+- `run_v11_eval.py`: V1.1 evaluation script
+- `run_v12_extended_eval.py`: V1.2 extended evaluation script
 
 ---
 
 ## Hardware Prototype
 
-项目采用方案 B：
+The project adopts Scheme B:
 
 ```text
 External computing host + productized physical terminal shell
 ```
 
-即：
+In the current prototype, a laptop is used as the external computing host, while the physical box acts as the display and interaction terminal.
 
-```text
-外置计算主机 + 产品化实体终端外壳
-```
+The physical terminal design includes:
 
-当前原型中，笔记本作为外置计算主机，实体盒子作为显示与交互终端。
+- Screen display
+- Status indicators
+- Query / Demo / Export Log buttons
+- SafePLC-Assist Box nameplate
+- OFFLINE / READ-ONLY label
+- PLC CONTROL DISABLED label
 
-实体终端设计包括：
-
-- 屏幕显示
-- 状态指示灯
-- Query / Demo / Export Log 按钮
-- SafePLC-Assist Box 铭牌
-- OFFLINE / READ-ONLY 标签
-- PLC CONTROL DISABLED 标签
-
-该实体终端不是 PLC 控制器，不连接真实 PLC，也不执行任何控制动作。
+The physical terminal is not a PLC controller. It does not connect to real PLC devices and does not execute any control action.
 
 ---
 
@@ -308,7 +301,7 @@ Core features:
 - Answer-evidence check
 - Structured evidence cards
 - Visual evidence rendering
-- Streamlit product UI
+- Streamlit product interface
 - Physical terminal prototype design
 
 ---
