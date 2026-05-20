@@ -1,102 +1,256 @@
-# SafePLC-Assist Box：面向 S7-1500 / ET 200MP 的多模态工业知识 Agent 与安全运维助手
+# SafePLC-Assist Box Module Guide
 
-## 1. 项目简介
+This document provides a module-level guide for the SafePLC-Assist Box Siemens Cup project.
 
-SafePLC-Assist Box 是基于既有 SafePLC-Agent 工程扩展的西门子杯自由探索赛道产品化原型。
+It is intended to help reviewers understand the role of each source file inside `safeplc_assist_box/`.
 
-本作品面向智能制造现场、新人工程师培训、高校实训教学和设备维护辅助场景，围绕 S7-1500 / ET 200MP 中文手册构建多模态工业知识问答终端，支持文本、表格、接口图、接线图、端子分配图、PROFINET 拓扑图等证据检索，并结合 Agent v2 多轮澄清与 Safety Guard v1 工业安全护栏，降低缺少型号时误答和危险操作输出风险。
+---
 
-## 2. 产品定位
+## Module Map
 
-产品名称：
+| Module | Role |
+|---|---|
+| `app_assist_box.py` | Streamlit product UI, safety boundary panel, evidence panel, and visual evidence rendering |
+| `question_classifier_v11.py` | Question classification and routing |
+| `safety_risk_guard_v11.py` | Industrial question type classification and handling path decision |
+| `safety_risk_guard_v11.py` | Industrial safety risk classification |
+| `evidence_confidence_v11.py` | Evidence confidence estimation |
+| `answer_evidence_checker_v11.py` | Answer-evidence consistency check |
+| `evidence_card_formatter.py` | Evidence card formatting |
+| `product_demo_mode.py` | Product demo mode and demo scenario support |
+| `work_order_demo.py` | Work-order style demonstration output |
+| `run_v11_eval.py` | V1.1 evaluation runner |
+| `run_v12_extended_eval.py` | V1.2 extended evaluation runner |
+| `testset_v11_basic.json` | Basic V1.1 test set |
+| `testset_v12_extended.json` | Extended V1.2 test set |
+| `eval_report_v11.json` | V1.1 evaluation result |
+| `eval_report_v12_extended.json` | V1.2 extended evaluation result |
+| `demo_cases.json` | Demo question cases for product presentation |
 
-SafePLC-Assist Box 工业知识安全问答终端
+---
 
-定位：
+## Main Software Flow
 
-面向智能制造现场和高校实训场景的工业知识安全问答终端。
+```text
+User question
+↓
+Question classification
+↓
+Safety risk assessment
+↓
+Agent / QA response
+↓
+Evidence confidence estimation
+↓
+Answer-evidence consistency check
+↓
+Structured evidence card output
+↓
+Visual evidence rendering in the Streamlit UI
+```
 
-目标用户：
+---
 
-1. 新人工程师
-2. 设备维护人员
-3. 高校实训学生
-4. 企业培训人员
+## Core Features
 
-核心价值：
+### 1. Streamlit Product UI
 
-1. 提升查手册效率
-2. 降低新人培训成本
-3. 减少错误参数引用
-4. 减少危险操作建议输出
-5. 提供可复核的手册证据链
+Implemented in:
 
-## 3. 应用场景
+```text
+app_assist_box.py
+```
 
-### 3.1 新人工程师培训
+The front-end provides:
 
-新人可通过自然语言查询 S7-1500 / ET 200MP 的模块参数、接口说明、PROFINET 连接方式和 EMC 要求，并根据系统返回的页码和图文证据回到手册复核。
+- Product-style interface
+- Offline / read-only boundary display
+- Safety boundary explanation
+- V1.1 evidence trust panel
+- Evidence Confidence metrics
+- Answer-Evidence Check result
+- Structured evidence card display
+- Visual evidence image rendering
 
-### 3.2 智能制造现场辅助
+---
 
-维护人员可快速查询模块电源电压范围、接口位置、接线图、端子图等信息，减少翻阅大体量手册的时间。
+### 2. Question Classification
 
-### 3.3 高校实训教学
+Implemented in:
 
-教师可用 SafePLC-Assist Box 展示工业手册知识问答、主动追问、图文证据检索和危险操作拒答，让学生理解工业知识查询与安全边界。
+```text
+question_classifier_v11.py
+```
 
-### 3.4 运维记录生成
+This module classifies user questions and helps determine how the system should handle them.
 
-系统可把一次问答整理成“运维辅助记录”，用于演示视频、答辩材料和培训记录。
+Typical question types include:
 
-## 4. 已完成技术底座
+- General industrial knowledge question
+- Parameter query
+- Network / connection question
+- Safety-related question
+- High-risk operation request
+- Query requiring clarification
 
-本西门子杯版本复用已经完成并验收的 SafePLC-Agent 工程能力：
+---
 
-1. S7-1500 / ET 200MP 中文手册多模态 RAG。
-2. 文本证据检索。
-3. 表格证据检索。
-4. 图文证据检索。
-5. 接口图、接线图、端子分配图、拓扑图证据。
-6. ChromaDB 图文索引。
-7. 页码、figure_id、证据类型输出。
-8. Safety Guard v1 工业安全护栏。
-9. HIGH_RISK 高风险问题拒答。
-10. Agent v2 多轮澄清和自动追问。
-11. 缺少型号 / 订货号时先追问，不直接检索。
-12. Streamlit Agent v2 前端实机验收。
-13. 后端恢复测试与最终封版包已完成。
+### 3. Safety Risk Guard
 
-## 5. 系统架构
+Implemented in:
 
-用户 / 评委 / 学生
--> SafePLC-Assist Box Streamlit 产品化前端
--> conda s7rag 环境中的 ask_s7_agent_v2.py
--> Agent v2 澄清层 / Safety Guard v1 / 多模态 RAG 检索
--> S7-1500 / ET 200MP 手册索引
--> 回答 + 证据页码 + 图文证据 + 安全等级
--> 前端证据卡片 / 典型案例 / 运维辅助记录
+```text
+safety_risk_guard_v11.py
+```
 
-## 6. 功能列表
+This module helps identify potentially unsafe industrial operation requests.
 
-当前第一阶段新增功能：
+The system is designed not to provide executable PLC control, download, write, start, stop, or network operation instructions.
 
-1. SafePLC-Assist Box 产品化前端。
-2. 产品首页。
-3. 工业知识问答。
-4. 典型案例演示。
-5. 证据卡片展示。
-6. 安全等级展示。
-7. 运维辅助记录生成。
-8. 产品说明与技术边界。
-9. 独立启动脚本。
-10. 西门子杯 README 初稿。
+---
 
-## 7. 启动方式
+### 4. Evidence Confidence
 
-启动前端：
+Implemented in:
 
-```bash
-cd /home/scc/pb23061092
-conda activate s7rag_ui
-bash /home/scc/pb23061092/run_streamlit_safeplc_assist_box.sh
+```text
+evidence_confidence_v11.py
+```
+
+This module estimates whether the current answer is sufficiently supported by evidence.
+
+Possible confidence outputs include:
+
+- High
+- Medium
+- Low
+- Conflict
+
+---
+
+### 5. Answer-Evidence Check
+
+Implemented in:
+
+```text
+answer_evidence_checker_v11.py
+```
+
+This module checks whether key claims in the answer are supported by the available evidence.
+
+Possible checking results include:
+
+- PASS
+- REVIEW
+- FAIL
+
+---
+
+### 6. Evidence Card Formatting
+
+Implemented in:
+
+```text
+evidence_card_formatter.py
+```
+
+Evidence cards provide structured traceability fields such as:
+
+- page
+- figure_id
+- source
+- title
+- module
+- parameter
+- snippet
+- confidence
+
+---
+
+### 7. Visual Evidence Rendering
+
+Implemented mainly in:
+
+```text
+app_assist_box.py
+```
+
+When an evidence card contains a page number or `figure_id`, the front-end attempts to locate the corresponding visual evidence image and render it in the evidence card panel.
+
+Example:
+
+```text
+page: 641
+figure_id: page_0641_visual
+```
+
+Corresponding image:
+
+```text
+page_0641.jpg
+```
+
+This feature helps the system move beyond plain text retrieval and provides more traceable multimodal evidence.
+
+---
+
+## Evaluation Files
+
+The repository includes both V1.1 and V1.2 evaluation files:
+
+```text
+testset_v11_basic.json
+testset_v12_extended.json
+eval_report_v11.json
+eval_report_v12_extended.json
+run_v11_eval.py
+run_v12_extended_eval.py
+```
+
+These files are used to validate:
+
+- Question classification
+- Safety risk classification
+- Routing behavior
+- Clarification behavior
+- Evidence confidence
+- Answer-evidence consistency
+- Evidence card generation
+
+---
+
+## Competition-Oriented Materials
+
+The following directories provide project and product documents:
+
+```text
+competition_docs/
+prototype_design/
+reports/
+```
+
+They include:
+
+- Business plan materials
+- Product R&D plan
+- PPT outline
+- Prototype appearance design
+- Product structure notes
+- Demo booth layout
+- Product test report
+- Prototype acceptance report
+- User scenario report
+
+---
+
+## Technical Boundary
+
+SafePLC-Assist Box does not:
+
+- Connect to real PLC devices
+- Connect to TIA Portal
+- Execute PLC communication, download, write, start, stop, or control actions
+- Collect real IT / OT network data
+- Replace Siemens official manuals, site safety rules, or certified engineers
+
+The system is designed as an offline, read-only industrial knowledge QA and evidence review prototype.
