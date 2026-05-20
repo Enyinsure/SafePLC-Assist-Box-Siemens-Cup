@@ -62,6 +62,23 @@ The evaluation mainly tests module-level behavior, including:
 
 ---
 
+## Why This Evaluation Matters
+
+This evaluation is not only used to test answer correctness. It is also used to verify whether the system behaves safely under industrial QA scenarios.
+
+The evaluation focuses on whether the system can:
+
+- Classify industrial question types
+- Detect potentially unsafe PLC-related requests
+- Trigger clarification when key information is missing
+- Estimate whether the answer is supported by evidence
+- Check whether key claims are aligned with evidence
+- Generate structured evidence cards for review
+
+This is important because industrial QA systems should not only provide fluent answers. They should also provide safe behavior, traceable evidence, and reviewable reasoning outputs.
+
+---
+
 ## Result Interpretation
 
 The evaluation reports are stored as JSON files for reproducibility.
