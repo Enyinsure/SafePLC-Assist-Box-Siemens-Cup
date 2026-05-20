@@ -1,0 +1,88 @@
+{
+  "project": "SafePLC-Assist Box",
+  "version": "V1.1",
+  "timestamp": "2026-05-18T23:07:03",
+  "root": "/home/scc/pb23061092",
+  "paths": [
+    {
+      "path": "/home/scc/pb23061092",
+      "kind": "dir",
+      "ok": true
+    },
+    {
+      "path": "/home/scc/pb23061092/safeplc_assist_box",
+      "kind": "dir",
+      "ok": true
+    },
+    {
+      "path": "/home/scc/pb23061092/safeplc_assist_box/app_assist_box.py",
+      "kind": "file",
+      "ok": true
+    },
+    {
+      "path": "/home/scc/pb23061092/run_streamlit_safeplc_assist_box.sh",
+      "kind": "file",
+      "ok": true
+    },
+    {
+      "path": "/home/scc/pb23061092/s7_multimodal_v1/ask_s7_agent_v2.py",
+      "kind": "file",
+      "ok": true
+    },
+    {
+      "path": "/home/scc/pb23061092/SAFEPLC_ASSIST_BOX_SIEMENS_CUP_V1.tar.gz",
+      "kind": "file",
+      "ok": true
+    }
+  ],
+  "json_files": [
+    {
+      "path": "/home/scc/pb23061092/safeplc_assist_box/demo_cases.json",
+      "kind": "file",
+      "ok": true,
+      "readable_json": true,
+      "items": 6
+    },
+    {
+      "path": "/home/scc/pb23061092/safeplc_assist_box/testset_v11_basic.json",
+      "kind": "file",
+      "ok": true,
+      "readable_json": true,
+      "items": 12
+    },
+    {
+      "path": "/home/scc/pb23061092/safeplc_assist_box/eval_report_v11.json",
+      "kind": "file",
+      "ok": true,
+      "readable_json": true,
+      "items": null
+    }
+  ],
+  "imports": [
+    {
+      "path": "/home/scc/pb23061092/safeplc_assist_box/safety_risk_guard_v11.py",
+      "kind": "file",
+      "ok": true,
+      "importable": true
+    },
+    {
+      "path": "/home/scc/pb23061092/safeplc_assist_box/question_classifier_v11.py",
+      "kind": "file",
+      "ok": true,
+      "importable": true
+    },
+    {
+      "path": "/home/scc/pb23061092/safeplc_assist_box/evidence_confidence_v11.py",
+      "kind": "file",
+      "ok": true,
+      "importable": true
+    },
+    {
+      "path": "/home/scc/pb23061092/safeplc_assist_box/answer_evidence_checker_v11.py",
+      "kind": "file",
+      "ok": true,
+      "importable": true
+    }
+  ],
+  "overall_ok": true
+}
