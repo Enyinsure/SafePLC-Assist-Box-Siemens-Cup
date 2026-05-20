@@ -131,3 +131,228 @@ When an evidence card contains a page number or a `figure_id`, for example:
 ```text
 page: 641
 figure_id: page_0641_visual
+```
+
+the front-end attempts to locate the corresponding image file:
+
+```text
+page_0641.jpg
+```
+
+and renders it directly in the Streamlit evidence card panel.
+
+This makes the system different from a plain text search engine. The evidence chain becomes:
+
+```text
+Answer
+↓
+Evidence Confidence
+↓
+Answer-Evidence Check
+↓
+Structured Evidence Card
+↓
+Original Visual Evidence
+```
+
+---
+
+## Visual Evidence Assets
+
+In the local demo environment, visual evidence images can be stored under:
+
+```text
+safeplc_assist_box/assets/visual_candidate_pages/
+```
+
+or restored from local multimodal runtime directories, such as:
+
+```text
+full_restore_agent_v2/s7_multimodal_v1/images/visual_candidate_pages/
+release_selfcheck_agent_v1/s7_multimodal_v1/images/visual_candidate_pages/
+release_selfcheck_format_opt_stress_ok/s7_multimodal_v1/images/visual_candidate_pages/
+release_selfcheck_safety_guard_v1/s7_multimodal_v1/images/visual_candidate_pages/
+```
+
+For repository size and copyright reasons, this public GitHub repository does not include full Siemens manuals, full OCR outputs, vector databases, or full visual evidence image assets.
+
+The full visual evidence assets are used only in the local demo environment. This public repository keeps the implementation logic, project structure, evaluation files, and documentation.
+
+---
+
+## Repository Boundary
+
+This public repository does not include:
+
+- Full Siemens manual PDFs
+- Full OCR intermediate outputs
+- Full vector databases
+- Full visual evidence image assets
+- Local model weights
+- Large compressed release packages
+- Private keys, tokens, or environment files
+
+This repository is intended to show:
+
+- Front-end implementation
+- Safety-aware QA logic
+- Evidence confidence module
+- Answer-evidence checking module
+- Visual evidence rendering logic
+- Evaluation scripts and reports
+- Hardware prototype documentation
+- Competition-oriented product materials
+
+---
+
+## Run
+
+```bash
+conda activate s7rag_ui
+bash run_streamlit_safeplc_assist_box.sh
+```
+
+Then open:
+
+```text
+http://localhost:8501
+```
+
+---
+
+## Main Modules
+
+```text
+safeplc_assist_box/
+├── app_assist_box.py
+├── question_classifier_v11.py
+├── safety_risk_guard_v11.py
+├── evidence_confidence_v11.py
+├── answer_evidence_checker_v11.py
+├── evidence_card_formatter.py
+├── product_demo_mode.py
+├── work_order_demo.py
+├── demo_cases.json
+├── testset_v11_basic.json
+├── testset_v12_extended.json
+├── run_v11_eval.py
+├── run_v12_extended_eval.py
+├── eval_report_v11.json
+└── eval_report_v12_extended.json
+```
+
+### Module Description
+
+- `app_assist_box.py`: Streamlit product interface, safety boundary display, evidence panel, and visual evidence rendering
+- `question_classifier_v11.py`: Question type classification and routing
+- `safety_risk_guard_v11.py`: Industrial safety risk classification
+- `evidence_confidence_v11.py`: Evidence confidence estimation
+- `answer_evidence_checker_v11.py`: Answer-evidence consistency checking
+- `evidence_card_formatter.py`: Evidence card formatting
+- `product_demo_mode.py`: Product demo mode
+- `work_order_demo.py`: Work-order style demo output
+- `run_v11_eval.py`: V1.1 evaluation script
+- `run_v12_extended_eval.py`: V1.2 extended evaluation script
+
+---
+
+## Hardware Prototype
+
+The project adopts Scheme B:
+
+```text
+External computing host + productized physical terminal shell
+```
+
+In the current prototype, a laptop is used as the external computing host, while the physical box acts as the display and interaction terminal.
+
+The physical terminal design includes:
+
+- Screen display
+- Status indicators
+- Query / Demo / Export Log buttons
+- SafePLC-Assist Box nameplate
+- OFFLINE / READ-ONLY label
+- PLC CONTROL DISABLED label
+
+The physical terminal is not a PLC controller. It does not connect to real PLC devices and does not execute any control action.
+
+---
+
+## Competition Materials
+
+Relevant competition materials are organized in:
+
+```text
+safeplc_assist_box/competition_docs/
+safeplc_assist_box/prototype_design/
+safeplc_assist_box/reports/
+hardware/
+docs/
+```
+
+These folders include:
+
+- Business plan materials
+- Product R&D plan
+- PPT outline
+- Prototype appearance design
+- Hardware BOM
+- Product structure notes
+- Demo booth layout
+- Test video script
+- Product test report
+- Prototype acceptance report
+- User scenario report
+- Online review guide
+- Readable V1.2 evaluation report
+
+---
+
+## Evaluation
+
+The project includes V1.1 and V1.2 evaluation files:
+
+```text
+safeplc_assist_box/testset_v11_basic.json
+safeplc_assist_box/testset_v12_extended.json
+safeplc_assist_box/eval_report_v11.json
+safeplc_assist_box/eval_report_v12_extended.json
+```
+
+These files are used to evaluate:
+
+- Question classification
+- Safety risk classification
+- Evidence confidence
+- Answer-evidence consistency
+- Evidence card generation
+- Extended demo scenario coverage
+
+---
+
+## Project Version
+
+Current public repository version:
+
+```text
+SafePLC-Assist Box V1.2
+```
+
+Core features:
+
+- Safety-aware QA
+- Evidence confidence
+- Answer-evidence check
+- Structured evidence cards
+- Visual evidence rendering
+- Streamlit product interface
+- Physical terminal prototype design
+
+---
+
+## License / Usage
+
+This project is provided for Siemens Cup competition review, educational demonstration, and research-style prototype evaluation.
+
+It is not intended for direct industrial deployment or real PLC operation.
