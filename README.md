@@ -5,7 +5,32 @@ SafePLC-Assist Box is a safety-aware industrial knowledge QA terminal prototype 
 The project focuses on Siemens S7-1500 / ET 200MP industrial manual knowledge and provides a productized prototype with safety boundary control, evidence tracing, visual evidence rendering, and answer-evidence consistency checking.
 
 ---
+## Online Review Quick Guide
 
+Recommended review order:
+
+1. Project overview: `README.md`
+2. Core source code: `safeplc_assist_box/`
+3. Evaluation summary: `docs/test_report_v12.md`
+4. Hardware prototype design: `hardware/`
+5. Technical boundary: `PROJECT_FINAL_STATUS_SIEMENS_CUP_V12.txt`
+6. Screenshots placeholder: `screenshots/`
+7. Demo materials placeholder: `demo/`
+
+Current repository status:
+
+| Item | Status |
+|---|---|
+| Core software prototype | Completed |
+| Safety-aware QA modules | Completed |
+| Evidence Confidence / Evidence Check | Completed |
+| Visual evidence rendering logic | Completed |
+| Evaluation files | Completed |
+| Hardware prototype design documents | In progress |
+| Physical box photos | To be added |
+| Demo video | To be added |
+
+---
 ## Project Positioning
 
 SafePLC-Assist Box is not a simple search engine or a basic RAG demo.
