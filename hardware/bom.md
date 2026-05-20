@@ -1,10 +1,10 @@
 # Hardware BOM
 
-| Item | Description |
-|---|---|
-| Shell | Industrial-style enclosure |
-| Display | Small HDMI / USB display or tablet screen |
-| Buttons | Query / Demo / Export Log buttons |
-| Indicators | SAFE / CAUTION / HIGH_RISK / CHECK LEDs |
-| Labels | OFFLINE / READ-ONLY, PLC CONTROL DISABLED |
-| External host | Laptop running SafePLC-Assist Box software |
+This document lists the planned hardware components for the SafePLC-Assist Box physical prototype.
+
+## Prototype Scheme
+
+SafePLC-Assist Box adopts Scheme B:
+
+```text
+External computing host + productized physical terminal shell
