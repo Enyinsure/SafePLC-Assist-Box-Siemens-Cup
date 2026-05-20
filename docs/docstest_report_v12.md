@@ -1,6 +1,6 @@
 # SafePLC-Assist Box V1.2 Evaluation Report
 
-This document provides a readable summary of the V1.2 evaluation files included in the repository.
+This document provides a readable summary of the V1.2 evaluation files included in this repository.
 
 The original evaluation files are kept in JSON format for reproducibility, while this report is intended for online review and competition assessment.
 
@@ -66,7 +66,15 @@ The evaluation mainly tests module-level behavior, including:
 
 This evaluation is not only used to test answer correctness. It is also used to verify whether the system behaves safely under industrial QA scenarios.
 
-The evaluation focuses on whether the system can:
+Industrial QA systems should not only provide fluent answers. They should also provide:
+
+- Safe behavior
+- Traceable evidence
+- Reviewable output
+- Clear safety boundaries
+- Consistency between answers and evidence
+
+SafePLC-Assist Box uses evaluation files to check whether the system can:
 
 - Classify industrial question types
 - Detect potentially unsafe PLC-related requests
@@ -74,8 +82,6 @@ The evaluation focuses on whether the system can:
 - Estimate whether the answer is supported by evidence
 - Check whether key claims are aligned with evidence
 - Generate structured evidence cards for review
-
-This is important because industrial QA systems should not only provide fluent answers. They should also provide safe behavior, traceable evidence, and reviewable reasoning outputs.
 
 ---
 
@@ -87,6 +93,8 @@ The current evaluation should be interpreted as a module-level validation of the
 
 It does not claim to cover all possible Siemens PLC usage scenarios or all real industrial site conditions.
 
+The current evaluation focuses on whether the system has a complete safety-aware QA pipeline rather than claiming full industrial deployment readiness.
+
 ---
 
 ## Current Strengths
@@ -95,6 +103,7 @@ The current V1.2 evaluation shows that the prototype has a complete evaluation p
 
 - Input classification
 - Safety risk handling
+- Clarification behavior
 - Evidence confidence checking
 - Answer-evidence consistency checking
 - Structured output validation
@@ -105,7 +114,7 @@ This helps demonstrate that the project is not only a front-end demo, but also i
 
 ## Current Limitations
 
-The current evaluation mainly focuses on controlled test cases and rule-based safety behavior.
+The current evaluation mainly focuses on controlled test cases and module-level behavior.
 
 Future evaluation should include:
 
@@ -116,6 +125,7 @@ Future evaluation should include:
 - More visual evidence cases
 - Long-term user testing
 - More failure case analysis
+- More industrial maintenance scenarios
 
 ---
 
@@ -130,5 +140,6 @@ They support the following project claims:
 - The system includes answer-evidence consistency checking.
 - The system can generate structured evidence cards.
 - The system has a measurable evaluation process.
+- The system is designed around safe, traceable, and reviewable industrial QA behavior.
 
 Further evaluation will be expanded after more real-user questions, visual evidence cases, and physical prototype demonstrations are added.
