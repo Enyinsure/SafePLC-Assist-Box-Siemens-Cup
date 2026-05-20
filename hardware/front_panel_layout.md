@@ -71,9 +71,26 @@ In this scheme, a laptop acts as the external computing host, while the physical
 | Indicator | Trigger Condition | Meaning |
 |---|---|---|
 | SAFE | Low-risk knowledge question | The query is suitable for knowledge explanation |
-| CAUTION | Medium-risk or incomplete context | Human review is recommended |
+| CAUTION | Medium-risk query or incomplete context | Human review is recommended |
 | HIGH_RISK | High-risk PLC operation request | The system should not provide executable control instructions |
-| CHECK | Evidence Confidence / Answer-Evidence Check completed | The answer has gone through evidence-level verification |
+| CHECK | Evidence Confidence or Answer-Evidence Check completed | The answer has gone through evidence-level verification |
+
+---
+
+## Software-to-Panel Mapping
+
+| Software State | Front Panel Indicator |
+|---|---|
+| Low-risk knowledge query | SAFE |
+| Missing key context or medium-risk query | CAUTION |
+| High-risk PLC operation request | HIGH_RISK |
+| Evidence Confidence completed | CHECK |
+| Answer-Evidence Check passed | CHECK |
+| Evidence not sufficient | CAUTION |
+| Unsupported claim detected | CAUTION |
+| Unsafe control-related request detected | HIGH_RISK |
+
+This mapping connects the software safety state with the physical terminal indicators. It helps the physical prototype behave like an industrial review terminal rather than a simple screen shell.
 
 ---
 
