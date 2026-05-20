@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import shutil
 import subprocess
 from datetime import datetime
@@ -51,8 +52,83 @@ PROJECT_ROOT = Path("/home/scc/pb23061092")
 APP_ROOT = PROJECT_ROOT / "safeplc_assist_box"
 BACKEND_SCRIPT = PROJECT_ROOT / "s7_multimodal_v1" / "ask_s7_agent_v2.py"
 DEMO_CASES_PATH = APP_ROOT / "demo_cases.json"
+VISUAL_EVIDENCE_DIRS = [
+    APP_ROOT / "assets" / "visual_candidate_pages",
+    PROJECT_ROOT / "full_restore_agent_v2" / "s7_multimodal_v1" / "images" / "visual_candidate_pages",
+    PROJECT_ROOT / "release_selfcheck_agent_v1" / "s7_multimodal_v1" / "images" / "visual_candidate_pages",
+    PROJECT_ROOT / "release_selfcheck_format_opt_stress_ok" / "s7_multimodal_v1" / "images" / "visual_candidate_pages",
+    PROJECT_ROOT / "release_selfcheck_safety_guard_v1" / "s7_multimodal_v1" / "images" / "visual_candidate_pages",
+]
 
 DEFAULT_TIMEOUT = int(os.environ.get("SAFEPLC_AGENT_TIMEOUT", "180"))
+
+
+
+def find_visual_evidence_image(page: Any = None, figure_id: Any = None) -> Optional[Path]:
+    """根据 evidence card 中的 page 或 figure_id 自动查找图文证据图片。"""
+    page_numbers = []
+
+    # 从 figure_id 中解析 page_0641_visual / page-0641 / page0641 等格式
+    if figure_id not in (None, "", "-"):
+        match = re.search(r"page[_-]?(\d+)", str(figure_id), flags=re.IGNORECASE)
+        if match:
+            try:
+                page_numbers.append(int(match.group(1)))
+            except ValueError:
+                pass
+
+    # 从 page 字段解析页码
+    if page not in (None, "", "-"):
+        try:
+            page_numbers.append(int(str(page).strip()))
+        except ValueError:
+            match = re.search(r"(\d+)", str(page))
+            if match:
+                page_numbers.append(int(match.group(1)))
+
+    # 去重但保持顺序
+    seen = set()
+    ordered_pages = []
+    for n in page_numbers:
+        if n not in seen:
+            seen.add(n)
+            ordered_pages.append(n)
+
+    # 兼容 page_0641.jpg / page_641.jpg / page_0641.png 等命名
+    for n in ordered_pages:
+        candidate_names = [
+            f"page_{n:04d}.jpg",
+            f"page_{n:04d}.jpeg",
+            f"page_{n:04d}.png",
+            f"page_{n}.jpg",
+            f"page_{n}.jpeg",
+            f"page_{n}.png",
+        ]
+        for directory in VISUAL_EVIDENCE_DIRS:
+            for name in candidate_names:
+                candidate = directory / name
+                if candidate.exists():
+                    return candidate
+
+    return None
+
+
+def render_visual_evidence_image(card: Dict[str, Any]) -> None:
+    """在证据卡片中渲染对应的图文证据图片。"""
+    img_path = find_visual_evidence_image(
+        page=card.get("page"),
+        figure_id=card.get("figure_id"),
+    )
+
+    if img_path:
+        st.image(
+            str(img_path),
+            caption=f"图文证据图片：{img_path.name}",
+            use_container_width=True,
+        )
+    elif str(card.get("evidence_type", "")).find("图") >= 0 or card.get("figure_id"):
+        st.caption("未找到对应图文证据图片，仅显示页码与 figure_id。")
+
 
 
 def load_demo_cases() -> List[Dict[str, str]]:
@@ -473,6 +549,7 @@ def render_v11_evidence_trust_panel(query: str, context: str, answer: str) -> No
 {card.get('snippet', '')}
                     """
                 )
+                render_visual_evidence_image(card)
 
     with st.expander("查看 V1.1 Evidence Confidence / Evidence Check 原始结果", expanded=False):
         st.json(
