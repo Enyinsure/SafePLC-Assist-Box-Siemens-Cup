@@ -1,16 +1,35 @@
-# SafePLC-Assist Box 原型 BOM
+# SafePLC-Assist Box Prototype BOM
 
-| 序号 | 物料 | 用途 | 数量 | 预算 |
-|---|---|---|---:|---:|
-| 1 | 笔记本电脑 / 小主机 | 运行前端和本地后端 | 1 | 已有 |
-| 2 | 显示器 / 触控屏 | 可选展示增强 | 0-1 | 0-500 元 |
-| 3 | A3/A2 KT板 | 产品展示板 | 1 | 20-60 元 |
-| 4 | 产品铭牌 | 标识产品名称 | 1 | 10-30 元 |
-| 5 | 模拟 S7 模块卡片 | 展示典型设备 | 4-8 | 10-40 元 |
-| 6 | 典型问题卡片 | 引导演示流程 | 6 | 10-30 元 |
-| 7 | 运维记录卡片 | 展示生成结果 | 2-4 | 10-30 元 |
-| 8 | 亚克力展示架 / 纸质支架 | 展台支撑 | 若干 | 20-80 元 |
-| 9 | 双面胶、打印材料 | 展示制作 | 若干 | 10-30 元 |
+This BOM supports the competition prototype design for SafePLC-Assist Box. It focuses on a physical terminal form that demonstrates safety-aware industrial QA, Evidence Confidence, Answer-Evidence Check, structured evidence cards, visual evidence rendering, and a clear offline/read-only boundary.
 
-## 预算估计
-基础展示版约 80-200 元；增强展示版约 200-700 元。
+## Prototype Scheme
+
+```text
+External computing host + productized physical terminal shell
+```
+
+The software runs on an external host. The shell, labels, indicators, and display make the prototype reviewable as an industrial knowledge QA terminal. The prototype does not connect to real PLC devices and does not execute PLC control actions.
+
+## BOM
+
+| No. | Material | Purpose | Quantity | Status / Budget |
+|---:|---|---|---:|---|
+| 1 | Laptop or small host | Runs the Streamlit UI and local backend modules | 1 | Available |
+| 2 | Small display or touch display | Presents the product UI, evidence cards, and visual evidence panel | 0-1 | Planned, estimated 0-500 CNY |
+| 3 | Industrial-style shell material | Forms the productized physical terminal body | 1 set | In progress |
+| 4 | Product nameplate | Identifies SafePLC-Assist Box V1.2 | 1 | Planned, estimated 10-30 CNY |
+| 5 | Simulated S7 module cards | Helps explain Siemens PLC-related knowledge scenarios without real PLC control | 4-8 | Planned, estimated 10-40 CNY |
+| 6 | Typical question cards | Guides the demo flow for knowledge QA, missing context, and high-risk request handling | 6 | Planned, estimated 10-30 CNY |
+| 7 | Evidence / work-order cards | Shows structured evidence cards and generated maintenance-assistance records | 2-4 | Planned, estimated 10-30 CNY |
+| 8 | Status indicators | SAFE, CAUTION, HIGH_RISK, and CHECK state display | 4 | Planned |
+| 9 | Query / Demo / Export Log buttons | Physical interaction metaphors for the software workflow | 3 | Planned |
+| 10 | Display stand or acrylic support | Supports booth display and panel layout | Several | Planned, estimated 20-80 CNY |
+| 11 | Printed labels and mounting materials | OFFLINE / READ-ONLY, PLC CONTROL DISABLED, KNOWLEDGE QA ONLY labels | Several | Planned, estimated 10-30 CNY |
+
+## Estimated Budget
+
+The basic display version is estimated at 80-200 CNY when existing computing equipment is reused. An enhanced display version is estimated at 200-700 CNY depending on shell material, display selection, and indicator/button implementation.
+
+## Asset Boundary
+
+Full Siemens manuals, full OCR outputs, vector databases, model weights, and full visual evidence assets are not included in the public repository for repository size and copyright reasons. Physical prototype photos and the final demo video are planned for final submission after the physical prototype is completed.

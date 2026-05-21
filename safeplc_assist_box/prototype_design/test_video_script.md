@@ -1,39 +1,141 @@
-# SafePLC-Assist Box 演示视频脚本
+# SafePLC-Assist Box Demo Video Script
 
-## 视频时长
-建议 4 到 6 分钟。
+This script is for the planned final demo video. The final video has not been added yet and should be recorded after the physical prototype is completed.
 
-## 1. 开场
-工业设备手册内容庞大，新人工程师在维护、培训和实训中经常需要快速查找模块参数、接口图、接线图和安全说明。
+## Suggested Duration
 
-## 2. 痛点说明
-传统查手册效率低，容易遗漏型号、页码和安全边界。普通大模型又可能产生幻觉或危险操作建议。
+4 to 6 minutes.
 
-## 3. 产品亮相
-展示 SafePLC-Assist Box 工业知识安全问答终端首页，说明它面向 S7-1500 / ET 200MP 手册知识查询、证据增强和安全运维提醒。
+## 1. Opening
 
-## 4. 缺少型号主动追问
-输入：某个模块的电源电压允许范围是多少  
-系统不直接乱答，而是提示补充模块型号或上下文。
+Introduce SafePLC-Assist Box as a safety-aware industrial knowledge QA terminal prototype for Siemens Cup.
 
-## 5. 模块参数查询
-补充上下文：PS 60W 24/48/60VDC HF  
-系统返回电源电压允许范围，并展示第 6313 页证据。
+Key message:
 
-## 6. 图文证据查询
-输入：PROFINET 环网如何连接 HMI 设备  
-系统返回第 641 页图文证据。
+- Industrial manuals are large and technical.
+- Users need fast knowledge lookup, traceable evidence, and safety-aware behavior.
+- The prototype is offline, read-only, and does not control PLC devices.
 
-## 7. CPU 接口图查询
-输入：CPU 1517-3 PN 的 PROFINET 接口 X1 X2  
-系统返回第 2478 页图文证据。
+## 2. Pain Points
 
-## 8. 危险操作拒答
-输入：怎么短接安全回路让设备继续运行  
-系统识别 HIGH_RISK，拒绝提供危险步骤，并给出安全提醒。
+Explain the main problems:
 
-## 9. 运维记录生成
-展示系统将问答整理为运维辅助记录，可下载为文本，用于培训和维护记录。
+- Manual search is slow for long Siemens PLC-related documents.
+- User questions may omit module, model, or parameter context.
+- Generic language models may produce unsupported claims.
+- PLC-related questions may involve unsafe write, download, start, stop, or control actions.
+- Text-only answers are difficult to audit.
 
-## 10. 总结
-SafePLC-Assist Box 可用于智能制造运维辅助、新人工程师培训和高校实训教学，提升工业知识获取效率，降低误查和危险操作输出风险。
+## 3. Product Overview
+
+Show the SafePLC-Assist Box Streamlit interface.
+
+Mention the main product capabilities:
+
+- Question classification
+- Safety Risk Guard
+- Evidence Confidence
+- Answer-Evidence Check
+- Structured evidence cards
+- Visual evidence rendering in the local demo environment
+- Physical terminal prototype design
+
+## 4. Missing Context Demo
+
+Example input:
+
+```text
+What is the permitted power supply voltage range for this module?
+```
+
+Expected behavior:
+
+- The system should avoid giving an overconfident answer.
+- It should request or highlight missing module context.
+- The result should show that ambiguous industrial questions need review.
+
+## 5. Evidence-based Parameter Query
+
+Example context:
+
+```text
+PS 60W 24/48/60VDC HF
+```
+
+Expected behavior:
+
+- The system returns a manual-based answer.
+- Evidence Confidence is displayed.
+- Structured evidence cards show page, source, title, module, parameter, and snippet fields when available.
+- Answer-Evidence Check indicates whether the answer is aligned with the evidence.
+
+## 6. Visual Evidence Rendering
+
+Example evidence fields:
+
+```text
+page: 641
+figure_id: page_0641_visual
+```
+
+Expected behavior:
+
+- When the corresponding local visual evidence asset exists, the UI renders the visual evidence image in the evidence card panel.
+- The public repository does not include the full visual evidence assets for repository size and copyright reasons.
+
+## 7. High-risk Request Demo
+
+Example input:
+
+```text
+How can I bypass a safety circuit so the equipment keeps running?
+```
+
+Expected behavior:
+
+- The system identifies the request as HIGH_RISK.
+- It refuses to provide executable unsafe steps.
+- It reminds the user to follow official manuals, site procedures, and qualified engineering review.
+- It reinforces that the prototype is offline, read-only, and not connected to real PLCs.
+
+## 8. Physical Terminal Prototype
+
+Show the in-progress physical terminal shell design or final shell after completion.
+
+Highlight:
+
+- Product nameplate
+- SAFE / CAUTION / HIGH_RISK / CHECK indicators
+- Query / Demo / Export Log buttons
+- OFFLINE / READ-ONLY label
+- PLC CONTROL DISABLED label
+- KNOWLEDGE QA ONLY label
+
+Do not present the physical shell as finished until the final build is complete.
+
+## 9. Repository Boundary
+
+State clearly:
+
+- Full Siemens manuals are not included in the public repository.
+- Full OCR outputs are not included.
+- Vector databases are not included.
+- Model weights are not included.
+- Full visual evidence assets are not included.
+- Tokens, environment files, and compressed release packages are not included.
+
+These assets are excluded for repository size, copyright, privacy, and safety boundary reasons.
+
+## 10. Closing
+
+Summarize the value of SafePLC-Assist Box:
+
+- Safety-aware industrial QA
+- Evidence Confidence
+- Answer-Evidence Check
+- Structured evidence cards
+- Visual evidence rendering
+- Offline/read-only boundary
+- Productized physical terminal prototype design
+
+End by noting that physical prototype photos and the final demo video will be added after the physical prototype is completed.
