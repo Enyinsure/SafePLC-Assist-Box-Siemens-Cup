@@ -20,6 +20,7 @@ The current product test focuses on the following parts:
 | Answer-Evidence Check | Whether the system can check answer-evidence consistency |
 | Evidence card display | Whether evidence can be displayed in a structured and reviewable form |
 | Visual evidence rendering | Whether evidence cards can display corresponding visual page images in the local demo environment |
+| Repository boundary | Whether large and copyright-sensitive assets are kept outside the public repository |
 | Hardware prototype design | Whether the software state can be mapped to the planned physical terminal indicators |
 
 ---
@@ -224,7 +225,9 @@ The current product test is based on a prototype environment.
 Current limitations include:
 
 - The public repository does not include full Siemens manuals.
+- The public repository does not include full OCR outputs or vector databases.
 - The public repository does not include full visual evidence image assets.
+- The public repository does not include model weights, tokens, environment files, or compressed release packages.
 - The physical terminal shell is still in the prototype build stage.
 - The current evaluation focuses on controlled test cases and module-level behavior.
 - Final demo video and physical prototype photos will be added during the final submission stage.

@@ -212,6 +212,8 @@ The user can review not only text snippets, but also the original visual evidenc
 
 This makes the system different from a plain text search engine.
 
+Full visual evidence assets are not included in the public repository for repository size and copyright reasons.
+
 ---
 
 ## Scenario 8: Competition Demonstration
@@ -265,6 +267,8 @@ The laptop acts as the external computing host, while the physical terminal shel
 
 The physical terminal gives the project a product form and helps communicate the safety boundary.
 
+The physical terminal shell is in progress. Physical prototype photos will be added after the physical prototype is completed.
+
 ---
 
 ## Scenario-to-Module Mapping
@@ -305,7 +309,9 @@ The physical terminal gives the project a product form and helps communicate the
 Current limitations include:
 
 - Full Siemens manual assets are not included in the public repository.
+- Full OCR outputs and vector databases are not included in the public repository.
 - Full visual evidence image assets are not included in the public repository.
+- Model weights, tokens, environment files, and compressed release packages are not included in the public repository.
 - The physical prototype is still in progress.
 - Final photos and demo video will be added during the final submission stage.
 - The current evaluation focuses on controlled test cases and module-level behavior.

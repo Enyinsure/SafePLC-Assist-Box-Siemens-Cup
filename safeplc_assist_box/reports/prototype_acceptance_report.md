@@ -10,7 +10,7 @@ The purpose of this report is to show which prototype components have been imple
 
 The current acceptance scope focuses on the software prototype, safety-aware QA workflow, evidence checking logic, visual evidence rendering logic, and hardware prototype design documents.
 
-The physical shell, final photos, and final demo video are planned for the final prototype build stage.
+The physical shell is in progress. Final photos and the final demo video are planned for the final prototype build stage after the physical prototype is completed.
 
 ---
 
@@ -108,19 +108,19 @@ The workflow includes:
 
 ```text
 User question
-↓
+->
 Question classification
-↓
+->
 Safety risk assessment
-↓
+->
 QA response
-↓
+->
 Evidence Confidence
-↓
+->
 Answer-Evidence Check
-↓
+->
 Structured evidence card
-↓
+->
 Visual evidence rendering
 ```
 
@@ -190,7 +190,7 @@ The project adopts Scheme B:
 External computing host + productized physical terminal shell
 ```
 
-A laptop is used as the external computing host. The physical terminal shell is designed to provide a productized industrial form.
+A laptop is used as the external computing host. The physical terminal shell is in progress and is designed to provide a productized industrial form.
 
 Current accepted hardware documents include:
 
@@ -214,7 +214,7 @@ The hardware prototype design documents are accepted. The final physical shell, 
 The public repository intentionally excludes:
 
 - Full Siemens manual PDFs
-- Full OCR intermediate outputs
+- Full OCR outputs
 - Full vector databases
 - Full visual evidence image assets
 - Local model weights
@@ -225,7 +225,7 @@ The public repository intentionally excludes:
 
 Accepted.
 
-This boundary keeps the repository lightweight and avoids publishing large or copyright-sensitive assets.
+This boundary keeps the repository lightweight and avoids publishing large, private, or copyright-sensitive assets.
 
 ---
 
@@ -234,9 +234,10 @@ This boundary keeps the repository lightweight and avoids publishing large or co
 The current prototype still has the following limitations:
 
 - The physical terminal shell is still in progress.
-- Final hardware photos have not been added yet.
+- Final hardware photos will be added after the physical prototype is completed.
 - Final demo video has not been added yet.
-- The public repository does not include full manual assets.
+- The public repository does not include full Siemens manual PDFs.
+- The public repository does not include full OCR outputs or vector databases.
 - The public repository does not include full visual evidence assets.
 - The current evaluation mainly focuses on controlled test cases and module-level behavior.
 
