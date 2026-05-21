@@ -2,7 +2,7 @@
 
 SafePLC-Assist Box is a safety-aware industrial knowledge QA terminal prototype designed for the Siemens Cup Free Exploration Track.
 
-The project focuses on industrial manual knowledge retrieval, safety-aware question handling, evidence confidence, answer-evidence consistency checking, visual evidence rendering, and physical terminal prototype design.
+The project focuses on industrial manual knowledge retrieval, safety-aware question handling, Evidence Confidence, Answer-Evidence Check, structured evidence cards, visual evidence rendering, an offline/read-only boundary, and physical terminal prototype design.
 
 ---
 
@@ -119,6 +119,7 @@ Current SafePLC-Assist Box V1.2 includes:
 - Answer-Evidence Check
 - Structured evidence cards
 - Visual evidence rendering logic
+- Offline / read-only safety boundary
 - V1.1 / V1.2 evaluation files
 - Online review documentation
 - Hardware prototype design documents
@@ -261,8 +262,8 @@ Status: Planned
 
 | Risk | Response |
 |---|---|
-| Copyright-sensitive manual assets cannot be published | Public repository excludes full manuals and visual evidence assets |
-| Full local environment may be large | Repository keeps code, reports, and documentation only |
+| Copyright-sensitive manual assets cannot be published | Public repository excludes full Siemens manual PDFs and full visual evidence assets |
+| Full local environment may be large | Repository excludes full OCR outputs, vector databases, model weights, and compressed release packages |
 | PLC-related questions may involve unsafe operations | System includes safety boundary and risk guard |
 | Evaluation may be limited | Current report clearly states module-level evaluation scope |
 | Physical prototype is not fully completed yet | Hardware documents define current design and final build plan |
@@ -285,3 +286,5 @@ The project combines:
 - Physical terminal design
 
 The current version is ready for software-level and documentation-level review, and will be further strengthened with final physical prototype materials and demo media.
+
+Physical prototype photos and the final demo video are planned for final submission after the physical prototype is completed.

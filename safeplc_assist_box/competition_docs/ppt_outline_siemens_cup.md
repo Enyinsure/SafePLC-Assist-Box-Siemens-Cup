@@ -2,7 +2,7 @@
 
 This document provides a presentation outline for the SafePLC-Assist Box Siemens Cup project.
 
-The outline is designed for a competition presentation or online review material. It focuses on product positioning, technical contribution, safety boundary, evidence workflow, visual evidence rendering, evaluation, and physical prototype design.
+The outline is designed for competition presentation and online review. It focuses on product positioning, technical contribution, safety boundary, evidence workflow, visual evidence rendering, evaluation, and physical prototype design.
 
 ---
 
@@ -23,6 +23,7 @@ Industrial QA
 Safety Boundary
 Evidence Confidence
 Answer-Evidence Check
+Structured Evidence Cards
 Visual Evidence Rendering
 Physical Terminal Prototype
 ```
@@ -30,8 +31,6 @@ Physical Terminal Prototype
 ---
 
 ## Slide 2: Project Background
-
-### Problem
 
 Industrial manuals are large, complex, and difficult to search manually.
 
@@ -62,15 +61,13 @@ A normal search engine or generic chatbot is not enough because industrial QA ne
 
 ## Slide 4: Project Goal
 
-### Goal
-
 Build a safety-aware industrial knowledge QA terminal prototype.
 
-The system should not only answer questions, but also provide:
+The system should provide:
 
 - Safety risk judgment
-- Evidence confidence
-- Answer-evidence consistency checking
+- Evidence Confidence
+- Answer-Evidence Check
 - Structured evidence cards
 - Visual evidence rendering
 - Offline / read-only boundary
@@ -112,9 +109,9 @@ The system does not:
 - Execute PLC communication
 - Execute PLC write, download, start, stop, or control actions
 - Collect real IT / OT network data
-- Replace Siemens official manuals or certified engineers
+- Replace Siemens official manuals or certified industrial engineers
 
-### Key Boundary
+Key boundary labels:
 
 ```text
 OFFLINE / READ-ONLY
@@ -128,23 +125,23 @@ KNOWLEDGE QA ONLY
 
 ```text
 User Question
-↓
+->
 Streamlit Product Interface
-↓
+->
 Question Classification
-↓
+->
 Safety Risk Guard
-↓
+->
 Industrial QA Response
-↓
+->
 Evidence Confidence
-↓
+->
 Answer-Evidence Check
-↓
+->
 Structured Evidence Cards
-↓
+->
 Visual Evidence Rendering
-↓
+->
 Human Review / Learning / Demonstration
 ```
 
@@ -166,11 +163,7 @@ Human Review / Learning / Demonstration
 
 ## Slide 9: Safety-aware QA
 
-### Function
-
 The system classifies user questions and identifies risky PLC-related requests.
-
-### Example Handling
 
 | User Question Type | System Behavior |
 |---|---|
@@ -183,9 +176,7 @@ The system classifies user questions and identifies risky PLC-related requests.
 
 ## Slide 10: Evidence Confidence
 
-### Purpose
-
-The system estimates whether the current answer is sufficiently supported by evidence.
+Evidence Confidence estimates whether the current answer is sufficiently supported by evidence.
 
 Possible confidence outputs:
 
@@ -194,17 +185,13 @@ Possible confidence outputs:
 - Low
 - Conflict
 
-### Value
-
-Evidence Confidence helps users know whether the answer is reliable or needs further review.
+Value: users can see whether an answer is reliable or needs further review.
 
 ---
 
 ## Slide 11: Answer-Evidence Check
 
-### Purpose
-
-The system checks whether key claims in the answer are supported by evidence.
+Answer-Evidence Check verifies whether key claims in the answer are supported by evidence.
 
 Possible results:
 
@@ -212,9 +199,7 @@ Possible results:
 - REVIEW
 - FAIL
 
-### Value
-
-This reduces unsupported claims and makes the output more auditable.
+Value: this reduces unsupported claims and makes the output more auditable.
 
 ---
 
@@ -233,19 +218,13 @@ The system generates structured evidence cards with fields such as:
 - parameter
 - snippet
 
-### Value
-
-Evidence cards make the answer traceable and reviewable.
+Value: evidence cards make the answer traceable and reviewable.
 
 ---
 
 ## Slide 13: Visual Evidence Rendering
 
-### Motivation
-
 Text snippets alone are not enough for industrial manual review.
-
-### Implementation
 
 When an evidence card contains:
 
@@ -262,9 +241,7 @@ page_0641.jpg
 
 and render it directly in the evidence card panel.
 
-### Value
-
-The system can show original visual evidence instead of only text.
+Full visual evidence assets are used only in the local demo environment and are not included in the public repository for repository size and copyright reasons.
 
 ---
 
@@ -283,7 +260,7 @@ The system can show original visual evidence instead of only text.
 
 ## Slide 15: Product UI
 
-### UI Components
+UI components:
 
 - Question input area
 - Safety boundary panel
@@ -292,8 +269,6 @@ The system can show original visual evidence instead of only text.
 - V1.1 evidence card panel
 - Visual evidence image rendering
 - Product-style layout for competition demonstration
-
-### Note
 
 Final screenshots will be added during final competition packaging.
 
@@ -307,11 +282,9 @@ The project adopts Scheme B:
 External computing host + productized physical terminal shell
 ```
 
-### Current Design
-
 A laptop is used as the external computing host.
 
-The physical shell provides:
+The physical shell is in progress and is designed to provide:
 
 - Display area
 - SAFE / CAUTION / HIGH_RISK / CHECK indicators
@@ -319,32 +292,33 @@ The physical shell provides:
 - Product nameplate
 - OFFLINE / READ-ONLY label
 - PLC CONTROL DISABLED label
+- KNOWLEDGE QA ONLY label
 
 ---
 
 ## Slide 17: Front Panel Design
 
 ```text
-┌──────────────────────────────────────────────────────┐
-│ SafePLC-Assist Box V1.2                              │
-│ Industrial Knowledge QA Terminal                     │
-│                                                      │
-│ ┌──────────────────────────────────────────────────┐ │
-│ │              Streamlit UI Display                 │ │
-│ │  - Question input                                │ │
-│ │  - Evidence Confidence panel                     │ │
-│ │  - Answer-Evidence Check panel                   │ │
-│ │  - Visual Evidence Card panel                    │ │
-│ └──────────────────────────────────────────────────┘ │
-│                                                      │
-│ [SAFE]     [CAUTION]     [HIGH_RISK]     [CHECK]     │
-│                                                      │
-│ [Query]              [Demo]              [Export Log]│
-│                                                      │
-│ OFFLINE / READ-ONLY                                  │
-│ PLC CONTROL DISABLED                                 │
-│ KNOWLEDGE QA ONLY                                    │
-└──────────────────────────────────────────────────────┘
++-------------------------------------------------------+
+| SafePLC-Assist Box V1.2                               |
+| Industrial Knowledge QA Terminal                      |
+|                                                       |
+| +---------------------------------------------------+ |
+| |              Streamlit UI Display                 | |
+| | - Question input                                  | |
+| | - Evidence Confidence panel                       | |
+| | - Answer-Evidence Check panel                     | |
+| | - Visual Evidence Card panel                      | |
+| +---------------------------------------------------+ |
+|                                                       |
+| [SAFE]      [CAUTION]      [HIGH_RISK]      [CHECK]   |
+|                                                       |
+| [Query]               [Demo]              [Export Log] |
+|                                                       |
+| OFFLINE / READ-ONLY                                   |
+| PLC CONTROL DISABLED                                  |
+| KNOWLEDGE QA ONLY                                     |
++-------------------------------------------------------+
 ```
 
 ---
@@ -373,8 +347,8 @@ Evaluation dimensions include:
 - Safety risk classification
 - Action routing
 - Clarification behavior
-- Evidence confidence
-- Answer-evidence consistency
+- Evidence Confidence
+- Answer-Evidence Check
 - Evidence card generation
 
 Evaluation files:
@@ -417,55 +391,45 @@ run_v12_extended_eval.py
 The public repository does not include:
 
 - Full Siemens manual PDFs
-- Full OCR intermediate outputs
+- Full OCR outputs
 - Full vector databases
 - Full visual evidence image assets
 - Local model weights
 - Large compressed release packages
 - Private keys, tokens, or environment files
 
-### Reason
+These assets are excluded for repository size, copyright, privacy, and safety boundary reasons.
 
-These assets are excluded for repository size, copyright, and safety boundary reasons.
+Physical prototype photos and the final demo video will be added after the physical prototype is completed.
 
 ---
 
 ## Slide 22: Innovation Points
 
-### 1. Safety-aware Industrial QA
-
-The system is designed for industrial knowledge assistance with clear safety boundaries.
-
-### 2. Evidence Confidence
-
-The system estimates whether the answer is supported by evidence.
-
-### 3. Answer-Evidence Check
-
-The system checks whether key answer claims align with evidence.
-
-### 4. Visual Evidence Rendering
-
-The system can display original visual evidence in the local demo environment.
-
-### 5. Physical Terminal Prototype
-
-The system is packaged as an industrial terminal concept instead of a pure web demo.
+1. Safety-aware industrial QA with clear offline/read-only boundary.
+2. Evidence Confidence for supported-answer estimation.
+3. Answer-Evidence Check for claim alignment review.
+4. Structured evidence cards for traceability.
+5. Visual evidence rendering in the local demo environment.
+6. Physical terminal prototype design for productized competition presentation.
 
 ---
 
 ## Slide 23: Limitations and Future Work
 
-### Current Limitations
+Current limitations:
 
-- Full manuals are not included in the public repository.
+- Full Siemens manual PDFs are not included in the public repository.
+- Full OCR outputs and vector databases are not included in the public repository.
 - Full visual evidence assets are not included in the public repository.
 - Physical shell is still in progress.
+- Final prototype photos will be added after completion.
 - Final demo video has not been added yet.
 - Evaluation mainly focuses on controlled test cases and module-level behavior.
 
-### Future Work
+Future work:
 
+- Complete the physical terminal shell
 - Add final physical prototype photos
 - Add final demo video
 - Expand test cases

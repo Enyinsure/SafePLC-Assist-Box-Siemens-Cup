@@ -2,7 +2,7 @@
 
 This document describes the product research and development plan for SafePLC-Assist Box.
 
-SafePLC-Assist Box is designed as a safety-aware industrial knowledge QA terminal prototype for Siemens Cup. The project focuses on industrial manual knowledge retrieval, safety-aware question handling, evidence confidence, answer-evidence consistency checking, visual evidence rendering, and physical terminal prototype design.
+SafePLC-Assist Box is designed as a safety-aware industrial knowledge QA terminal prototype for Siemens Cup. The project focuses on industrial manual knowledge retrieval, safety-aware question handling, Evidence Confidence, Answer-Evidence Check, structured evidence cards, visual evidence rendering, an offline/read-only boundary, and physical terminal prototype design.
 
 ---
 
@@ -45,8 +45,8 @@ It is designed as an industrial knowledge QA and evidence review terminal with t
 - Offline / read-only boundary
 - Manual-oriented industrial knowledge retrieval
 - Safety-aware question handling
-- Evidence confidence estimation
-- Answer-evidence consistency checking
+- Evidence Confidence
+- Answer-Evidence Check
 - Structured evidence card output
 - Visual evidence rendering
 - Product-style Streamlit UI
@@ -103,6 +103,7 @@ Current V1.2 capabilities include:
 - Answer-Evidence Check
 - Structured evidence cards
 - Visual evidence rendering logic
+- Offline / read-only safety boundary
 - V1.1 / V1.2 evaluation files
 - Hardware prototype design documents
 - Online review documentation
@@ -115,23 +116,23 @@ The current system can be summarized as:
 
 ```text
 User Question
-↓
+->
 Streamlit Product Interface
-↓
+->
 Question Classification
-↓
+->
 Safety Risk Guard
-↓
+->
 Industrial QA Response
-↓
+->
 Evidence Confidence
-↓
+->
 Answer-Evidence Check
-↓
+->
 Structured Evidence Cards
-↓
+->
 Visual Evidence Rendering
-↓
+->
 Human Review / Learning / Demonstration
 ```
 
@@ -166,7 +167,7 @@ External computing host + productized physical terminal shell
 
 A laptop is used as the external computing host.
 
-The physical terminal shell provides:
+The physical terminal shell is in progress and is designed to provide:
 
 - Display area
 - Product nameplate
@@ -176,7 +177,7 @@ The physical terminal shell provides:
 - PLC CONTROL DISABLED label
 - KNOWLEDGE QA ONLY label
 
-The physical shell is used to present the system as a productized industrial knowledge QA terminal.
+The physical shell presents the system as a productized industrial knowledge QA terminal.
 
 It does not connect to real PLC devices.
 
@@ -264,7 +265,7 @@ and renders it in the evidence card panel.
 
 This feature helps the system move beyond plain text retrieval and makes the evidence chain more traceable.
 
-For repository size and copyright reasons, full visual evidence image assets are not included in the public repository.
+For repository size and copyright reasons, full visual evidence image assets are not included in the public repository. Full Siemens manual PDFs, full OCR outputs, vector databases, model weights, tokens, environment files, and compressed release packages are also excluded.
 
 ---
 
@@ -289,8 +290,8 @@ Evaluation dimensions include:
 - Safety risk classification
 - Action routing
 - Clarification behavior
-- Evidence confidence
-- Answer-evidence consistency
+- Evidence Confidence
+- Answer-Evidence Check
 - Evidence card generation
 
 Future evaluation will include:
@@ -316,8 +317,8 @@ Main tasks:
 - Add safety boundary display
 - Add question classification
 - Add safety risk guard
-- Add evidence confidence
-- Add answer-evidence checking
+- Add Evidence Confidence
+- Add Answer-Evidence Check
 - Add evidence card display
 
 ### Stage 2: Visual Evidence Enhancement
@@ -352,7 +353,7 @@ Main tasks:
 - Prepare shell, labels, indicators, and display
 - Connect display to external computing host
 - Verify offline / read-only boundary
-- Add final prototype photos
+- Add final prototype photos after completion
 
 ### Stage 5: Final Demo Packaging
 
@@ -363,7 +364,7 @@ Main tasks:
 - Record UI walkthrough
 - Record physical prototype demonstration
 - Add final screenshots
-- Add demo video link or materials
+- Add final demo video
 - Update final competition submission package
 
 ---
@@ -376,7 +377,9 @@ Current limitations include:
 - The public repository does not include full vector databases.
 - The public repository does not include full OCR outputs.
 - The public repository does not include full visual evidence assets.
+- The public repository does not include model weights, tokens, environment files, or compressed release packages.
 - The physical terminal shell is still in progress.
+- Physical prototype photos will be added after the physical prototype is completed.
 - Final demo video has not been added yet.
 - Current evaluation mainly focuses on controlled test cases and module-level behavior.
 
@@ -394,7 +397,8 @@ The current product already includes:
 - Answer-Evidence Check
 - Structured evidence cards
 - Visual evidence rendering logic
+- Offline / read-only safety boundary
 - Evaluation files
 - Hardware prototype design documents
 
-The next development focus is the physical terminal shell, final screenshots, demo video, and final competition packaging.
+The next development focus is the physical terminal shell, final prototype photos, final demo video, and final competition packaging.
