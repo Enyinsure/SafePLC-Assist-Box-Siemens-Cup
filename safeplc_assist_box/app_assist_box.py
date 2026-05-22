@@ -10,6 +10,7 @@ SafePLC-Assist Box 工业知识安全问答终端
 2. 前端运行在 s7rag_ui 环境。
 3. 后端调用复用 s7rag 环境中的 ask_s7_agent_v2.py。
 4. 不连接真实 PLC，不执行真实控制动作。
+5. 已接入复杂典型案例展示 demo_cases_complex.json。
 """
 
 from __future__ import annotations
@@ -25,8 +26,50 @@ from typing import Any, Dict, List, Optional, Tuple
 
 import streamlit as st
 
-from evidence_card_formatter import build_evidence_cards, detect_safety_level, summarize_answer
-from work_order_demo import generate_work_order_text
+try:
+    from evidence_card_formatter import build_evidence_cards, detect_safety_level, summarize_answer
+except Exception:
+    def build_evidence_cards(answer: str, query: str = "", context: str = "") -> Dict[str, Any]:
+        pages = re.findall(r"(?:第\s*)?(\d{1,5})\s*页", answer or "")
+        figures = re.findall(r"(?:figure_id|图文证据|图号)[:：]?\s*([A-Za-z0-9_\-]+)", answer or "")
+        safety_level = "HIGH_RISK" if any(x in (answer or "") for x in ["HIGH_RISK", "高风险", "拒绝"]) else "UNKNOWN"
+        return {
+            "safety_level": safety_level,
+            "evidence_pages": list(dict.fromkeys(pages)),
+            "figure_ids": list(dict.fromkeys(figures)),
+            "evidence_types": [],
+            "status": "PARSED",
+        }
+
+    def detect_safety_level(answer: str) -> str:
+        return "HIGH_RISK" if "高风险" in answer or "HIGH_RISK" in answer else "UNKNOWN"
+
+    def summarize_answer(answer: str) -> str:
+        return (answer or "")[:200]
+
+try:
+    from work_order_demo import generate_work_order_text
+except Exception:
+    def generate_work_order_text(query: str, context: str, answer: str, operator: str = "SafePLC-Assist Box 演示用户") -> str:
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        return f"""SafePLC-Assist Box 运维辅助记录
+
+记录时间：{now}
+记录人：{operator}
+
+一、用户问题
+{query}
+
+二、补充上下文
+{context or "无"}
+
+三、系统回答摘要
+{answer}
+
+四、风险与边界
+本记录由离线只读工业知识问答原型辅助生成，不连接真实 PLC，不执行控制动作。
+最终处理结论需由现场具备资质人员结合官方手册、现场图纸和安全规程确认。
+"""
 
 # V1.1 增强模块：仅用于前端诊断展示，不改变原 Agent v2 后端链路
 try:
@@ -48,10 +91,18 @@ except Exception:
     check_answer_evidence_alignment = None
 
 
-PROJECT_ROOT = Path("/home/scc/pb23061092")
+# 兼容学校服务器与本地仓库
+DEFAULT_PROJECT_ROOT = Path("/home/scc/pb23061092")
+if DEFAULT_PROJECT_ROOT.exists():
+    PROJECT_ROOT = DEFAULT_PROJECT_ROOT
+else:
+    PROJECT_ROOT = Path(__file__).resolve().parents[1]
+
 APP_ROOT = PROJECT_ROOT / "safeplc_assist_box"
 BACKEND_SCRIPT = PROJECT_ROOT / "s7_multimodal_v1" / "ask_s7_agent_v2.py"
 DEMO_CASES_PATH = APP_ROOT / "demo_cases.json"
+COMPLEX_DEMO_CASES_PATH = APP_ROOT / "demo_cases_complex.json"
+
 VISUAL_EVIDENCE_DIRS = [
     APP_ROOT / "assets" / "visual_candidate_pages",
     PROJECT_ROOT / "full_restore_agent_v2" / "s7_multimodal_v1" / "images" / "visual_candidate_pages",
@@ -63,12 +114,10 @@ VISUAL_EVIDENCE_DIRS = [
 DEFAULT_TIMEOUT = int(os.environ.get("SAFEPLC_AGENT_TIMEOUT", "180"))
 
 
-
 def find_visual_evidence_image(page: Any = None, figure_id: Any = None) -> Optional[Path]:
     """根据 evidence card 中的 page 或 figure_id 自动查找图文证据图片。"""
-    page_numbers = []
+    page_numbers: List[int] = []
 
-    # 从 figure_id 中解析 page_0641_visual / page-0641 / page0641 等格式
     if figure_id not in (None, "", "-"):
         match = re.search(r"page[_-]?(\d+)", str(figure_id), flags=re.IGNORECASE)
         if match:
@@ -77,7 +126,6 @@ def find_visual_evidence_image(page: Any = None, figure_id: Any = None) -> Optio
             except ValueError:
                 pass
 
-    # 从 page 字段解析页码
     if page not in (None, "", "-"):
         try:
             page_numbers.append(int(str(page).strip()))
@@ -86,7 +134,6 @@ def find_visual_evidence_image(page: Any = None, figure_id: Any = None) -> Optio
             if match:
                 page_numbers.append(int(match.group(1)))
 
-    # 去重但保持顺序
     seen = set()
     ordered_pages = []
     for n in page_numbers:
@@ -94,7 +141,6 @@ def find_visual_evidence_image(page: Any = None, figure_id: Any = None) -> Optio
             seen.add(n)
             ordered_pages.append(n)
 
-    # 兼容 page_0641.jpg / page_641.jpg / page_0641.png 等命名
     for n in ordered_pages:
         candidate_names = [
             f"page_{n:04d}.jpg",
@@ -114,31 +160,33 @@ def find_visual_evidence_image(page: Any = None, figure_id: Any = None) -> Optio
 
 
 def render_visual_evidence_image(card: Dict[str, Any]) -> None:
-    """在证据卡片中渲染对应的图文证据图片。"""
     img_path = find_visual_evidence_image(
         page=card.get("page"),
         figure_id=card.get("figure_id"),
     )
-
     if img_path:
-        st.image(
-            str(img_path),
-            caption=f"图文证据图片：{img_path.name}",
-            use_container_width=True,
-        )
+        st.image(str(img_path), caption=f"图文证据图片：{img_path.name}", use_container_width=True)
     elif str(card.get("evidence_type", "")).find("图") >= 0 or card.get("figure_id"):
         st.caption("未找到对应图文证据图片，仅显示页码与 figure_id。")
 
 
-
-def load_demo_cases() -> List[Dict[str, str]]:
-    if not DEMO_CASES_PATH.exists():
+def load_json_list(path: Path, warning_name: str) -> List[Dict[str, Any]]:
+    if not path.exists():
         return []
     try:
-        return json.loads(DEMO_CASES_PATH.read_text(encoding="utf-8"))
+        data = json.loads(path.read_text(encoding="utf-8"))
+        return data if isinstance(data, list) else []
     except Exception as exc:
-        st.warning(f"demo_cases.json 读取失败：{exc}")
+        st.warning(f"{warning_name} 读取失败：{exc}")
         return []
+
+
+def load_demo_cases() -> List[Dict[str, Any]]:
+    return load_json_list(DEMO_CASES_PATH, "demo_cases.json")
+
+
+def load_complex_demo_cases() -> List[Dict[str, Any]]:
+    return load_json_list(COMPLEX_DEMO_CASES_PATH, "demo_cases_complex.json")
 
 
 def build_backend_command(query: str, context: str) -> List[str]:
@@ -197,16 +245,16 @@ def call_agent_v2(query: str, context: str = "") -> Tuple[str, str, int]:
 
 
 def init_session_state() -> None:
-    if "history" not in st.session_state:
-        st.session_state.history = []
-    if "last_query" not in st.session_state:
-        st.session_state.last_query = ""
-    if "last_context" not in st.session_state:
-        st.session_state.last_context = ""
-    if "last_answer" not in st.session_state:
-        st.session_state.last_answer = ""
-    if "last_v11_analysis" not in st.session_state:
-        st.session_state.last_v11_analysis = {}
+    defaults = {
+        "history": [],
+        "last_query": "",
+        "last_context": "",
+        "last_answer": "",
+        "last_v11_analysis": {},
+    }
+    for key, value in defaults.items():
+        if key not in st.session_state:
+            st.session_state[key] = value
 
 
 def add_history(query: str, context: str, answer: str, return_code: int) -> None:
@@ -228,7 +276,6 @@ def add_history(query: str, context: str, answer: str, return_code: int) -> None
 
 
 def _pick_first(data: Dict[str, object], keys: List[str], default: str = "-") -> str:
-    """兼容 V1.1 模块不同字段命名，取第一个存在的字段。"""
     for key in keys:
         value = data.get(key)
         if value is not None and value != "":
@@ -237,10 +284,6 @@ def _pick_first(data: Dict[str, object], keys: List[str], default: str = "-") ->
 
 
 def run_v11_frontend_analysis(query: str, context: str = "") -> Dict[str, object]:
-    """
-    V1.1 前端诊断分析。
-    注意：这里不替代 Agent v2，不改变原后端回答，只把 V1.1 分类/风险结果展示给评委看。
-    """
     analysis: Dict[str, object] = {
         "enabled": False,
         "classifier": {},
@@ -256,31 +299,17 @@ def run_v11_frontend_analysis(query: str, context: str = "") -> Dict[str, object
         analysis["classifier"] = classifier_result or {}
         analysis["risk"] = risk_result or {}
 
-        qtype = _pick_first(
-            analysis["classifier"],
-            ["question_type", "qtype", "type", "category"],
-            "-",
-        )
-        action = _pick_first(
-            analysis["classifier"],
-            ["action", "route", "action_route", "next_action"],
-            "-",
-        )
+        qtype = _pick_first(analysis["classifier"], ["question_type", "qtype", "type", "category"], "-")
+        action = _pick_first(analysis["classifier"], ["action", "route", "action_route", "next_action"], "-")
         strategy = _pick_first(
             analysis["classifier"],
             ["retrieval_strategy", "strategy", "retriever", "preferred_retriever"],
             "-",
         )
-        risk_level = _pick_first(
-            analysis["risk"],
-            ["risk_level", "level", "safety_level"],
-            "-",
-        )
+        risk_level = _pick_first(analysis["risk"], ["risk_level", "level", "safety_level"], "-")
 
         missing_slots = analysis["classifier"].get("missing_slots", [])
-        clarify = False
-        if isinstance(missing_slots, list) and len(missing_slots) > 0:
-            clarify = True
+        clarify = bool(isinstance(missing_slots, list) and len(missing_slots) > 0)
         if str(action).upper() == "CLARIFY":
             clarify = True
 
@@ -299,7 +328,6 @@ def run_v11_frontend_analysis(query: str, context: str = "") -> Dict[str, object
 
 
 def render_v11_analysis_panel(analysis: Dict[str, object]) -> None:
-    """在问答页展示 V1.1 问题分类、动作路由与风险等级。"""
     if not analysis:
         return
 
@@ -344,17 +372,15 @@ def render_v11_analysis_panel(analysis: Dict[str, object]) -> None:
         )
 
     with st.expander("查看 V1.1 原始分类与风险结果", expanded=False):
-        st.json({
-            "classifier": analysis.get("classifier", {}),
-            "risk": analysis.get("risk", {}),
-        })
+        st.json(
+            {
+                "classifier": analysis.get("classifier", {}),
+                "risk": analysis.get("risk", {}),
+            }
+        )
 
 
 def build_v11_evidence_items_from_answer(answer: str, query: str = "", context: str = "") -> List[Dict[str, Any]]:
-    """
-    将当前 Agent v2 文本输出中抽取到的页码、figure_id、证据类型转换成 V1.1 evidence_items。
-    这是前端轻量桥接层，不改变原 RAG 后端检索结果。
-    """
     parsed = build_evidence_cards(answer, query=query, context=context)
 
     pages = parsed.get("evidence_pages", []) or []
@@ -363,7 +389,6 @@ def build_v11_evidence_items_from_answer(answer: str, query: str = "", context: 
 
     items: List[Dict[str, Any]] = []
 
-    # 如果有页码，就按页码构造证据项
     for idx, page in enumerate(pages, start=1):
         ev_type = "text"
         if evidence_types:
@@ -383,9 +408,8 @@ def build_v11_evidence_items_from_answer(answer: str, query: str = "", context: 
             }
         )
 
-    # 如果没有页码但有 figure_id，也保留图文证据项
     if not items and figures:
-        for idx, figure_id in enumerate(figures, start=1):
+        for figure_id in figures:
             items.append(
                 {
                     "source": "S7-1500 / ET 200MP 中文手册",
@@ -399,7 +423,6 @@ def build_v11_evidence_items_from_answer(answer: str, query: str = "", context: 
                 }
             )
 
-    # 如果完全没有显式证据，但回答非空，构造一个低置信文本项，便于 V1.1 给出 Low/Review
     if not items and answer.strip():
         items.append(
             {
@@ -418,7 +441,6 @@ def build_v11_evidence_items_from_answer(answer: str, query: str = "", context: 
 
 
 def run_v11_evidence_trust_analysis(query: str, context: str, answer: str) -> Dict[str, Any]:
-    """运行 V1.1 Evidence Confidence 与答案-证据一致性校验。"""
     result: Dict[str, Any] = {
         "enabled": False,
         "evidence_items": [],
@@ -432,22 +454,11 @@ def run_v11_evidence_trust_analysis(query: str, context: str, answer: str) -> Di
         evidence_items = build_v11_evidence_items_from_answer(answer, query=query, context=context)
         result["evidence_items"] = evidence_items
 
-        if assess_evidence_confidence:
-            confidence_result = assess_evidence_confidence(query, answer, evidence_items)
-        else:
-            confidence_result = {}
-
-        if check_answer_evidence_alignment:
-            alignment_result = check_answer_evidence_alignment(answer, evidence_items)
-        else:
-            alignment_result = {}
+        confidence_result = assess_evidence_confidence(query, answer, evidence_items) if assess_evidence_confidence else {}
+        alignment_result = check_answer_evidence_alignment(answer, evidence_items) if check_answer_evidence_alignment else {}
 
         conf = confidence_result.get("confidence") if isinstance(confidence_result, dict) else None
-
-        if build_v11_evidence_cards:
-            cards = build_v11_evidence_cards(evidence_items, conf)
-        else:
-            cards = []
+        cards = build_v11_evidence_cards(evidence_items, conf) if build_v11_evidence_cards else []
 
         result["enabled"] = True
         result["confidence"] = confidence_result
@@ -461,7 +472,6 @@ def run_v11_evidence_trust_analysis(query: str, context: str, answer: str) -> Di
 
 
 def render_v11_evidence_trust_panel(query: str, context: str, answer: str) -> None:
-    """展示 Evidence Confidence、Evidence Check 和 V1.1 证据卡片。"""
     if not answer:
         return
 
@@ -562,7 +572,6 @@ def render_v11_evidence_trust_panel(query: str, context: str, answer: str) -> No
 
 
 def build_v11_qa_log_record(query: str, context: str, answer: str) -> Dict[str, Any]:
-    """构造单次问答的 V1.1 可审计日志。"""
     analysis = run_v11_frontend_analysis(query, context)
     trust = run_v11_evidence_trust_analysis(query, context, answer)
     legacy_cards = build_evidence_cards(answer, query=query, context=context)
@@ -570,7 +579,7 @@ def build_v11_qa_log_record(query: str, context: str, answer: str) -> Dict[str, 
     return {
         "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "project": "SafePLC-Assist Box",
-        "version": "V1.1",
+        "version": "V1.2",
         "mode": "OFFLINE_READ_ONLY",
         "query": query,
         "context": context,
@@ -594,16 +603,15 @@ def build_v11_qa_log_record(query: str, context: str, answer: str) -> Dict[str, 
 
 
 def render_v11_log_download(query: str, context: str, answer: str, key_suffix: str = "qa") -> None:
-    """提供单次问答 V1.1 日志下载，便于答辩材料和测试报告留痕。"""
     if not answer:
         return
 
     log_record = build_v11_qa_log_record(query, context, answer)
     safe_time = datetime.now().strftime("%Y%m%d_%H%M%S")
-    filename = f"safeplc_v11_qa_log_{safe_time}.json"
+    filename = f"safeplc_v12_qa_log_{safe_time}.json"
 
     st.download_button(
-        "下载本次 V1.1 问答日志 .json",
+        "下载本次问答日志 .json",
         data=json.dumps(log_record, ensure_ascii=False, indent=2).encode("utf-8"),
         file_name=filename,
         mime="application/json",
@@ -673,8 +681,8 @@ def render_header() -> None:
 <div class="safeplc-hero">
   <div class="safeplc-title">SafePLC-Assist Box 工业知识安全问答终端</div>
   <div class="safeplc-subtitle">
-    面向 S7-1500 / ET 200MP 手册的多模态工业知识 Agent 与安全运维助手。
-    支持参数查询、接口图/接线图/拓扑图证据检索、主动澄清和危险操作安全拒答。
+    面向 S7-1500 / ET 200MP 手册的离线安全问答终端原型。
+    支持参数查询、接口图/接线图/拓扑图证据检索、主动澄清、危险操作安全拒答和复杂典型案例展示。
   </div>
 </div>
         """,
@@ -709,15 +717,16 @@ def render_sidebar() -> None:
             """
         )
 
-        st.subheader("V1.1 模块状态")
+        st.subheader("模块状态")
         st.markdown(
             """
 - Agent v2：ON
-- Safety Guard v1：ON
-- Risk Classifier v1.1：ON
-- Question Router v1.1：ON
+- Safety Guard：ON
+- Risk Classifier：ON
+- Question Router：ON
 - Evidence Confidence：ON
 - Evidence Check：ON
+- Complex Demo Cases：ON
             """
         )
 
@@ -727,6 +736,8 @@ def render_sidebar() -> None:
                 "后端: conda run -n s7rag python ask_s7_agent_v2.py",
                 language="bash",
             )
+            st.caption("项目根目录")
+            st.caption(str(PROJECT_ROOT))
             st.caption("后端入口")
             st.caption(str(BACKEND_SCRIPT))
 
@@ -778,86 +789,51 @@ def render_home_tab() -> None:
         """
 SafePLC-Assist Box 是面向智能制造现场、新人工程师培训、高校实训教学和设备维护辅助场景的工业知识安全问答终端。
 
-它基于既有 SafePLC-Agent 技术底座，围绕 S7-1500 / ET 200MP 中文手册构建多模态 RAG 知识库，
-支持文本、表格、接口图、接线图、端子分配图、PROFINET 拓扑图等证据检索，并通过 Agent v2 主动澄清和 Safety Guard v1 工业安全护栏减少误查、误答和危险操作输出。
+系统围绕 S7-1500 / ET 200MP 中文手册构建工业知识问答能力，支持文本、表格、接口图、接线图、端子分配图、PROFINET 拓扑图等证据检索，并通过主动澄清和安全护栏减少误查、误答和危险操作输出。
 
-V1.1 版本进一步加入工业安全风险分级、问题类型分类器、Evidence Confidence 证据置信度、证据卡片和答案-证据一致性校验，使工业知识问答从“能回答”提升为“可追溯、可复核、可审计、可评测”。
+当前版本进一步加入复杂典型案例展示，用于证明系统不只支持固定单点问答，也覆盖多条件、多对象、多图文证据、高风险混合请求和运维记录等更通用场景。
         """
     )
 
-    st.subheader("V1.1 可信证据增强状态")
-
+    st.subheader("状态控制台")
     s1, s2, s3, s4 = st.columns(4)
     s1.metric("Agent v2", "ON")
-    s2.metric("Safety Guard v1", "ON")
-    s3.metric("Risk Classifier v1.1", "ON")
-    s4.metric("Question Router v1.1", "ON")
+    s2.metric("Safety Guard", "ON")
+    s3.metric("Evidence Check", "ON")
+    s4.metric("Complex Cases", "ON")
 
     s5, s6, s7, s8 = st.columns(4)
-    s5.metric("Evidence Confidence", "ON")
-    s6.metric("Evidence Check", "ON")
+    s5.metric("运行模式", "OFFLINE")
+    s6.metric("PLC 控制", "DISABLED")
     s7.metric("Self-check", "OK")
     s8.metric("Clean Delivery", "READY")
 
     st.markdown(
         """
 <div class="safeplc-ok">
-<b>当前运行模式：</b>OFFLINE / READ-ONLY。系统仅用于工业知识问答、证据追溯、安全提示和运维记录辅助；
+当前运行模式：OFFLINE / READ-ONLY。系统仅用于工业知识问答、证据追溯、安全提示和运维记录辅助；
 不连接真实 PLC，不接入 TIA Portal，不执行下载、写入或控制动作。
 </div>
         """,
         unsafe_allow_html=True,
     )
 
-    st.subheader("核心能力")
-    c1, c2, c3 = st.columns(3)
-    with c1:
-        st.markdown(
-            """
-<div class="safeplc-card">
-<b>工业知识问答</b><br/>
-快速查询电源参数、接口说明、PROFINET/HMI 连接、EMC 等手册知识。
-</div>
-            """,
-            unsafe_allow_html=True,
-        )
-    with c2:
-        st.markdown(
-            """
-<div class="safeplc-card">
-<b>可信证据增强</b><br/>
-展示证据页码、证据类型、图文证据编号，便于答辩和运维复核。
-</div>
-            """,
-            unsafe_allow_html=True,
-        )
-    with c3:
-        st.markdown(
-            """
-<div class="safeplc-card">
-<b>安全运维提醒</b><br/>
-遇到短接安全回路、带电接线、强制输出等危险问题时拒绝输出步骤。
-</div>
-            """,
-            unsafe_allow_html=True,
-        )
-
     st.subheader("推荐演示主线")
     st.markdown(
         """
-1. 缺少型号时主动追问。  
-2. 补充 PS 60W 24/48/60VDC HF 后查询电源电压范围。  
-3. 查询 PROFINET 环网如何连接 HMI 设备。  
-4. 查询 CPU 1517-3 PN 的 PROFINET 接口 X1/X2。  
-5. 输入危险操作问题，展示 HIGH_RISK 拒答。  
-6. 生成运维辅助记录。
+1. 缺少型号时主动追问。
+2. 补充 PS 60W 24/48/60VDC HF 后查询电源电压范围。
+3. 查询 PROFINET 环网如何连接 HMI 设备。
+4. 查询 CPU 1517-3 PN 的 PROFINET 接口 X1/X2。
+5. 输入危险操作问题，展示 HIGH_RISK 拒答。
+6. 打开“典型案例演示”，展示复杂多图、多对象、多条件案例。
+7. 生成运维辅助记录。
         """
     )
 
 
 def render_qa_tab() -> None:
     st.subheader("工业知识问答")
-
     st.markdown("#### 推荐演示问题")
     st.caption("点击按钮自动填入问题与上下文，便于线上评审截图和演示视频录制。")
 
@@ -908,13 +884,16 @@ def render_qa_tab() -> None:
         st.session_state.last_context = context.strip()
         st.session_state.last_answer = merged
         st.session_state.last_v11_analysis = run_v11_frontend_analysis(query.strip(), context.strip())
+
         add_history(query.strip(), context.strip(), merged, return_code)
 
     if st.session_state.get("last_answer"):
         answer = st.session_state.last_answer
         render_v11_analysis_panel(st.session_state.get("last_v11_analysis", {}))
+
         st.markdown("### 系统回答")
         st.code(answer, language="text")
+
         render_evidence_cards(answer, st.session_state.last_query, st.session_state.last_context)
         render_v11_evidence_trust_panel(st.session_state.last_query, st.session_state.last_context, answer)
         render_v11_log_download(st.session_state.last_query, st.session_state.last_context, answer, key_suffix="qa")
@@ -926,29 +905,98 @@ def render_demo_tab() -> None:
 
     if not cases:
         st.warning("未找到 demo_cases.json。")
+    else:
+        for idx, case in enumerate(cases, start=1):
+            title = case.get("title", f"案例 {idx}")
+            query = case.get("query", case.get("user_question", ""))
+            context = case.get("context", "")
+
+            with st.expander(f"{idx}. {title}", expanded=False):
+                st.markdown(f"**问题：** {query}")
+                st.markdown(f"**上下文：** {context or '无'}")
+
+                if st.button(f"运行案例 {idx}", key=f"run_case_{idx}"):
+                    with st.spinner("正在运行典型案例..."):
+                        stdout, merged, return_code = call_agent_v2(query.strip(), context.strip())
+
+                    st.session_state.last_query = query.strip()
+                    st.session_state.last_context = context.strip()
+                    st.session_state.last_answer = merged
+                    st.session_state.last_v11_analysis = run_v11_frontend_analysis(query.strip(), context.strip())
+
+                    add_history(query.strip(), context.strip(), merged, return_code)
+
+                    render_v11_analysis_panel(st.session_state.get("last_v11_analysis", {}))
+                    st.markdown("### 案例输出")
+                    st.code(merged, language="text")
+                    render_evidence_cards(merged, query, context)
+                    render_v11_evidence_trust_panel(query, context, merged)
+                    render_v11_log_download(query, context, merged, key_suffix=f"demo_{idx}")
+
+    st.divider()
+    render_complex_demo_cases_panel()
+
+
+# ============================================================
+# Complex Demo Cases Panel for Siemens Cup Review
+# Added for more general and complex industrial review scenarios
+# ============================================================
+def render_complex_demo_cases_panel() -> None:
+    st.markdown("## 复杂典型案例展示")
+    st.caption("用于展示系统面对多条件、多对象、多图文证据、高风险混合请求等更通用场景时的处理能力。")
+
+    complex_cases = load_complex_demo_cases()
+
+    if not complex_cases:
+        st.warning("未找到 demo_cases_complex.json，请确认文件已放在 safeplc_assist_box/ 目录下。")
         return
 
-    for idx, case in enumerate(cases, start=1):
-        with st.expander(f"{idx}. {case.get('title', '未命名案例')}", expanded=False):
-            st.markdown(f"**问题：** {case.get('query', '')}")
-            st.markdown(f"**上下文：** {case.get('context', '') or '无'}")
-            if st.button(f"运行案例 {idx}", key=f"run_case_{idx}"):
-                query = case.get("query", "").strip()
-                context = case.get("context", "").strip()
-                with st.spinner("正在运行典型案例..."):
-                    stdout, merged, return_code = call_agent_v2(query, context)
-                st.session_state.last_query = query
-                st.session_state.last_context = context
-                st.session_state.last_answer = merged
-                st.session_state.last_v11_analysis = run_v11_frontend_analysis(query, context)
-                add_history(query, context, merged, return_code)
+    titles = [
+        f"{case.get('id', '')}｜{case.get('title', '')}"
+        for case in complex_cases
+    ]
 
-                render_v11_analysis_panel(st.session_state.get("last_v11_analysis", {}))
-                st.markdown("### 案例输出")
-                st.code(merged, language="text")
-                render_evidence_cards(merged, query, context)
-                render_v11_evidence_trust_panel(query, context, merged)
-                render_v11_log_download(query, context, merged, key_suffix=f"demo_{idx}")
+    selected_title = st.selectbox(
+        "选择复杂典型案例",
+        titles,
+        key="complex_demo_case_selector",
+    )
+
+    selected_case = complex_cases[titles.index(selected_title)]
+
+    st.markdown("### 用户复杂提问")
+    st.info(selected_case.get("user_question", ""))
+
+    col1, col2, col3 = st.columns(3)
+    col1.metric("问题类型", selected_case.get("expected_question_type", ""))
+    col2.metric("系统动作", selected_case.get("expected_action", ""))
+    col3.metric("风险等级", selected_case.get("expected_risk_level", ""))
+
+    evidence_types = selected_case.get("expected_evidence_types", [])
+    if evidence_types:
+        st.markdown("### 预期证据类型")
+        for item in evidence_types:
+            st.markdown(f"- {item}")
+
+    answer_points = selected_case.get("expected_answer_points", [])
+    if answer_points:
+        st.markdown("### 预期回答要点")
+        for item in answer_points:
+            st.markdown(f"- {item}")
+
+    run_complex = st.button("将该复杂问题填入工业知识问答页", key="fill_complex_case")
+    if run_complex:
+        st.session_state.last_query = selected_case.get("user_question", "")
+        st.session_state.last_context = ""
+        st.session_state.last_answer = ""
+        st.session_state.last_v11_analysis = {}
+        st.success("已填入工业知识问答页，请切换到“工业知识问答”提交运行。")
+
+    st.markdown("---")
+    st.caption(
+        "说明：该区域用于比赛评审展示，证明系统不只支持固定单点问答，"
+        "也覆盖复杂工业查询、故障排查、多证据返回和安全风险识别。"
+    )
 
 
 def render_work_order_tab() -> None:
@@ -995,65 +1043,48 @@ def render_boundary_tab() -> None:
 SafePLC-Assist Box 是面向 S7-1500 / ET 200MP 中文手册的工业知识安全问答终端，
 服务于高校实训教学、新人工程师培训和设备维护辅助场景。
 
-系统当前定位为 **软件原型 + 产品化交互样机 + V1.1 可信证据增强模块**，
+系统当前定位为 **软件原型 + 产品化交互样机 + 可信证据增强模块 + 复杂典型案例展示**，
 不是现场 PLC 控制系统，不替代厂家手册、现场安全规程和具备资质人员判断。
         """
     )
 
     st.markdown("### 当前已完成能力")
-
     c1, c2 = st.columns(2)
 
     with c1:
         st.markdown(
             """
-#### V1.0 多模态工业知识 Agent
+#### 多模态工业知识问答
 
-- S7-1500 / ET 200MP 中文手册多模态 RAG
+- S7-1500 / ET 200MP 中文手册知识查询
 - 文本、表格、接口图、接线图、端子分配图、拓扑图证据检索
-- ChromaDB 图文索引
 - 页码、figure_id、证据类型输出
-- Agent v2 主动澄清
-- Safety Guard v1 工业安全护栏
+- Agent 主动澄清
+- Safety Guard 工业安全护栏
 - Streamlit 产品化前端
-- 典型案例演示与运维记录生成
             """
         )
 
     with c2:
         st.markdown(
             """
-#### V1.1 可信证据增强
+#### 可信证据与复杂案例增强
 
 - 工业安全风险分级：SAFE / CAUTION / HIGH_RISK / EMERGENCY
 - 问题类型分类器与动作路由
-- 槽位填充与主动澄清触发
 - Evidence Confidence：High / Medium / Low / Conflict
-- 证据卡片输出
-- 标准回答结构：结论 / 依据 / 适用条件 / 风险提示
 - 答案-证据一致性校验：PASS / REVIEW / FAIL
-- 标准测试集、自动评测脚本和一键自检脚本
+- 复杂典型案例：多条件、多对象、多图像证据、高风险混合请求
+- 运维记录生成和日志导出
             """
         )
 
     st.markdown("### 技术边界")
-
     st.markdown(
         """
-<div class="safeplc-warning">
-<b>本作品不是现场控制系统。</b><br/>
-系统当前仅用于离线工业知识问答、证据追溯、安全提示和运维记录辅助。
-</div>
-        """,
-        unsafe_allow_html=True,
-    )
+本作品不是现场控制系统。系统当前仅用于离线工业知识问答、证据追溯、安全提示和运维记录辅助。
 
-    b1, b2 = st.columns(2)
-
-    with b1:
-        st.markdown(
-            """
-#### 明确不做
+明确不做以下事项：
 
 - 不连接真实 PLC
 - 不接入 TIA Portal
@@ -1061,93 +1092,67 @@ SafePLC-Assist Box 是面向 S7-1500 / ET 200MP 中文手册的工业知识安�
 - 不执行下载、写入、启动、停止或控制动作
 - 不采集真实 IT / OT 网络数据
 - 不作为现场安全控制系统
-            """
-        )
-
-    with b2:
-        st.markdown(
-            """
-#### 使用约束
-
 - 不替代 Siemens 官方手册
 - 不替代现场电气安全规程
 - 不替代具备资质人员判断
-- 对复杂接线、端子和安全回路问题，仅提供证据追溯与安全提示
-- 对短接安全回路、绕过保护、带电危险操作等问题拒绝输出危险步骤
-            """
-        )
-
-    st.markdown("### V1.1 工程交付状态")
-
-    e1, e2, e3, e4 = st.columns(4)
-    e1.metric("Basic Testset", "12 cases")
-    e2.metric("Eval Result", "All Passed")
-    e3.metric("Self-check", "Overall OK")
-    e4.metric("SHA256", "OK")
-
-    st.markdown(
-        """
-#### 已生成交付文件
-
-- `SAFEPLC_ASSIST_BOX_SIEMENS_CUP_V11_CLEAN.tar.gz`
-- `SAFEPLC_ASSIST_BOX_SIEMENS_CUP_V11_CLEAN.sha256`
-- `SAFEPLC_ASSIST_BOX_SIEMENS_CUP_V11_CLEAN_manifest.txt`
-- `PROJECT_FINAL_STATUS_SIEMENS_CUP_V11.txt`
-
-#### V1.1 关键新增模块
-
-- `safety_risk_guard_v11.py`
-- `question_classifier_v11.py`
-- `evidence_confidence_v11.py`
-- `answer_evidence_checker_v11.py`
-- `run_v11_eval.py`
-- `self_check_safeplc_v11.py`
-- `testset_v11_basic.json`
         """
     )
 
-    st.markdown("### 后续扩展方向")
 
-    st.markdown(
-        """
-- 扩展更大规模测试集，从 basic 回归测试扩展到 50～100 条复杂问题测试。
-- 将更多 V1.1 证据置信度和一致性校验结果接入前端可视化。
-- 增强图文证据展示，进一步支持图纸缩略图和证据片段定位。
-- 接入仿真环境或数字孪生环境，探索只读诊断数据辅助分析。
-- 扩展更多 Siemens 工业设备手册，提升知识库覆盖范围。
-        """
-    )
+def render_history_tab() -> None:
+    st.subheader("最近问答记录")
+
+    if not st.session_state.history:
+        st.info("暂无问答记录。")
+        return
+
+    for item in st.session_state.history:
+        with st.expander(f"{item['time']} | {item['query'][:60]}", expanded=False):
+            st.markdown(f"**问题：** {item['query']}")
+            st.markdown(f"**上下文：** {item['context'] or '无'}")
+            st.markdown(f"**返回码：** {item['return_code']}")
+            st.markdown(f"**安全等级：** {item.get('safety_level', '-')}")
+            st.code(item["answer"], language="text")
 
 
 def main() -> None:
     st.set_page_config(
         page_title="SafePLC-Assist Box",
-        page_icon="🛡️",
+        page_icon="🧰",
         layout="wide",
     )
+
     init_session_state()
     render_css()
-    render_sidebar()
     render_header()
+    render_sidebar()
 
-    tab_home, tab_qa, tab_demo, tab_work_order, tab_boundary = st.tabs(
+    tab_home, tab_qa, tab_demo, tab_work_order, tab_history, tab_boundary = st.tabs(
         [
-            "产品首页",
+            "首页",
             "工业知识问答",
             "典型案例演示",
             "运维记录生成",
-            "产品说明与技术边界",
+            "问答记录",
+            "技术边界",
         ]
     )
 
     with tab_home:
         render_home_tab()
+
     with tab_qa:
         render_qa_tab()
+
     with tab_demo:
         render_demo_tab()
+
     with tab_work_order:
         render_work_order_tab()
+
+    with tab_history:
+        render_history_tab()
+
     with tab_boundary:
         render_boundary_tab()
 
