@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import re
 from typing import List
 
 from ..schemas import QueryContext, SubQuestion
@@ -18,7 +19,7 @@ class QueryDecomposer:
 
         subquestions: List[SubQuestion] = []
         low = query.lower()
-        if "x1" in low and any(token in query for token in ["哪里", "位置", "front", "where"]):
+        if "x1" in low and any(token in low for token in ["哪里", "位置", "前面", "front", "where"]):
             subquestions.append(
                 SubQuestion(
                     subquestion_id="sq_x1_location",
@@ -27,9 +28,29 @@ class QueryDecomposer:
                     expected_agents=["Figure Agent"],
                     required_modalities=["figure"],
                     required_slots=["module_model", "interface_name"],
+                    metadata={"trigger": "x1_location", "source_span": query},
                 )
             )
-        if "x1" in low and any(token in low for token in ["p1", "p2", "port", "端口", "接口"]):
+        port_trigger = next(
+            (
+                token
+                for token in [
+                    "几个端口",
+                    "端口数量",
+                    "p1/p2",
+                    "x1 p1",
+                    "x1 p2",
+                    "port count",
+                    "ports",
+                    "两个端口",
+                    "端口标签",
+                    "端口名称",
+                ]
+                if token in low
+            ),
+            "",
+        )
+        if "x1" in low and port_trigger:
             subquestions.append(
                 SubQuestion(
                     subquestion_id="sq_x1_ports",
@@ -37,6 +58,7 @@ class QueryDecomposer:
                     objective="Verify whether X1 has ports such as X1 P1 and X1 P2.",
                     expected_agents=["Figure Agent", "Topology Agent"],
                     required_modalities=["figure", "table"],
+                    metadata={"trigger": port_trigger, "source_span": query},
                 )
             )
         if "profinet" in low or "hmi" in low:
@@ -47,6 +69,7 @@ class QueryDecomposer:
                     objective="Separate model-specific interface evidence from general PROFINET guidance.",
                     expected_agents=["Topology Agent"],
                     required_modalities=["text"],
+                    metadata={"trigger": "PROFINET/HMI", "source_span": query},
                 )
             )
         if any(token in query for token in ["注意", "组态", "IP", "ip", "布线"]):
@@ -57,6 +80,7 @@ class QueryDecomposer:
                     objective="Return only evidenced PROFINET/HMI notes and mark general guidance.",
                     expected_agents=["Topology Agent", "Wiring Agent"],
                     required_modalities=["text"],
+                    metadata={"trigger": "network_notes", "source_span": query},
                 )
             )
 
@@ -68,6 +92,15 @@ class QueryDecomposer:
                     objective=f"Answer the {context.question_type} question using direct evidence.",
                     expected_agents=[],
                     required_modalities=list(context.required_modalities),
+                    metadata={"trigger": context.question_type, "source_span": query},
                 )
             )
-        return subquestions[:4]
+        unique = []
+        seen = set()
+        for item in subquestions:
+            key = (item.subquestion_id, re.sub(r"\s+", " ", item.text.strip().lower()))
+            if key in seen:
+                continue
+            seen.add(key)
+            unique.append(item)
+        return unique[:4]
