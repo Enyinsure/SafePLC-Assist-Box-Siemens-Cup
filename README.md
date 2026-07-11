@@ -15,6 +15,10 @@ The system uses a Dynamic Supervisor to select specialist agents, lets each agen
 
 RAG is treated as a tool layer, not as the product architecture. The frontend, CLI, benchmark, and ablation scripts all call the same `run_agent_system()` orchestrator.
 
+## Runtime Requirement
+
+SafePLC-Assist Box requires **Python 3.11 or newer**. Python 3.10 is not supported.
+
 ## Run
 
 ```bash
