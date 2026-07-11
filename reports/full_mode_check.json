@@ -1,0 +1,7 @@
+{
+  "mode": "FULL",
+  "status": "SKIPPED",
+  "reason": "SAFEPLC_CHUNKS_JSONL/SAFEPLC_PAGES_JSONL are not configured with existing files.",
+  "SAFEPLC_CHUNKS_JSONL": "",
+  "SAFEPLC_PAGES_JSONL": ""
+}

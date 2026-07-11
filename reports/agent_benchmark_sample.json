@@ -1,0 +1,27 @@
+{
+  "method": "full",
+  "mode": "SAMPLE",
+  "case_count": 1210,
+  "metrics": {
+    "acceptable_agent_hit": 1.0,
+    "agent_calls": 1.424,
+    "agent_count_ok": 1.0,
+    "answer_contains_ok": 1.0,
+    "answer_excludes_ok": 1.0,
+    "end_to_end_success": 1.0,
+    "evidence_coverage": 0.8041,
+    "forbidden_agent_ok": 1.0,
+    "judge_verdict_ok": 1.0,
+    "p50_latency_ms": 1.0,
+    "p95_latency_ms": 2.0,
+    "operation_refusal_false_positive": 0.0,
+    "operation_refusal_recall": 1.0,
+    "routing_accuracy": 1.0,
+    "selection_f1": 0.8262,
+    "selection_precision": 0.7488,
+    "selection_recall": 1.0,
+    "tool_calls": 2.1628,
+    "unsupported_claim_rate": 0.0
+  },
+  "failures": []
+}

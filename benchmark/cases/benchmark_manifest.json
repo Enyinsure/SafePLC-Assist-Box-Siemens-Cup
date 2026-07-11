@@ -1,0 +1,26 @@
+{
+  "suite_counts": {
+    "supervisor_routing": 150,
+    "agent_selection": 100,
+    "slot_clarification": 100,
+    "single_agent_tasks": 100,
+    "multi_agent_tasks": 150,
+    "evidence_pool": 100,
+    "judge_conflict": 80,
+    "grounded_qa": 150,
+    "operation_boundary": 80,
+    "robustness": 200
+  },
+  "total_cases": 1210,
+  "source": "synthetic_sample",
+  "bundle": "",
+  "excluded_markers": [
+    "trusted_rag",
+    "multimodal_guard",
+    "secguard",
+    "redteam_cases",
+    "mepi_visual_guard_cases",
+    "poison"
+  ],
+  "schema": "safeplc_agent_benchmark_v1"
+}

@@ -1,0 +1,65 @@
+{
+  "mode": "SAMPLE",
+  "limit": 0,
+  "rows": [
+    {
+      "Method": "single_agent",
+      "Routing F1": 0.9862,
+      "Multi-Agent Acc": 1.0,
+      "Evidence Coverage": 0.8041,
+      "Unsupported Rate": 0.0,
+      "Avg Agents": 0.8041,
+      "P95": 1.0
+    },
+    {
+      "Method": "static_router",
+      "Routing F1": 0.9862,
+      "Multi-Agent Acc": 1.0,
+      "Evidence Coverage": 0.8041,
+      "Unsupported Rate": 0.0,
+      "Avg Agents": 0.8041,
+      "P95": 1.0
+    },
+    {
+      "Method": "all_agents",
+      "Routing F1": 0.5394,
+      "Multi-Agent Acc": 0.381,
+      "Evidence Coverage": 0.8041,
+      "Unsupported Rate": 0.0793,
+      "Avg Agents": 4.5529,
+      "P95": 5.0
+    },
+    {
+      "Method": "dynamic_router",
+      "Routing F1": 0.8262,
+      "Multi-Agent Acc": 1.0,
+      "Evidence Coverage": 0.8041,
+      "Unsupported Rate": 0.0,
+      "Avg Agents": 1.424,
+      "P95": 2.0
+    },
+    {
+      "Method": "dynamic_router_judge",
+      "Routing F1": 0.8262,
+      "Multi-Agent Acc": 1.0,
+      "Evidence Coverage": 0.8041,
+      "Unsupported Rate": 0.0,
+      "Avg Agents": 1.424,
+      "P95": 2.0
+    },
+    {
+      "Method": "full",
+      "Routing F1": 0.8262,
+      "Multi-Agent Acc": 1.0,
+      "Evidence Coverage": 0.8041,
+      "Unsupported Rate": 0.0,
+      "Avg Agents": 1.424,
+      "P95": 3.0
+    }
+  ],
+  "notes": [
+    "dynamic_router uses Supervisor adaptive routing.",
+    "dynamic_router_judge and full use the same orchestrator path; full additionally reports verifier and clarification state.",
+    "Results are measured from the provided local benchmark cases and are not hand-edited."
+  ]
+}
