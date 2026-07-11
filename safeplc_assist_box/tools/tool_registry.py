@@ -59,6 +59,10 @@ class ToolRegistry:
             "text_backend_active": False,
             "figure_backend_active": False,
             "jsonl_fallback_active": False,
+            "jsonl_fallback_triggered": False,
+            "jsonl_fallback_reason": "",
+            "hybrid_mode": config.enable_jsonl_hybrid,
+            "tool_calls": [],
             "sample_fixture_active": config.mode != "FULL",
             "errors": self.errors,
         }
@@ -68,6 +72,9 @@ class ToolRegistry:
         self._jsonl_chunks: Optional[JSONLFallbackRetriever] = None
         self._jsonl_pages: Optional[JSONLFallbackRetriever] = None
         self._figure_jsonl: Optional[JSONLFallbackRetriever] = None
+        self._evidence_cache_by_id: Dict[str, AgentEvidence] = {}
+        self._evidence_cache_by_page: Dict[str, List[AgentEvidence]] = {}
+        self._evidence_cache_by_figure: Dict[str, List[AgentEvidence]] = {}
         self._init_full_backends()
 
     def search_text(
@@ -105,18 +112,32 @@ class ToolRegistry:
         return self._search(query, allowed, filters=filters, top_k=top_k, tool="search_hybrid")
 
     def fetch_page(self, page_id: str) -> Optional[AgentEvidence]:
+        started = time.perf_counter()
         self.tool_call_count += 1
-        for ev in self._sample_evidence:
-            if str(ev.page or "") == str(page_id):
-                return ev
-        return None
+        candidates = list(self._evidence_cache_by_page.get(str(page_id), []))
+        if self.config.mode != "FULL":
+            candidates.extend(ev for ev in self._sample_evidence if str(ev.page or "") == str(page_id))
+        result = self._best_cached(candidates)
+        self._record_tool_call(
+            "fetch_page", str(page_id), set(), [result] if result else [], started,
+            backend_attempted=["retrieval_cache"], backend_used=["retrieval_cache"] if result else [],
+        )
+        return result
 
     def fetch_figure(self, figure_id: str) -> Optional[AgentEvidence]:
+        started = time.perf_counter()
         self.tool_call_count += 1
-        for ev in self._sample_evidence:
-            if ev.figure_id == figure_id or ev.figure_number == figure_id:
-                return ev
-        return None
+        candidates = list(self._evidence_cache_by_figure.get(str(figure_id), []))
+        if self.config.mode != "FULL":
+            candidates.extend(
+                ev for ev in self._sample_evidence if ev.figure_id == figure_id or ev.figure_number == figure_id
+            )
+        result = self._best_cached(candidates)
+        self._record_tool_call(
+            "fetch_figure", str(figure_id), {"figure"}, [result] if result else [], started,
+            backend_attempted=["retrieval_cache"], backend_used=["retrieval_cache"] if result else [],
+        )
+        return result
 
     def _init_full_backends(self) -> None:
         if self.config.mode != "FULL":
@@ -156,8 +177,9 @@ class ToolRegistry:
                 "jsonl_chunks",
                 "figure",
             )
-            if any(r and r.available() for r in [self._jsonl_chunks, self._jsonl_pages, self._figure_jsonl]):
-                self.backend_audit["jsonl_fallback_active"] = True
+            self.backend_audit["jsonl_fallback_available"] = any(
+                r and r.available() for r in [self._jsonl_chunks, self._jsonl_pages, self._figure_jsonl]
+            )
 
     def _search(
         self,
@@ -173,10 +195,16 @@ class ToolRegistry:
         if not self.feature_switches.get("enable_figure_backend", True):
             allowed -= {"figure", "visual"}
         if self.config.mode == "FULL":
-            records = self._search_full(query, allowed, top_k=max(top_k, 8))
+            records, call_details = self._search_full(query, allowed, top_k=max(top_k, 8))
         else:
             records = self._search_sample(query, allowed, filters=filters, top_k=max(top_k, 8), tool=tool)
-        if self.feature_switches.get("enable_model_filter", True):
+            call_details = {
+                "backend_attempted": ["sample_fixture"],
+                "backend_used": ["sample_fixture"] if records else [],
+                "fallback_reason": "",
+                "error": "",
+            }
+        if self.config.mode != "FULL" and self.feature_switches.get("enable_model_filter", True):
             records = reject_cross_family(records, query)
         if self.feature_switches.get("enable_evidence_reranker", True):
             records = rank_evidence(
@@ -186,36 +214,171 @@ class ToolRegistry:
                 top_k=top_k,
             )
         self.last_latency_ms = int((time.perf_counter() - started) * 1000)
-        return records[: max(1, top_k)]
+        records = records[: max(1, top_k)]
+        self._cache_evidence(records)
+        self._record_tool_call(
+            tool,
+            query,
+            allowed,
+            records,
+            started,
+            backend_attempted=call_details["backend_attempted"],
+            backend_used=call_details["backend_used"],
+            fallback_reason=str(call_details.get("fallback_reason") or ""),
+            error=str(call_details.get("error") or ""),
+        )
+        return records
 
-    def _search_full(self, query: str, allowed: Set[str], top_k: int) -> List[AgentEvidence]:
-        out: List[AgentEvidence] = []
+    def _search_full(self, query: str, allowed: Set[str], top_k: int):
+        chroma_records: List[AgentEvidence] = []
+        jsonl_records: List[AgentEvidence] = []
         need_text = bool(allowed & {"text", "table", "policy"})
         need_figure = bool(allowed & {"figure", "visual"})
+        attempted: List[str] = []
+        used: List[str] = []
+        errors: List[str] = []
+        backend_missing = False
 
         if need_figure and self._figure_retriever:
+            attempted.append("chroma_figure")
             try:
-                out.extend(self._figure_retriever.search(query, top_k=top_k))
-            except ChromaUnavailable as exc:
+                found = self._figure_retriever.search(query, top_k=top_k)
+                chroma_records.extend(found)
+                if found:
+                    used.append("chroma_figure")
+            except Exception as exc:
                 self.errors.append(str(exc))
+                errors.append(str(exc))
+        elif need_figure:
+            backend_missing = True
 
         if need_text and self._text_retriever:
+            attempted.append("chroma_text")
             try:
-                out.extend(self._text_retriever.search(query, top_k=top_k))
-            except ChromaUnavailable as exc:
+                found = self._text_retriever.search(query, top_k=top_k)
+                chroma_records.extend(found)
+                if found:
+                    used.append("chroma_text")
+            except Exception as exc:
                 self.errors.append(str(exc))
+                errors.append(str(exc))
+        elif need_text:
+            backend_missing = True
 
-        if self.config.allow_jsonl_fallback:
+        before_filter = len(chroma_records)
+        if self.feature_switches.get("enable_model_filter", True):
+            chroma_records = reject_cross_family(chroma_records, query)
+        after_filter = len(chroma_records)
+        best_score = max(
+            (float(ev.normalized_score or ev.retrieval_score or 0.0) for ev in chroma_records),
+            default=0.0,
+        )
+        figure_hit = any(ev.modality in {"figure", "visual"} for ev in chroma_records)
+        reasons: List[str] = []
+        if backend_missing or not attempted:
+            reasons.append("chroma_backend_unavailable")
+        if errors:
+            reasons.append("chroma_query_error")
+        if before_filter == 0:
+            reasons.append("chroma_returned_zero")
+        elif after_filter == 0:
+            reasons.append("all_chroma_results_rejected_by_model_filter")
+        if after_filter and best_score < self.config.jsonl_fallback_min_score:
+            reasons.append("chroma_best_score_below_threshold")
+        if need_figure and not figure_hit:
+            reasons.append("required_figure_evidence_missing")
+
+        trigger_fallback = bool(reasons)
+        query_jsonl = self.config.allow_jsonl_fallback and (
+            self.config.enable_jsonl_hybrid or trigger_fallback
+        )
+
+        if query_jsonl:
             if need_figure and self._figure_jsonl and self._figure_jsonl.available():
-                out.extend(self._figure_jsonl.search(query, top_k=top_k, modalities=allowed))
+                attempted.append("jsonl_figure")
+                found = self._figure_jsonl.search(query, top_k=top_k, modalities=allowed)
+                jsonl_records.extend(found)
+                if found:
+                    used.append("jsonl_figure")
             if need_text and self._jsonl_chunks and self._jsonl_chunks.available():
-                out.extend(self._jsonl_chunks.search(query, top_k=top_k, modalities=allowed))
+                attempted.append("jsonl_chunks")
+                found = self._jsonl_chunks.search(query, top_k=top_k, modalities=allowed)
+                jsonl_records.extend(found)
+                if found:
+                    used.append("jsonl_chunks")
             if need_text and self._jsonl_pages and self._jsonl_pages.available():
-                out.extend(self._jsonl_pages.search(query, top_k=top_k, modalities=allowed))
+                attempted.append("jsonl_pages")
+                found = self._jsonl_pages.search(query, top_k=top_k, modalities=allowed)
+                jsonl_records.extend(found)
+                if found:
+                    used.append("jsonl_pages")
 
-        if not out and not self.config.allow_jsonl_fallback and not (self._text_retriever or self._figure_retriever):
+        if query_jsonl and self.feature_switches.get("enable_model_filter", True):
+            jsonl_records = reject_cross_family(jsonl_records, query)
+        fallback_reason = ",".join(reasons) if trigger_fallback else ("explicit_hybrid_mode" if query_jsonl else "")
+        self.backend_audit.update(
+            {
+                "jsonl_fallback_active": bool(query_jsonl),
+                "jsonl_fallback_triggered": bool(query_jsonl and trigger_fallback),
+                "jsonl_fallback_reason": fallback_reason,
+                "chroma_result_count_before_filter": before_filter,
+                "chroma_result_count_after_filter": after_filter,
+                "chroma_best_score": best_score,
+                "jsonl_result_count": len(jsonl_records),
+                "hybrid_mode": self.config.enable_jsonl_hybrid,
+            }
+        )
+        if not chroma_records and not jsonl_records and not self.config.allow_jsonl_fallback:
             self.errors.append("FULL retrieval returned no evidence because no active backend is available.")
-        return out
+        records = chroma_records + jsonl_records if query_jsonl else chroma_records
+        return records, {
+            "backend_attempted": attempted,
+            "backend_used": used,
+            "fallback_reason": fallback_reason,
+            "error": "; ".join(errors),
+        }
+
+    def _cache_evidence(self, records: List[AgentEvidence]) -> None:
+        for ev in records:
+            self._evidence_cache_by_id[ev.evidence_id] = ev
+            if ev.page is not None:
+                self._evidence_cache_by_page.setdefault(str(ev.page), []).append(ev)
+            for key in (ev.figure_id, ev.figure_number):
+                if key:
+                    self._evidence_cache_by_figure.setdefault(str(key), []).append(ev)
+
+    def _best_cached(self, records: List[AgentEvidence]) -> Optional[AgentEvidence]:
+        if not records:
+            return None
+        return max(records, key=lambda ev: (ev.quality_score, ev.normalized_score, ev.retrieval_score))
+
+    def _record_tool_call(
+        self,
+        tool: str,
+        query: str,
+        modalities: Set[str],
+        records: List[AgentEvidence],
+        started: float,
+        backend_attempted: List[str],
+        backend_used: List[str],
+        fallback_reason: str = "",
+        error: str = "",
+    ) -> None:
+        calls = self.backend_audit.setdefault("tool_calls", [])
+        assert isinstance(calls, list)
+        calls.append(
+            {
+                "tool": tool,
+                "query": query,
+                "requested_modalities": sorted(modalities),
+                "backend_attempted": list(dict.fromkeys(backend_attempted)),
+                "backend_used": list(dict.fromkeys(backend_used)),
+                "result_count": len(records),
+                "latency_ms": int((time.perf_counter() - started) * 1000),
+                "fallback_reason": fallback_reason,
+                "error": error,
+            }
+        )
 
     def _search_sample(
         self,
