@@ -37,42 +37,76 @@ class FigureMetadataMapper:
             if marker in seen:
                 continue
             seen.add(marker)
-            image = str(card.get("image_path") or "")
-            if image and Path(image).exists():
+            image = str(card.get("image_path") or card.get("image") or "")
+            _, resolved, exists = self._resolve_image(image)
+            if exists and resolved:
                 count += 1
         return count
 
     def enrich(self, ev: AgentEvidence) -> AgentEvidence:
         cards = self._load()
-        keys = [ev.figure_id, ev.figure_number, f"{ev.page}:{ev.figure_number}", f"{ev.page}:{ev.figure_id}"]
+        keys = self._keys(
+            ev.figure_id,
+            ev.figure_number,
+            str(ev.page or ""),
+            ev.document_id,
+            ev.manual_title,
+        )
         card = next((cards[k] for k in keys if k and k in cards), None)
         if card:
             ev.figure_id = ev.figure_id or first_value(card, ("figure_id", "fig_id", "id"))
             ev.figure_number = ev.figure_number or first_value(card, ("figure_number", "fig_no", "figure"))
             ev.page = ev.page or _parse_page(first_value(card, ("page", "page_no", "page_number")))
-            ev.image_path = ev.image_path or self._resolve_image(str(card.get("image_path") or card.get("image") or ""))
+            raw = ev.raw_image_path or str(card.get("image_path") or card.get("image") or "")
+            raw, resolved, exists = self._resolve_image(raw)
+            ev.raw_image_path = raw
+            ev.resolved_image_path = resolved
+            ev.image_exists = exists
+            ev.image_path = resolved if exists else ""
             ev.metadata.update({"figure_card_matched": True})
         if not ev.figure_number:
             m = re.search(r"(?:Figure|Fig\.|图)\s*[\d\-\.]+", ev.text, flags=re.IGNORECASE)
             if m:
                 ev.figure_number = m.group(0)
-        ev.metadata["has_visual_evidence"] = bool(ev.image_path and Path(ev.image_path).exists())
-        ev.metadata["visual_evidence_status"] = (
-            "image_available" if ev.metadata["has_visual_evidence"] else "page_text_only"
+        if ev.raw_image_path and not ev.resolved_image_path:
+            raw, resolved, exists = self._resolve_image(ev.raw_image_path)
+            ev.raw_image_path, ev.resolved_image_path, ev.image_exists = raw, resolved, exists
+            ev.image_path = resolved if exists else ""
+        has_page_text = bool(
+            ev.page
+            or ev.figure_id
+            or ev.figure_number
+            or re.search(r"(?:Figure|Fig\.|图)\s*[\d\-.]+|front\s+view|前视图", ev.text or "", re.I)
+        )
+        ev.visual_evidence_status = (
+            "image_available" if ev.image_exists else "page_text_only" if has_page_text else "missing"
+        )
+        ev.metadata.update(
+            {
+                "has_visual_evidence": ev.image_exists,
+                "raw_image_path": ev.raw_image_path,
+                "resolved_image_path": ev.resolved_image_path,
+                "image_exists": ev.image_exists,
+                "visual_evidence_status": ev.visual_evidence_status,
+            }
         )
         return ev
 
-    def _resolve_image(self, image: str) -> str:
+    def _resolve_image(self, image: str):
         if not image:
-            return ""
+            return "", "", False
         path = Path(image)
-        if path.exists():
-            return str(path)
-        if self.visual_dir:
+        if path.is_absolute() and path.is_file():
+            return image, str(path), True
+        if str(self.visual_dir) not in {"", "."}:
             candidate = self.visual_dir / image
-            if candidate.exists():
-                return str(candidate)
-        return image
+            if candidate.is_file():
+                return image, str(candidate), True
+        if self.cards_jsonl.is_file():
+            candidate = self.cards_jsonl.parent / image
+            if candidate.is_file():
+                return image, str(candidate), True
+        return image, "", False
 
     def _load(self) -> Dict[str, Dict[str, object]]:
         if self._by_key is not None:
@@ -84,11 +118,23 @@ class FigureMetadataMapper:
                 figure_id = first_value(record, ("figure_id", "fig_id", "id"))
                 figure_number = first_value(record, ("figure_number", "fig_no", "figure"))
                 page = first_value(record, ("page", "page_no", "page_number"))
-                for key in [figure_id, figure_number, f"{page}:{figure_number}", f"{page}:{figure_id}"]:
+                document_id = first_value(record, ("document_id", "doc_id", "manual_id"))
+                manual_title = first_value(record, ("manual_title", "title", "doc_title"))
+                for key in self._keys(figure_id, figure_number, page, document_id, manual_title):
                     if key:
                         by_key[key] = record
         self._by_key = by_key
         return by_key
+
+    def _keys(self, figure_id: str, figure_number: str, page: str, document_id: str, manual_title: str) -> List[str]:
+        return [
+            figure_id,
+            figure_number,
+            f"{page}:{figure_id}" if page and figure_id else "",
+            f"{page}:{figure_number}" if page and figure_number else "",
+            f"{document_id}:{figure_id}" if document_id and figure_id else "",
+            f"{manual_title}:{page}:{figure_number}" if manual_title and page and figure_number else "",
+        ]
 
 
 class ChromaFigureRetriever:

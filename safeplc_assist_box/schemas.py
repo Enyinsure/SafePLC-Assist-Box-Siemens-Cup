@@ -158,6 +158,10 @@ class AgentEvidence:
     figure_id: str = ""
     figure_number: str = ""
     image_path: str = ""
+    raw_image_path: str = ""
+    resolved_image_path: str = ""
+    image_exists: bool = False
+    visual_evidence_status: str = "missing"
     chunk_id: str = ""
     document_id: str = ""
     collection_name: str = ""

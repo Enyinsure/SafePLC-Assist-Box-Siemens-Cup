@@ -103,6 +103,14 @@ def normalize_metadata(
         modality = "figure"
 
     normalized = normalize_score(raw_distance, fallback_score=fallback_score)
+    raw_image_path = str(meta.get("image_path") or meta.get("image") or "")
+    absolute_image = Path(raw_image_path) if raw_image_path else Path()
+    image_exists = bool(raw_image_path and absolute_image.is_absolute() and absolute_image.is_file())
+    resolved_image_path = str(absolute_image) if image_exists else ""
+    figure_number = first_value(meta, FIGURE_NUMBER_KEYS)
+    figure_id = first_value(meta, FIGURE_KEYS)
+    figure_text = bool(re.search(r"(?:Figure|Fig\.|图)\s*[\d\-.]+|front\s+view|前视图", str(text or ""), re.I))
+    visual_status = "image_available" if image_exists else "page_text_only" if (page or figure_id or figure_number or figure_text) else "missing"
     ev = AgentEvidence(
         evidence_id="",
         source=source,
@@ -118,9 +126,13 @@ def normalize_metadata(
         order_number=first_value(meta, ORDER_KEYS),
         page=page,
         section=str(meta.get("section") or meta.get("chapter") or ""),
-        figure_id=first_value(meta, FIGURE_KEYS),
-        figure_number=first_value(meta, FIGURE_NUMBER_KEYS),
-        image_path=str(meta.get("image_path") or meta.get("image") or ""),
+        figure_id=figure_id,
+        figure_number=figure_number,
+        image_path=resolved_image_path,
+        raw_image_path=raw_image_path,
+        resolved_image_path=resolved_image_path,
+        image_exists=image_exists,
+        visual_evidence_status=visual_status,
         chunk_id=first_value(meta, CHUNK_KEYS),
         document_id=first_value(meta, DOC_KEYS),
         collection_name=collection_name,
@@ -140,6 +152,10 @@ def normalize_metadata(
             "normalized_score": normalized,
             "query_text": query_text,
             "retrieval_timestamp": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+            "raw_image_path": raw_image_path,
+            "resolved_image_path": resolved_image_path,
+            "image_exists": image_exists,
+            "visual_evidence_status": visual_status,
         },
     )
     ev.evidence_id = stable_evidence_id(ev)
