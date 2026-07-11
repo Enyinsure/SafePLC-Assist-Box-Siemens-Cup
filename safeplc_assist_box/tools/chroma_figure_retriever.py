@@ -9,7 +9,9 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 from ..schemas import AgentEvidence
+from .chroma_collection_selector import CollectionSelectionError, discover_collections, select_collection
 from .chroma_text_retriever import ChromaUnavailable
+from .embedding_adapter import EmbeddingAdapter, EmbeddingConfigurationError, EmbeddingDimensionMismatch
 from .metadata_normalizer import first_value, load_jsonl_records, normalize_metadata
 
 
@@ -96,6 +98,7 @@ class ChromaFigureRetriever:
         collection_name: str = "",
         cards_jsonl: str = "",
         visual_dir: str = "",
+        embedding_adapter: Optional[EmbeddingAdapter] = None,
     ) -> None:
         self.chroma_dir = Path(chroma_dir) if chroma_dir else Path()
         self.collection_name = collection_name
@@ -104,6 +107,8 @@ class ChromaFigureRetriever:
         self.collection = None
         self.last_latency_ms = 0
         self._collections: Optional[List[Dict[str, object]]] = None
+        self.embedding_adapter = embedding_adapter or EmbeddingAdapter.from_env()
+        self.backend_audit: Dict[str, object] = {}
 
     def available(self) -> bool:
         return bool(self.chroma_dir and self.chroma_dir.exists())
@@ -111,40 +116,25 @@ class ChromaFigureRetriever:
     def discover(self) -> List[Dict[str, object]]:
         if self._collections is not None:
             return self._collections
-        client = self._client()
-        rows: List[Dict[str, object]] = []
-        for collection in client.list_collections():
-            name = getattr(collection, "name", str(collection))
-            count = 0
-            metadata_fields: List[str] = []
-            try:
-                count = int(collection.count())
-                peek = collection.peek(5)
-                for meta in peek.get("metadatas", []) or []:
-                    if isinstance(meta, dict):
-                        metadata_fields.extend(str(k) for k in meta.keys())
-            except Exception:
-                pass
-            rows.append(
-                {
-                    "name": name,
-                    "count": count,
-                    "metadata_fields": sorted(set(metadata_fields)),
-                    "path": str(self.chroma_dir),
-                }
-            )
-        self._collections = rows
-        return rows
+        self._collections = discover_collections(self._client(), str(self.chroma_dir))
+        return self._collections
 
     def search(self, query: str, top_k: int = 20) -> List[AgentEvidence]:
         started = time.perf_counter()
         collection = self._collection()
         try:
+            query_arguments = self.embedding_adapter.query_arguments(collection, query)
             raw = collection.query(
-                query_texts=[query],
+                **query_arguments,
                 n_results=max(1, top_k),
                 include=["documents", "metadatas", "distances"],
             )
+            self.backend_audit = {
+                **self.embedding_adapter.last_audit,
+                "collection_name": self.collection_name,
+            }
+        except (EmbeddingConfigurationError, EmbeddingDimensionMismatch):
+            raise
         except Exception as exc:
             raise ChromaUnavailable(f"Figure Chroma query failed: {exc}") from exc
         docs = (raw.get("documents") or [[]])[0]
@@ -184,20 +174,20 @@ class ChromaFigureRetriever:
         if self.collection is not None:
             return self.collection
         client = self._client()
-        collections = self.discover()
-        if not collections:
-            raise ChromaUnavailable(f"No figure Chroma collections found under {self.chroma_dir}")
-        if self.collection_name:
-            names = {row["name"] for row in collections}
-            if self.collection_name not in names:
-                raise ChromaUnavailable(
-                    f"Configured figure collection '{self.collection_name}' not found; available={sorted(names)}"
-                )
-        else:
-            non_empty = [row for row in collections if int(row.get("count", 0) or 0) > 0]
-            chosen = non_empty[0] if non_empty else collections[0]
-            self.collection_name = str(chosen["name"])
-        self.collection = client.get_collection(self.collection_name)
+        try:
+            self.collection_name, self.collection, selected = select_collection(
+                client,
+                self.discover(),
+                explicit_name=self.collection_name,
+                kind="figure",
+            )
+            self.backend_audit = {
+                **self.embedding_adapter.audit(collection_dimension=selected.get("embedding_dimension")),
+                "collection_name": self.collection_name,
+                "collection_count": selected.get("count"),
+            }
+        except CollectionSelectionError as exc:
+            raise ChromaUnavailable(str(exc)) from exc
         return self.collection
 
 

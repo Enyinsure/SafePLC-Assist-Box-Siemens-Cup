@@ -14,6 +14,7 @@ from ..evidence.model_identity import reject_cross_family
 from ..schemas import AgentEvidence
 from .chroma_figure_retriever import ChromaFigureRetriever
 from .chroma_text_retriever import ChromaTextRetriever, ChromaUnavailable
+from .embedding_adapter import EmbeddingAdapter
 from .jsonl_fallback_retriever import JSONLFallbackRetriever
 from .metadata_normalizer import normalize_metadata
 
@@ -120,8 +121,13 @@ class ToolRegistry:
     def _init_full_backends(self) -> None:
         if self.config.mode != "FULL":
             return
+        embedding_adapter = EmbeddingAdapter.from_config(self.config)
         if self.config.chroma_dir and Path(self.config.chroma_dir).exists():
-            self._text_retriever = ChromaTextRetriever(self.config.chroma_dir, self.config.text_collection)
+            self._text_retriever = ChromaTextRetriever(
+                self.config.chroma_dir,
+                self.config.text_collection,
+                embedding_adapter=embedding_adapter,
+            )
             self.backend_audit["text_backend_active"] = True
         elif not self.config.allow_jsonl_fallback:
             self.errors.append("FULL text Chroma unavailable and SAFEPLC_ALLOW_JSONL_FALLBACK is not enabled.")
@@ -136,6 +142,7 @@ class ToolRegistry:
                 self.config.figure_collection,
                 self.config.figure_cards_jsonl,
                 self.config.visual_dir,
+                embedding_adapter=embedding_adapter,
             )
             self.backend_audit["figure_backend_active"] = True
         elif self.config.require_figure_backend:

@@ -38,7 +38,16 @@ class SafePLCConfig:
     max_agents: int
     routing_strategy: str
     allow_jsonl_fallback: bool
+    enable_jsonl_hybrid: bool
+    jsonl_fallback_min_score: float
     require_figure_backend: bool
+    embedding_backend: str
+    embedding_model_path: str
+    embedding_device: str
+    embedding_normalize: bool
+    embedding_query_prefix: str
+    allow_chroma_default_embedding: bool
+    allow_remote_model_download: bool
     package_root: Path
     project_root: Path
 
@@ -75,6 +84,10 @@ class SafePLCConfig:
             timeout = int(os.environ.get("SAFEPLC_AGENT_TIMEOUT", "30"))
         except ValueError:
             timeout = 30
+        try:
+            fallback_min_score = float(os.environ.get("SAFEPLC_JSONL_FALLBACK_MIN_SCORE", "0.20"))
+        except ValueError:
+            fallback_min_score = 0.20
 
         return cls(
             mode=resolved_mode,
@@ -93,7 +106,16 @@ class SafePLCConfig:
             max_agents=resolved_max_agents,
             routing_strategy=resolved_strategy,
             allow_jsonl_fallback=_bool_env("SAFEPLC_ALLOW_JSONL_FALLBACK", False),
+            enable_jsonl_hybrid=_bool_env("SAFEPLC_ENABLE_JSONL_HYBRID", False),
+            jsonl_fallback_min_score=max(0.0, fallback_min_score),
             require_figure_backend=_bool_env("SAFEPLC_REQUIRE_FIGURE_BACKEND", False),
+            embedding_backend=os.environ.get("SAFEPLC_EMBEDDING_BACKEND", "auto").strip().lower(),
+            embedding_model_path=os.environ.get("SAFEPLC_EMBEDDING_MODEL_PATH", ""),
+            embedding_device=os.environ.get("SAFEPLC_EMBEDDING_DEVICE", "cpu").strip() or "cpu",
+            embedding_normalize=_bool_env("SAFEPLC_EMBEDDING_NORMALIZE", True),
+            embedding_query_prefix=os.environ.get("SAFEPLC_EMBEDDING_QUERY_PREFIX", ""),
+            allow_chroma_default_embedding=_bool_env("SAFEPLC_ALLOW_CHROMA_DEFAULT_EMBEDDING", False),
+            allow_remote_model_download=_bool_env("SAFEPLC_ALLOW_REMOTE_MODEL_DOWNLOAD", False),
             package_root=package_root,
             project_root=project_root,
         )
