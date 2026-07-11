@@ -20,6 +20,7 @@
   "notes": [
     "No template multiplication or teaching-scenario suffix expansion is used.",
     "When --questions-tsv is supplied, each unique TSV row becomes at most one case.",
-    "Curated sample cases are for CI/SAMPLE regression, not FULL industrial accuracy claims."
+    "Curated sample cases are for CI/SAMPLE regression, not FULL industrial accuracy claims.",
+    "Figure page-text-only and partially covered guidance cases expect PARTIAL rather than an unsupported PASS."
   ]
 }
