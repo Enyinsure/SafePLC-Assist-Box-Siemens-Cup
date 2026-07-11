@@ -17,7 +17,7 @@ RAG is treated as a tool layer, not as the product architecture. The frontend, C
 
 ## Runtime Requirement
 
-SafePLC-Assist Box requires **Python 3.11 or newer**. Python 3.10 is not supported.
+SafePLC-Assist Box supports **Python 3.10 and Python 3.11**.
 
 ## Run
 

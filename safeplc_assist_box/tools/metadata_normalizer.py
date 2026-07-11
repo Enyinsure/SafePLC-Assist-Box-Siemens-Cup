@@ -6,7 +6,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Iterable, Optional
 
@@ -139,7 +139,7 @@ def normalize_metadata(
             "raw_distance": raw_distance,
             "normalized_score": normalized,
             "query_text": query_text,
-            "retrieval_timestamp": datetime.now(UTC).isoformat(timespec="seconds"),
+            "retrieval_timestamp": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         },
     )
     ev.evidence_id = stable_evidence_id(ev)
