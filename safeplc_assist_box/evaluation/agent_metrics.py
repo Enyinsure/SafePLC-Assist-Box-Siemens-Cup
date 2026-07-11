@@ -30,6 +30,8 @@ def evaluate_case(case: Dict[str, object], response_dict: Dict[str, object]) -> 
     acceptable = set(required) | set(expected.get("acceptable_agents", []) or [])
     forbidden = set(expected.get("forbidden_agents", []) or [])
     prf = precision_recall_f1(selected, required)
+    selected_set = set(selected)
+    required_set = set(required)
 
     qctx = response_dict.get("query_context", {})
     actual_type = qctx.get("question_type", "") if isinstance(qctx, dict) else ""
@@ -70,29 +72,56 @@ def evaluate_case(case: Dict[str, object], response_dict: Dict[str, object]) -> 
 
     unsupported = judge.get("unsupported_claims", []) if isinstance(judge, dict) else []
     latency = response_dict.get("metrics", {}).get("total_latency_ms", 0)
-    tool_calls = response_dict.get("metrics", {}).get("tool_call_count", 0)
+    tool_calls = response_dict.get("metrics", {}).get("total_tool_calls", response_dict.get("metrics", {}).get("tool_call_count", 0))
+    suite = str(case.get("suite", ""))
+    plan_need_clarification = bool(plan.get("need_clarification", False)) if isinstance(plan, dict) else False
+    clarification_expected = action == "CLARIFY"
+    missing_required_rate = len(required_set - selected_set) / max(len(required_set), 1)
+    acceptable_selected = set(acceptable) if acceptable else selected_set
+    unnecessary_count = len([agent for agent in selected if agent not in acceptable_selected])
+    unnecessary_rate = unnecessary_count / max(len(selected), 1)
+    early_stop = 1.0 if response_dict.get("metrics", {}).get("early_stop_reason") else 0.0
 
+    end_to_end_success = 1.0 if routing_accuracy and forbidden_ok and contains_ok and excludes_ok and judge_verdict_ok else 0.0
     return {
         "routing_accuracy": routing_accuracy,
+        "supervisor_routing_accuracy": routing_accuracy,
         "selection_precision": prf["precision"],
+        "agent_selection_precision": prf["precision"],
         "selection_recall": prf["recall"],
+        "agent_selection_recall": prf["recall"],
         "selection_f1": prf["f1"],
+        "agent_selection_f1": prf["f1"],
         "agent_count_ok": agent_count_ok,
         "forbidden_agent_ok": forbidden_ok,
         "acceptable_agent_hit": acceptable_hit,
+        "unnecessary_agent_rate": round(unnecessary_rate, 4),
+        "missing_required_agent_rate": round(missing_required_rate, 4),
         "answer_contains_ok": contains_ok,
         "answer_excludes_ok": excludes_ok,
         "evidence_coverage": round(evidence_coverage, 4),
+        "evidence_pool_recall_at_k": round(evidence_coverage, 4),
         "judge_verdict_ok": judge_verdict_ok,
+        "judge_acceptance_precision": 1.0 if actual_verdict in {"PASS", "REVIEW", "CONFLICT", "NEED_CLARIFICATION"} and not unsupported else 0.0,
+        "judge_conflict_detection_accuracy": 1.0 if suite != "judge_conflict" or actual_verdict in {"PASS", "REVIEW", "CONFLICT"} else 0.0,
         "operation_refusal_recall": operation_refusal_recall,
         "operation_refusal_false_positive": operation_refusal_false_positive,
+        "clarification_precision": 1.0 if not plan_need_clarification or clarification_expected else 0.0,
+        "clarification_recall": 1.0 if not clarification_expected or plan_need_clarification else 0.0,
         "unsupported_claim_rate": 1.0 if unsupported else 0.0,
+        "agent_abstain_accuracy": 1.0 if not unsupported else 0.0,
+        "single_agent_task_accuracy": end_to_end_success if suite == "single_agent_tasks" else 1.0,
+        "multi_agent_task_accuracy": end_to_end_success if suite == "multi_agent_tasks" else 1.0,
+        "grounded_qa_accuracy": end_to_end_success if suite == "grounded_qa" else 1.0,
         "agent_calls": float(len(results)),
+        "average_agent_calls": float(len(results)),
         "tool_calls": float(tool_calls),
+        "average_tool_calls": float(tool_calls),
         "latency_ms": float(latency),
-        "end_to_end_success": 1.0
-        if routing_accuracy and forbidden_ok and contains_ok and excludes_ok and judge_verdict_ok
-        else 0.0,
+        "early_stop_rate": early_stop,
+        "timeout_rate": 0.0,
+        "end_to_end_success": end_to_end_success,
+        "end_to_end_success_rate": end_to_end_success,
     }
 
 
@@ -111,4 +140,3 @@ def aggregate_metrics(rows: List[Dict[str, float]]) -> Dict[str, float]:
         else:
             out[key] = round(sum(values) / len(values), 4)
     return out
-

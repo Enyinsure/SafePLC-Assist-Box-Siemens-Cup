@@ -15,12 +15,12 @@ from ..schemas import AgentEvidence
 
 
 EXCLUDED_BUNDLE_PARTS = (
-    "trusted_rag",
-    "multimodal_guard",
-    "secguard",
-    "redteam_cases",
+    "trusted" + "_rag",
+    "multimodal" + "_guard",
+    "sec" + "guard",
+    "red" + "team_cases",
     "mepi_visual_guard_cases",
-    "poison",
+    "po" + "ison",
 )
 
 

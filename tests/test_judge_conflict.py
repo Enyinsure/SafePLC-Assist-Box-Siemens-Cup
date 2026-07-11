@@ -7,6 +7,6 @@ def test_judge_detects_conflict_group():
     pool = EvidencePool(evidences=[ev], conflicts=[{"evidence_ids": ["ev1", "ev2"], "reason": "different values"}])
     result = AgentResult("Parameter Agent", "t1", "ANSWERED", "24 V", evidence_ids=["ev1"])
     decision = JudgeAgent().decide(QueryContext("q"), [result], pool)
+    assert decision.verdict == "CONFLICT"
     assert decision.confidence == "CONFLICT"
     assert decision.conflict_groups
-

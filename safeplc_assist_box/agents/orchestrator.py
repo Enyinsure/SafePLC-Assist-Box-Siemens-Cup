@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import copy
 import json
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -98,6 +99,7 @@ def run_agent_system(
         "execution_order": [r.agent_name for r in results],
         "parallel_groups": list(plan.parallel_groups),
         "total_agent_calls": len(results),
+        "total_tool_calls": registry.tool_call_count,
         "tool_call_count": registry.tool_call_count,
         "total_latency_ms": total_latency,
         "agent_latency_ms": agent_latency,
@@ -109,7 +111,24 @@ def run_agent_system(
 
     warnings = []
     if config.mode == "FULL" and not config.full_assets_available():
-        warnings.append("FULL mode requested but JSONL assets are missing; ToolRegistry used SAMPLE evidence.")
+        missing_assets = []
+        if not config.chunks_jsonl:
+            missing_assets.append("SAFEPLC_CHUNKS_JSONL")
+        if not config.pages_jsonl:
+            missing_assets.append("SAFEPLC_PAGES_JSONL")
+        warnings.append(
+            "FULL mode requested but required JSONL assets are missing: "
+            + ", ".join(missing_assets or ["configured JSONL files do not exist"])
+            + "; ToolRegistry used SAMPLE evidence for this local run."
+        )
+
+    if plan.need_clarification:
+        action = "CLARIFY"
+    elif any(result.status == "REFUSE" for result in results):
+        action = "REFUSE"
+    else:
+        action = "ANSWER"
+    generated_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     return SafePLCResponse(
         query=query,
@@ -122,6 +141,25 @@ def run_agent_system(
         judge_decision=judge_decision,
         verifier=verifier,
         final_answer=judge_decision.final_answer,
+        question_type=query_context.question_type,
+        extracted_slots=query_context.slot_values(),
+        missing_slots=list(query_context.missing_slots),
+        operation_risk_level=query_context.risk_level,
+        action=action,
+        routing_strategy=config.routing_strategy,
+        selected_agents=list(plan.selected_agents),
+        execution_order=[r.agent_name for r in results],
+        evidence_items=list(pool_schema.evidences),
+        supported_claims=list(judge_decision.supported_claims),
+        unsupported_claims=list(judge_decision.unsupported_claims),
+        conflicting_claims=list(judge_decision.conflicting_claims),
+        verdict=judge_decision.verdict,
+        confidence=judge_decision.confidence,
+        total_agent_calls=len(results),
+        total_tool_calls=registry.tool_call_count,
+        total_latency_ms=total_latency,
+        generated_at=generated_at,
+        version="agent_first_v1",
         work_order=work_order,
         metrics=metrics,
         warnings=warnings,
@@ -203,7 +241,7 @@ def _run_adaptive_fallback(
         task = next(iter(plan.task_assignments.values()), None)
         if not task:
             continue
-        fallback_task = task
+        fallback_task = copy.deepcopy(task)
         fallback_task.agent_name = agent_name
         fallback_task.task_id = f"adaptive_{agent_name.lower().replace(' ', '_').replace('-', '_')}"
         fallback_task.tool_names = []
@@ -268,4 +306,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

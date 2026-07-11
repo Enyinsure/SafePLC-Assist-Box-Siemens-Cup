@@ -1,7 +1,11 @@
 {
   "mode": "FULL",
   "status": "SKIPPED",
-  "reason": "SAFEPLC_CHUNKS_JSONL/SAFEPLC_PAGES_JSONL are not configured with existing files.",
+  "missing_assets": [
+    "SAFEPLC_CHUNKS_JSONL",
+    "SAFEPLC_PAGES_JSONL"
+  ],
+  "reason": "Required FULL JSONL assets are not configured with existing files.",
   "SAFEPLC_CHUNKS_JSONL": "",
   "SAFEPLC_PAGES_JSONL": ""
 }

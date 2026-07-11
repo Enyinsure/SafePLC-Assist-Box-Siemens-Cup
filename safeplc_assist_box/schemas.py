@@ -28,6 +28,7 @@ class JudgeVerdict(str, Enum):
     PASS = "PASS"
     REVIEW = "REVIEW"
     FAIL = "FAIL"
+    CONFLICT = "CONFLICT"
     NEED_CLARIFICATION = "NEED_CLARIFICATION"
 
 
@@ -192,6 +193,7 @@ class JudgeDecision:
     conflict_groups: List[Dict[str, Any]]
     supported_claims: List[str]
     unsupported_claims: List[str]
+    conflicting_claims: List[str]
     final_evidence_ids: List[str]
     need_more_evidence: bool
     need_clarification: bool
@@ -217,6 +219,25 @@ class SafePLCResponse:
     judge_decision: JudgeDecision
     verifier: Dict[str, Any]
     final_answer: str
+    question_type: str = ""
+    extracted_slots: Dict[str, str] = field(default_factory=dict)
+    missing_slots: List[str] = field(default_factory=list)
+    operation_risk_level: str = ""
+    action: str = ""
+    routing_strategy: str = "adaptive"
+    selected_agents: List[str] = field(default_factory=list)
+    execution_order: List[str] = field(default_factory=list)
+    evidence_items: List[AgentEvidence] = field(default_factory=list)
+    supported_claims: List[str] = field(default_factory=list)
+    unsupported_claims: List[str] = field(default_factory=list)
+    conflicting_claims: List[str] = field(default_factory=list)
+    verdict: str = ""
+    confidence: str = ""
+    total_agent_calls: int = 0
+    total_tool_calls: int = 0
+    total_latency_ms: int = 0
+    generated_at: str = ""
+    version: str = "agent_first_v1"
     work_order: Dict[str, Any] = field(default_factory=dict)
     metrics: Dict[str, Any] = field(default_factory=dict)
     warnings: List[str] = field(default_factory=list)

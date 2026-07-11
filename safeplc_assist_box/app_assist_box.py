@@ -223,6 +223,13 @@ def render_judge(response) -> None:
         )
     st.markdown("**Final Answer**")
     st.code(response.final_answer, language="text")
+    c1, c2 = st.columns(2)
+    with c1:
+        st.markdown("**Safety Notice**")
+        st.write(response.work_order.get("risk_tip", "-"))
+    with c2:
+        st.markdown("**Human Review Items**")
+        st.write(response.work_order.get("manual_confirmation_items", []))
 
 
 def render_metrics(response) -> None:

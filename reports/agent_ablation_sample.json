@@ -9,7 +9,7 @@
       "Evidence Coverage": 0.8041,
       "Unsupported Rate": 0.0,
       "Avg Agents": 0.8041,
-      "P95": 1.0
+      "P95": 0.0
     },
     {
       "Method": "static_router",
@@ -18,7 +18,7 @@
       "Evidence Coverage": 0.8041,
       "Unsupported Rate": 0.0,
       "Avg Agents": 0.8041,
-      "P95": 1.0
+      "P95": 0.0
     },
     {
       "Method": "all_agents",
@@ -27,7 +27,7 @@
       "Evidence Coverage": 0.8041,
       "Unsupported Rate": 0.0793,
       "Avg Agents": 4.5529,
-      "P95": 5.0
+      "P95": 16.0
     },
     {
       "Method": "dynamic_router",
@@ -54,7 +54,7 @@
       "Evidence Coverage": 0.8041,
       "Unsupported Rate": 0.0,
       "Avg Agents": 1.424,
-      "P95": 3.0
+      "P95": 2.0
     }
   ],
   "notes": [

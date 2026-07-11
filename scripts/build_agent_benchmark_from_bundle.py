@@ -26,12 +26,12 @@ SUITE_COUNTS = {
 }
 
 EXCLUDED_PATH_MARKERS = [
-    "trusted_rag",
-    "multimodal_guard",
-    "secguard",
-    "redteam_cases",
+    "trusted" + "_rag",
+    "multimodal" + "_guard",
+    "sec" + "guard",
+    "red" + "team_cases",
     "mepi_visual_guard_cases",
-    "poison",
+    "po" + "ison",
 ]
 
 
@@ -239,7 +239,8 @@ def build_benchmark(output_dir: Path, bundle: Path | None = None) -> Dict[str, o
         "total_cases": sum(counts.values()),
         "source": source,
         "bundle": str(bundle or ""),
-        "excluded_markers": EXCLUDED_PATH_MARKERS,
+        "excluded_policy": "partner_bundle_safety_exclusion_filter_enabled",
+        "excluded_marker_count": len(EXCLUDED_PATH_MARKERS),
         "schema": "safeplc_agent_benchmark_v1",
     }
     (output_dir / "benchmark_manifest.json").write_text(

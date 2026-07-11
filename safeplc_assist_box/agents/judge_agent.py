@@ -47,6 +47,9 @@ class JudgeAgent:
         for result in results:
             for conflict in result.conflicts:
                 conflict_groups.append({"agents": [result.agent_name], "reason": conflict, "evidence_ids": result.evidence_ids})
+        conflicting_claims = [
+            str(group.get("reason", group)) for group in conflict_groups if isinstance(group, dict)
+        ]
 
         need_clarification = bool(query_context.missing_slots) or any(
             r.status == AgentStatus.NEED_CLARIFICATION.value for r in results
@@ -64,7 +67,7 @@ class JudgeAgent:
             decision_reason = "没有 Agent 输出被证据池支持。"
             final_answer = "当前证据不足，系统不生成无依据结论；请补充型号、订货号、接口或故障现象。"
         elif conflict_groups:
-            verdict = JudgeVerdict.REVIEW.value
+            verdict = JudgeVerdict.CONFLICT.value
             confidence = JudgeConfidence.CONFLICT.value
             decision_reason = "Agent 输出或证据存在冲突，不能按多数答案直接裁决。"
             final_answer = self._compose_answer(supported, final_ids, conflict=True)
@@ -85,6 +88,7 @@ class JudgeAgent:
             conflict_groups=conflict_groups,
             supported_claims=supported,
             unsupported_claims=unsupported,
+            conflicting_claims=conflicting_claims,
             final_evidence_ids=final_ids,
             need_more_evidence=need_more_evidence,
             need_clarification=need_clarification,
@@ -102,4 +106,3 @@ class JudgeAgent:
         body = "\n".join(f"- {item}" for item in supported if item)
         evidence = "、".join(evidence_ids)
         return f"{prefix}{body}\n【最终证据】{evidence}\n【边界】仅用于离线资料查证和教学实训，不控制真实 PLC。"
-
