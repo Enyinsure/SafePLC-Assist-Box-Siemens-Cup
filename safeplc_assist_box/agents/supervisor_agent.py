@@ -33,7 +33,7 @@ AGENT_TOOLS = {
 
 
 class SupervisorAgent:
-    role_description = "Dynamic supervisor that plans specialist agents from query context."
+    role_description = "Dynamic supervisor that plans specialist agents from query context and subquestions."
 
     def plan(
         self,
@@ -49,7 +49,7 @@ class SupervisorAgent:
                 routing_strategy,
                 max_agent_calls=1,
                 execution_mode=ExecutionMode.SINGLE.value,
-                reason_override={"Safety Boundary Agent": "工业危险操作优先进入安全边界 Agent。"},
+                reason_override={"Safety Boundary Agent": "High-risk industrial operation: refuse executable steps."},
             )
 
         if query_context.missing_slots:
@@ -65,6 +65,18 @@ class SupervisorAgent:
             if query_context.expected_output_type == "work_order":
                 selected.append("Work-order Agent")
             max_calls = len(selected)
+        elif routing_strategy == "static":
+            static_map = {
+                "PARAMETER": "Parameter Agent",
+                "FIGURE": "Figure Agent",
+                "WIRING": "Wiring Agent",
+                "TOPOLOGY": "Topology Agent",
+                "TROUBLESHOOTING": "Troubleshooting Agent",
+                "EMC": "EMC Agent",
+                "WORK_ORDER": "Work-order Agent",
+            }
+            selected = [static_map.get(query_context.question_type, "Troubleshooting Agent")]
+            max_calls = 1
         elif routing_strategy == "single_best":
             selected = ordered[:1]
             max_calls = 1
@@ -92,9 +104,7 @@ class SupervisorAgent:
         return AgentPlan(
             selected_agents=[],
             rejected_agents=list(PROFESSIONAL_AGENTS),
-            selection_reason={
-                "Clarification": "关键槽位缺失会影响 Agent 检索和 Judge 裁决，先追问最少必要信息。"
-            },
+            selection_reason={"Clarification": "Required slots are missing; no professional agent is called yet."},
             execution_mode=ExecutionMode.CLARIFY.value,
             task_assignments={},
             expected_evidence_types=query_context.required_modalities,
@@ -117,7 +127,7 @@ class SupervisorAgent:
             "PARAMETER": {"Parameter Agent": 6.0},
             "FIGURE": {"Figure Agent": 6.0, "Topology Agent": 1.2},
             "WIRING": {"Wiring Agent": 6.0, "EMC Agent": 2.0, "Figure Agent": 1.5},
-            "TOPOLOGY": {"Topology Agent": 6.0, "Figure Agent": 2.0, "Wiring Agent": 1.0},
+            "TOPOLOGY": {"Topology Agent": 6.0, "Figure Agent": 2.5 if "x1" in text else 0.5, "Wiring Agent": 1.0},
             "TROUBLESHOOTING": {"Troubleshooting Agent": 6.0, "Figure Agent": 1.5, "Parameter Agent": 1.0},
             "EMC": {"EMC Agent": 6.0, "Wiring Agent": 1.5},
             "WORK_ORDER": {"Work-order Agent": 5.0, "Troubleshooting Agent": 1.0},
@@ -127,9 +137,9 @@ class SupervisorAgent:
             scores[agent] += value
 
         keyword_boosts: List[Tuple[List[str], str, float]] = [
-            (["电压", "电流", "功率", "温度", "订货号", "参数"], "Parameter Agent", 1.5),
-            (["图", "前面板", "接口", "x1", "x2", "端子图"], "Figure Agent", 1.4),
-            (["接线", "端子", "线缆"], "Wiring Agent", 1.5),
+            (["电压", "电流", "功率", "温度", "订货号", "参数", "voltage"], "Parameter Agent", 1.5),
+            (["图", "前面板", "接口", "x1", "x2", "where", "哪里"], "Figure Agent", 1.4),
+            (["接线", "端子", "线缆", "wiring"], "Wiring Agent", 1.5),
             (["profinet", "hmi", "拓扑", "环网"], "Topology Agent", 1.5),
             (["故障", "报警", "指示灯", "通信不上", "排查"], "Troubleshooting Agent", 1.5),
             (["emc", "电磁兼容", "接地", "屏蔽"], "EMC Agent", 1.5),
@@ -138,6 +148,11 @@ class SupervisorAgent:
             if any(w.lower() in text for w in words):
                 scores[agent] += boost
 
+        for subq in ctx.subquestions:
+            for agent in subq.expected_agents:
+                if agent in scores:
+                    scores[agent] += 2.0
+
         modalities = set(ctx.required_modalities)
         if "table" in modalities:
             scores["Parameter Agent"] += 0.8
@@ -145,7 +160,7 @@ class SupervisorAgent:
             scores["Figure Agent"] += 0.8
             scores["Topology Agent"] += 0.4
         if ctx.risk_level == "CAUTION":
-            scores["Safety Boundary Agent"] += 0.8
+            scores["Safety Boundary Agent"] += 0.5
         return scores
 
     def _adaptive_select(
@@ -155,14 +170,21 @@ class SupervisorAgent:
         scores: Dict[str, float],
         max_agents: int,
     ) -> List[str]:
-        selected = ordered[:1]
-        text = ctx.normalized_query
-        multi_signal = any(token in text for token in ["并", "同时", "以及", "+", "和"]) or len(ctx.required_modalities) > 1
+        selected: List[str] = []
+        for subq in ctx.subquestions:
+            for agent in subq.expected_agents:
+                if agent in ordered and agent not in selected and scores.get(agent, 0) > 0:
+                    selected.append(agent)
+                if len(selected) >= max_agents:
+                    return selected[:max_agents]
+        if not selected:
+            selected.append(ordered[0])
+        multi_signal = len(ctx.subquestions) > 1 or any(token in ctx.normalized_query for token in ["并", "同时", "以及", "+", "和"])
         if multi_signal:
-            for agent in ordered[1:]:
+            for agent in ordered:
                 if len(selected) >= max_agents:
                     break
-                if scores[agent] >= 1.5:
+                if agent not in selected and scores[agent] >= 1.5:
                     selected.append(agent)
         return selected[:max_agents]
 
@@ -190,6 +212,11 @@ class SupervisorAgent:
         slot_values = query_context.slot_values()
         for idx, agent in enumerate(selected, start=1):
             objective = self._objective_for(agent, query_context)
+            subquestion_ids = [
+                sq.subquestion_id
+                for sq in query_context.subquestions
+                if not sq.expected_agents or agent in sq.expected_agents
+            ]
             tasks[agent] = AgentTask(
                 task_id=f"task_{idx:02d}_{agent.lower().replace(' ', '_').replace('-', '_')}",
                 agent_name=agent,
@@ -204,14 +231,17 @@ class SupervisorAgent:
                     "Only cite evidence returned by ToolRegistry.",
                     "Abstain when no evidence supports the task.",
                     "Do not control real PLC devices.",
+                    "Return structured claims, not raw page OCR.",
                 ],
+                subquestion_ids=subquestion_ids,
             )
-        reasons = {}
-        for agent in selected:
-            reasons[agent] = reason_override.get(
+        reasons = {
+            agent: reason_override.get(
                 agent,
-                f"score={scores.get(agent, 0):.2f}; question_type={query_context.question_type}; modalities={','.join(query_context.required_modalities)}",
+                f"score={scores.get(agent, 0):.2f}; question_type={query_context.question_type}; subquestions={len(query_context.subquestions)}",
             )
+            for agent in selected
+        }
         return AgentPlan(
             selected_agents=selected,
             rejected_agents=rejected,
@@ -225,17 +255,18 @@ class SupervisorAgent:
             execution_order=list(selected),
             parallel_groups=[list(selected)] if execution_mode == ExecutionMode.PARALLEL.value else [[a] for a in selected],
             scores=scores,
+            metadata={"subquestions": [sq.subquestion_id for sq in query_context.subquestions]},
         )
 
     def _objective_for(self, agent: str, ctx: QueryContext) -> str:
         objectives = {
-            "Parameter Agent": "查证型号、订货号、参数名称、数值和单位。",
-            "Figure Agent": "定位接口、图号、页码和图文证据。",
-            "Wiring Agent": "查证端子、接线约束和断电安全注意事项。",
-            "Topology Agent": "查证 PROFINET/HMI/CPU/IO 设备关系和接口连接。",
-            "Troubleshooting Agent": "区分有证据排查项、现场待确认项和系统无法确认项。",
-            "EMC Agent": "查证接地、屏蔽、线缆布置和环境要求。",
-            "Safety Boundary Agent": "拒绝危险工业操作步骤，给出离线只读安全替代方向。",
-            "Work-order Agent": "把最终结论整理为结构化运维辅助记录。",
+            "Parameter Agent": "Verify model/order number, parameter name, numeric value and unit.",
+            "Figure Agent": "Locate interface, figure number, page, marker and image/page-text evidence.",
+            "Wiring Agent": "Verify terminal, wiring constraints and power-off safety notes.",
+            "Topology Agent": "Verify PROFINET/HMI/CPU/IO relationship and connection guidance.",
+            "Troubleshooting Agent": "Separate evidenced checks from site conditions requiring manual confirmation.",
+            "EMC Agent": "Verify grounding, shielding, cabling and installation environment requirements.",
+            "Safety Boundary Agent": "Refuse dangerous industrial operation steps and provide safe alternatives.",
+            "Work-order Agent": "Export the final verified result as structured maintenance assistance record.",
         }
-        return objectives.get(agent, "完成工业知识查证任务。")
+        return objectives.get(agent, "Complete evidence-grounded industrial knowledge task.")

@@ -9,18 +9,21 @@ import json
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
-from typing import Dict, List
+from pathlib import Path
+from typing import Dict, List, Optional
 
 from ..config import SafePLCConfig
 from ..evidence.answer_evidence_verifier import verify_answer_evidence
 from ..evidence.evidence_pool import SharedEvidencePool
-from ..schemas import AgentPlan, AgentResult, SafePLCResponse
+from ..schemas import AgentPlan, AgentResult, JudgeDecision, SafePLCResponse, SubQuestion
 from ..tools.tool_registry import ToolRegistry
 from .context_analyzer import ContextAnalyzer
+from .evidence_closed_synthesizer import EvidenceClosedSynthesizer
 from .emc_agent import EMCAgent
 from .figure_agent import FigureAgent
 from .judge_agent import JudgeAgent
 from .parameter_agent import ParameterAgent
+from .query_decomposer import QueryDecomposer
 from .safety_boundary_agent import SafetyBoundaryAgent
 from .supervisor_agent import SupervisorAgent
 from .topology_agent import TopologyAgent
@@ -47,6 +50,7 @@ def run_agent_system(
     mode: str | None = None,
     routing_strategy: str = "adaptive",
     max_agents: int = 4,
+    feature_switches: Optional[Dict[str, bool]] = None,
 ) -> SafePLCResponse:
     started = time.perf_counter()
     config = SafePLCConfig.from_env(
@@ -54,14 +58,37 @@ def run_agent_system(
         routing_strategy=routing_strategy,
         max_agents=max_agents,
     )
-    registry = ToolRegistry(config)
+    features = {
+        "enable_dynamic_routing": True,
+        "enable_query_decomposition": True,
+        "enable_model_filter": True,
+        "enable_figure_backend": True,
+        "enable_judge": True,
+        "enable_verifier": True,
+        "enable_second_retrieval": True,
+        "enable_evidence_reranker": True,
+    }
+    features.update(feature_switches or {})
+    registry = ToolRegistry(config, feature_switches=features)
     evidence_pool = SharedEvidencePool()
 
     query_context = ContextAnalyzer().analyze(query, context)
+    if features["enable_query_decomposition"]:
+        query_context.subquestions = QueryDecomposer().decompose(query_context)
+    else:
+        query_context.subquestions = [
+            SubQuestion(
+                subquestion_id="sq_primary",
+                text=query_context.original_query,
+                objective="Answer the undecomposed query.",
+            )
+        ]
+    query_context.metadata["subquestions"] = [sq.to_dict() if hasattr(sq, "to_dict") else sq.__dict__ for sq in query_context.subquestions]
     supervisor = SupervisorAgent()
+    effective_routing = config.routing_strategy
     plan = supervisor.plan(
         query_context,
-        routing_strategy=config.routing_strategy,
+        routing_strategy=effective_routing,
         max_agents=config.max_agents,
     )
 
@@ -71,7 +98,8 @@ def run_agent_system(
     if not plan.need_clarification:
         results = _execute_plan(plan, registry, evidence_pool)
         if (
-            config.routing_strategy == "adaptive"
+            features["enable_second_retrieval"]
+            and effective_routing == "adaptive"
             and not any(r.evidence_ids for r in results)
             and len(results) < plan.max_agent_calls
         ):
@@ -80,15 +108,18 @@ def run_agent_system(
                 results.extend(added)
             else:
                 early_stop_reason = "no_adaptive_fallback_available"
-        elif config.routing_strategy == "adaptive":
+        elif effective_routing == "adaptive":
             early_stop_reason = "sufficient_evidence_after_adaptive_selection"
 
     pool_schema = evidence_pool.to_schema()
-    judge_decision = JudgeAgent().decide(query_context, results, pool_schema)
-    verifier = verify_answer_evidence(
-        judge_decision.final_answer,
-        judge_decision,
-        pool_schema.evidences,
+    if features["enable_judge"]:
+        judge_decision = JudgeAgent().decide(query_context, results, pool_schema)
+    else:
+        judge_decision = _baseline_decision(query_context, results, pool_schema)
+    verifier = (
+        verify_answer_evidence(judge_decision.final_answer, judge_decision, pool_schema.evidences)
+        if features["enable_verifier"]
+        else {"enabled": False, "pass": None, "reason": "Verifier disabled by ablation profile."}
     )
     work_order = _build_work_order(query, context, judge_decision.final_answer, pool_schema, query_context)
     total_latency = int((time.perf_counter() - started) * 1000)
@@ -106,26 +137,29 @@ def run_agent_system(
         "routing_reason": dict(plan.selection_reason),
         "early_stop_reason": early_stop_reason,
         "mode": config.mode,
-        "routing_strategy": config.routing_strategy,
+        "routing_strategy": effective_routing,
+        "feature_switches": dict(features),
+        "retrieval_backend_audit": dict(registry.backend_audit),
+        "subquestion_count": len(query_context.subquestions),
     }
 
     warnings = []
     if config.mode == "FULL" and not config.full_assets_available():
-        missing_assets = []
-        if not config.chunks_jsonl:
-            missing_assets.append("SAFEPLC_CHUNKS_JSONL")
-        if not config.pages_jsonl:
-            missing_assets.append("SAFEPLC_PAGES_JSONL")
+        status = config.path_status()
+        missing_assets = [name for name, ok in status.items() if not ok]
         warnings.append(
-            "FULL mode requested but required JSONL assets are missing: "
-            + ", ".join(missing_assets or ["configured JSONL files do not exist"])
-            + "; ToolRegistry used SAMPLE evidence for this local run."
+            "FULL mode requested but active retrieval assets are missing: "
+            + ", ".join(missing_assets or ["no active Chroma/JSONL backend"])
+            + "; SAMPLE evidence was not used."
         )
+    warnings.extend(registry.errors)
 
     if plan.need_clarification:
         action = "CLARIFY"
     elif any(result.status == "REFUSE" for result in results):
         action = "REFUSE"
+    elif judge_decision.verdict in {"NEED_MORE_EVIDENCE", "ABSTAIN"}:
+        action = "ABSTAIN"
     else:
         action = "ANSWER"
     generated_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -146,7 +180,7 @@ def run_agent_system(
         missing_slots=list(query_context.missing_slots),
         operation_risk_level=query_context.risk_level,
         action=action,
-        routing_strategy=config.routing_strategy,
+        routing_strategy=effective_routing,
         selected_agents=list(plan.selected_agents),
         execution_order=[r.agent_name for r in results],
         evidence_items=list(pool_schema.evidences),
@@ -159,10 +193,46 @@ def run_agent_system(
         total_tool_calls=registry.tool_call_count,
         total_latency_ms=total_latency,
         generated_at=generated_at,
-        version="agent_first_v1",
+        version="full_rag_multimodal_v2",
         work_order=work_order,
         metrics=metrics,
         warnings=warnings,
+    )
+
+
+def _baseline_decision(query_context, results, pool_schema) -> JudgeDecision:
+    claims = [
+        claim
+        for result in results
+        if result.status in {"ANSWERED", "PARTIAL", "REFUSE"}
+        for claim in result.claims
+        if claim.evidence_ids or result.status == "REFUSE"
+    ]
+    evidence_by_id = {ev.evidence_id: ev for ev in pool_schema.evidences}
+    if query_context.missing_slots:
+        verdict = "NEED_CLARIFICATION"
+    elif any(result.status == "REFUSE" for result in results):
+        verdict = "REFUSE"
+    elif claims:
+        verdict = "PASS"
+    else:
+        verdict = "NEED_MORE_EVIDENCE"
+    final_answer = EvidenceClosedSynthesizer().synthesize(query_context, claims, evidence_by_id, verdict)
+    return JudgeDecision(
+        accepted_agent_outputs=[result.agent_name for result in results if result.status in {"ANSWERED", "PARTIAL", "REFUSE"}],
+        rejected_agent_outputs=[result.agent_name for result in results if result.status not in {"ANSWERED", "PARTIAL", "REFUSE"}],
+        conflict_groups=[],
+        supported_claims=[claim.claim_text for claim in claims],
+        unsupported_claims=[],
+        conflicting_claims=[],
+        final_evidence_ids=list(dict.fromkeys(ev_id for claim in claims for ev_id in claim.evidence_ids)),
+        need_more_evidence=verdict == "NEED_MORE_EVIDENCE",
+        need_clarification=verdict == "NEED_CLARIFICATION",
+        final_answer=final_answer,
+        verdict=verdict,
+        confidence="MEDIUM" if claims else "NOT_AVAILABLE",
+        decision_reason="Judge disabled by ablation profile; baseline accepts evidenced agent claims without adjudication.",
+        metadata={"judge_enabled": False},
     )
 
 
@@ -289,6 +359,7 @@ def main() -> None:
     parser.add_argument("--routing-strategy", default="adaptive")
     parser.add_argument("--max-agents", type=int, default=4)
     parser.add_argument("--json", action="store_true")
+    parser.add_argument("--output", default="")
     args = parser.parse_args()
 
     response = run_agent_system(
@@ -299,9 +370,14 @@ def main() -> None:
         max_agents=args.max_agents,
     )
     if args.json:
-        print(json.dumps(response.to_dict(), ensure_ascii=False, indent=2))
+        output_text = json.dumps(response.to_dict(), ensure_ascii=False, indent=2)
     else:
-        print(response.final_answer)
+        output_text = response.final_answer
+    if args.output:
+        output_path = Path(args.output)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(output_text, encoding="utf-8")
+    print(output_text)
 
 
 if __name__ == "__main__":

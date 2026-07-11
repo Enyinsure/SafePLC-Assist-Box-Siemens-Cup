@@ -109,17 +109,19 @@ def render_controls() -> None:
 def render_query_context(response) -> None:
     ctx = response.query_context
     st.subheader("Query Context")
-    c1, c2, c3, c4 = st.columns(4)
+    c1, c2, c3, c4, c5 = st.columns(5)
     c1.metric("Question Type", ctx.question_type)
     c2.metric("Risk", ctx.risk_level)
     c3.metric("Missing Slots", len(ctx.missing_slots))
     c4.metric("Modalities", ", ".join(ctx.required_modalities) or "-")
+    c5.metric("Mode", response.mode)
 
     with st.expander("Slots and Clarification", expanded=bool(ctx.missing_slots)):
         st.json(
             {
                 "slots": {name: slot.value for name, slot in ctx.slots.items()},
                 "missing_slots": ctx.missing_slots,
+                "subquestions": [sq.__dict__ for sq in getattr(ctx, "subquestions", [])],
                 "clarification": ctx.clarify_question,
                 "risk_reason": ctx.risk_reason,
             }
@@ -170,8 +172,8 @@ def render_agent_workspace(response) -> None:
         st.write({"count": result.tool_calls, "tools": result.metadata.get("available_tools", [])})
         st.markdown("**Conclusion**")
         st.write(result.answer_fragment or result.abstain_reason)
-        st.markdown("**Evidence IDs**")
-        st.write(result.evidence_ids)
+        st.markdown("**Structured Claims**")
+        st.json([claim.__dict__ for claim in getattr(result, "claims", [])])
         st.markdown("</div>", unsafe_allow_html=True)
 
 
@@ -182,20 +184,33 @@ def render_evidence_pool(response) -> None:
         rows.append(
             {
                 "evidence_id": ev.evidence_id,
+                "backend": ev.retrieval_backend,
                 "modality": ev.modality,
+                "manual": ev.manual_title or ev.source,
+                "model": ev.module_model or ev.module,
+                "order_number": ev.order_number,
                 "page": ev.page,
                 "figure_id": ev.figure_id,
+                "figure_number": ev.figure_number,
+                "image_path": ev.image_path,
                 "title": ev.title,
-                "module": ev.module,
                 "parameter": ev.parameter,
+                "model_match": ev.model_match_level,
+                "direct": ev.direct_evidence,
                 "agents": ", ".join(ev.agent_names),
-                "claims": len(ev.claim_links),
+                "claims": ", ".join(ev.claim_links),
                 "score": ev.retrieval_score,
-                "text": ev.text,
+                "excerpt": ev.compact_excerpt,
             }
         )
     if rows:
         st.dataframe(rows, use_container_width=True, hide_index=True)
+        for ev in response.evidence_pool.evidences:
+            if ev.image_path and Path(ev.image_path).exists():
+                st.image(ev.image_path, caption=f"{ev.figure_number or ev.figure_id} | page {ev.page or '-'}")
+            with st.expander(f"Evidence detail: {ev.evidence_id}", expanded=False):
+                st.json(ev.metadata)
+                st.write(ev.compact_excerpt)
     else:
         st.info("No evidence collected yet.")
 
@@ -216,6 +231,9 @@ def render_judge(response) -> None:
                 "conflict_groups": decision.conflict_groups,
                 "unsupported_claims": decision.unsupported_claims,
                 "final_evidence_ids": decision.final_evidence_ids,
+                "coverage": decision.coverage,
+                "model_consistency": decision.model_consistency,
+                "quality_scores": decision.quality_scores,
                 "need_more_evidence": decision.need_more_evidence,
                 "need_clarification": decision.need_clarification,
                 "decision_reason": decision.decision_reason,

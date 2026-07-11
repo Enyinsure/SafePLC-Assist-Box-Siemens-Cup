@@ -3,11 +3,12 @@
 
 from __future__ import annotations
 
+import hashlib
 import time
-from typing import Iterable, List
+from typing import Dict, Iterable, List, Optional
 
 from ..evidence.evidence_pool import SharedEvidencePool
-from ..schemas import AgentEvidence, AgentObservation, AgentResult, AgentStatus
+from ..schemas import AgentClaim, AgentEvidence, AgentObservation, AgentResult, AgentStatus, compact_text
 from ..tools.tool_registry import ToolRegistry
 
 
@@ -15,6 +16,7 @@ class BaseAgent:
     agent_name = "Base Agent"
     role_description = "Base agent"
     tool_names: List[str] = []
+    default_claim_type = "grounded_qa"
 
     def run(
         self,
@@ -56,6 +58,9 @@ class BaseAgent:
         claim: str,
         confidence: str = "MEDIUM",
         status: str = AgentStatus.ANSWERED.value,
+        claim_type: Optional[str] = None,
+        claim_metadata: Optional[Dict[str, object]] = None,
+        direct_support: Optional[bool] = None,
     ) -> AgentResult:
         unique = self._unique_evidence(evidences)
         if not unique:
@@ -68,8 +73,24 @@ class BaseAgent:
                 abstain_reason="No matching evidence was retrieved for this agent task.",
             )
 
-        evidence_ids = evidence_pool.add_many(unique, self.agent_name, claim=claim)
-        evidence_pool.add_agent_claim(self.agent_name, claim or answer_fragment)
+        claim_text = compact_text(claim or answer_fragment, limit=260)
+        claim_id = self._claim_id(task.task_id, claim_text)
+        evidence_ids = evidence_pool.add_many(unique, self.agent_name, claim=claim_id)
+        evidence_pool.add_agent_claim(self.agent_name, claim_text)
+        direct = any(ev.direct_evidence or ev.metadata.get("direct_evidence") for ev in unique)
+        if direct_support is not None:
+            direct = direct_support
+        agent_claim = AgentClaim(
+            claim_id=claim_id,
+            claim_text=claim_text,
+            claim_type=claim_type or self.default_claim_type,
+            evidence_ids=evidence_ids,
+            model_scope=self._model_scope(unique),
+            confidence=confidence,
+            direct_support=bool(direct),
+            subquestion_ids=list(getattr(task, "subquestion_ids", []) or []),
+            metadata=dict(claim_metadata or {}),
+        )
         observation = AgentObservation(
             tool_name=",".join(self.tool_names),
             query=task.query,
@@ -80,13 +101,15 @@ class BaseAgent:
             agent_name=self.agent_name,
             task_id=task.task_id,
             status=status,
-            answer_fragment=answer_fragment,
+            answer_fragment=compact_text(answer_fragment, limit=420),
             evidence_ids=evidence_ids,
             confidence=confidence,
             observations=[observation],
+            claims=[agent_claim],
             metadata={
                 "role_description": self.role_description,
                 "available_tools": list(self.tool_names),
+                "objective": getattr(task, "objective", ""),
             },
         )
 
@@ -100,6 +123,7 @@ class BaseAgent:
             metadata={
                 "role_description": self.role_description,
                 "available_tools": list(self.tool_names),
+                "objective": getattr(task, "objective", ""),
             },
         )
 
@@ -117,3 +141,25 @@ class BaseAgent:
         slot_text = " ".join(v for v in task.input_slots.values() if v)
         return " ".join(part for part in [task.query, task.context, slot_text, task.objective] if part).strip()
 
+    def _claim_id(self, task_id: str, claim: str) -> str:
+        seed = f"{self.agent_name}|{task_id}|{claim}"
+        return "claim_" + hashlib.sha256(seed.encode("utf-8")).hexdigest()[:12]
+
+    def _model_scope(self, evidences: Iterable[AgentEvidence]) -> str:
+        scopes = []
+        for ev in evidences:
+            scope = ev.module_model or ev.module or ev.device_family
+            if scope and scope not in scopes:
+                scopes.append(scope)
+        return "; ".join(scopes[:3])
+
+    def _evidence_refs(self, evidences: Iterable[AgentEvidence]) -> str:
+        parts = []
+        for ev in evidences:
+            ref = ev.manual_title or ev.source
+            if ev.page:
+                ref += f", page {ev.page}"
+            if ev.figure_number:
+                ref += f", {ev.figure_number}"
+            parts.append(ref)
+        return "; ".join(parts[:3])

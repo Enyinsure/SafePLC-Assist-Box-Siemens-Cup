@@ -6,6 +6,7 @@ from __future__ import annotations
 import re
 from typing import Dict, List
 
+from ..evidence.model_identity import extract_model_identity
 from ..schemas import QueryContext, SlotResult
 
 
@@ -38,6 +39,7 @@ class ContextAnalyzer:
         required_modalities = self._required_modalities(qtype, text)
         missing = self._missing_slots(qtype, text, slots)
         clarify = self._clarification_prompt(missing, qtype)
+        identity = extract_model_identity(text)
 
         return QueryContext(
             original_query=query,
@@ -53,7 +55,14 @@ class ContextAnalyzer:
             is_dangerous_operation=risk["risk_level"] in {"HIGH_RISK", "EMERGENCY"},
             expected_output_type=slots["expected_output_type"].value or "answer",
             clarify_question=clarify,
-            metadata={"analyzer": "Context Analyzer"},
+            metadata={
+                "analyzer": "Context Analyzer",
+                "model_identity": {
+                    "models": identity.normalized_models,
+                    "order_numbers": identity.order_numbers,
+                    "family_hints": identity.family_hints,
+                },
+            },
         )
 
     def _extract_slots(self, text: str) -> Dict[str, SlotResult]:
@@ -64,17 +73,17 @@ class ContextAnalyzer:
                     return re.sub(r"\s+", " ", m.group(0)).strip()
             return ""
 
-        module = first(
+        identity = extract_model_identity(text)
+        module = identity.normalized_models[0] if identity.normalized_models else first(
             [
-                r"CPU\s*\d{4,5}(?:-\d)?(?:\s*[A-Z]{1,4})?",
                 r"PS\s*\d+W\s*[\d/]+VDC\s*\w*",
                 r"ET\s*200MP",
                 r"S7[- ]?1500",
             ]
         )
-        order_number = first([r"\b\dES\d[\w\-]*\b", r"\b6ES\d[\w\-]*\b"])
+        order_number = identity.order_numbers[0] if identity.order_numbers else first([r"\b6ES\d[\w\-]*\b"])
         interface = first([r"\bX\d+\b", r"PROFINET", r"PROFIBUS", r"RJ45"])
-        port = first([r"\bX\d+\b", r"端口\s*\d+", r"port\s*\d+"])
+        port = first([r"\bX\d+\s*P\d+\b", r"\bX\d+\b", r"端口\s*\d+", r"port\s*\d+"])
         alarm = first([r"(?:报警|报错|故障|error|fault|alarm)[：:\s]*[\w\u4e00-\u9fff\- ]{0,40}"])
 
         parameter = ""
@@ -105,10 +114,10 @@ class ContextAnalyzer:
             "interface_name": interface,
             "port_number": port,
             "alarm_code": alarm,
-            "indicator_state": "指示灯" if _has_any(text, ["指示灯", "LED", "红灯", "绿灯", "黄灯"]) else "",
+            "indicator_state": "LED" if _has_any(text, ["指示灯", "LED", "红灯", "绿灯", "黄灯"]) else "",
             "network_type": "PROFINET" if _has_any(text, ["PROFINET", "环网", "拓扑"]) else "",
             "device_type": "HMI" if _has_any(text, ["HMI", "触摸屏", "人机界面"]) else ("CPU" if "CPU" in text.upper() else ""),
-            "operating_condition": "离线查证" if _has_any(text, ["查", "查询", "在哪里", "说明"]) else "",
+            "operating_condition": "offline_lookup" if _has_any(text, ["查", "查询", "在哪里", "说明"]) else "",
             "expected_output_type": "work_order" if _has_any(text, ["工单", "运维记录", "维护记录"]) else "answer",
         }
         return {
@@ -135,27 +144,29 @@ class ContextAnalyzer:
             "强制运行",
             "控制真实 PLC",
             "下载程序到 PLC",
+            "bypass",
+            "force output",
         ]
         caution = ["接线", "端子", "上电", "断电", "调试", "复位", "接地", "屏蔽"]
         if _has_any(text, emergency):
             return {
                 "risk_level": "EMERGENCY",
                 "decision": "REFUSE_DANGEROUS_STEPS",
-                "reason": "涉及事故或人身安全，需要现场应急流程。",
+                "reason": "Potential incident or personal safety risk requires site emergency procedure.",
             }
         if _has_any(text, dangerous):
             return {
                 "risk_level": "HIGH_RISK",
                 "decision": "REFUSE_DANGEROUS_STEPS",
-                "reason": "涉及绕过保护、带电操作、强制输出或真实 PLC 控制。",
+                "reason": "Request involves bypassing protection, live work, forced output or real PLC control.",
             }
         if _has_any(text, caution):
             return {
                 "risk_level": "CAUTION",
                 "decision": "ANSWER_WITH_SAFETY_TIP",
-                "reason": "涉及接线、调试或安装注意事项，需要安全提示。",
+                "reason": "Wiring, commissioning or installation topic requires safety note.",
             }
-        return {"risk_level": "SAFE", "decision": "ALLOW", "reason": "未识别到危险工业操作。"}
+        return {"risk_level": "SAFE", "decision": "ALLOW", "reason": "No dangerous industrial operation detected."}
 
     def _question_type(self, text: str, slots: Dict[str, SlotResult], risk: Dict[str, str]) -> str:
         if risk["risk_level"] in {"HIGH_RISK", "EMERGENCY"}:
@@ -164,10 +175,12 @@ class ContextAnalyzer:
             return "WORK_ORDER"
         if _has_any(text, ["故障", "报警", "通信不上", "通信异常", "不能启动", "指示灯", "排查"]):
             return "TROUBLESHOOTING"
-        if _has_any(text, ["拓扑", "环网", "HMI", "网络连接"]):
+        has_network = _has_any(text, ["拓扑", "环网", "HMI", "网络连接", "PROFINET"])
+        has_figure = _has_any(text, ["接口图", "图纸", "图在哪里", "前面板", "端子图", "X1", "X2", "在哪里"])
+        if has_network and not has_figure:
             return "TOPOLOGY"
-        if _has_any(text, ["接口图", "图纸", "图在哪里", "前面板", "端子图", "X1", "X2"]):
-            return "FIGURE"
+        if has_figure:
+            return "FIGURE" if not has_network else "TOPOLOGY"
         if _has_any(text, ["接线", "端子", "怎么接", "线缆"]):
             return "WIRING"
         if _has_any(text, ["EMC", "电磁兼容", "接地", "屏蔽", "线缆布置", "安装距离"]):
@@ -181,7 +194,7 @@ class ContextAnalyzer:
             "PARAMETER": ["table", "text"],
             "FIGURE": ["figure", "text"],
             "WIRING": ["figure", "table", "text"],
-            "TOPOLOGY": ["figure", "text"],
+            "TOPOLOGY": ["figure", "text"] if "X1" in text.upper() else ["text"],
             "TROUBLESHOOTING": ["text", "table"],
             "EMC": ["text"],
             "SAFETY_BOUNDARY": ["policy"],
@@ -199,11 +212,9 @@ class ContextAnalyzer:
             required = ["module_model", "interface_name"]
         elif qtype == "WIRING":
             required = ["module_model"]
-        elif qtype == "TROUBLESHOOTING":
-            required = []
-            if not slots["indicator_state"].value and not slots["alarm_code"].value:
-                required = ["alarm_code"]
-        elif qtype == "TOPOLOGY":
+        elif qtype == "TROUBLESHOOTING" and not slots["indicator_state"].value and not slots["alarm_code"].value:
+            required = ["alarm_code"]
+        elif qtype == "TOPOLOGY" and "PROFINET" not in text.upper() and "HMI" not in text.upper():
             required = ["network_type"]
         missing = []
         for name in required:
@@ -223,9 +234,4 @@ class ContextAnalyzer:
             "network_type": "网络类型，例如 PROFINET",
         }
         items = "、".join(names.get(x, x) for x in missing[:2])
-        examples = {
-            "PARAMETER": "例如：PS 60W 24/48/60VDC HF 的电源电压允许范围是多少？",
-            "FIGURE": "例如：CPU 1517-3 PN 的 X1 接口在哪里？",
-            "TROUBLESHOOTING": "例如：CPU 1517-3 PN 的 ERROR 指示灯异常，通信不上。",
-        }
-        return f"为了让专业 Agent 精确查证，请补充{items}。{examples.get(qtype, '例如补充设备型号、接口名或故障现象。')}"
+        return f"为了让专业 Agent 准确查证，请补充{items}。"
