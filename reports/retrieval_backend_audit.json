@@ -1,0 +1,20 @@
+{
+  "environment": "local_windows_without_server_assets",
+  "full": {
+    "text_backend_active": false,
+    "figure_backend_active": false,
+    "jsonl_fallback_active": false,
+    "sample_fixture_active": false,
+    "full_ready": false,
+    "evidence_count": 0,
+    "result": "NEED_MORE_EVIDENCE"
+  },
+  "sample_x1_regression": {
+    "sample_fixture_active": true,
+    "backend_counts": {
+      "sample_fixture": 2
+    },
+    "evidence_pages": [2476, 2477]
+  },
+  "statement": "FULL did not silently fall back to SAMPLE. Real Chroma activation must be audited on the target server."
+}

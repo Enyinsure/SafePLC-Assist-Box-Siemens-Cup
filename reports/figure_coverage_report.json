@@ -1,0 +1,16 @@
+{
+  "environment": "local_windows_without_server_assets",
+  "full_figure_chroma_available": false,
+  "full_figure_collection": null,
+  "full_figure_count": null,
+  "full_resolvable_image_count": null,
+  "sample_x1": {
+    "page": 2476,
+    "figure_number": "Figure 2-237",
+    "marker": "⑦",
+    "ports": ["X1 P1", "X1 P2"],
+    "image_path": "",
+    "visual_evidence_status": "page_text_only"
+  },
+  "statement": "Image coverage is unverified locally and must be measured against SAFEPLC_FIGURE_CHROMA_DIR, SAFEPLC_FIGURE_CARDS_JSONL, and SAFEPLC_VISUAL_DIR on the server."
+}

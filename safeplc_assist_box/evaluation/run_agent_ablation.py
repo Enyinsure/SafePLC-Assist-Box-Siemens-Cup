@@ -10,6 +10,29 @@ from pathlib import Path
 from .run_agent_benchmark import METHOD_CONFIG, run_benchmark
 
 
+REPORT_FIELDS = [
+    "routing_accuracy",
+    "agent_selection_precision",
+    "agent_selection_recall",
+    "evidence_coverage",
+    "coverage",
+    "grounded_claim_rate",
+    "model_consistency_rate",
+    "cross_family_contamination_rate",
+    "figure_evidence_success_rate",
+    "clarification_accuracy",
+    "refusal_accuracy",
+    "judge_precision",
+    "verifier_pass_rate",
+    "average_agent_calls",
+    "average_tool_calls",
+    "p50_latency_ms",
+    "p95_latency_ms",
+    "answer_length",
+    "raw_ocr_dump_rate",
+]
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run SafePLC agent ablation.")
     parser.add_argument("--cases-dir", default="benchmark/cases")
@@ -19,7 +42,7 @@ def main() -> None:
     args = parser.parse_args()
 
     rows = []
-    for method in METHOD_CONFIG:
+    for method, config in METHOD_CONFIG.items():
         result = run_benchmark(
             cases_dir=Path(args.cases_dir),
             limit=args.limit,
@@ -29,23 +52,21 @@ def main() -> None:
         m = result.get("metrics", {})
         rows.append(
             {
-                "Method": method,
-                "Routing F1": m.get("selection_f1", 0.0),
-                "Multi-Agent Acc": m.get("end_to_end_success", 0.0),
-                "Evidence Coverage": m.get("evidence_coverage", 0.0),
-                "Unsupported Rate": m.get("unsupported_claim_rate", 0.0),
-                "Avg Agents": m.get("agent_calls", 0.0),
-                "P95": m.get("p95_latency_ms", 0.0),
+                "method": method,
+                "feature_switches": {k: v for k, v in config.items() if k.startswith("enable_")},
+                "routing_strategy": config["routing_strategy"],
+                "max_agents": config["max_agents"],
+                "metrics": {field: m.get(field, 0.0) for field in REPORT_FIELDS},
             }
         )
     output = {
         "mode": args.mode,
         "limit": args.limit,
-        "rows": rows,
+        "methods": rows,
         "notes": [
-            "dynamic_router uses Supervisor adaptive routing.",
-            "dynamic_router_judge and full use the same orchestrator path; full additionally reports verifier and clarification state.",
-            "Results are measured from the provided local benchmark cases and are not hand-edited.",
+            "Each method uses a distinct feature switch profile and routing/max-agent configuration.",
+            "SAMPLE results are regression checks and must not be presented as FULL industrial accuracy.",
+            "FULL runs require real Chroma assets and should be generated on the server.",
         ],
     }
     out = Path(args.output)
@@ -56,4 +77,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

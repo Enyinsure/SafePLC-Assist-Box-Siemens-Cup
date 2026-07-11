@@ -13,12 +13,78 @@ from .agent_metrics import aggregate_metrics, evaluate_case
 
 
 METHOD_CONFIG = {
-    "single_agent": {"routing_strategy": "single_best", "max_agents": 1},
-    "static_router": {"routing_strategy": "single_best", "max_agents": 2},
-    "all_agents": {"routing_strategy": "all_agents", "max_agents": 8},
-    "dynamic_router": {"routing_strategy": "adaptive", "max_agents": 4},
-    "dynamic_router_judge": {"routing_strategy": "adaptive", "max_agents": 4},
-    "full": {"routing_strategy": "adaptive", "max_agents": 4},
+    "single_agent": {
+        "routing_strategy": "single_best",
+        "max_agents": 1,
+        "enable_dynamic_routing": False,
+        "enable_query_decomposition": False,
+        "enable_model_filter": False,
+        "enable_figure_backend": False,
+        "enable_judge": False,
+        "enable_verifier": False,
+        "enable_second_retrieval": False,
+        "enable_evidence_reranker": False,
+    },
+    "static_router": {
+        "routing_strategy": "static",
+        "max_agents": 2,
+        "enable_dynamic_routing": False,
+        "enable_query_decomposition": False,
+        "enable_model_filter": True,
+        "enable_figure_backend": True,
+        "enable_judge": False,
+        "enable_verifier": False,
+        "enable_second_retrieval": False,
+        "enable_evidence_reranker": True,
+    },
+    "all_agents": {
+        "routing_strategy": "all_agents",
+        "max_agents": 8,
+        "enable_dynamic_routing": False,
+        "enable_query_decomposition": False,
+        "enable_model_filter": True,
+        "enable_figure_backend": True,
+        "enable_judge": False,
+        "enable_verifier": False,
+        "enable_second_retrieval": False,
+        "enable_evidence_reranker": True,
+    },
+    "dynamic_router": {
+        "routing_strategy": "adaptive",
+        "max_agents": 4,
+        "enable_dynamic_routing": True,
+        "enable_query_decomposition": True,
+        "enable_model_filter": True,
+        "enable_figure_backend": True,
+        "enable_judge": False,
+        "enable_verifier": False,
+        "enable_second_retrieval": False,
+        "enable_evidence_reranker": True,
+    },
+    "dynamic_router_judge": {
+        "routing_strategy": "adaptive",
+        "max_agents": 4,
+        "enable_dynamic_routing": True,
+        "enable_query_decomposition": True,
+        "enable_model_filter": True,
+        "enable_figure_backend": True,
+        "enable_judge": True,
+        "enable_verifier": False,
+        "enable_second_retrieval": False,
+        "enable_evidence_reranker": True,
+    },
+    "full": {
+        "routing_strategy": "adaptive",
+        "max_agents": 4,
+        "enable_dynamic_routing": True,
+        "enable_query_decomposition": True,
+        "enable_model_filter": True,
+        "enable_figure_backend": True,
+        "enable_judge": True,
+        "enable_verifier": True,
+        "enable_second_retrieval": True,
+        "enable_evidence_reranker": True,
+    },
 }
 
 
@@ -53,6 +119,7 @@ def run_benchmark(
             mode=mode,
             routing_strategy=config["routing_strategy"],
             max_agents=int(config["max_agents"]),
+            feature_switches={key: bool(value) for key, value in config.items() if key.startswith("enable_")},
         )
         response_dict = response.to_dict()
         metrics = evaluate_case(case, response_dict)
@@ -72,6 +139,11 @@ def run_benchmark(
     return {
         "method": method,
         "mode": mode,
+        "method_features": {
+            key: value
+            for key, value in config.items()
+            if key.startswith("enable_")
+        },
         "case_count": case_count,
         "metrics": aggregate_metrics(rows),
         "failures": failures[:20],
@@ -105,4 +177,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

@@ -1,0 +1,9 @@
+{
+  "executed": false,
+  "mode": "FULL",
+  "source": "/home/scc/pb23061092/s7_agent_v2_questions.tsv",
+  "methods": [],
+  "reason": "The real benchmark TSV and server Chroma assets are not present locally. No FULL ablation metrics were fabricated.",
+  "local_regression_report": "reports/agent_ablation_sample.json",
+  "required_server_command": "python -m safeplc_assist_box.evaluation.run_agent_ablation --cases-dir benchmark/cases_real --mode FULL --output reports/agent_ablation_full_real.json"
+}

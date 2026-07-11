@@ -1,0 +1,1014 @@
+{
+  "query": "CPU 1517-3 PN 的 X1 接口在哪里？",
+  "context": "",
+  "mode": "SAMPLE",
+  "query_context": {
+    "original_query": "CPU 1517-3 PN 的 X1 接口在哪里？",
+    "context": "",
+    "normalized_query": "CPU 1517-3 PN 的 X1 接口在哪里？",
+    "question_type": "FIGURE",
+    "slots": {
+      "module_model": {
+        "name": "module_model",
+        "value": "CPU 1517-3 PN/DP",
+        "source": "query",
+        "confidence": 0.9,
+        "required": false
+      },
+      "order_number": {
+        "name": "order_number",
+        "value": "",
+        "source": "query",
+        "confidence": 0.0,
+        "required": false
+      },
+      "parameter_name": {
+        "name": "parameter_name",
+        "value": "接口",
+        "source": "query",
+        "confidence": 0.9,
+        "required": false
+      },
+      "interface_name": {
+        "name": "interface_name",
+        "value": "X1",
+        "source": "query",
+        "confidence": 0.9,
+        "required": false
+      },
+      "port_number": {
+        "name": "port_number",
+        "value": "X1",
+        "source": "query",
+        "confidence": 0.9,
+        "required": false
+      },
+      "alarm_code": {
+        "name": "alarm_code",
+        "value": "",
+        "source": "query",
+        "confidence": 0.0,
+        "required": false
+      },
+      "indicator_state": {
+        "name": "indicator_state",
+        "value": "",
+        "source": "query",
+        "confidence": 0.0,
+        "required": false
+      },
+      "network_type": {
+        "name": "network_type",
+        "value": "",
+        "source": "query",
+        "confidence": 0.0,
+        "required": false
+      },
+      "device_type": {
+        "name": "device_type",
+        "value": "CPU",
+        "source": "query",
+        "confidence": 0.9,
+        "required": false
+      },
+      "operating_condition": {
+        "name": "operating_condition",
+        "value": "offline_lookup",
+        "source": "query",
+        "confidence": 0.9,
+        "required": false
+      },
+      "expected_output_type": {
+        "name": "expected_output_type",
+        "value": "answer",
+        "source": "query",
+        "confidence": 0.9,
+        "required": false
+      }
+    },
+    "missing_slots": [],
+    "required_modalities": [
+      "figure",
+      "text"
+    ],
+    "risk_level": "SAFE",
+    "risk_decision": "ALLOW",
+    "risk_reason": "No dangerous industrial operation detected.",
+    "is_dangerous_operation": false,
+    "expected_output_type": "answer",
+    "clarify_question": "",
+    "subquestions": [
+      {
+        "subquestion_id": "sq_x1_location",
+        "text": "Locate the X1 physical interface.",
+        "objective": "Find the direct front-view or figure evidence for X1.",
+        "expected_agents": [
+          "Figure Agent"
+        ],
+        "required_modalities": [
+          "figure"
+        ],
+        "required_slots": [
+          "module_model",
+          "interface_name"
+        ],
+        "answered": false,
+        "metadata": {}
+      },
+      {
+        "subquestion_id": "sq_x1_ports",
+        "text": "Identify X1 port count and labels.",
+        "objective": "Verify whether X1 has ports such as X1 P1 and X1 P2.",
+        "expected_agents": [
+          "Figure Agent",
+          "Topology Agent"
+        ],
+        "required_modalities": [
+          "figure",
+          "table"
+        ],
+        "required_slots": [],
+        "answered": false,
+        "metadata": {}
+      }
+    ],
+    "metadata": {
+      "analyzer": "Context Analyzer",
+      "model_identity": {
+        "models": [
+          "CPU 1517-3 PN/DP"
+        ],
+        "order_numbers": [],
+        "family_hints": []
+      },
+      "subquestions": [
+        {
+          "subquestion_id": "sq_x1_location",
+          "text": "Locate the X1 physical interface.",
+          "objective": "Find the direct front-view or figure evidence for X1.",
+          "expected_agents": [
+            "Figure Agent"
+          ],
+          "required_modalities": [
+            "figure"
+          ],
+          "required_slots": [
+            "module_model",
+            "interface_name"
+          ],
+          "answered": false,
+          "metadata": {}
+        },
+        {
+          "subquestion_id": "sq_x1_ports",
+          "text": "Identify X1 port count and labels.",
+          "objective": "Verify whether X1 has ports such as X1 P1 and X1 P2.",
+          "expected_agents": [
+            "Figure Agent",
+            "Topology Agent"
+          ],
+          "required_modalities": [
+            "figure",
+            "table"
+          ],
+          "required_slots": [],
+          "answered": false,
+          "metadata": {}
+        }
+      ]
+    }
+  },
+  "agent_plan": {
+    "selected_agents": [
+      "Figure Agent",
+      "Topology Agent"
+    ],
+    "rejected_agents": [
+      "Parameter Agent",
+      "Wiring Agent",
+      "Troubleshooting Agent",
+      "EMC Agent",
+      "Safety Boundary Agent",
+      "Work-order Agent"
+    ],
+    "selection_reason": {
+      "Figure Agent": "score=12.20; question_type=FIGURE; subquestions=2",
+      "Topology Agent": "score=3.60; question_type=FIGURE; subquestions=2"
+    },
+    "execution_mode": "parallel",
+    "task_assignments": {
+      "Figure Agent": {
+        "task_id": "task_01_figure_agent",
+        "agent_name": "Figure Agent",
+        "role": "Figure Agent",
+        "query": "CPU 1517-3 PN 的 X1 接口在哪里？",
+        "context": "",
+        "objective": "Locate interface, figure number, page, marker and image/page-text evidence.",
+        "input_slots": {
+          "module_model": "CPU 1517-3 PN/DP",
+          "parameter_name": "接口",
+          "interface_name": "X1",
+          "port_number": "X1",
+          "device_type": "CPU",
+          "operating_condition": "offline_lookup",
+          "expected_output_type": "answer"
+        },
+        "required_evidence_types": [
+          "figure",
+          "text"
+        ],
+        "tool_names": [
+          "search_figure",
+          "search_hybrid"
+        ],
+        "constraints": [
+          "Only cite evidence returned by ToolRegistry.",
+          "Abstain when no evidence supports the task.",
+          "Do not control real PLC devices.",
+          "Return structured claims, not raw page OCR."
+        ],
+        "depends_on": [],
+        "subquestion_ids": [
+          "sq_x1_location",
+          "sq_x1_ports"
+        ],
+        "metadata": {}
+      },
+      "Topology Agent": {
+        "task_id": "task_02_topology_agent",
+        "agent_name": "Topology Agent",
+        "role": "Topology Agent",
+        "query": "CPU 1517-3 PN 的 X1 接口在哪里？",
+        "context": "",
+        "objective": "Verify PROFINET/HMI/CPU/IO relationship and connection guidance.",
+        "input_slots": {
+          "module_model": "CPU 1517-3 PN/DP",
+          "parameter_name": "接口",
+          "interface_name": "X1",
+          "port_number": "X1",
+          "device_type": "CPU",
+          "operating_condition": "offline_lookup",
+          "expected_output_type": "answer"
+        },
+        "required_evidence_types": [
+          "figure",
+          "text"
+        ],
+        "tool_names": [
+          "search_hybrid",
+          "search_text",
+          "search_figure"
+        ],
+        "constraints": [
+          "Only cite evidence returned by ToolRegistry.",
+          "Abstain when no evidence supports the task.",
+          "Do not control real PLC devices.",
+          "Return structured claims, not raw page OCR."
+        ],
+        "depends_on": [],
+        "subquestion_ids": [
+          "sq_x1_ports"
+        ],
+        "metadata": {}
+      }
+    },
+    "expected_evidence_types": [
+      "figure",
+      "text"
+    ],
+    "stop_condition": "max_agent_calls_or_sufficient_evidence",
+    "max_agent_calls": 4,
+    "routing_strategy": "adaptive",
+    "execution_order": [
+      "Figure Agent",
+      "Topology Agent"
+    ],
+    "parallel_groups": [
+      [
+        "Figure Agent",
+        "Topology Agent"
+      ]
+    ],
+    "need_clarification": false,
+    "clarification_prompt": "",
+    "scores": {
+      "Parameter Agent": 0.0,
+      "Figure Agent": 12.200000000000001,
+      "Wiring Agent": 0.0,
+      "Topology Agent": 3.6,
+      "Troubleshooting Agent": 0.0,
+      "EMC Agent": 0.0,
+      "Safety Boundary Agent": 0.0,
+      "Work-order Agent": 0.0
+    },
+    "metadata": {
+      "subquestions": [
+        "sq_x1_location",
+        "sq_x1_ports"
+      ]
+    }
+  },
+  "agent_results": [
+    {
+      "agent_name": "Figure Agent",
+      "task_id": "task_01_figure_agent",
+      "status": "ANSWERED",
+      "answer_fragment": "CPU 1517-3 PN/DP X1 is the first PROFINET IO interface with two RJ45 ports, X1 P1 and X1 P2, in the front connector area. Evidence: S7-1500 CPU manual, page 2476, Figure 2-237, visual_status=page_text_only.",
+      "evidence_ids": [
+        "ev_e1af4b6f63c02254"
+      ],
+      "confidence": "HIGH",
+      "assumptions": [],
+      "missing_information": [],
+      "conflicts": [],
+      "follow_up_request": "",
+      "latency_ms": 3,
+      "tool_calls": 1,
+      "abstain_reason": "",
+      "observations": [
+        {
+          "tool_name": "search_figure,search_hybrid",
+          "query": "CPU 1517-3 PN 的 X1 接口在哪里？",
+          "status": "OK",
+          "evidence_ids": [
+            "ev_e1af4b6f63c02254"
+          ],
+          "latency_ms": 0,
+          "metadata": {}
+        }
+      ],
+      "claims": [
+        {
+          "claim_id": "claim_1091db473de2",
+          "claim_text": "CPU 1517-3 PN/DP X1 is the first PROFINET IO interface with two RJ45 ports, X1 P1 and X1 P2, in the front connector area.",
+          "claim_type": "location",
+          "evidence_ids": [
+            "ev_e1af4b6f63c02254"
+          ],
+          "model_scope": "CPU 1517-3 PN/DP",
+          "confidence": "HIGH",
+          "direct_support": true,
+          "subquestion_ids": [
+            "sq_x1_location",
+            "sq_x1_ports"
+          ],
+          "metadata": {
+            "figure_id": "fig_cpu1517_3pn_x1_x2",
+            "figure_number": "Figure 2-237",
+            "page": 2476,
+            "location_marker": "⑦",
+            "ports": [
+              "X1 P1",
+              "X1 P2"
+            ],
+            "visual_evidence_status": "page_text_only",
+            "image_path": ""
+          }
+        }
+      ],
+      "metadata": {
+        "role_description": "Specialist for interface positions, panel layout, figure IDs and page-text association.",
+        "available_tools": [
+          "search_figure",
+          "search_hybrid"
+        ],
+        "objective": "Locate interface, figure number, page, marker and image/page-text evidence."
+      }
+    },
+    {
+      "agent_name": "Topology Agent",
+      "task_id": "task_02_topology_agent",
+      "status": "ANSWERED",
+      "answer_fragment": "CPU 1517-3 PN/DP topology guidance is supported by cited evidence. Evidence: S7-1500 CPU manual, page 2476.",
+      "evidence_ids": [
+        "ev_e1af4b6f63c02254",
+        "ev_582cbfb2d4ebd5c1"
+      ],
+      "confidence": "HIGH",
+      "assumptions": [],
+      "missing_information": [],
+      "conflicts": [],
+      "follow_up_request": "",
+      "latency_ms": 2,
+      "tool_calls": 1,
+      "abstain_reason": "",
+      "observations": [
+        {
+          "tool_name": "search_hybrid,search_text,search_figure",
+          "query": "CPU 1517-3 PN 的 X1 接口在哪里？",
+          "status": "OK",
+          "evidence_ids": [
+            "ev_e1af4b6f63c02254",
+            "ev_582cbfb2d4ebd5c1"
+          ],
+          "latency_ms": 0,
+          "metadata": {}
+        }
+      ],
+      "claims": [
+        {
+          "claim_id": "claim_c389d41a4b14",
+          "claim_text": "CPU 1517-3 PN/DP topology guidance is supported by cited evidence.",
+          "claim_type": "connection",
+          "evidence_ids": [
+            "ev_e1af4b6f63c02254",
+            "ev_582cbfb2d4ebd5c1"
+          ],
+          "model_scope": "CPU 1517-3 PN/DP",
+          "confidence": "HIGH",
+          "direct_support": true,
+          "subquestion_ids": [
+            "sq_x1_ports"
+          ],
+          "metadata": {
+            "interface": "PROFINET",
+            "protocol": "PROFINET",
+            "peer_device": "HMI",
+            "connection_limit": "",
+            "network_requirement": "",
+            "general_guidance": false
+          }
+        }
+      ],
+      "metadata": {
+        "role_description": "Specialist for PROFINET, HMI, CPU, IO topology and device relationships.",
+        "available_tools": [
+          "search_hybrid",
+          "search_text",
+          "search_figure"
+        ],
+        "objective": "Verify PROFINET/HMI/CPU/IO relationship and connection guidance."
+      }
+    }
+  ],
+  "evidence_pool": {
+    "evidences": [
+      {
+        "evidence_id": "ev_e1af4b6f63c02254",
+        "source": "SAMPLE S7-1500 CPU manual extract",
+        "source_type": "sample_manual",
+        "modality": "figure",
+        "text": "CPU 1517-3 PN/DP front view. Figure 2-237 marks X1 as the first PROFINET IO interface in the lower front connector area. Marker ⑦ points to X1. The interface has two RJ45 ports: X1 P1 and X1 P2.",
+        "retrieval_backend": "sample_fixture",
+        "compact_excerpt": "CPU 1517-3 PN/DP front view. Figure 2-237 marks X1 as the first PROFINET IO interface in the lower front connector area. Marker ⑦ points to X1. The interface has two RJ45 ports: X1 P1 and X1 P2.",
+        "manual_title": "S7-1500 CPU manual",
+        "manual_version": "",
+        "device_family": "",
+        "module_model": "CPU 1517-3 PN/DP",
+        "order_number": "6ES7517-3AP00-0AB0",
+        "page": 2476,
+        "section": "",
+        "figure_id": "fig_cpu1517_3pn_x1_x2",
+        "figure_number": "Figure 2-237",
+        "image_path": "",
+        "chunk_id": "",
+        "document_id": "",
+        "collection_name": "sample_fixture",
+        "query_text": "",
+        "source_path": "",
+        "retrieval_score": 1.0,
+        "raw_distance": null,
+        "normalized_score": 0.752778,
+        "model_match_level": "exact_model",
+        "direct_evidence": true,
+        "quality_score": 1.0,
+        "title": "S7-1500 CPU manual",
+        "module": "CPU 1517-3 PN/DP",
+        "parameter": "X1 PROFINET interface",
+        "agent_names": [
+          "Figure Agent",
+          "Topology Agent"
+        ],
+        "claim_links": [
+          "claim_1091db473de2",
+          "claim_c389d41a4b14"
+        ],
+        "conflict_with": [],
+        "metadata": {
+          "source": "SAMPLE S7-1500 CPU manual extract",
+          "source_type": "sample_manual",
+          "modality": "figure",
+          "page": 2476,
+          "figure_id": "fig_cpu1517_3pn_x1_x2",
+          "figure_number": "Figure 2-237",
+          "title": "CPU 1517-3 PN/DP front view",
+          "manual_title": "S7-1500 CPU manual",
+          "module_model": "CPU 1517-3 PN/DP",
+          "order_number": "6ES7517-3AP00-0AB0",
+          "parameter": "X1 PROFINET interface",
+          "direct_evidence": true,
+          "retrieval_backend": "sample_fixture",
+          "collection_name": "sample_fixture",
+          "raw_distance": null,
+          "normalized_score": 0.8,
+          "query_text": "",
+          "retrieval_timestamp": "2026-07-11T13:33:27+00:00",
+          "retrieval_tool": "search_figure",
+          "model_match_level": "exact_model",
+          "score_components": {
+            "vector_score": 0.752778,
+            "lexical_score": 0.5,
+            "model_match": "exact_model",
+            "model_score": 0.8,
+            "order_number_match": 0.0,
+            "direct_answer_score": 0.8,
+            "modality_score": 0.25,
+            "figure_availability": 0.2,
+            "duplicate_penalty": 0.0,
+            "cross_family_penalty": 0.0
+          },
+          "merged_backends": [
+            "sample_fixture"
+          ]
+        }
+      },
+      {
+        "evidence_id": "ev_582cbfb2d4ebd5c1",
+        "source": "SAMPLE S7-1500 CPU technical data",
+        "source_type": "sample_manual",
+        "modality": "table",
+        "text": "CPU 1517-3 PN/DP X1 is a PROFINET IO interface with ports X1 P1 and X1 P2.",
+        "retrieval_backend": "sample_fixture",
+        "compact_excerpt": "CPU 1517-3 PN/DP X1 is a PROFINET IO interface with ports X1 P1 and X1 P2.",
+        "manual_title": "S7-1500 CPU manual",
+        "manual_version": "",
+        "device_family": "",
+        "module_model": "CPU 1517-3 PN/DP",
+        "order_number": "6ES7517-3AP00-0AB0",
+        "page": 2477,
+        "section": "",
+        "figure_id": "",
+        "figure_number": "",
+        "image_path": "",
+        "chunk_id": "",
+        "document_id": "",
+        "collection_name": "sample_fixture",
+        "query_text": "",
+        "source_path": "",
+        "retrieval_score": 1.0,
+        "raw_distance": null,
+        "normalized_score": 0.623529,
+        "model_match_level": "exact_model",
+        "direct_evidence": true,
+        "quality_score": 1.0,
+        "title": "S7-1500 CPU manual",
+        "module": "CPU 1517-3 PN/DP",
+        "parameter": "X1 port count",
+        "agent_names": [
+          "Topology Agent"
+        ],
+        "claim_links": [
+          "claim_c389d41a4b14"
+        ],
+        "conflict_with": [],
+        "metadata": {
+          "source": "SAMPLE S7-1500 CPU technical data",
+          "source_type": "sample_manual",
+          "modality": "table",
+          "page": 2477,
+          "title": "CPU 1517-3 PN/DP interface data",
+          "manual_title": "S7-1500 CPU manual",
+          "module_model": "CPU 1517-3 PN/DP",
+          "order_number": "6ES7517-3AP00-0AB0",
+          "parameter": "X1 port count",
+          "direct_evidence": true,
+          "retrieval_backend": "sample_fixture",
+          "collection_name": "sample_fixture",
+          "raw_distance": null,
+          "normalized_score": 0.8,
+          "query_text": "",
+          "retrieval_timestamp": "2026-07-11T13:33:27+00:00",
+          "retrieval_tool": "search_hybrid",
+          "model_match_level": "exact_model",
+          "score_components": {
+            "vector_score": 0.623529,
+            "lexical_score": 0.4,
+            "model_match": "exact_model",
+            "model_score": 0.8,
+            "order_number_match": 0.0,
+            "direct_answer_score": 0.8,
+            "modality_score": 0.0,
+            "figure_availability": 0.0,
+            "duplicate_penalty": 0.0,
+            "cross_family_penalty": 0.0
+          }
+        }
+      }
+    ],
+    "agent_claims": {
+      "Figure Agent": [
+        "CPU 1517-3 PN/DP X1 is the first PROFINET IO interface with two RJ45 ports, X1 P1 and X1 P2, in the front connector area."
+      ],
+      "Topology Agent": [
+        "CPU 1517-3 PN/DP topology guidance is supported by cited evidence."
+      ]
+    },
+    "conflicts": [],
+    "metadata": {
+      "rejected_evidence": [],
+      "evidence_count": 2,
+      "backend_counts": {
+        "sample_fixture": 2
+      }
+    }
+  },
+  "judge_decision": {
+    "accepted_agent_outputs": [
+      "Figure Agent",
+      "Topology Agent"
+    ],
+    "rejected_agent_outputs": [],
+    "conflict_groups": [],
+    "supported_claims": [
+      "CPU 1517-3 PN/DP X1 is the first PROFINET IO interface with two RJ45 ports, X1 P1 and X1 P2, in the front connector area.",
+      "CPU 1517-3 PN/DP topology guidance is supported by cited evidence."
+    ],
+    "unsupported_claims": [],
+    "conflicting_claims": [],
+    "final_evidence_ids": [
+      "ev_e1af4b6f63c02254",
+      "ev_582cbfb2d4ebd5c1"
+    ],
+    "need_more_evidence": false,
+    "need_clarification": false,
+    "final_answer": "CPU 1517-3 PN/DP 的 X1 位于模块前部连接区，是第一个 PROFINET IO 接口，端口为 X1 P1、X1 P2，前视图标号为 ⑦。见资料页 2476、Figure 2-237。 PROFINET/HMI 相关注意事项：CPU 1517-3 PN/DP topology guidance is supported by cited evidence.。",
+    "verdict": "PASS",
+    "confidence": "HIGH",
+    "decision_reason": "All accepted claims are supported by Evidence Pool records.",
+    "coverage": {
+      "sq_x1_location": {
+        "answered": true,
+        "supporting_claim_ids": [
+          "claim_1091db473de2"
+        ],
+        "supporting_evidence_ids": [
+          "ev_e1af4b6f63c02254"
+        ]
+      },
+      "sq_x1_ports": {
+        "answered": true,
+        "supporting_claim_ids": [
+          "claim_1091db473de2",
+          "claim_c389d41a4b14"
+        ],
+        "supporting_evidence_ids": [
+          "ev_e1af4b6f63c02254",
+          "ev_582cbfb2d4ebd5c1"
+        ]
+      }
+    },
+    "model_consistency": {
+      "expected_model": "CPU 1517-3 PN/DP",
+      "accepted_levels": {
+        "ev_e1af4b6f63c02254": "exact_model",
+        "ev_582cbfb2d4ebd5c1": "exact_model"
+      },
+      "rejected_evidence_ids": [],
+      "pass": true
+    },
+    "quality_scores": {
+      "ev_e1af4b6f63c02254": 1.0,
+      "ev_582cbfb2d4ebd5c1": 1.0
+    },
+    "metadata": {
+      "judge_role": "Claim-level evidence judge for support, coverage, model consistency and conflicts.",
+      "accepted_claims": [
+        {
+          "claim_id": "claim_1091db473de2",
+          "claim_text": "CPU 1517-3 PN/DP X1 is the first PROFINET IO interface with two RJ45 ports, X1 P1 and X1 P2, in the front connector area.",
+          "claim_type": "location",
+          "evidence_ids": [
+            "ev_e1af4b6f63c02254"
+          ],
+          "model_scope": "CPU 1517-3 PN/DP",
+          "confidence": "HIGH",
+          "direct_support": true,
+          "subquestion_ids": [
+            "sq_x1_location",
+            "sq_x1_ports"
+          ],
+          "metadata": {
+            "figure_id": "fig_cpu1517_3pn_x1_x2",
+            "figure_number": "Figure 2-237",
+            "page": 2476,
+            "location_marker": "⑦",
+            "ports": [
+              "X1 P1",
+              "X1 P2"
+            ],
+            "visual_evidence_status": "page_text_only",
+            "image_path": ""
+          }
+        },
+        {
+          "claim_id": "claim_c389d41a4b14",
+          "claim_text": "CPU 1517-3 PN/DP topology guidance is supported by cited evidence.",
+          "claim_type": "connection",
+          "evidence_ids": [
+            "ev_e1af4b6f63c02254",
+            "ev_582cbfb2d4ebd5c1"
+          ],
+          "model_scope": "CPU 1517-3 PN/DP",
+          "confidence": "HIGH",
+          "direct_support": true,
+          "subquestion_ids": [
+            "sq_x1_ports"
+          ],
+          "metadata": {
+            "interface": "PROFINET",
+            "protocol": "PROFINET",
+            "peer_device": "HMI",
+            "connection_limit": "",
+            "network_requirement": "",
+            "general_guidance": false
+          }
+        }
+      ],
+      "coverage_pass": true,
+      "figure_requirement_pass": true
+    }
+  },
+  "verifier": {
+    "verifier": "answer_evidence_verifier_v2",
+    "missing_evidence_ids": [],
+    "unsupported_claim_ids": [],
+    "model_mismatch_claim_ids": [],
+    "numeric_mismatch_claim_ids": [],
+    "missing_figure_claim_ids": [],
+    "raw_ocr_dump_detected": false,
+    "coverage_pass": true,
+    "model_consistency_pass": true,
+    "conciseness_pass": true,
+    "figure_requirement_pass": true,
+    "has_text_support": true,
+    "has_page_or_figure": true,
+    "unsupported_claims": [],
+    "pass": true
+  },
+  "final_answer": "CPU 1517-3 PN/DP 的 X1 位于模块前部连接区，是第一个 PROFINET IO 接口，端口为 X1 P1、X1 P2，前视图标号为 ⑦。见资料页 2476、Figure 2-237。 PROFINET/HMI 相关注意事项：CPU 1517-3 PN/DP topology guidance is supported by cited evidence.。",
+  "question_type": "FIGURE",
+  "extracted_slots": {
+    "module_model": "CPU 1517-3 PN/DP",
+    "parameter_name": "接口",
+    "interface_name": "X1",
+    "port_number": "X1",
+    "device_type": "CPU",
+    "operating_condition": "offline_lookup",
+    "expected_output_type": "answer"
+  },
+  "missing_slots": [],
+  "operation_risk_level": "SAFE",
+  "action": "ANSWER",
+  "routing_strategy": "adaptive",
+  "selected_agents": [
+    "Figure Agent",
+    "Topology Agent"
+  ],
+  "execution_order": [
+    "Figure Agent",
+    "Topology Agent"
+  ],
+  "evidence_items": [
+    {
+      "evidence_id": "ev_e1af4b6f63c02254",
+      "source": "SAMPLE S7-1500 CPU manual extract",
+      "source_type": "sample_manual",
+      "modality": "figure",
+      "text": "CPU 1517-3 PN/DP front view. Figure 2-237 marks X1 as the first PROFINET IO interface in the lower front connector area. Marker ⑦ points to X1. The interface has two RJ45 ports: X1 P1 and X1 P2.",
+      "retrieval_backend": "sample_fixture",
+      "compact_excerpt": "CPU 1517-3 PN/DP front view. Figure 2-237 marks X1 as the first PROFINET IO interface in the lower front connector area. Marker ⑦ points to X1. The interface has two RJ45 ports: X1 P1 and X1 P2.",
+      "manual_title": "S7-1500 CPU manual",
+      "manual_version": "",
+      "device_family": "",
+      "module_model": "CPU 1517-3 PN/DP",
+      "order_number": "6ES7517-3AP00-0AB0",
+      "page": 2476,
+      "section": "",
+      "figure_id": "fig_cpu1517_3pn_x1_x2",
+      "figure_number": "Figure 2-237",
+      "image_path": "",
+      "chunk_id": "",
+      "document_id": "",
+      "collection_name": "sample_fixture",
+      "query_text": "",
+      "source_path": "",
+      "retrieval_score": 1.0,
+      "raw_distance": null,
+      "normalized_score": 0.752778,
+      "model_match_level": "exact_model",
+      "direct_evidence": true,
+      "quality_score": 1.0,
+      "title": "S7-1500 CPU manual",
+      "module": "CPU 1517-3 PN/DP",
+      "parameter": "X1 PROFINET interface",
+      "agent_names": [
+        "Figure Agent",
+        "Topology Agent"
+      ],
+      "claim_links": [
+        "claim_1091db473de2",
+        "claim_c389d41a4b14"
+      ],
+      "conflict_with": [],
+      "metadata": {
+        "source": "SAMPLE S7-1500 CPU manual extract",
+        "source_type": "sample_manual",
+        "modality": "figure",
+        "page": 2476,
+        "figure_id": "fig_cpu1517_3pn_x1_x2",
+        "figure_number": "Figure 2-237",
+        "title": "CPU 1517-3 PN/DP front view",
+        "manual_title": "S7-1500 CPU manual",
+        "module_model": "CPU 1517-3 PN/DP",
+        "order_number": "6ES7517-3AP00-0AB0",
+        "parameter": "X1 PROFINET interface",
+        "direct_evidence": true,
+        "retrieval_backend": "sample_fixture",
+        "collection_name": "sample_fixture",
+        "raw_distance": null,
+        "normalized_score": 0.8,
+        "query_text": "",
+        "retrieval_timestamp": "2026-07-11T13:33:27+00:00",
+        "retrieval_tool": "search_figure",
+        "model_match_level": "exact_model",
+        "score_components": {
+          "vector_score": 0.752778,
+          "lexical_score": 0.5,
+          "model_match": "exact_model",
+          "model_score": 0.8,
+          "order_number_match": 0.0,
+          "direct_answer_score": 0.8,
+          "modality_score": 0.25,
+          "figure_availability": 0.2,
+          "duplicate_penalty": 0.0,
+          "cross_family_penalty": 0.0
+        },
+        "merged_backends": [
+          "sample_fixture"
+        ]
+      }
+    },
+    {
+      "evidence_id": "ev_582cbfb2d4ebd5c1",
+      "source": "SAMPLE S7-1500 CPU technical data",
+      "source_type": "sample_manual",
+      "modality": "table",
+      "text": "CPU 1517-3 PN/DP X1 is a PROFINET IO interface with ports X1 P1 and X1 P2.",
+      "retrieval_backend": "sample_fixture",
+      "compact_excerpt": "CPU 1517-3 PN/DP X1 is a PROFINET IO interface with ports X1 P1 and X1 P2.",
+      "manual_title": "S7-1500 CPU manual",
+      "manual_version": "",
+      "device_family": "",
+      "module_model": "CPU 1517-3 PN/DP",
+      "order_number": "6ES7517-3AP00-0AB0",
+      "page": 2477,
+      "section": "",
+      "figure_id": "",
+      "figure_number": "",
+      "image_path": "",
+      "chunk_id": "",
+      "document_id": "",
+      "collection_name": "sample_fixture",
+      "query_text": "",
+      "source_path": "",
+      "retrieval_score": 1.0,
+      "raw_distance": null,
+      "normalized_score": 0.623529,
+      "model_match_level": "exact_model",
+      "direct_evidence": true,
+      "quality_score": 1.0,
+      "title": "S7-1500 CPU manual",
+      "module": "CPU 1517-3 PN/DP",
+      "parameter": "X1 port count",
+      "agent_names": [
+        "Topology Agent"
+      ],
+      "claim_links": [
+        "claim_c389d41a4b14"
+      ],
+      "conflict_with": [],
+      "metadata": {
+        "source": "SAMPLE S7-1500 CPU technical data",
+        "source_type": "sample_manual",
+        "modality": "table",
+        "page": 2477,
+        "title": "CPU 1517-3 PN/DP interface data",
+        "manual_title": "S7-1500 CPU manual",
+        "module_model": "CPU 1517-3 PN/DP",
+        "order_number": "6ES7517-3AP00-0AB0",
+        "parameter": "X1 port count",
+        "direct_evidence": true,
+        "retrieval_backend": "sample_fixture",
+        "collection_name": "sample_fixture",
+        "raw_distance": null,
+        "normalized_score": 0.8,
+        "query_text": "",
+        "retrieval_timestamp": "2026-07-11T13:33:27+00:00",
+        "retrieval_tool": "search_hybrid",
+        "model_match_level": "exact_model",
+        "score_components": {
+          "vector_score": 0.623529,
+          "lexical_score": 0.4,
+          "model_match": "exact_model",
+          "model_score": 0.8,
+          "order_number_match": 0.0,
+          "direct_answer_score": 0.8,
+          "modality_score": 0.0,
+          "figure_availability": 0.0,
+          "duplicate_penalty": 0.0,
+          "cross_family_penalty": 0.0
+        }
+      }
+    }
+  ],
+  "supported_claims": [
+    "CPU 1517-3 PN/DP X1 is the first PROFINET IO interface with two RJ45 ports, X1 P1 and X1 P2, in the front connector area.",
+    "CPU 1517-3 PN/DP topology guidance is supported by cited evidence."
+  ],
+  "unsupported_claims": [],
+  "conflicting_claims": [],
+  "verdict": "PASS",
+  "confidence": "HIGH",
+  "total_agent_calls": 2,
+  "total_tool_calls": 2,
+  "total_latency_ms": 13,
+  "generated_at": "2026-07-11 21:33:27",
+  "version": "full_rag_multimodal_v2",
+  "work_order": {
+    "user_query": "CPU 1517-3 PN 的 X1 接口在哪里？",
+    "context": "",
+    "device_info": {
+      "module_model": "CPU 1517-3 PN/DP",
+      "parameter_name": "接口",
+      "interface_name": "X1",
+      "port_number": "X1",
+      "device_type": "CPU",
+      "operating_condition": "offline_lookup",
+      "expected_output_type": "answer"
+    },
+    "phenomenon": "",
+    "verified_evidence": [
+      "ev_e1af4b6f63c02254",
+      "ev_582cbfb2d4ebd5c1"
+    ],
+    "risk_tip": "No dangerous industrial operation detected.",
+    "suggested_checks": [
+      "核对型号、订货号、接口名和页码。",
+      "将资料查证结果交由具备资质人员复核。"
+    ],
+    "manual_confirmation_items": [],
+    "final_answer": "CPU 1517-3 PN/DP 的 X1 位于模块前部连接区，是第一个 PROFINET IO 接口，端口为 X1 P1、X1 P2，前视图标号为 ⑦。见资料页 2476、Figure 2-237。 PROFINET/HMI 相关注意事项：CPU 1517-3 PN/DP topology guidance is supported by cited evidence.。",
+    "generated_at": "2026-07-11 21:33:27"
+  },
+  "metrics": {
+    "selected_agents": [
+      "Figure Agent",
+      "Topology Agent"
+    ],
+    "execution_order": [
+      "Figure Agent",
+      "Topology Agent"
+    ],
+    "parallel_groups": [
+      [
+        "Figure Agent",
+        "Topology Agent"
+      ]
+    ],
+    "total_agent_calls": 2,
+    "total_tool_calls": 2,
+    "tool_call_count": 2,
+    "total_latency_ms": 13,
+    "agent_latency_ms": {
+      "Figure Agent": 3,
+      "Topology Agent": 2
+    },
+    "routing_reason": {
+      "Figure Agent": "score=12.20; question_type=FIGURE; subquestions=2",
+      "Topology Agent": "score=3.60; question_type=FIGURE; subquestions=2"
+    },
+    "early_stop_reason": "sufficient_evidence_after_adaptive_selection",
+    "mode": "SAMPLE",
+    "routing_strategy": "adaptive",
+    "feature_switches": {
+      "enable_dynamic_routing": true,
+      "enable_query_decomposition": true,
+      "enable_model_filter": true,
+      "enable_figure_backend": true,
+      "enable_judge": true,
+      "enable_verifier": true,
+      "enable_second_retrieval": true,
+      "enable_evidence_reranker": true
+    },
+    "retrieval_backend_audit": {
+      "mode": "SAMPLE",
+      "text_backend_active": false,
+      "figure_backend_active": false,
+      "jsonl_fallback_active": false,
+      "sample_fixture_active": true,
+      "errors": []
+    },
+    "subquestion_count": 2
+  },
+  "warnings": []
+}

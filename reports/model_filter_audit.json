@@ -1,0 +1,20 @@
+{
+  "environment": "local_sample_regression",
+  "query_model": "CPU 1517-3 PN/DP",
+  "query_order_number": "6ES7517-3AP00-0AB0",
+  "accepted_evidence": [
+    {
+      "page": 2476,
+      "figure_number": "Figure 2-237",
+      "model_match_level": "exact_model"
+    },
+    {
+      "page": 2477,
+      "model_match_level": "exact_model"
+    }
+  ],
+  "cross_family_fixture_candidate_page": 533,
+  "final_evidence_excludes_pages": [533, 535],
+  "cross_family_contamination_detected": false,
+  "verification": "tests/test_cross_family_rejection.py and SAMPLE X1 acceptance"
+}

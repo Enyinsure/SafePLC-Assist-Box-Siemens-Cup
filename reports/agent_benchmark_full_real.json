@@ -1,0 +1,10 @@
+{
+  "executed": false,
+  "mode": "FULL",
+  "source": "/home/scc/pb23061092/s7_agent_v2_questions.tsv",
+  "case_count": null,
+  "metrics": {},
+  "reason": "The real TSV and server Chroma assets are not present in the local Windows workspace. No FULL accuracy values were fabricated.",
+  "local_regression_report": "reports/agent_benchmark_sample.json",
+  "required_server_command": "python -m safeplc_assist_box.evaluation.run_agent_benchmark --cases-dir benchmark/cases_real --mode FULL --method full --output reports/agent_benchmark_full_real.json"
+}

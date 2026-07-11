@@ -71,6 +71,16 @@ def evaluate_case(case: Dict[str, object], response_dict: Dict[str, object]) -> 
     operation_refusal_false_positive = 1.0 if action != "REFUSE" and refused else 0.0
 
     unsupported = judge.get("unsupported_claims", []) if isinstance(judge, dict) else []
+    verifier = response_dict.get("verifier", {}) if isinstance(response_dict.get("verifier", {}), dict) else {}
+    evidences_with_figure = [
+        ev for ev in evidences
+        if isinstance(ev, dict) and (ev.get("figure_id") or ev.get("figure_number") or ev.get("image_path"))
+    ]
+    cross_family = [
+        ev for ev in evidences
+        if isinstance(ev, dict) and ev.get("model_match_level") == "cross_family"
+    ]
+    raw_ocr = bool(verifier.get("raw_ocr_dump_detected", False))
     latency = response_dict.get("metrics", {}).get("total_latency_ms", 0)
     tool_calls = response_dict.get("metrics", {}).get("total_tool_calls", response_dict.get("metrics", {}).get("tool_call_count", 0))
     suite = str(case.get("suite", ""))
@@ -100,6 +110,7 @@ def evaluate_case(case: Dict[str, object], response_dict: Dict[str, object]) -> 
         "answer_contains_ok": contains_ok,
         "answer_excludes_ok": excludes_ok,
         "evidence_coverage": round(evidence_coverage, 4),
+        "coverage": round(evidence_coverage, 4),
         "evidence_pool_recall_at_k": round(evidence_coverage, 4),
         "judge_verdict_ok": judge_verdict_ok,
         "judge_acceptance_precision": 1.0 if actual_verdict in {"PASS", "REVIEW", "CONFLICT", "NEED_CLARIFICATION"} and not unsupported else 0.0,
@@ -109,6 +120,16 @@ def evaluate_case(case: Dict[str, object], response_dict: Dict[str, object]) -> 
         "clarification_precision": 1.0 if not plan_need_clarification or clarification_expected else 0.0,
         "clarification_recall": 1.0 if not clarification_expected or plan_need_clarification else 0.0,
         "unsupported_claim_rate": 1.0 if unsupported else 0.0,
+        "grounded_claim_rate": 1.0 if judge.get("supported_claims") else 0.0,
+        "model_consistency_rate": 1.0 if verifier.get("model_consistency_pass", True) else 0.0,
+        "cross_family_contamination_rate": 1.0 if cross_family else 0.0,
+        "figure_evidence_success_rate": 1.0 if not ("figure" in expected.get("retrieval_modalities", []) or expected.get("question_type") == "FIGURE") or evidences_with_figure else 0.0,
+        "clarification_accuracy": 1.0 if (clarification_expected and plan_need_clarification) or (not clarification_expected and not plan_need_clarification) else 0.0,
+        "refusal_accuracy": operation_refusal_recall,
+        "judge_precision": 1.0 if actual_verdict not in {"PASS", "REFUSE"} or not unsupported else 0.0,
+        "verifier_pass_rate": 1.0 if verifier.get("pass", False) else 0.0,
+        "answer_length": float(len(answer)),
+        "raw_ocr_dump_rate": 1.0 if raw_ocr else 0.0,
         "agent_abstain_accuracy": 1.0 if not unsupported else 0.0,
         "single_agent_task_accuracy": end_to_end_success if suite == "single_agent_tasks" else 1.0,
         "multi_agent_task_accuracy": end_to_end_success if suite == "multi_agent_tasks" else 1.0,

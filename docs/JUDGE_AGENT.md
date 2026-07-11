@@ -2,7 +2,7 @@
 
 The Judge Agent reads all `AgentResult` objects and the final `EvidencePool`.
 
-It accepts outputs that cite evidence, rejects abstained or unsupported outputs, keeps conflict groups, and emits:
+It evaluates each structured claim for subquestion coverage, evidence existence, model/order-number consistency, directness, numeric/unit support, figure metadata, cross-family contamination, duplicate/conflicting evidence, and concise output. It emits:
 
 - accepted and rejected agents
 - supported and unsupported claims
@@ -13,6 +13,8 @@ It accepts outputs that cite evidence, rejects abstained or unsupported outputs,
 - verdict
 - confidence
 - decision reason
+- per-subquestion coverage
+- model consistency details
+- quality scores
 
-It does not invent industrial parameters from model knowledge. No evidence means no `PASS`.
-
+It does not invent industrial parameters from model knowledge. No evidence means no `PASS`; missing subtask coverage yields `PARTIAL` or `NEED_MORE_EVIDENCE`, and unresolved model conflicts cannot be decided by majority vote.
