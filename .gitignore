@@ -6,6 +6,8 @@ __pycache__/
 tmp/
 temp/
 .env
+*.local.env
+config/full.env
 .local/
 *.key
 *.pem
@@ -29,4 +31,11 @@ mineru_models/
 SafePLC_partner_download_bundle*
 s7_full_pages.jsonl
 s7_full_chunks.jsonl
+full_*.json
+pytest_server.log
+pytest_server_after_repair.log
+reports/runtime/
+s7_figure_chunks*.jsonl
+figure_cards*.jsonl
+visual_candidate_pages/
 .pytest_cache/

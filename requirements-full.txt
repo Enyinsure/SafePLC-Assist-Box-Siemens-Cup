@@ -1,0 +1,7 @@
+# Optional FULL-mode runtime dependencies.
+# Pinning is intentionally avoided here so the server can keep its verified stack.
+chromadb
+sentence-transformers
+numpy
+pandas
+Pillow

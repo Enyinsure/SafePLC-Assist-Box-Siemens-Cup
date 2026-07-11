@@ -26,10 +26,14 @@ class ExecutionMode(str, Enum):
 
 class JudgeVerdict(str, Enum):
     PASS = "PASS"
+    PARTIAL = "PARTIAL"
     REVIEW = "REVIEW"
     FAIL = "FAIL"
     CONFLICT = "CONFLICT"
+    NEED_MORE_EVIDENCE = "NEED_MORE_EVIDENCE"
     NEED_CLARIFICATION = "NEED_CLARIFICATION"
+    ABSTAIN = "ABSTAIN"
+    REFUSE = "REFUSE"
 
 
 class JudgeConfidence(str, Enum):
@@ -50,6 +54,18 @@ class SlotResult:
 
 
 @dataclass
+class SubQuestion:
+    subquestion_id: str
+    text: str
+    objective: str
+    expected_agents: List[str] = field(default_factory=list)
+    required_modalities: List[str] = field(default_factory=list)
+    required_slots: List[str] = field(default_factory=list)
+    answered: bool = False
+    metadata: Dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass
 class QueryContext:
     original_query: str
     context: str = ""
@@ -64,6 +80,7 @@ class QueryContext:
     is_dangerous_operation: bool = False
     expected_output_type: str = "answer"
     clarify_question: str = ""
+    subquestions: List[SubQuestion] = field(default_factory=list)
     metadata: Dict[str, Any] = field(default_factory=dict)
 
     def slot_values(self) -> Dict[str, str]:
@@ -86,6 +103,7 @@ class AgentTask:
     tool_names: List[str] = field(default_factory=list)
     constraints: List[str] = field(default_factory=list)
     depends_on: List[str] = field(default_factory=list)
+    subquestion_ids: List[str] = field(default_factory=list)
     metadata: Dict[str, Any] = field(default_factory=dict)
 
 
@@ -128,30 +146,74 @@ class AgentEvidence:
     source_type: str
     modality: str
     text: str
+    retrieval_backend: str = ""
+    compact_excerpt: str = ""
+    manual_title: str = ""
+    manual_version: str = ""
+    device_family: str = ""
+    module_model: str = ""
+    order_number: str = ""
     page: Optional[int] = None
     section: str = ""
     figure_id: str = ""
+    figure_number: str = ""
+    image_path: str = ""
+    chunk_id: str = ""
+    document_id: str = ""
+    collection_name: str = ""
+    query_text: str = ""
+    source_path: str = ""
+    retrieval_score: float = 0.0
+    raw_distance: Optional[float] = None
+    normalized_score: float = 0.0
+    model_match_level: str = "unknown"
+    direct_evidence: bool = False
+    quality_score: float = 0.0
     title: str = ""
     module: str = ""
-    order_number: str = ""
     parameter: str = ""
-    retrieval_score: float = 0.0
     agent_names: List[str] = field(default_factory=list)
     claim_links: List[str] = field(default_factory=list)
     conflict_with: List[str] = field(default_factory=list)
     metadata: Dict[str, Any] = field(default_factory=dict)
 
+    def __post_init__(self) -> None:
+        if not self.compact_excerpt:
+            self.compact_excerpt = compact_text(self.text)
+        if not self.manual_title and self.title:
+            self.manual_title = self.title
+        if not self.module_model and self.module:
+            self.module_model = self.module
+        if not self.normalized_score and self.retrieval_score:
+            self.normalized_score = self.retrieval_score
+
     def signature(self) -> str:
         fields = [
             self.source.lower().strip(),
             self.source_type.lower().strip(),
+            self.retrieval_backend.lower().strip(),
             self.modality.lower().strip(),
             str(self.page or ""),
+            self.chunk_id.lower().strip(),
             self.figure_id.lower().strip(),
-            self.title.lower().strip(),
-            self.text.lower().strip()[:240],
+            self.figure_number.lower().strip(),
+            self.document_id.lower().strip(),
+            self.text.lower().strip()[:320],
         ]
         return "|".join(fields)
+
+
+@dataclass
+class AgentClaim:
+    claim_id: str
+    claim_text: str
+    claim_type: str
+    evidence_ids: List[str] = field(default_factory=list)
+    model_scope: str = ""
+    confidence: str = "NOT_AVAILABLE"
+    direct_support: bool = False
+    subquestion_ids: List[str] = field(default_factory=list)
+    metadata: Dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
@@ -170,6 +232,7 @@ class AgentResult:
     tool_calls: int = 0
     abstain_reason: str = ""
     observations: List[AgentObservation] = field(default_factory=list)
+    claims: List[AgentClaim] = field(default_factory=list)
     metadata: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -181,6 +244,7 @@ class EvidencePool:
     evidences: List[AgentEvidence] = field(default_factory=list)
     agent_claims: Dict[str, List[str]] = field(default_factory=dict)
     conflicts: List[Dict[str, Any]] = field(default_factory=list)
+    metadata: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         return to_plain_dict(self)
@@ -201,6 +265,9 @@ class JudgeDecision:
     verdict: str
     confidence: str
     decision_reason: str
+    coverage: Dict[str, Dict[str, Any]] = field(default_factory=dict)
+    model_consistency: Dict[str, Any] = field(default_factory=dict)
+    quality_scores: Dict[str, float] = field(default_factory=dict)
     metadata: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -237,13 +304,20 @@ class SafePLCResponse:
     total_tool_calls: int = 0
     total_latency_ms: int = 0
     generated_at: str = ""
-    version: str = "agent_first_v1"
+    version: str = "full_rag_multimodal_v2"
     work_order: Dict[str, Any] = field(default_factory=dict)
     metrics: Dict[str, Any] = field(default_factory=dict)
     warnings: List[str] = field(default_factory=list)
 
     def to_dict(self) -> Dict[str, Any]:
         return to_plain_dict(self)
+
+
+def compact_text(text: str, limit: int = 320) -> str:
+    clean = " ".join(str(text or "").split())
+    if len(clean) <= limit:
+        return clean
+    return clean[: max(0, limit - 3)].rstrip() + "..."
 
 
 def to_plain_dict(value: Any) -> Any:
