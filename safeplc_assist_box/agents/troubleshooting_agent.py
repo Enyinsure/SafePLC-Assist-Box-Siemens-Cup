@@ -28,11 +28,12 @@ class TroubleshootingAgent(BaseAgent):
         answer = f"{claim} Evidence: {top.manual_title or top.source}, page {top.page or '-'}."
         return self._finish_with_evidence(
             task,
-            evidences,
+            [top],
             evidence_pool,
             answer_fragment=answer,
             claim=claim,
             confidence="MEDIUM",
             status=AgentStatus.ANSWERED.value,
             claim_type="diagnosis",
+            claim_metadata={"general_guidance": True, "manual_confirmation_required": True},
         )

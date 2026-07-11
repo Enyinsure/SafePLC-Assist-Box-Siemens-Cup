@@ -37,6 +37,7 @@ class WiringAgent(BaseAgent):
         if not evidences:
             return self._abstain(task, "No wiring or terminal evidence was found.")
         top = evidences[0]
+        general = top.model_match_level == "same_family_general"
         claim = (
             "具备资质 personnel must verify wiring and terminal work after stop, isolation and power-off confirmation; "
             "the work must follow cited terminal/cabling evidence."
@@ -44,7 +45,7 @@ class WiringAgent(BaseAgent):
         answer = f"{claim} Evidence: {top.manual_title or top.source}, page {top.page or '-'}."
         return self._finish_with_evidence(
             task,
-            evidences,
+            [top],
             evidence_pool,
             answer_fragment=answer,
             claim=claim,
@@ -58,5 +59,6 @@ class WiringAgent(BaseAgent):
                 "polarity": top.metadata.get("polarity", ""),
                 "connection_scope": top.module_model or top.device_family,
                 "warning": "qualified review required",
+                "general_guidance": general,
             },
         )

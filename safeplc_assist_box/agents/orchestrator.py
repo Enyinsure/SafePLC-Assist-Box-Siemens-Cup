@@ -112,6 +112,7 @@ def run_agent_system(
             early_stop_reason = "sufficient_evidence_after_adaptive_selection"
 
     pool_schema = evidence_pool.to_schema()
+    pool_schema.metadata["retrieval_backend_audit"] = dict(registry.backend_audit)
     if features["enable_judge"]:
         judge_decision = JudgeAgent().decide(query_context, results, pool_schema)
     else:

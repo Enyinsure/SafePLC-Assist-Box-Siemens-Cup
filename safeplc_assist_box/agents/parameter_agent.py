@@ -21,14 +21,11 @@ class ParameterAgent(BaseAgent):
         if not evidences:
             return self._abstain(task, "No parameter table or text evidence was found.")
         top = evidences[0]
-        claim = (
-            f"{top.module_model or top.module or 'Target module'} parameter '{top.parameter or 'requested parameter'}' "
-            f"is supported by {top.manual_title or top.source} page {top.page or '-'}."
-        )
+        claim = f"{top.module_model or top.module or 'Target module'}: {top.compact_excerpt}"
         answer = f"{claim} Excerpt: {top.compact_excerpt}"
         return self._finish_with_evidence(
             task,
-            evidences,
+            [top],
             evidence_pool,
             answer_fragment=answer,
             claim=claim,

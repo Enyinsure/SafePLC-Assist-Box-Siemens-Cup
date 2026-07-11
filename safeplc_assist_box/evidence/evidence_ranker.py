@@ -35,10 +35,13 @@ def rank_evidence(
         vector_score = float(evidence.normalized_score or evidence.retrieval_score or 0.0)
         lexical_score = _lexical_score(query, evidence)
         direct_score = _directness(query, evidence)
+        location_query = any(token in query.lower() for token in ("哪里", "位置", "where", "front", "图示", "前视图"))
+        if not location_query:
+            direct_score *= min(1.0, lexical_score * 2.0)
         modality_score = 0.3 if required_modality and evidence.modality == required_modality else 0.0
         page_score = 0.15 if evidence.page is not None else 0.0
-        figure_score = 0.25 if (evidence.figure_id or evidence.figure_number) else 0.0
-        image_score = 0.2 if evidence.image_exists or evidence.visual_evidence_status == "image_available" else 0.0
+        figure_score = 0.25 if location_query and (evidence.figure_id or evidence.figure_number) else 0.0
+        image_score = 0.2 if location_query and (evidence.image_exists or evidence.visual_evidence_status == "image_available") else 0.0
         cross_penalty = 4.0 if model_match == "cross_family" else 0.0
         components = {
             "vector_score": vector_score,
@@ -57,7 +60,7 @@ def rank_evidence(
         raw_score = (
             0.45 * vector_score
             + 0.35 * lexical_score
-            + 1.2 * exact_model
+            + 1.2 * exact_model * max(0.01, lexical_score * lexical_score)
             + 1.5 * order_number
             + 0.2 * same_family
             + direct_score
@@ -108,13 +111,31 @@ def rank_evidence(
 
 
 def _tokens(text: str) -> List[str]:
-    return list(
+    tokens = list(
         dict.fromkeys(
             token.lower()
             for token in re.findall(r"[A-Za-z0-9][A-Za-z0-9_/\-]*|[\u4e00-\u9fff]{2,}", text or "")
             if token.strip()
         )
     )
+    low = (text or "").lower()
+    aliases = {
+        "通信": ["communication"],
+        "指示灯": ["led"],
+        "异常": ["fault", "diagnostics"],
+        "故障": ["fault", "diagnostics"],
+        "排查": ["check", "diagnostics"],
+        "接线": ["wiring", "terminal"],
+        "端子": ["terminal", "wiring"],
+        "电源": ["power", "voltage"],
+        "电压": ["voltage"],
+        "位置": ["location", "front"],
+        "哪里": ["location", "front"],
+    }
+    for marker, additions in aliases.items():
+        if marker in low:
+            tokens.extend(item for item in additions if item not in tokens)
+    return tokens
 
 
 def _lexical_score(query: str, evidence: AgentEvidence) -> float:
@@ -149,6 +170,14 @@ def _directness(query: str, evidence: AgentEvidence) -> float:
             score += 0.2
     if "x1" in low_query and "x1" in low_text:
         score += 0.25
+    if any(token in low_query for token in ("通信", "指示灯", "故障", "异常", "troubleshoot")) and any(
+        token in low_text for token in ("communication", "led", "fault", "diagnostic", "alarm")
+    ):
+        score += 0.8
+    if any(token in low_query for token in ("接线", "端子", "wiring")) and any(
+        token in low_text for token in ("wiring", "terminal", "power-off", "cabling")
+    ):
+        score += 0.8
     return score
 
 

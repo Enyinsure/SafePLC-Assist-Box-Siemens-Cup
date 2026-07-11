@@ -72,7 +72,8 @@ class QueryDecomposer:
                     metadata={"trigger": "PROFINET/HMI", "source_span": query},
                 )
             )
-        if any(token in query for token in ["注意", "组态", "IP", "ip", "布线"]):
+        network_context = any(token in low for token in ["profinet", "hmi", "网络", "network", "ip", "组态"])
+        if network_context and any(token in low for token in ["注意", "组态", "ip", "布线", "network"]):
             subquestions.append(
                 SubQuestion(
                     subquestion_id="sq_network_notes",

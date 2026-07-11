@@ -25,12 +25,13 @@ class FigureAgent(BaseAgent):
         if not has_figure_ref:
             return self._abstain(task, "Figure task retrieved text without figure_id, figure_number or page.")
 
-        visual_status = top.metadata.get("visual_evidence_status", "image_available" if top.image_path else "page_text_only")
+        visual_status = top.visual_evidence_status or top.metadata.get("visual_evidence_status", "missing")
+        ports_requested = "sq_x1_ports" in (getattr(task, "subquestion_ids", []) or [])
         claim = (
             f"{top.module_model or top.module or 'Target module'} X1 is located in the front connector area; "
-            f"the cited figure/page identifies X1 and its ports."
+            f"the cited figure/page identifies X1."
         )
-        if "x1 p1" in top.text.lower() or "x1 p2" in top.text.lower():
+        if ports_requested and "x1 p1" in top.text.lower() and "x1 p2" in top.text.lower():
             claim = (
                 f"{top.module_model or top.module or 'Target module'} X1 is the first PROFINET IO interface "
                 "with two RJ45 ports, X1 P1 and X1 P2, in the front connector area."
@@ -41,12 +42,12 @@ class FigureAgent(BaseAgent):
         )
         return self._finish_with_evidence(
             task,
-            evidences,
+            [top],
             evidence_pool,
             answer_fragment=answer,
             claim=claim,
-            confidence="HIGH" if top.figure_id or top.figure_number else "MEDIUM",
-            status=AgentStatus.ANSWERED.value if top.figure_id or top.figure_number else AgentStatus.PARTIAL.value,
+            confidence="HIGH" if visual_status == "image_available" else "MEDIUM",
+            status=AgentStatus.ANSWERED.value if visual_status == "image_available" else AgentStatus.PARTIAL.value,
             claim_type="location",
             direct_support=bool(top.direct_evidence or top.figure_id or top.figure_number),
             claim_metadata={
@@ -54,8 +55,8 @@ class FigureAgent(BaseAgent):
                 "figure_number": top.figure_number,
                 "page": top.page,
                 "location_marker": "⑦" if "⑦" in top.text or "marker ⑦" in top.text else "",
-                "ports": ["X1 P1", "X1 P2"] if "x1 p1" in top.text.lower() and "x1 p2" in top.text.lower() else [],
+                "ports": ["X1 P1", "X1 P2"] if ports_requested and "x1 p1" in top.text.lower() and "x1 p2" in top.text.lower() else [],
                 "visual_evidence_status": visual_status,
-                "image_path": top.image_path,
+                "image_path": top.resolved_image_path,
             },
         )

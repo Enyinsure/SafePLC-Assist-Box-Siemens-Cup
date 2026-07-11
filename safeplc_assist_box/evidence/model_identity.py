@@ -52,8 +52,8 @@ def normalize_model(text: str) -> str:
 
 
 def extract_order_numbers(text: str) -> List[str]:
-    normalized = normalize_text(text).replace(" ", "")
-    return list(dict.fromkeys(re.findall(r"6ES7[A-Z0-9-]{5,}", normalized)))
+    normalized = normalize_text(text)
+    return list(dict.fromkeys(re.findall(r"\b6ES7[A-Z0-9-]{5,}\b", normalized)))
 
 
 def extract_model_identity(text: str) -> ModelIdentity:
@@ -86,14 +86,17 @@ def extract_model_identity(text: str) -> ModelIdentity:
             product_type = "ET"
             family = model
     if not model:
-        ps = re.search(r"\b(PS|PM)\s+([^,;]+?)(?=\s+(?:CPU|SM|IM|CM|CP|TM|ET)\b|$)", normalized)
+        ps = re.search(
+            r"\b(PS|PM)\s+((?:\d+\s*W\s+)?[\d/]+\s*VDC(?:\s+HF)?|[A-Z0-9][A-Z0-9./-]*(?:\s+[A-Z0-9][A-Z0-9./-]*){0,3})",
+            normalized,
+        )
         if ps:
             product_type = ps.group(1)
             model = re.sub(r"\s+", " ", f"{product_type} {ps.group(2).strip()}")
             variant = "HF" if re.search(r"\bHF\b", model) else ""
             family = "S7-1500 POWER"
     if not model:
-        module = re.search(r"\b(SM|IM|CM|CP|TM)\s*([A-Z0-9-]+)?(?:\s+(DI|DQ|AI|AQ))?\b", normalized)
+        module = re.search(r"\b(SM|IM|CM|CP|TM)\b\s*([A-Z0-9-]+)?(?:\s+(DI|DQ|AI|AQ))?\b", normalized)
         if module:
             product_type = module.group(1)
             suffix = " ".join(part for part in (module.group(2), module.group(3)) if part)
@@ -137,7 +140,8 @@ def is_redundant_family_text(text: str) -> bool:
 
 def classify_model_match(query: str, evidence: AgentEvidence) -> str:
     expected = extract_model_identity(query)
-    actual = extract_model_identity(
+    actual = extract_model_identity(evidence.module_model or evidence.module or "")
+    secondary = extract_model_identity(
         " ".join(
             [
                 evidence.module_model or "",
@@ -149,6 +153,15 @@ def classify_model_match(query: str, evidence: AgentEvidence) -> str:
             ]
         )
     )
+    actual.order_numbers = list(dict.fromkeys(actual.order_numbers + secondary.order_numbers))
+    actual.family_hints = list(dict.fromkeys(actual.family_hints + secondary.family_hints))
+    if not actual.normalized_model and secondary.normalized_model:
+        actual.normalized_model = secondary.normalized_model
+        actual.normalized_models = secondary.normalized_models
+        actual.aliases = secondary.aliases
+        actual.product_type = secondary.product_type
+        actual.device_family = secondary.device_family
+        actual.variant = secondary.variant
     if expected.order_numbers:
         if set(expected.order_numbers) & set(actual.order_numbers):
             return "exact_order_number"
@@ -165,11 +178,11 @@ def classify_model_match(query: str, evidence: AgentEvidence) -> str:
             return "compatible_alias"
         if actual.normalized_model:
             return "cross_family"
-        if actual.device_family and actual.device_family == expected.device_family:
+        if expected.device_family and expected.device_family in actual.family_hints:
             return "same_family_general"
         return "unknown"
     if expected.device_family and actual.device_family:
-        return "same_family_general" if expected.device_family == actual.device_family else "cross_family"
+        return "same_family_general" if expected.device_family in actual.family_hints else "cross_family"
     if actual.device_family:
         return "same_family_general"
     return "unknown"

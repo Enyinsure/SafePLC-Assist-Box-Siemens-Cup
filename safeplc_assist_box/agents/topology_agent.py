@@ -20,7 +20,18 @@ class TopologyAgent(BaseAgent):
         evidences = registry.search_hybrid(query, modalities=["text", "table", "figure"], top_k=6)
         if not evidences:
             return self._abstain(task, "No topology evidence was found.")
-        top = evidences[0]
+        if "hmi" in query.lower() or "profinet" in query.lower():
+            top = next(
+                (
+                    item
+                    for item in evidences
+                    if "hmi" in (item.text + " " + item.manual_title).lower()
+                    or "general" in (item.manual_title or "").lower()
+                ),
+                evidences[0],
+            )
+        else:
+            top = evidences[0]
         general = top.model_match_level == "same_family_general" or "general" in (top.manual_title or "").lower()
         claim = (
             "General PROFINET guidance: keep HMI/CPU device names, IP addresses, project topology "
@@ -31,7 +42,7 @@ class TopologyAgent(BaseAgent):
         answer = f"{claim} Evidence: {top.manual_title or top.source}, page {top.page or '-'}."
         return self._finish_with_evidence(
             task,
-            evidences,
+            [top],
             evidence_pool,
             answer_fragment=answer,
             claim=claim,

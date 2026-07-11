@@ -6,106 +6,92 @@ from __future__ import annotations
 import re
 from typing import Dict, List, Tuple
 
-from ..schemas import (
-    AgentClaim,
-    AgentResult,
-    AgentStatus,
-    EvidencePool,
-    JudgeConfidence,
-    JudgeDecision,
-    JudgeVerdict,
-    QueryContext,
-)
+from ..evidence.claim_value_parser import find_numeric_mismatches, find_unit_mismatches, parse_claim_values
+from ..evidence.model_identity import classify_model_match, extract_model_identity
+from ..schemas import AgentClaim, AgentResult, AgentStatus, EvidencePool, JudgeConfidence, JudgeDecision, JudgeVerdict, QueryContext
 from .evidence_closed_synthesizer import EvidenceClosedSynthesizer
 
 
 class JudgeAgent:
-    role_description = "Claim-level evidence judge for support, coverage, model consistency and conflicts."
+    role_description = "Claim-level evidence judge for coverage, support, identity, values, figures and conflicts."
 
-    def decide(
-        self,
-        query_context: QueryContext,
-        results: List[AgentResult],
-        evidence_pool: EvidencePool,
-    ) -> JudgeDecision:
-        evidence_by_id = {ev.evidence_id: ev for ev in evidence_pool.evidences}
+    def decide(self, query_context: QueryContext, results: List[AgentResult], evidence_pool: EvidencePool) -> JudgeDecision:
+        evidence_by_id = {item.evidence_id: item for item in evidence_pool.evidences}
         accepted_agents: List[str] = []
         rejected_agents: List[str] = []
         accepted_claims: List[AgentClaim] = []
         unsupported: List[str] = []
-        conflicting = [str(group.get("reason", group)) for group in evidence_pool.conflicts if isinstance(group, dict)]
-        quality_scores: Dict[str, float] = {}
+        all_claim_count = 0
 
         for result in results:
-            if result.status == AgentStatus.REFUSE.value and result.evidence_ids:
+            if result.status == AgentStatus.REFUSE.value:
                 accepted_agents.append(result.agent_name)
-                accepted_claims.extend(result.claims or [self._claim_from_result(result)])
+                accepted_claims.extend(result.claims)
                 continue
             if result.status not in {AgentStatus.ANSWERED.value, AgentStatus.PARTIAL.value}:
                 rejected_agents.append(result.agent_name)
                 if result.abstain_reason:
                     unsupported.append(f"{result.agent_name}: {result.abstain_reason}")
                 continue
-            claims = result.claims or [self._claim_from_result(result)]
-            claim_accept_count = 0
-            for claim in claims:
-                ok, reasons = self._validate_claim(query_context, claim, evidence_by_id)
-                if ok:
-                    accepted_claims.append(claim)
-                    claim_accept_count += 1
-                    for ev_id in claim.evidence_ids:
-                        if ev_id in evidence_by_id:
-                            quality_scores[ev_id] = evidence_by_id[ev_id].quality_score or evidence_by_id[ev_id].retrieval_score
+            result_claims = result.claims or [self._claim_from_result(result)]
+            all_claim_count += len(result_claims)
+            accepted_for_agent = 0
+            for claim in result_claims:
+                reasons = self._validate_claim(query_context, claim, evidence_by_id)
+                if reasons:
+                    unsupported.extend(f"{claim.claim_id}: {reason}" for reason in reasons)
                 else:
-                    unsupported.extend([f"{claim.claim_id}: {reason}" for reason in reasons])
-            if claim_accept_count:
-                accepted_agents.append(result.agent_name)
-            else:
-                rejected_agents.append(result.agent_name)
+                    accepted_claims.append(claim)
+                    accepted_for_agent += 1
+            (accepted_agents if accepted_for_agent else rejected_agents).append(result.agent_name)
 
-        final_ids = self._final_evidence_ids(accepted_claims, evidence_by_id)
         coverage = self._coverage(query_context, accepted_claims)
-        coverage_pass = all(item["answered"] for item in coverage.values()) if coverage else bool(accepted_claims)
-        model_consistency = self._model_consistency(query_context, accepted_claims, evidence_by_id)
-        figure_required = "figure" in query_context.required_modalities or query_context.question_type == "FIGURE"
-        figure_ok = not figure_required or any(
-            (evidence_by_id.get(ev_id) and (evidence_by_id[ev_id].figure_id or evidence_by_id[ev_id].figure_number or evidence_by_id[ev_id].page))
-            for ev_id in final_ids
+        coverage_score = (
+            sum(bool(item["answered"]) for item in coverage.values()) / len(coverage) if coverage else float(bool(accepted_claims))
         )
-        safety_refusal = any(r.status == AgentStatus.REFUSE.value for r in results)
+        final_ids = self._final_evidence_ids(accepted_claims, evidence_by_id)
+        final_evidence = [evidence_by_id[item] for item in final_ids]
+        model_consistency = self._model_consistency(query_context, final_evidence)
+        figure_state = self._figure_state(query_context, final_evidence, evidence_pool)
+        conflicting = [str(item.get("reason", item)) for item in evidence_pool.conflicts if isinstance(item, dict)]
+        refusal = any(result.status == AgentStatus.REFUSE.value for result in results)
+        all_abstained = bool(results) and all(result.status == AgentStatus.ABSTAIN.value for result in results)
+        grounding_score = len(accepted_claims) / max(1, all_claim_count)
+        quality_scores = self._quality_scores(
+            coverage_score,
+            grounding_score,
+            model_consistency,
+            figure_state,
+            accepted_claims,
+            final_evidence,
+            unsupported,
+        )
 
-        if query_context.missing_slots or any(r.status == AgentStatus.NEED_CLARIFICATION.value for r in results):
-            verdict = JudgeVerdict.NEED_CLARIFICATION.value
-            confidence = JudgeConfidence.NOT_AVAILABLE.value
-            reason = "Required slots are missing."
-        elif safety_refusal:
-            verdict = JudgeVerdict.REFUSE.value
-            confidence = JudgeConfidence.HIGH.value if final_ids else JudgeConfidence.NOT_AVAILABLE.value
-            reason = "Dangerous industrial operation refused with operation-boundary evidence."
+        if query_context.missing_slots or any(item.status == AgentStatus.NEED_CLARIFICATION.value for item in results):
+            verdict, confidence, reason = JudgeVerdict.NEED_CLARIFICATION.value, JudgeConfidence.NOT_AVAILABLE.value, "Required model, order number, interface or context is missing."
+        elif refusal:
+            verdict, confidence, reason = JudgeVerdict.REFUSE.value, JudgeConfidence.HIGH.value, "Dangerous industrial operation refused; no executable bypass steps are allowed."
         elif evidence_pool.conflicts:
-            verdict = JudgeVerdict.CONFLICT.value
-            confidence = JudgeConfidence.CONFLICT.value
-            reason = "Evidence pool contains conflicts."
+            verdict, confidence, reason = JudgeVerdict.CONFLICT.value, JudgeConfidence.CONFLICT.value, "Evidence contains an unresolved same-scope conflict."
+        elif not accepted_claims and all_abstained:
+            audit = evidence_pool.metadata.get("retrieval_backend_audit", {}) if isinstance(evidence_pool.metadata, dict) else {}
+            backend_active = bool(audit.get("text_backend_active") or audit.get("figure_backend_active") or audit.get("jsonl_fallback_active")) if isinstance(audit, dict) else False
+            if backend_active:
+                verdict, confidence, reason = JudgeVerdict.ABSTAIN.value, JudgeConfidence.NOT_AVAILABLE.value, "Retrieval completed but no reliable claim could be supported."
+            else:
+                verdict, confidence, reason = JudgeVerdict.NEED_MORE_EVIDENCE.value, JudgeConfidence.NOT_AVAILABLE.value, "No FULL retrieval backend is available; configure collection and embedding before retrying."
         elif not accepted_claims:
-            verdict = JudgeVerdict.NEED_MORE_EVIDENCE.value
-            confidence = JudgeConfidence.NOT_AVAILABLE.value
-            reason = "No claim passed evidence support checks."
+            verdict, confidence, reason = JudgeVerdict.NEED_MORE_EVIDENCE.value, JudgeConfidence.NOT_AVAILABLE.value, "No claim passed evidence checks; a bounded retrieval retry may be useful."
         elif not model_consistency["pass"]:
-            verdict = JudgeVerdict.REVIEW.value
-            confidence = JudgeConfidence.LOW.value
-            reason = "Model or order-number consistency check failed."
-        elif not coverage_pass or not figure_ok:
-            verdict = JudgeVerdict.PARTIAL.value
-            confidence = JudgeConfidence.MEDIUM.value if final_ids else JudgeConfidence.LOW.value
-            reason = "Some subquestions or required figure evidence are not covered."
-        elif unsupported:
-            verdict = JudgeVerdict.REVIEW.value
-            confidence = JudgeConfidence.MEDIUM.value
-            reason = "Accepted evidence exists, but some agent claims were rejected."
-        else:
+            verdict, confidence, reason = JudgeVerdict.ABSTAIN.value, JudgeConfidence.LOW.value, "Model or order-number scope is inconsistent."
+        elif coverage_score < 0.9 or unsupported or figure_state["limited_to_page_text"]:
+            verdict, confidence, reason = JudgeVerdict.PARTIAL.value, JudgeConfidence.MEDIUM.value, "Only the covered, evidence-supported portion can be answered."
+        elif quality_scores["grounding"] >= 0.9 and quality_scores["model_consistency"] >= 0.95:
             verdict = JudgeVerdict.PASS.value
-            confidence = JudgeConfidence.HIGH.value if len(final_ids) >= 1 else JudgeConfidence.LOW.value
-            reason = "All accepted claims are supported by Evidence Pool records."
+            confidence = JudgeConfidence.MEDIUM.value if model_consistency["unknown_evidence_ids"] else JudgeConfidence.HIGH.value
+            reason = "Coverage and claim-level evidence checks passed."
+        else:
+            verdict, confidence, reason = JudgeVerdict.PARTIAL.value, JudgeConfidence.MEDIUM.value, "Evidence is usable but does not meet full PASS thresholds."
 
         final_answer = EvidenceClosedSynthesizer().synthesize(query_context, accepted_claims, evidence_by_id, verdict)
         return JudgeDecision(
@@ -127,87 +113,151 @@ class JudgeAgent:
             quality_scores=quality_scores,
             metadata={
                 "judge_role": self.role_description,
-                "accepted_claims": [claim for claim in accepted_claims],
-                "coverage_pass": coverage_pass,
-                "figure_requirement_pass": figure_ok,
+                "accepted_claims": accepted_claims,
+                "coverage_pass": coverage_score >= 0.9,
+                "figure_requirement_pass": figure_state["pass"],
+                "figure_state": figure_state,
             },
         )
 
-    def _validate_claim(
-        self,
-        query_context: QueryContext,
-        claim: AgentClaim,
-        evidence_by_id: Dict[str, object],
-    ) -> Tuple[bool, List[str]]:
+    def _validate_claim(self, context: QueryContext, claim: AgentClaim, evidence_by_id: Dict[str, object]) -> List[str]:
         reasons: List[str] = []
         if not claim.evidence_ids:
-            reasons.append("missing_evidence_ids")
-        claim_text = claim.claim_text or ""
-        if self._raw_ocr_dump(claim_text):
+            return ["missing_evidence_ids"]
+        if self._raw_ocr_dump(claim.claim_text):
             reasons.append("raw_ocr_dump_detected")
-        for ev_id in claim.evidence_ids:
-            ev = evidence_by_id.get(ev_id)
-            if not ev:
-                reasons.append(f"unknown_evidence_id:{ev_id}")
-                continue
-            if getattr(ev, "model_match_level", "") == "cross_family":
-                reasons.append(f"cross_family_evidence:{ev_id}")
-            if claim.claim_type == "location" and not (ev.figure_id or ev.figure_number or ev.page):
-                reasons.append(f"missing_figure_reference:{ev_id}")
-            if claim.claim_type == "parameter" and not (ev.parameter or ev.text):
-                reasons.append(f"parameter_not_located:{ev_id}")
-        if query_context.question_type == "FIGURE" and claim.claim_type == "location" and not claim.direct_support:
+        evidences = [evidence_by_id[item] for item in claim.evidence_ids if item in evidence_by_id]
+        missing = [item for item in claim.evidence_ids if item not in evidence_by_id]
+        reasons.extend(f"unknown_evidence_id:{item}" for item in missing)
+        if not evidences:
+            return reasons or ["missing_evidence"]
+        levels = [classify_model_match(f"{claim.model_scope} {context.original_query}", item) for item in evidences]
+        if any(level == "cross_family" for level in levels):
+            reasons.append("cross_family_evidence")
+        if any(level == "same_family_general" for level in levels) and not claim.metadata.get("general_guidance"):
+            reasons.append("same_family_general_used_for_model_specific_claim")
+        claim_values = parse_claim_values(claim.claim_text)
+        evidence_values = parse_claim_values(" ".join(self._evidence_text(item) for item in evidences))
+        if claim_values.order_numbers and not set(claim_values.order_numbers) & set(evidence_values.order_numbers):
+            reasons.append("order_number_mismatch")
+        if find_numeric_mismatches(claim_values, evidence_values):
+            reasons.append("numeric_mismatch")
+        if find_unit_mismatches(claim_values, evidence_values):
+            reasons.append("unit_mismatch")
+        if not set(claim_values.interfaces).issubset(set(evidence_values.interfaces)) or not set(
+            claim_values.port_labels
+        ).issubset(set(evidence_values.port_labels)):
+            reasons.append("interface_or_port_mismatch")
+        if claim.claim_type == "location" and not any(item.figure_id or item.figure_number or item.page is not None for item in evidences):
+            reasons.append("missing_figure_reference")
+        if context.question_type == "FIGURE" and claim.claim_type == "location" and not claim.direct_support:
             reasons.append("figure_claim_without_direct_support")
-        return not reasons, reasons
+        if not self._text_support(claim.claim_text, evidences):
+            reasons.append("claim_core_terms_not_supported")
+        return list(dict.fromkeys(reasons))
 
-    def _coverage(self, query_context: QueryContext, claims: List[AgentClaim]) -> Dict[str, Dict[str, object]]:
-        coverage: Dict[str, Dict[str, object]] = {}
-        for subq in query_context.subquestions:
-            supporting = [claim for claim in claims if subq.subquestion_id in claim.subquestion_ids]
-            coverage[subq.subquestion_id] = {
-                "answered": bool(supporting),
-                "supporting_claim_ids": [claim.claim_id for claim in supporting],
-                "supporting_evidence_ids": list(dict.fromkeys(ev_id for claim in supporting for ev_id in claim.evidence_ids)),
-            }
-        return coverage
-
-    def _model_consistency(
-        self,
-        query_context: QueryContext,
-        claims: List[AgentClaim],
-        evidence_by_id: Dict[str, object],
-    ) -> Dict[str, object]:
-        rejected: List[str] = []
-        levels: Dict[str, str] = {}
-        for claim in claims:
-            for ev_id in claim.evidence_ids:
-                ev = evidence_by_id.get(ev_id)
-                if not ev:
-                    continue
-                level = getattr(ev, "model_match_level", "unknown")
-                levels[ev_id] = level
-                if level == "cross_family":
-                    rejected.append(ev_id)
-        identity = query_context.metadata.get("model_identity", {}) if isinstance(query_context.metadata, dict) else {}
+    def _coverage(self, context: QueryContext, claims: List[AgentClaim]) -> Dict[str, Dict[str, object]]:
         return {
-            "expected_model": ", ".join(identity.get("models", []) or []),
+            subquestion.subquestion_id: {
+                "answered": bool(supporting := [claim for claim in claims if subquestion.subquestion_id in claim.subquestion_ids]),
+                "supporting_claim_ids": [claim.claim_id for claim in supporting],
+                "supporting_evidence_ids": list(dict.fromkeys(item for claim in supporting for item in claim.evidence_ids)),
+            }
+            for subquestion in context.subquestions
+        }
+
+    def _model_consistency(self, context: QueryContext, evidences: List[object]) -> Dict[str, object]:
+        levels = {item.evidence_id: classify_model_match(context.original_query, item) for item in evidences}
+        cross = [item for item, level in levels.items() if level == "cross_family"]
+        unknown = [item for item, level in levels.items() if level == "unknown"]
+        identity = extract_model_identity(context.original_query)
+        accepted_models = list(dict.fromkeys(item.module_model for item in evidences if item.module_model and item.evidence_id not in cross))
+        rejected_models = list(dict.fromkeys(item.module_model for item in evidences if item.evidence_id in cross and item.module_model))
+        return {
+            "expected_model": identity.normalized_model,
+            "expected_order_numbers": identity.order_numbers,
+            "accepted_models": accepted_models,
+            "rejected_models": rejected_models,
             "accepted_levels": levels,
-            "rejected_evidence_ids": rejected,
-            "pass": not rejected,
+            "cross_family_evidence_ids": cross,
+            "unknown_evidence_ids": unknown,
+            "pass": not cross,
+        }
+
+    def _figure_state(self, context: QueryContext, evidences: List[object], pool: EvidencePool) -> Dict[str, object]:
+        required = "figure" in context.required_modalities or context.question_type == "FIGURE"
+        audit = pool.metadata.get("retrieval_backend_audit", {}) if isinstance(pool.metadata, dict) else {}
+        figure_backend_active = bool(audit.get("figure_backend_active")) if isinstance(audit, dict) else False
+        chroma_figure = any(item.retrieval_backend == "chroma_figure" for item in evidences)
+        image = any(item.image_exists or item.visual_evidence_status == "image_available" for item in evidences)
+        page_text = any(
+            item.visual_evidence_status == "page_text_only" and (item.page is not None or item.figure_id or item.figure_number)
+            for item in evidences
+        )
+        complete = not required or (chroma_figure if figure_backend_active else bool(image or page_text))
+        return {
+            "required": required,
+            "figure_backend_active": figure_backend_active,
+            "chroma_figure_present": chroma_figure,
+            "image_available": image,
+            "page_text_only_present": page_text,
+            "limited_to_page_text": bool(required and page_text and not image),
+            "pass": complete,
+        }
+
+    def _quality_scores(self, coverage: float, grounding: float, model: Dict[str, object], figure: Dict[str, object], claims: List[AgentClaim], evidences: List[object], unsupported: List[str]) -> Dict[str, float]:
+        all_text = " ".join(claim.claim_text for claim in claims)
+        parser = parse_claim_values(all_text)
+        evidence_parser = parse_claim_values(" ".join(self._evidence_text(item) for item in evidences))
+        numeric = 1.0 if not find_numeric_mismatches(parser, evidence_parser) else 0.0
+        units = 1.0 if not find_unit_mismatches(parser, evidence_parser) else 0.0
+        interfaces = 1.0 if set(parser.interfaces).issubset(set(evidence_parser.interfaces)) and set(parser.port_labels).issubset(set(evidence_parser.port_labels)) else 0.0
+        model_score = 0.0 if model["cross_family_evidence_ids"] else 0.7 if model["unknown_evidence_ids"] else 1.0
+        return {
+            "coverage": round(coverage, 4),
+            "grounding": round(grounding, 4),
+            "model_consistency": model_score,
+            "order_number_consistency": 1.0,
+            "numeric_consistency": numeric,
+            "unit_consistency": units,
+            "interface_consistency": interfaces,
+            "figure_completeness": 1.0 if figure["pass"] and not figure["limited_to_page_text"] else 0.6 if figure["pass"] else 0.0,
+            "relevance": round(sum(item.quality_score for item in evidences) / max(1, len(evidences)), 4),
+            "directness": round(sum(bool(claim.direct_support) for claim in claims) / max(1, len(claims)), 4),
+            "conciseness": 1.0 if len(all_text) <= 700 and not self._raw_ocr_dump(all_text) else 0.0,
         }
 
     def _final_evidence_ids(self, claims: List[AgentClaim], evidence_by_id: Dict[str, object]) -> List[str]:
-        ids: List[str] = []
-        for claim in claims:
-            for ev_id in claim.evidence_ids:
-                if ev_id in evidence_by_id and ev_id not in ids:
-                    ids.append(ev_id)
-        return ids[:6]
+        return list(dict.fromkeys(item for claim in claims for item in claim.evidence_ids if item in evidence_by_id))[:8]
+
+    def _text_support(self, claim_text: str, evidences: List[object]) -> bool:
+        tokens = set(re.findall(r"[A-Za-z][A-Za-z0-9_/\-]+|[\u4e00-\u9fff]{2,}", claim_text.lower()))
+        tokens -= {
+            "supported", "evidence", "guidance", "manual", "page", "target", "required", "site", "only",
+            "conditions", "qualified", "review", "人工确认", "人工复核", "具备资质", "资料", "证据", "手册",
+        }
+        if not tokens:
+            return True
+        evidence_text = " ".join(self._evidence_text(item) for item in evidences).lower()
+        return sum(token in evidence_text for token in tokens) / len(tokens) >= 0.2
+
+    def _evidence_text(self, evidence: object) -> str:
+        return " ".join(
+            filter(
+                None,
+                [
+                    evidence.text,
+                    evidence.module_model,
+                    evidence.order_number,
+                    f"page {evidence.page}" if evidence.page is not None else "",
+                    evidence.figure_number,
+                    evidence.figure_id,
+                ],
+            )
+        )
 
     def _raw_ocr_dump(self, text: str) -> bool:
-        if len(text or "") > 900:
-            return True
-        return len(re.findall(r"\n", text or "")) > 12
+        return len(text or "") > 900 or len(re.findall(r"\n", text or "")) > 12
 
     def _claim_from_result(self, result: AgentResult) -> AgentClaim:
         return AgentClaim(
