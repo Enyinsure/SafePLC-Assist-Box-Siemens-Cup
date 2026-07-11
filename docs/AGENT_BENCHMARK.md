@@ -15,13 +15,13 @@ The benchmark focuses on Agent behavior:
 Build cases with:
 
 ```bash
-python scripts/build_agent_benchmark_from_bundle.py --questions-tsv /path/to/s7_agent_v2_questions.tsv --output-dir benchmark/cases_real
+python scripts/build_agent_benchmark_from_bundle.py --questions-tsv /path/to/questions.tsv --output-dir benchmark/sample_regression
 ```
 
 Run evaluation with:
 
 ```bash
-python -m safeplc_assist_box.evaluation.run_agent_benchmark --cases-dir benchmark/cases_real --mode FULL --method full --output reports/agent_benchmark_full_real.json
+python -m safeplc_assist_box.evaluation.run_agent_benchmark --cases-dir benchmark/sample_regression --mode SAMPLE --method full --output reports/runtime/agent_benchmark_sample.json
 ```
 
-The builder reads every real TSV row, preserves its source row and provenance, and does not pad the dataset to a target count. Generated SAMPLE reports are labeled regression-only and must not be presented as FULL industrial accuracy.
+The builder reads every supplied TSV row, preserves its source row and provenance, and does not pad the dataset to a target count. The tracked `sample_regression` cases and generated SAMPLE reports are regression-only and must not be presented as FULL industrial accuracy. A user-run FULL benchmark should use an independently reviewed dataset and write its output under ignored `reports/runtime/`.

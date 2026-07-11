@@ -1,6 +1,0 @@
-Environment: local Windows workspace (not the target Linux server)
-Command: python -m pytest -q
-Exit code: 0
-Result: 43 passed in 0.38s
-
-The target-server pytest command remains to be run after clone and FULL asset configuration.

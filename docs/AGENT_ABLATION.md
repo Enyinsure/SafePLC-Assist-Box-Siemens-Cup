@@ -12,7 +12,7 @@ Implemented runtime profiles:
 Run:
 
 ```bash
-python -m safeplc_assist_box.evaluation.run_agent_ablation --cases-dir benchmark/cases --mode SAMPLE
+python -m safeplc_assist_box.evaluation.run_agent_ablation --cases-dir benchmark/sample_regression --mode SAMPLE --output reports/runtime/agent_ablation_sample.json
 ```
 
 Each profile changes actual orchestrator/tool behavior through feature switches for decomposition, dynamic routing, model filtering, figure retrieval, reranking, Judge, verifier, and second retrieval. `all_agents` remains an intentionally inefficient baseline. SAMPLE output is regression evidence only; FULL accuracy must be generated against real server Chroma and benchmark TSV assets.

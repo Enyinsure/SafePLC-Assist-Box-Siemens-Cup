@@ -29,10 +29,19 @@ ENV_KEYS = [
     "SAFEPLC_FIGURE_CARDS_JSONL",
     "SAFEPLC_FIGURE_CHUNKS_JSONL",
     "SAFEPLC_VISUAL_DIR",
+    "SAFEPLC_EMBEDDING_BACKEND",
+    "SAFEPLC_EMBEDDING_MODEL_PATH",
+    "SAFEPLC_EMBEDDING_DEVICE",
+    "SAFEPLC_EMBEDDING_NORMALIZE",
+    "SAFEPLC_EMBEDDING_QUERY_PREFIX",
+    "SAFEPLC_ALLOW_CHROMA_DEFAULT_EMBEDDING",
+    "SAFEPLC_ALLOW_REMOTE_MODEL_DOWNLOAD",
     "SAFEPLC_REPORT_DIR",
     "SAFEPLC_ROUTING_STRATEGY",
     "SAFEPLC_MAX_AGENTS",
     "SAFEPLC_ALLOW_JSONL_FALLBACK",
+    "SAFEPLC_ENABLE_JSONL_HYBRID",
+    "SAFEPLC_JSONL_FALLBACK_MIN_SCORE",
     "SAFEPLC_REQUIRE_FIGURE_BACKEND",
 ]
 
@@ -52,10 +61,19 @@ def build_env(args: argparse.Namespace) -> Dict[str, str]:
             "SAFEPLC_FIGURE_CARDS_JSONL": args.figure_cards_jsonl or values["SAFEPLC_FIGURE_CARDS_JSONL"],
             "SAFEPLC_FIGURE_CHUNKS_JSONL": args.figure_chunks_jsonl or values["SAFEPLC_FIGURE_CHUNKS_JSONL"],
             "SAFEPLC_VISUAL_DIR": args.visual_dir or values["SAFEPLC_VISUAL_DIR"],
-            "SAFEPLC_REPORT_DIR": args.report_dir or values["SAFEPLC_REPORT_DIR"] or str(project / "reports"),
+            "SAFEPLC_EMBEDDING_BACKEND": args.embedding_backend or values["SAFEPLC_EMBEDDING_BACKEND"] or "auto",
+            "SAFEPLC_EMBEDDING_MODEL_PATH": args.embedding_model_path or values["SAFEPLC_EMBEDDING_MODEL_PATH"],
+            "SAFEPLC_EMBEDDING_DEVICE": args.embedding_device or values["SAFEPLC_EMBEDDING_DEVICE"] or "cpu",
+            "SAFEPLC_EMBEDDING_NORMALIZE": values["SAFEPLC_EMBEDDING_NORMALIZE"] or "1",
+            "SAFEPLC_EMBEDDING_QUERY_PREFIX": args.embedding_query_prefix or values["SAFEPLC_EMBEDDING_QUERY_PREFIX"],
+            "SAFEPLC_ALLOW_CHROMA_DEFAULT_EMBEDDING": values["SAFEPLC_ALLOW_CHROMA_DEFAULT_EMBEDDING"] or "0",
+            "SAFEPLC_ALLOW_REMOTE_MODEL_DOWNLOAD": values["SAFEPLC_ALLOW_REMOTE_MODEL_DOWNLOAD"] or "0",
+            "SAFEPLC_REPORT_DIR": args.report_dir or values["SAFEPLC_REPORT_DIR"] or str(project / "reports" / "runtime"),
             "SAFEPLC_ROUTING_STRATEGY": args.routing_strategy or values["SAFEPLC_ROUTING_STRATEGY"] or "adaptive",
             "SAFEPLC_MAX_AGENTS": str(args.max_agents or values["SAFEPLC_MAX_AGENTS"] or "4"),
             "SAFEPLC_ALLOW_JSONL_FALLBACK": "1" if args.allow_jsonl_fallback else values["SAFEPLC_ALLOW_JSONL_FALLBACK"] or "0",
+            "SAFEPLC_ENABLE_JSONL_HYBRID": "1" if args.enable_jsonl_hybrid else values["SAFEPLC_ENABLE_JSONL_HYBRID"] or "0",
+            "SAFEPLC_JSONL_FALLBACK_MIN_SCORE": str(args.jsonl_fallback_min_score or values["SAFEPLC_JSONL_FALLBACK_MIN_SCORE"] or "0.20"),
             "SAFEPLC_REQUIRE_FIGURE_BACKEND": "1" if args.require_figure_backend else values["SAFEPLC_REQUIRE_FIGURE_BACKEND"] or "0",
         }
     )
@@ -78,10 +96,16 @@ def main() -> None:
     parser.add_argument("--figure-cards-jsonl", default="")
     parser.add_argument("--figure-chunks-jsonl", default="")
     parser.add_argument("--visual-dir", default="")
+    parser.add_argument("--embedding-backend", choices=["", "auto", "sentence_transformers", "chroma_default"], default="")
+    parser.add_argument("--embedding-model-path", default="")
+    parser.add_argument("--embedding-device", default="")
+    parser.add_argument("--embedding-query-prefix", default="")
     parser.add_argument("--report-dir", default="")
     parser.add_argument("--routing-strategy", default="")
     parser.add_argument("--max-agents", default="")
     parser.add_argument("--allow-jsonl-fallback", action="store_true")
+    parser.add_argument("--enable-jsonl-hybrid", action="store_true")
+    parser.add_argument("--jsonl-fallback-min-score", default="")
     parser.add_argument("--require-figure-backend", action="store_true")
     parser.add_argument("--write-env", default="")
     args = parser.parse_args()

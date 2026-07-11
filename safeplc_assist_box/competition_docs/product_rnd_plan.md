@@ -5,8 +5,8 @@ V1 原型版本：基于 SafePLC-Agent 技术底座，完成产品化前端、�
 
 ## 2. 已完成能力
 - 多模态手册 RAG
-- Agent v2 主动澄清
-- Safety Guard v1 工业安全护栏
+- Supervisor 主动澄清
+- Safety Boundary Agent 工业操作边界
 - Streamlit 产品化前端
 - 典型案例演示
 - 运维辅助记录生成

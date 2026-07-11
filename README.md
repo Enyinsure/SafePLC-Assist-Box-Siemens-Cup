@@ -23,9 +23,7 @@ SafePLC-Assist Box supports **Python 3.10 and Python 3.11**.
 
 ```bash
 python -m safeplc_assist_box.agents.orchestrator "CPU 1517-3 PN 的 X1 接口在哪里" --mode SAMPLE --json
-python scripts/check_full_assets.py --mode FULL --strict
-python scripts/build_agent_benchmark_from_bundle.py --questions-tsv /path/to/s7_agent_v2_questions.tsv --output-dir benchmark/cases_real
-python -m safeplc_assist_box.evaluation.run_agent_benchmark --cases-dir benchmark/cases --mode SAMPLE --method full
+python -m safeplc_assist_box.evaluation.run_agent_benchmark --cases-dir benchmark/sample_regression --mode SAMPLE --method full
 streamlit run safeplc_assist_box/app_assist_box.py
 ```
 
@@ -33,9 +31,11 @@ streamlit run safeplc_assist_box/app_assist_box.py
 
 - `SAMPLE`: built-in industrial manual snippets; no GPU or server assets required.
 - `MOCK`: reserved for lightweight demos using the same code path.
-- `FULL`: uses the configured persistent text and figure Chroma collections. JSONL is used only when `SAFEPLC_ALLOW_JSONL_FALLBACK=1`; SAMPLE evidence is never used as a FULL fallback.
+- `FULL`: uses explicitly selected persistent text and figure Chroma collections. JSONL is used only when `SAFEPLC_ALLOW_JSONL_FALLBACK=1` and strict fallback conditions are met; SAMPLE evidence is never used as a FULL fallback.
 
-Copy `config/full.env.example` to an ignored local env file, set real server paths, then run `scripts/check_full_assets.py --mode FULL --strict`. A missing required backend exits non-zero instead of silently passing.
+Copy `config/full.env.example` to an ignored local env file and set the collection names, local embedding model, and asset paths. FULL mode does not download an embedding model and does not use Chroma's default embedding unless the corresponding opt-in variable is enabled. Run `scripts/inspect_chroma_schema.py` and `scripts/check_full_assets.py --mode FULL --strict --require-chroma` before startup. Missing or ambiguous collections, incompatible embedding dimensions, and missing required backends exit non-zero instead of silently passing.
+
+`benchmark/sample_regression` is a local regression set, not evidence of FULL industrial accuracy. Real Chroma, Figure Chroma, image paths, FULL benchmark results, and server performance must be validated by the user on the target server using `docs/FULL_SERVER_VALIDATION.md`; runtime reports belong under the ignored `reports/runtime/` directory.
 
 ## Evidence Contract
 

@@ -1,7 +1,6 @@
-# Optional FULL-mode runtime dependencies.
-# Pinning is intentionally avoided here so the server can keep its verified stack.
-chromadb
-sentence-transformers
-numpy
-pandas
-Pillow
+# Optional FULL-mode runtime dependencies. Base CI does not install this file.
+chromadb>=1.0,<2
+sentence-transformers>=3,<6
+numpy>=1.24,<3
+pandas>=2,<3
+Pillow>=10,<13

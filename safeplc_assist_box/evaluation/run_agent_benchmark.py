@@ -152,7 +152,7 @@ def run_benchmark(
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run SafePLC agent benchmark.")
-    parser.add_argument("--cases-dir", default="benchmark/cases")
+    parser.add_argument("--cases-dir", default="benchmark/sample_regression")
     parser.add_argument("--suite", default="")
     parser.add_argument("--limit", type=int, default=0)
     parser.add_argument("--mode", default="SAMPLE")

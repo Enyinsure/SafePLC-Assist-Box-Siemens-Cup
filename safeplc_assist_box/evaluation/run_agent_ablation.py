@@ -35,10 +35,10 @@ REPORT_FIELDS = [
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run SafePLC agent ablation.")
-    parser.add_argument("--cases-dir", default="benchmark/cases")
+    parser.add_argument("--cases-dir", default="benchmark/sample_regression")
     parser.add_argument("--limit", type=int, default=0)
     parser.add_argument("--mode", default="SAMPLE")
-    parser.add_argument("--output", default="reports/agent_ablation_sample.json")
+    parser.add_argument("--output", default="reports/runtime/agent_ablation_sample.json")
     args = parser.parse_args()
 
     rows = []

@@ -16,7 +16,7 @@ SafePLC-Assist Box：面向 S7-1500 / ET 200MP 的多模态工业知识 Agent �
 面向智能制造现场、高校实训和新人培训的工业知识安全问答终端。
 
 ## 5. 系统架构
-前端产品化界面 + Agent v2 澄清 + Safety Guard v1 + 多模态 RAG + S7 手册证据库。
+前端产品化界面 + Dynamic Supervisor + 专业 Agent Pool + Shared Evidence Pool + Judge Agent + 多模态手册工具。
 
 ## 6. 核心功能
 - 工业知识问答

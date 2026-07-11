@@ -1,102 +1,24 @@
-# SafePLC-Assist Box：面向 S7-1500 / ET 200MP 的多模态工业知识 Agent 与安全运维助手
+# SafePLC-Assist Box 西门子杯说明
 
-## 1. 项目简介
+SafePLC-Assist Box 面向 PLC 教学、实训和维护查证，围绕 S7-1500、ET 200MP 等工业手册提供文本、表格和图像证据检索。系统只提供离线、只读的知识辅助，不连接真实 PLC、TIA Portal 或 OT 网络，也不执行写入和控制动作。
 
-SafePLC-Assist Box 是基于既有 SafePLC-Agent 工程扩展的西门子杯自由探索赛道产品化原型。
+## Agent 架构
 
-本作品面向智能制造现场、新人工程师培训、高校实训教学和设备维护辅助场景，围绕 S7-1500 / ET 200MP 中文手册构建多模态工业知识问答终端，支持文本、表格、接口图、接线图、端子分配图、PROFINET 拓扑图等证据检索，并结合 Agent v2 多轮澄清与 Safety Guard v1 工业安全护栏，降低缺少型号时误答和危险操作输出风险。
+所有入口统一调用仓库内的 `safeplc_assist_box.agents.orchestrator.run_agent_system()`：
 
-## 2. 产品定位
+1. Dynamic Supervisor 分解问题并选择少量专业 Agent。
+2. 专业 Agent 独立返回结构化 claim、证据引用或 abstain。
+3. Shared Evidence Pool 统一证据、模型身份、来源和冲突。
+4. Judge Agent 在 claim 级别检查证据覆盖、型号、数值、单位、接口与图像要求。
+5. Verifier 和确定性合成器只输出通过审查的结论。
 
-产品名称：
+前端、CLI、benchmark 和 ablation 共用上述 Orchestrator，不依赖仓库外 Python 脚本或预先存在的 Conda 环境。
 
-SafePLC-Assist Box 工业知识安全问答终端
-
-定位：
-
-面向智能制造现场和高校实训场景的工业知识安全问答终端。
-
-目标用户：
-
-1. 新人工程师
-2. 设备维护人员
-3. 高校实训学生
-4. 企业培训人员
-
-核心价值：
-
-1. 提升查手册效率
-2. 降低新人培训成本
-3. 减少错误参数引用
-4. 减少危险操作建议输出
-5. 提供可复核的手册证据链
-
-## 3. 应用场景
-
-### 3.1 新人工程师培训
-
-新人可通过自然语言查询 S7-1500 / ET 200MP 的模块参数、接口说明、PROFINET 连接方式和 EMC 要求，并根据系统返回的页码和图文证据回到手册复核。
-
-### 3.2 智能制造现场辅助
-
-维护人员可快速查询模块电源电压范围、接口位置、接线图、端子图等信息，减少翻阅大体量手册的时间。
-
-### 3.3 高校实训教学
-
-教师可用 SafePLC-Assist Box 展示工业手册知识问答、主动追问、图文证据检索和危险操作拒答，让学生理解工业知识查询与安全边界。
-
-### 3.4 运维记录生成
-
-系统可把一次问答整理成“运维辅助记录”，用于演示视频、答辩材料和培训记录。
-
-## 4. 已完成技术底座
-
-本西门子杯版本复用已经完成并验收的 SafePLC-Agent 工程能力：
-
-1. S7-1500 / ET 200MP 中文手册多模态 RAG。
-2. 文本证据检索。
-3. 表格证据检索。
-4. 图文证据检索。
-5. 接口图、接线图、端子分配图、拓扑图证据。
-6. ChromaDB 图文索引。
-7. 页码、figure_id、证据类型输出。
-8. Safety Guard v1 工业安全护栏。
-9. HIGH_RISK 高风险问题拒答。
-10. Agent v2 多轮澄清和自动追问。
-11. 缺少型号 / 订货号时先追问，不直接检索。
-12. Streamlit Agent v2 前端实机验收。
-13. 后端恢复测试与最终封版包已完成。
-
-## 5. 系统架构
-
-用户 / 评委 / 学生
--> SafePLC-Assist Box Streamlit 产品化前端
--> conda s7rag 环境中的 ask_s7_agent_v2.py
--> Agent v2 澄清层 / Safety Guard v1 / 多模态 RAG 检索
--> S7-1500 / ET 200MP 手册索引
--> 回答 + 证据页码 + 图文证据 + 安全等级
--> 前端证据卡片 / 典型案例 / 运维辅助记录
-
-## 6. 功能列表
-
-当前第一阶段新增功能：
-
-1. SafePLC-Assist Box 产品化前端。
-2. 产品首页。
-3. 工业知识问答。
-4. 典型案例演示。
-5. 证据卡片展示。
-6. 安全等级展示。
-7. 运维辅助记录生成。
-8. 产品说明与技术边界。
-9. 独立启动脚本。
-10. 西门子杯 README 初稿。
-
-## 7. 启动方式
-
-启动前端：
+## 运行
 
 ```bash
-cd SafePLC-Assist-Box-Siemens-Cup
-conda activate s7rag_ui
-bash run_streamlit_safeplc_assist_box.sh
+python -m safeplc_assist_box.agents.orchestrator "CPU 1517-3 PN 的 X1 接口在哪里？" --mode SAMPLE --json
+streamlit run safeplc_assist_box/app_assist_box.py
+```
+
+SAMPLE 仅用于本地功能回归。FULL 需要用户在目标服务器显式配置 collection、embedding 和资产路径，并按 `docs/FULL_SERVER_VALIDATION.md` 自行验证；仓库不声明真实服务器、Chroma、图片或性能已通过验收。

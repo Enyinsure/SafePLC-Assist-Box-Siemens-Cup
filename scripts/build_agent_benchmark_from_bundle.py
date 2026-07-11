@@ -332,7 +332,7 @@ def build_benchmark(output_dir: Path, bundle: Path | None = None, questions_tsv:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Build SafePLC agent behavior benchmark.")
-    parser.add_argument("--output-dir", default="benchmark/cases")
+    parser.add_argument("--output-dir", default="benchmark/sample_regression")
     parser.add_argument("--bundle", default=os.environ.get("SAFEPLC_PARTNER_BUNDLE", ""))
     parser.add_argument("--questions-tsv", default="")
     args = parser.parse_args()
