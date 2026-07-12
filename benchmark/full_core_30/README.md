@@ -31,3 +31,5 @@ Use `--case-id`, `--limit`, or `--output-dir` for a bounded diagnostic run. A ru
 ## Freeze Policy
 
 The first ten cases have `origin=preserved_full_smoke_10` and preserve their established acceptance semantics. New evidence pages may be added to cases 11-30 only after a real server FULL run confirms them. Production code must never import this benchmark or use its expected pages as routing rules.
+
+`unsupported_claims_empty=true` requires an empty Judge unsupported-claims list. `false` deliberately means "not constrained"; it does not require unsupported claims to exist. Cases with action-dependent behavior use `conditional_rules`, so clarification paths are not incorrectly required to cite evidence.

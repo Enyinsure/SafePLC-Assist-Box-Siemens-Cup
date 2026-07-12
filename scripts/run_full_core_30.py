@@ -20,6 +20,9 @@ if str(PROJECT_ROOT) not in sys.path:
 from benchmark.full_core_30.acceptance_rules import CASES_PATH, evaluate_case, load_cases, validate_case_definition
 from safeplc_assist_box.agents.orchestrator import run_agent_system
 from safeplc_assist_box.config import SafePLCConfig
+from safeplc_assist_box.tools.chroma_figure_retriever import ChromaFigureRetriever
+from safeplc_assist_box.tools.chroma_text_retriever import ChromaTextRetriever
+from safeplc_assist_box.tools.embedding_adapter import EmbeddingAdapter
 
 
 DEFAULT_OUTPUT_DIR = PROJECT_ROOT / "reports" / "runtime" / "full_core_30"
@@ -56,9 +59,11 @@ def environment_record(config: SafePLCConfig, started_at: str) -> Dict[str, Any]
         "mode": config.mode,
         "retrieval_source": "real_chroma",
         "chroma_path": config.chroma_dir,
-        "text_collection": config.text_collection or "<auto-discover>",
+        "configured_text_collection": config.text_collection or "<auto-discover>",
+        "selected_text_collection": "",
         "figure_chroma_path": config.figure_chroma_dir,
-        "figure_collection": config.figure_collection or "<auto-discover>",
+        "configured_figure_collection": config.figure_collection or "<auto-discover>",
+        "selected_figure_collection": "",
         "embedding_model": config.embedding_model_path or config.embedding_backend,
         "embedding_backend": config.embedding_backend,
         "query_expansion_enabled": config.enable_query_expansion,
@@ -79,7 +84,52 @@ def validate_full_environment(config: SafePLCConfig) -> List[str]:
         errors.append("JSONL_fallback_and_hybrid_must_be_disabled")
     if not config.chroma_dir or not Path(config.chroma_dir).is_dir():
         errors.append("real_text_Chroma_directory_is_required")
+    if not config.figure_chroma_dir or not Path(config.figure_chroma_dir).is_dir():
+        errors.append("real_figure_Chroma_directory_is_required")
+    if not config.enable_query_expansion:
+        errors.append("query_expansion_must_be_enabled")
+    if config.max_expanded_queries < 2:
+        errors.append("max_expanded_queries_must_be_at_least_2")
+    backend = str(config.embedding_backend or "").lower()
+    if backend not in EmbeddingAdapter.VALID_BACKENDS:
+        errors.append("embedding_backend_is_not_supported")
+    model_available = bool(
+        config.embedding_model_path
+        and (Path(config.embedding_model_path).exists() or config.allow_remote_model_download)
+    )
+    default_available = bool(
+        config.allow_chroma_default_embedding and backend in {"auto", "chroma_default"}
+    )
+    if not model_available and not default_available:
+        errors.append("embedding_model_path_or_backend_is_not_available")
     return errors
+
+
+def resolve_selected_collections(config: SafePLCConfig) -> Dict[str, Any]:
+    text_embedding = EmbeddingAdapter.from_config(config)
+    figure_embedding = EmbeddingAdapter.from_config(config)
+    text = ChromaTextRetriever(
+        config.chroma_dir,
+        config.text_collection,
+        embedding_adapter=text_embedding,
+    )
+    figure = ChromaFigureRetriever(
+        config.figure_chroma_dir,
+        config.figure_collection,
+        config.figure_cards_jsonl,
+        config.visual_dir,
+        embedding_adapter=figure_embedding,
+    )
+    text_collection = text._collection()
+    figure_collection = figure._collection()
+    text_embedding.query_arguments(text_collection, "SafePLC FULL Core 30 environment validation")
+    figure_embedding.query_arguments(figure_collection, "SafePLC FULL Core 30 figure environment validation")
+    return {
+        "selected_text_collection": text.collection_name,
+        "selected_figure_collection": figure.collection_name,
+        "text_embedding_audit": dict(text_embedding.last_audit),
+        "figure_embedding_audit": dict(figure_embedding.last_audit),
+    }
 
 
 def truthfulness_errors(response: Dict[str, Any]) -> List[str]:
@@ -146,6 +196,20 @@ def main() -> None:
         environment.update({"finished_at": now_iso(), "status": "ERROR", "errors": environment_errors})
         write_json(output_dir / "environment.json", environment)
         append_log(run_log, "ENVIRONMENT ERROR " + ";".join(environment_errors))
+        raise SystemExit(2)
+    try:
+        environment.update(resolve_selected_collections(config))
+        write_json(output_dir / "environment.json", environment)
+        append_log(
+            run_log,
+            "COLLECTIONS "
+            f"text={environment['selected_text_collection']} figure={environment['selected_figure_collection']}",
+        )
+    except Exception as exc:
+        error = f"collection_resolution_failed:{type(exc).__name__}:{exc}"
+        environment.update({"finished_at": now_iso(), "status": "ERROR", "errors": [error]})
+        write_json(output_dir / "environment.json", environment)
+        append_log(run_log, "ENVIRONMENT ERROR " + error)
         raise SystemExit(2)
 
     cases = load_cases(Path(args.cases))

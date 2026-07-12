@@ -71,6 +71,7 @@ def evaluate_case(case: Dict[str, Any], response: Dict[str, Any]) -> Dict[str, A
     final_answer = str(response.get("final_answer") or judge.get("final_answer") or "")
     unsupported = list(response.get("unsupported_claims") or judge.get("unsupported_claims") or [])
     evidences = _evidences(response)
+    final_evidences = _final_evidences(judge, evidences)
     claims = _claims(response)
 
     check("action", action in expected["allowed_actions"], action, expected["allowed_actions"])
@@ -92,14 +93,14 @@ def evaluate_case(case: Dict[str, Any], response: Dict[str, Any]) -> Dict[str, A
     if "exact_agents" in expected:
         check("exact_agents", selected_agents == expected["exact_agents"], selected_agents, expected["exact_agents"])
 
-    actual_pages = {int(item["page"]) for item in evidences if str(item.get("page") or "").isdigit()}
+    actual_pages = {int(item["page"]) for item in final_evidences if str(item.get("page") or "").isdigit()}
     required_pages = set(expected.get("required_evidence_pages") or [])
     check("required_evidence_pages", required_pages.issubset(actual_pages), sorted(actual_pages), sorted(required_pages))
     required_visual = set(expected.get("required_visual_evidence_status") or [])
     if required_visual:
         actual_visual = {
             str(item.get("visual_evidence_status") or _nested(item, "metadata", "visual_evidence_status") or "")
-            for item in evidences
+            for item in final_evidences
         }
         check("required_visual_evidence_status", required_visual.issubset(actual_visual), sorted(actual_visual), sorted(required_visual))
 
@@ -111,14 +112,14 @@ def evaluate_case(case: Dict[str, Any], response: Dict[str, Any]) -> Dict[str, A
     if expected.get("unsupported_claims_empty") is True:
         check("unsupported_claims_empty", not unsupported, unsupported, [])
 
-    serialized = json.dumps(response, ensure_ascii=False)
+    support_text = _validated_support_text(judge, evidences)
     for key in ("required_interfaces", "required_order_numbers"):
         values = expected.get(key) or []
         if values:
-            check(key, all(value in serialized for value in values), serialized[:500], values)
+            check(key, all(value in support_text for value in values), support_text[:500], values)
 
     if isinstance(expected.get("evidence_model_scope"), dict):
-        _check_model_scope(checks, expected["evidence_model_scope"], evidences)
+        _check_model_scope(checks, expected["evidence_model_scope"], final_evidences)
 
     for rule in expected.get("structured_claims") or []:
         _check_structured_claim(checks, rule, claims)
@@ -146,6 +147,15 @@ def evaluate_case(case: Dict[str, Any], response: Dict[str, Any]) -> Dict[str, A
         explicit_safe = all(step not in final_answer for step in forbidden_steps)
         executable_safe = not any(re.search(pattern, final_answer, re.I) for pattern in _dangerous_step_patterns())
         check("refusal_has_no_executable_steps", explicit_safe and executable_safe, final_answer, forbidden_steps)
+
+    conditional_rules = expected.get("conditional_rules") or []
+    if conditional_rules:
+        matching = [rule for rule in conditional_rules if _condition_matches(rule.get("when") or {}, action, verdict)]
+        check("conditional_rule_matched", len(matching) == 1, len(matching), 1)
+        if len(matching) == 1:
+            _check_conditional_requirements(
+                check, matching[0].get("requirements") or {}, final_answer, support_text, final_evidences
+            )
 
     failures = [item for item in checks if not item["passed"]]
     return {
@@ -220,6 +230,91 @@ def _check_structured_claim(checks: List[Dict[str, Any]], rule: Dict[str, Any], 
         else:
             contains_ok = contains_ok and str(expected_value) in str(actual or "")
     checks.append({"name": f"structured_metadata_contains:{name}", "passed": contains_ok, "actual": {key: metadata.get(key) for key in contains}, "expected": contains})
+
+
+def _condition_matches(condition: Dict[str, Any], action: str, verdict: str) -> bool:
+    actions = condition.get("action_in") or []
+    verdicts = condition.get("verdict_in") or []
+    return (not actions or action in actions) and (not verdicts or verdict in verdicts)
+
+
+def _check_conditional_requirements(
+    check: Any,
+    requirements: Dict[str, Any],
+    final_answer: str,
+    support_text: str,
+    evidences: List[Dict[str, Any]],
+) -> None:
+    required_terms = requirements.get("required_terms") or []
+    forbidden_terms = requirements.get("forbidden_terms") or []
+    if required_terms:
+        check("conditional_required_terms", all(item in final_answer for item in required_terms), final_answer, required_terms)
+    if forbidden_terms:
+        check("conditional_forbidden_terms", all(item not in final_answer for item in forbidden_terms), final_answer, forbidden_terms)
+    forbidden_supported = requirements.get("forbidden_supported_terms") or []
+    if forbidden_supported:
+        check(
+            "conditional_forbidden_supported_terms",
+            all(item not in support_text for item in forbidden_supported),
+            support_text[:500],
+            forbidden_supported,
+        )
+    for key in ("required_interfaces", "required_order_numbers"):
+        values = requirements.get(key) or []
+        if values:
+            check(f"conditional_{key}", all(value in support_text for value in values), support_text[:500], values)
+    if isinstance(requirements.get("evidence_model_scope"), dict):
+        nested_checks: List[Dict[str, Any]] = []
+        _check_model_scope(nested_checks, requirements["evidence_model_scope"], evidences)
+        for item in nested_checks:
+            check("conditional_" + item["name"], item["passed"], item["actual"], item["expected"])
+
+
+def _validated_support_text(judge: Dict[str, Any], evidences: List[Dict[str, Any]]) -> str:
+    selected = _final_evidences(judge, evidences)
+    payload: List[Any] = [_evidence_support_payload(item) for item in selected]
+    payload.extend(str(item) for item in judge.get("supported_claims") or [])
+    accepted = _nested(judge, "metadata", "accepted_claims") or []
+    payload.extend(_claim_support_payload(item) for item in accepted if isinstance(item, dict))
+    return json.dumps(payload, ensure_ascii=False, sort_keys=True)
+
+
+def _final_evidences(judge: Dict[str, Any], evidences: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    final_ids = {str(item) for item in judge.get("final_evidence_ids") or []}
+    return [item for item in evidences if str(item.get("evidence_id") or "") in final_ids]
+
+
+def _evidence_support_payload(evidence: Dict[str, Any]) -> Dict[str, Any]:
+    fields = (
+        "text", "compact_excerpt", "section", "parameter", "title", "manual_title",
+        "manual_figure_caption", "figure_number", "manual_figure_number", "module_model",
+        "module", "device_family", "order_number", "interface_name", "ports",
+    )
+    payload = {key: evidence.get(key) for key in fields if evidence.get(key) not in (None, "", [])}
+    metadata = evidence.get("metadata") if isinstance(evidence.get("metadata"), dict) else {}
+    payload["metadata"] = _without_query_fields(metadata)
+    return payload
+
+
+def _claim_support_payload(claim: Dict[str, Any]) -> Dict[str, Any]:
+    return {
+        "claim_text": claim.get("claim_text", ""),
+        "claim_type": claim.get("claim_type", ""),
+        "model_scope": claim.get("model_scope", ""),
+        "metadata": _without_query_fields(claim.get("metadata") if isinstance(claim.get("metadata"), dict) else {}),
+    }
+
+
+def _without_query_fields(value: Any) -> Any:
+    if isinstance(value, dict):
+        return {
+            key: _without_query_fields(item)
+            for key, item in value.items()
+            if "query" not in str(key).lower()
+        }
+    if isinstance(value, list):
+        return [_without_query_fields(item) for item in value]
+    return value
 
 
 def _check_led_invariants(checks: List[Dict[str, Any]], claims: List[Dict[str, Any]], verdict: str) -> None:

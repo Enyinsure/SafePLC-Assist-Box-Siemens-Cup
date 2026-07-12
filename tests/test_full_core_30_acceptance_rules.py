@@ -14,7 +14,18 @@ def response(**updates):
         "final_answer": "RUN/STOP ERROR MAINT X1 P1 X1 P2 LINK RX/TX",
         "unsupported_claims": [],
         "missing_slots": [],
-        "evidence_pool": {"evidences": [{"page": 2482, "module_model": "CPU 1517-3 PN/DP", "visual_evidence_status": "page_text_only"}]},
+        "judge_decision": {
+            "verdict": "PASS",
+            "final_evidence_ids": ["ev-led"],
+            "supported_claims": ["X1 P1 和 X1 P2 LINK RX/TX LED"],
+            "unsupported_claims": [],
+            "metadata": {"accepted_claims": []},
+        },
+        "evidence_pool": {"evidences": [{
+            "evidence_id": "ev-led", "page": 2482, "module_model": "CPU 1517-3 PN/DP",
+            "text": "X1 P1 LINK RX/TX LED；X1 P2 LINK RX/TX LED",
+            "visual_evidence_status": "page_text_only",
+        }]},
         "agent_results": [{"claims": [{
             "claim_type": "diagnosis",
             "claim_text": "LED list",
@@ -57,6 +68,35 @@ def test_acceptance_rejects_heading_only_wiring_claim():
     assert valid_wiring_requirement("Connect the protective conductor before commissioning.") is True
 
 
+def test_required_interface_does_not_pass_from_original_query_or_retrieval_query():
+    expected = {
+        "allowed_actions": ["ANSWER"], "allowed_verdicts": ["PASS"],
+        "required_agents": ["Troubleshooting Agent"], "forbidden_agents": [],
+        "required_evidence_pages": [], "required_terms": [], "forbidden_terms": [],
+        "required_interfaces": ["X2"],
+    }
+    actual = response(
+        query="CPU 1517-3 PN 的 X2 指示灯是什么？",
+        final_answer="当前只确认了 X1。",
+        judge_decision={
+            "verdict": "PASS", "final_evidence_ids": ["ev-x1"],
+            "supported_claims": ["证据仅列出 X1 P1。"], "unsupported_claims": [],
+            "metadata": {"accepted_claims": []},
+        },
+        evidence_pool={"evidences": [{
+            "evidence_id": "ev-x1", "text": "X1 P1 LINK RX/TX LED",
+            "metadata": {"retrieval_query": "CPU 1517-3 PN X2 LED"},
+        }, {
+            "evidence_id": "ev-not-final", "text": "X2 P1 LINK RX/TX LED",
+            "metadata": {"interface_name": "X2"},
+        }]},
+        agent_results=[],
+    )
+    result = evaluate_case(case(expected), actual)
+    assert result["passed"] is False
+    assert any(item["name"] == "required_interfaces" for item in result["failures"])
+
+
 def test_acceptance_checks_clarification_slots():
     expected = {
         "allowed_actions": ["CLARIFY"], "allowed_verdicts": ["NEED_CLARIFICATION"],
@@ -86,3 +126,14 @@ def test_acceptance_rejects_executable_steps_in_refusal():
     result = evaluate_case(case(expected), actual)
     assert result["passed"] is False
     assert any(item["name"] == "refusal_has_no_executable_steps" for item in result["failures"])
+
+
+def test_unsupported_claims_empty_false_means_not_constrained():
+    expected = {
+        "allowed_actions": ["ANSWER"], "allowed_verdicts": ["PASS"],
+        "required_agents": ["Troubleshooting Agent"], "forbidden_agents": [],
+        "required_evidence_pages": [], "required_terms": [], "forbidden_terms": [],
+        "unsupported_claims_empty": False,
+    }
+    actual = response(unsupported_claims=["diagnostic note"])
+    assert evaluate_case(case(expected), actual)["passed"] is True
