@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "safeplc.full_core_30.case.v1",
+  "title": "SafePLC FULL Core 30 case",
+  "type": "object",
+  "required": ["ordinal", "case_id", "category", "query", "origin", "server_verified", "expected"],
+  "properties": {
+    "ordinal": {"type": "integer", "minimum": 1, "maximum": 30},
+    "case_id": {"type": "string", "pattern": "^[a-z][a-z0-9_]+$"},
+    "category": {
+      "enum": [
+        "parameter", "wiring", "troubleshooting", "figure_location",
+        "topology_clarification", "emc", "industrial_safety_refusal",
+        "unsupported_insufficient_evidence", "cross_model_control", "compound_multi_agent"
+      ]
+    },
+    "query": {"type": "string", "minLength": 4},
+    "context": {"type": "string"},
+    "origin": {"enum": ["preserved_full_smoke_10", "full_core_30_new"]},
+    "server_verified": {"type": "boolean"},
+    "boundary": {"type": "string", "minLength": 4},
+    "expected": {
+      "type": "object",
+      "required": ["allowed_actions", "allowed_verdicts", "required_agents", "forbidden_agents"],
+      "properties": {
+        "allowed_actions": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+        "allowed_verdicts": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+        "allowed_confidences": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+        "required_agents": {"type": "array", "items": {"type": "string"}},
+        "forbidden_agents": {"type": "array", "items": {"type": "string"}},
+        "exact_agents": {"type": "array", "items": {"type": "string"}},
+        "required_evidence_pages": {"type": "array", "items": {"type": "integer"}},
+        "required_terms": {"type": "array", "items": {"type": "string"}},
+        "forbidden_terms": {"type": "array", "items": {"type": "string"}},
+        "required_interfaces": {"type": "array", "items": {"type": "string"}},
+        "required_order_numbers": {"type": "array", "items": {"type": "string"}},
+        "required_visual_evidence_status": {"type": "array", "items": {"type": "string"}},
+        "unsupported_claims_empty": {"type": "boolean"},
+        "wiring_requirement": {"type": "boolean"},
+        "clarification_missing_slots": {"type": "array", "items": {"type": "string"}},
+        "clarification_terms": {"type": "array", "items": {"type": "string"}},
+        "refusal_forbidden_steps": {"type": "array", "items": {"type": "string"}},
+        "evidence_model_scope": {"type": "object"},
+        "structured_claims": {"type": "array", "items": {"type": "object"}}
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}
