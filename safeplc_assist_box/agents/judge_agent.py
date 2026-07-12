@@ -7,7 +7,12 @@ import re
 from typing import Dict, List, Tuple
 
 from ..evidence.claim_value_parser import find_numeric_mismatches, find_unit_mismatches, parse_claim_values
-from ..evidence.fact_extractors import has_wiring_normative_predicate
+from ..evidence.fact_extractors import (
+    extract_emc_facts,
+    extract_led_checks,
+    has_wiring_normative_predicate,
+    is_wiring_heading_fragment,
+)
 from ..evidence.model_identity import classify_model_match, extract_model_identity
 from ..schemas import AgentClaim, AgentResult, AgentStatus, EvidencePool, JudgeConfidence, JudgeDecision, JudgeVerdict, QueryContext
 from .evidence_closed_synthesizer import EvidenceClosedSynthesizer
@@ -146,6 +151,12 @@ class JudgeAgent:
         model_specific_query = bool(query_identity.normalized_model or query_identity.order_numbers)
         if model_specific_query and any(level == "same_family_general" for level in levels) and not claim.metadata.get("general_guidance"):
             reasons.append("same_family_general_used_for_model_specific_claim")
+        fact_type = claim.metadata.get("fact_type")
+        structured_claim = fact_type in {"led_checklist", "emc_installation_measure"}
+        if fact_type == "led_checklist":
+            reasons.extend(self._validate_led_claim(context, claim, evidences))
+        elif fact_type == "emc_installation_measure":
+            reasons.extend(self._validate_emc_claim(claim, evidences))
         claim_values = parse_claim_values(claim.claim_text)
         evidence_values = parse_claim_values(" ".join(self._evidence_text(item) for item in evidences))
         if claim_values.order_numbers and not set(claim_values.order_numbers) & set(evidence_values.order_numbers):
@@ -154,9 +165,10 @@ class JudgeAgent:
             reasons.append("numeric_mismatch")
         if find_unit_mismatches(claim_values, evidence_values):
             reasons.append("unit_mismatch")
-        if not set(claim_values.interfaces).issubset(set(evidence_values.interfaces)) or not set(
-            claim_values.port_labels
-        ).issubset(set(evidence_values.port_labels)):
+        if not structured_claim and (
+            not set(claim_values.interfaces).issubset(set(evidence_values.interfaces))
+            or not set(claim_values.port_labels).issubset(set(evidence_values.port_labels))
+        ):
             reasons.append("interface_or_port_mismatch")
         if claim.claim_type == "location" and not any(item.figure_id or item.figure_number or item.page is not None for item in evidences):
             reasons.append("missing_figure_reference")
@@ -165,11 +177,64 @@ class JudgeAgent:
         if claim.claim_type in {"connection", "wiring"} or claim.metadata.get("fact_type") == "wiring_requirement":
             if self._low_information_wiring_claim(claim.claim_text):
                 reasons.append("low_information_heading_fragment")
-        if claim.metadata.get("fact_type") == "led_checklist" and not claim.direct_support:
-            reasons.append("led_checklist_without_direct_support")
-        if not self._text_support(claim.claim_text, evidences):
+        if fact_type in {"led_checklist", "emc_installation_measure"} and not claim.direct_support:
+            reasons.append(f"{fact_type}_without_direct_support")
+        if not structured_claim and not self._text_support(claim.claim_text, evidences):
             reasons.append("claim_core_terms_not_supported")
         return list(dict.fromkeys(reasons))
+
+    def _validate_led_claim(self, context: QueryContext, claim: AgentClaim, evidences: List[object]) -> List[str]:
+        expected = list(claim.metadata.get("expected_led_groups") or [])
+        found = list(claim.metadata.get("found_led_groups") or [])
+        missing = list(claim.metadata.get("missing_led_groups") or [])
+        interface_match = re.search(r"\bX\d+\b", " ".join(expected + found), re.I) or re.search(
+            r"\bX\d+\b", context.original_query, re.I
+        )
+        interface = interface_match.group(0).upper() if interface_match else "X1"
+        evidence_groups = list(dict.fromkeys(
+            label for evidence in evidences for label in extract_led_checks(evidence.text, interface)
+        ))
+        reasons = []
+        if not found:
+            reasons.append("structured_led_groups_missing")
+        if not set(found).issubset(set(evidence_groups)):
+            reasons.append("structured_led_label_not_in_evidence")
+        claim_groups = extract_led_checks(claim.claim_text, interface)
+        if not set(found).issubset(set(claim_groups)) or not set(claim_groups).issubset(set(evidence_groups)):
+            reasons.append("structured_led_claim_mismatch")
+        computed_missing = set(expected) - set(found)
+        if set(missing) != computed_missing:
+            reasons.append("structured_led_missing_groups_mismatch")
+        expected_ratio = len(set(found) & set(expected)) / len(expected) if expected else 0.0
+        if abs(float(claim.metadata.get("coverage_ratio") or 0.0) - expected_ratio) > 1e-6:
+            reasons.append("structured_led_coverage_ratio_mismatch")
+        if not reasons:
+            claim.metadata["structured_led_support"] = True
+            claim.metadata["partial_coverage"] = bool(computed_missing)
+            claim.metadata["evidence_led_groups"] = evidence_groups
+        return reasons
+
+    def _validate_emc_claim(self, claim: AgentClaim, evidences: List[object]) -> List[str]:
+        evidence_facts = list(dict.fromkeys(
+            fact for evidence in evidences for fact in extract_emc_facts(evidence.text)
+        ))
+        positive_facts = list(claim.metadata.get("positive_facts") or [])
+        reasons = []
+        if not positive_facts:
+            reasons.append("structured_emc_positive_facts_missing")
+        if not set(positive_facts).issubset(set(evidence_facts)):
+            reasons.append("structured_emc_fact_not_in_evidence")
+        if int(claim.metadata.get("installation_fact_count") or 0) != len(evidence_facts):
+            reasons.append("structured_emc_fact_count_mismatch")
+        remaining = claim.claim_text
+        for fact in positive_facts:
+            remaining = remaining.replace(fact, "")
+        if re.sub(r"[\s。；;，,]+", "", remaining):
+            reasons.append("structured_emc_claim_contains_non_fact_text")
+        if not reasons:
+            claim.metadata["structured_emc_support"] = True
+            claim.metadata["evidence_positive_facts"] = evidence_facts
+        return reasons
 
     def _claim_has_partial_coverage(self, claim: AgentClaim) -> bool:
         if claim.metadata.get("partial_coverage"):
@@ -186,7 +251,8 @@ class JudgeAgent:
     def _low_information_wiring_claim(self, text: str) -> bool:
         value = str(text or "").strip()
         nouns = re.findall(r"接线|端子|接口|分配|图|说明", value)
-        return bool(nouns) and not has_wiring_normative_predicate(value)
+        english_heading = is_wiring_heading_fragment(value)
+        return (bool(nouns) or english_heading) and not has_wiring_normative_predicate(value)
 
     def _coverage(self, context: QueryContext, claims: List[AgentClaim]) -> Dict[str, Dict[str, object]]:
         return {

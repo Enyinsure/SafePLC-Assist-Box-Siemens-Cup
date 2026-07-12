@@ -9,3 +9,13 @@ def test_judge_rejects_low_information_wiring_claim():
     decision = JudgeAgent().decide(QueryContext("S7-1500 端子接线注意事项是什么？"), [result], EvidencePool([evidence]))
     assert decision.verdict != "PASS"
     assert any("low_information_heading_fragment" in item for item in decision.unsupported_claims)
+
+
+def test_judge_rejects_english_wiring_heading_claim():
+    heading = "Wiring SIMATIC TOP connect to the I/O modules"
+    evidence = AgentEvidence("ev", "manual", "manual", "text", heading)
+    claim = AgentClaim("claim", heading, "connection", ["ev"], direct_support=True)
+    result = AgentResult("Wiring Agent", "task", "ANSWERED", evidence_ids=["ev"], claims=[claim])
+    decision = JudgeAgent().decide(QueryContext("S7-1500 wiring rules"), [result], EvidencePool([evidence]))
+    assert decision.verdict != "PASS"
+    assert any("low_information_heading_fragment" in item for item in decision.unsupported_claims)

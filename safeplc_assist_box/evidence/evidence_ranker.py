@@ -248,7 +248,8 @@ def emc_directness_score(evidence: AgentEvidence) -> float:
     measures = [
         bool(re.search(r"grounded\s+control\s+(?:cabinets?|boxes?)|接地(?:的)?控制(?:柜|箱)", text, re.I)),
         bool(re.search(r"noise\s+filters?.{0,30}supply\s+lines?|电源线.{0,20}噪声滤波器", text, re.I)),
-        "industrial environment" in text or "industrial applications" in text or "工业环境" in text,
+        "industrial environment" in text or "industrial applications" in text
+        or "designed for industrial use" in text or "工业环境" in text,
         bool(re.search(r"EN\s*55011.{0,30}Class\s*B", text, re.I)),
     ]
     count = sum(measures)

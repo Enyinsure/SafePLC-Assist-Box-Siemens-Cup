@@ -58,8 +58,18 @@ class EvidenceClosedSynthesizer:
         ]
         if any(item.visual_evidence_status == "page_text_only" for item in used_evidence):
             answer += "【图像状态】目前检索到的是图示页文字证据，未找到对应的图像文件。"
+        if any(claim.metadata.get("fact_type") == "led_checklist" for claim in accepted):
+            answer += "【建议】通信不上且指示灯异常时，可先记录并核对上述指示灯。"
         if verdict == "PARTIAL":
-            answer += "【待确认】仍有子问题未被可靠证据覆盖，以上只包含已查证部分。"
+            coverage_notes = list(dict.fromkeys(
+                str(claim.metadata.get("coverage_note") or "").strip()
+                for claim in accepted
+                if str(claim.metadata.get("coverage_note") or "").strip()
+            ))
+            if coverage_notes:
+                answer += "【待确认】" + "；".join(note.rstrip("。") for note in coverage_notes) + "。"
+            else:
+                answer += "【待确认】仍有子问题未被可靠证据覆盖，以上只包含已查证部分。"
         return compact_text(answer, 520)
 
     def _location_text(self, query_context: QueryContext, claim: AgentClaim, evidence_by_id: Dict[str, AgentEvidence]) -> str:

@@ -29,8 +29,9 @@ class EMCAgent(BaseAgent):
         preferred = [item for item in extracted if len(item[1]) >= 2]
         top, facts = max(preferred or extracted, key=lambda item: (len(item[1]), item[0].quality_score))
         claim = "".join(facts)
-        if "屏蔽" in query and not re.search(r"屏蔽层|shield (?:connection|termination)", top.text, re.I):
-            claim += "当前证据未直接覆盖屏蔽层连接方法或端接方法，需要继续查证对应安装章节。"
+        shield_missing = "屏蔽" in query and not re.search(r"屏蔽层|shield (?:connection|termination)", top.text, re.I)
+        missing_topics = ["屏蔽层连接方法", "屏蔽层端接方法"] if shield_missing else []
+        coverage_note = "当前证据未直接覆盖屏蔽层连接或端接方法，需继续查对应安装章节。" if shield_missing else ""
         answer = f"{claim} Evidence: {top.manual_title or top.source}, page {top.page or '-'}."
         return self._finish_with_evidence(
             task,
@@ -39,15 +40,19 @@ class EMCAgent(BaseAgent):
             answer_fragment=answer,
             claim=claim,
             confidence="MEDIUM",
-            status=AgentStatus.PARTIAL.value,
+            status=AgentStatus.PARTIAL.value if shield_missing else AgentStatus.ANSWERED.value,
             claim_type="procedure",
+            direct_support=True,
             claim_metadata={
                 "evidence_span": top.compact_excerpt,
                 "fact_type": "emc_installation_measure",
                 "source_page": top.page,
                 "source_section": top.section,
                 "inference_level": "direct",
-                "partial_coverage": True,
+                "partial_coverage": shield_missing,
                 "installation_fact_count": len(facts),
+                "positive_facts": facts,
+                "coverage_note": coverage_note,
+                "missing_topics": missing_topics,
             },
         )

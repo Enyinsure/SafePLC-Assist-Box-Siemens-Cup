@@ -36,7 +36,7 @@ class TroubleshootingAgent(BaseAgent):
         ]
         missing = [item for item in expected if item not in checks]
         coverage_ratio = len([item for item in expected if item in checks]) / len(expected)
-        claim = "通信不上且指示灯异常时，先记录并核对：" + "、".join(checks) + "。"
+        claim = "该证据页列出的相关状态和端口指示灯包括：" + "、".join(checks) + "。"
         answer = f"{claim} Evidence: {top.manual_title or top.source}, page {top.page or '-'}."
         return self._finish_with_evidence(
             task,

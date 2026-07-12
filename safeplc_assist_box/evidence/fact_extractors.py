@@ -133,7 +133,12 @@ def has_wiring_normative_predicate(text: str) -> bool:
         return True
     if re.search(r"连接(?!器|关系|说明|示意|图|元件)|使用(?!说明)|检查|核对|符合(?!性)|设计为", value):
         return True
-    return bool(re.search(r"\b(?:must|shall|should|connect|use|ensure|verify|require|designed)\b", value, re.I))
+    english = re.sub(r"\b(?:SIMATIC\s+)?TOP\s+connect\b", "TOP_CONNECT_PRODUCT", value, flags=re.I)
+    if re.search(r"\b(?:must|shall|should|required|ensure|verify)\b", english, re.I):
+        return True
+    if re.search(r"\bis\s+designed\s+to\b|\bmust\s+be\s+connected\b|\bshall\s+be\s+used\b", english, re.I):
+        return True
+    return bool(re.match(r"^(?:Connect|Ensure|Verify|Check)\b|^Use\b(?!\s+of\b)", english, re.I))
 
 
 def is_wiring_heading_fragment(text: str) -> bool:
@@ -142,6 +147,15 @@ def is_wiring_heading_fragment(text: str) -> bool:
     if normalized in WIRING_HEADING_FRAGMENTS:
         return True
     if re.match(r"^(?:下图显示|下图所示|在下文中介绍|以下介绍)", normalized):
+        return True
+    if re.match(r"^(?:Wiring|Connecting|Connection|Terminal\s+assignment|System\s+cabling)\b", normalized, re.I):
+        return True
+    if re.match(r"^The\s+following\s+figure\s+shows\b", normalized, re.I):
+        return True
+    if re.match(r"^Wiring\b.*\bmodules?$", normalized, re.I) or re.search(r"\binterface\s+description$", normalized, re.I):
+        return True
+    words = re.findall(r"[A-Za-z]+", normalized)
+    if words and len(words) <= 10 and re.match(r"^[A-Za-z]+ing\b", normalized) and not has_wiring_normative_predicate(normalized):
         return True
     if value.endswith(("：", ":")):
         return True
@@ -220,7 +234,7 @@ def extract_emc_facts(text: str) -> List[str]:
         facts.append("可采用接地控制柜或控制箱。")
     if re.search(r"(?:noise filters?|噪声滤波器)[^。\n]{0,50}(?:supply lines?|电源线)?", value, re.I):
         facts.append("可在电源线上使用噪声滤波器。")
-    if re.search(r"industrial (?:environment|applications?)|工业环境", value, re.I):
+    if re.search(r"industrial (?:environment|applications?)|designed for industrial use|工业环境", value, re.I):
         facts.append("该系统适用于工业环境。")
     if re.search(r"EN\s*55011[^。\n]{0,30}Class\s*B|住宅环境[^。\n]{0,50}Class\s*B", value, re.I):
         facts.append("用于住宅环境时应满足 EN 55011 Class B。")
