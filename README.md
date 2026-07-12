@@ -41,6 +41,8 @@ Copy `config/full.env.example` to an ignored local env file and set the collecti
 
 The Supervisor decomposes compound questions and selects a bounded subset of specialist agents. Agents return structured claims with independent evidence IDs and abstain when unsupported. The Shared Evidence Pool normalizes and deduplicates evidence, model identity filtering rejects cross-family matches, and the claim-level Judge plus verifier check coverage, model consistency, numeric support, and figure requirements.
 
+For explicit interface-location intent, FULL retrieval can generate one bounded front-view expansion (`SAFEPLC_ENABLE_QUERY_EXPANSION=1`) and batch it with the original query. Candidates are model-filtered before Reciprocal Rank Fusion and location-directness reranking. The expansion contains no page, figure number, marker, or database-derived answer.
+
 The deterministic synthesizer only uses Judge-accepted claims and evidence. Streamlit exposes routing, subquestions, claims, retrieval backends, model matching, evidence provenance, Judge coverage, and verifier status through the same orchestrator used by CLI and evaluation.
 
 ## Boundaries

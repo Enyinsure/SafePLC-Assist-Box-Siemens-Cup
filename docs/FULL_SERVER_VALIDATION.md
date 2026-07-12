@@ -33,6 +33,8 @@ set +a
 
 Keep `SAFEPLC_ALLOW_REMOTE_MODEL_DOWNLOAD=0`. Set `SAFEPLC_ALLOW_CHROMA_DEFAULT_EMBEDDING=1` only after confirming that the collection expects that embedding function. JSONL fallback and hybrid retrieval are disabled by default.
 
+For controlled location retrieval, keep `SAFEPLC_ENABLE_QUERY_EXPANSION=1` and `SAFEPLC_MAX_EXPANDED_QUERIES=2`. The runtime normally generates only one strongest expansion and records every retrieval query, rank, reason, RRF score, and model-filter count in the audit metadata.
+
 ## 4. Inspect Chroma
 
 ```bash
@@ -59,6 +61,8 @@ python scripts/probe_full_retrieval.py "CPU 1517-3 PN 的 X1 接口在哪里？"
 ```
 
 Inspect `backend_audit`, collection names, model matches, pages, figure numbers, and visual status. For figure evidence, every claimed `image_path` must resolve to a real file under the configured visual directory. A metadata string without an existing image is not verified visual evidence.
+
+Also confirm `distance_metric` matches collection metadata and that cosine collections report `score_conversion=one_minus_cosine_distance`. For model-specific location queries, inspect `query_ranks`, `rrf_score`, `matched_query_count`, and model-filter counts before accepting the final order.
 
 ## 7. Run Tests
 
