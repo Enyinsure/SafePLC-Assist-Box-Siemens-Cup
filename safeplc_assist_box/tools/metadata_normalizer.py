@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, Optional
 
 from ..schemas import AgentEvidence, compact_text
+from ..evidence.model_identity import extract_model_identity, extract_order_numbers, normalize_text
 
 
 VALID_BACKENDS = {
@@ -87,10 +88,52 @@ def extract_manual_figure(text: str) -> tuple[str, str]:
     return number, caption
 
 
-def extract_location_marker(text: str) -> str:
+_CIRCLED_MARKER = r"[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳]"
+
+
+def extract_location_markers(text: str) -> Dict[str, str]:
     value = str(text or "")
-    match = re.search(r"[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳]", value)
-    return match.group(0) if match else ""
+    markers = list(re.finditer(_CIRCLED_MARKER, value))
+    result: Dict[str, str] = {}
+    for index, marker in enumerate(markers):
+        segment_end = markers[index + 1].start() if index + 1 < len(markers) else len(value)
+        segment = value[marker.end():segment_end]
+        interfaces = re.findall(r"[（(]?\b(X\d+)\b[）)]?", segment, re.I)
+        for interface in interfaces:
+            result.setdefault(interface.upper(), marker.group(0))
+    return result
+
+
+def extract_location_marker(text: str, interface_name: str = "") -> str:
+    match = re.search(r"\bX\d+\b", str(interface_name or ""), re.I)
+    if not match:
+        return ""
+    return extract_location_markers(text).get(match.group(0).upper(), "")
+
+
+def _model_candidates(text: str) -> list[object]:
+    normalized = normalize_text(text)
+    pattern = r"(?:CPU\s*)?15(?:11|13|15|16|17|18)(?:HF|H|R|T)?(?:-\d)?(?:\s*(?:PN/DP|PN|DP))?\b"
+    candidates = []
+    seen = set()
+    for match in re.finditer(pattern, normalized, re.I):
+        identity = extract_model_identity(match.group(0))
+        if identity.normalized_model and identity.normalized_model not in seen:
+            seen.add(identity.normalized_model)
+            candidates.append(identity)
+    return candidates
+
+
+def _infer_identity(text: str, query_text: str) -> object:
+    candidates = _model_candidates(text)
+    target = extract_model_identity(query_text)
+    if target.normalized_model:
+        matches = [
+            item for item in candidates
+            if item.normalized_model == target.normalized_model or set(item.aliases) & set(target.aliases)
+        ]
+        return matches[0] if len(matches) == 1 else extract_model_identity("")
+    return candidates[0] if len(candidates) == 1 else extract_model_identity("")
 
 
 def stable_evidence_id(ev: AgentEvidence) -> str:
@@ -132,6 +175,26 @@ def normalize_metadata(
     if backend == "chroma_figure":
         modality = "figure"
 
+    manual_title = first_value(meta, TITLE_KEYS)
+    section = str(meta.get("section") or meta.get("chapter") or "")
+    explicit_model = first_value(meta, MODEL_KEYS)
+    explicit_order = first_value(meta, ORDER_KEYS)
+    inference_text = " ".join([section, manual_title, str(text or "")])
+    model_candidates = _model_candidates(inference_text)
+    inferred_identity = _infer_identity(inference_text, query_text)
+    resolved_identity = extract_model_identity(explicit_model) if explicit_model else inferred_identity
+    inferred_orders = extract_order_numbers(inference_text)
+    module_model = explicit_model or inferred_identity.normalized_model
+    order_number = explicit_order or (
+        inferred_orders[0] if len(inferred_orders) == 1 and len(model_candidates) <= 1 else ""
+    )
+    device_family = str(meta.get("device_family") or meta.get("family") or resolved_identity.device_family or "")
+
+    target_interface_match = re.search(r"\bX\d+\b", query_text or "", re.I)
+    target_interface = target_interface_match.group(0).upper() if target_interface_match else ""
+    location_markers = extract_location_markers(str(text or ""))
+    location_marker = location_markers.get(target_interface, "") if target_interface else ""
+
     metric = str(distance_metric or "unknown").lower()
     normalized = normalize_score(raw_distance, fallback_score=fallback_score, distance_metric=metric)
     raw_image_path = str(meta.get("image_path") or meta.get("image") or "")
@@ -162,13 +225,13 @@ def normalize_metadata(
         modality=modality,
         text=str(text or ""),
         compact_excerpt=compact_text(str(text or "")),
-        manual_title=first_value(meta, TITLE_KEYS),
+        manual_title=manual_title,
         manual_version=str(meta.get("manual_version") or meta.get("version") or ""),
-        device_family=str(meta.get("device_family") or meta.get("family") or ""),
-        module_model=first_value(meta, MODEL_KEYS),
-        order_number=first_value(meta, ORDER_KEYS),
+        device_family=device_family,
+        module_model=module_model,
+        order_number=order_number,
         page=page,
-        section=str(meta.get("section") or meta.get("chapter") or ""),
+        section=section,
         figure_id=figure_id,
         figure_number=figure_number,
         visual_record_id=visual_record_id,
@@ -196,8 +259,8 @@ def normalize_metadata(
             "monotonic_inverse_distance"
         ),
         vector_similarity=normalized,
-        title=first_value(meta, TITLE_KEYS),
-        module=first_value(meta, MODEL_KEYS),
+        title=manual_title,
+        module=module_model,
         parameter=str(meta.get("parameter") or meta.get("param") or ""),
         metadata={
             **meta,
@@ -217,7 +280,11 @@ def normalize_metadata(
             "visual_record_id": visual_record_id,
             "manual_figure_number": manual_figure_number,
             "manual_figure_caption": manual_figure_caption,
-            "location_marker": str(meta.get("location_marker") or extract_location_marker(str(text or ""))),
+            "location_markers": location_markers,
+            "location_marker": location_marker,
+            "location_marker_interface": target_interface if location_marker else "",
+            "model_inferred_from_text": bool(not explicit_model and module_model),
+            "order_number_inferred_from_text": bool(not explicit_order and order_number),
             "query_text": query_text,
             "retrieval_query": query_text,
             "retrieval_timestamp": datetime.now(timezone.utc).isoformat(timespec="seconds"),

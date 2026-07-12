@@ -93,7 +93,7 @@ class FigureMetadataMapper:
                 "manual_figure_number": ev.manual_figure_number,
                 "manual_figure_caption": ev.manual_figure_caption,
                 "visual_record_id": ev.visual_record_id,
-                "location_marker": ev.metadata.get("location_marker") or extract_location_marker(ev.text),
+                "location_marker": ev.metadata.get("location_marker") or extract_location_marker(ev.text, ev.query_text),
             }
         )
         return ev
