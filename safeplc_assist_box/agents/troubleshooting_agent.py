@@ -3,6 +3,8 @@
 
 from __future__ import annotations
 
+import re
+
 from ..evidence.evidence_pool import SharedEvidencePool
 from ..schemas import AgentStatus
 from ..tools.tool_registry import ToolRegistry
@@ -19,12 +21,21 @@ class TroubleshootingAgent(BaseAgent):
 
     def execute(self, task, registry: ToolRegistry, evidence_pool: SharedEvidencePool):
         query = self._join_query(task)
+        interface_match = re.search(r"\bX\d+\b", task.input_slots.get("interface_name", "") or query, re.I)
+        interface = interface_match.group(0).upper() if interface_match else "X1"
         candidates = registry.search_text(query, top_k=10) + registry.search_table(query, top_k=6)
         ranked = rank_evidence(candidates, query=query, top_k=12)
-        selected = next(((item, extract_led_checks(item.text)) for item in ranked if extract_led_checks(item.text)), None)
-        if not selected:
+        extracted = [(item, extract_led_checks(item.text, interface)) for item in ranked]
+        extracted = [item for item in extracted if item[1]]
+        if not extracted:
             return self._abstain(task, "No troubleshooting evidence was found.")
-        top, checks = selected
+        top, checks = max(extracted, key=lambda item: (len(item[1]), item[0].quality_score))
+        expected = [
+            "RUN/STOP LED", "ERROR LED", "MAINT LED",
+            f"{interface} P1 LINK RX/TX LED", f"{interface} P2 LINK RX/TX LED",
+        ]
+        missing = [item for item in expected if item not in checks]
+        coverage_ratio = len([item for item in expected if item in checks]) / len(expected)
         claim = "通信不上且指示灯异常时，先记录并核对：" + "、".join(checks) + "。"
         answer = f"{claim} Evidence: {top.manual_title or top.source}, page {top.page or '-'}."
         return self._finish_with_evidence(
@@ -34,8 +45,9 @@ class TroubleshootingAgent(BaseAgent):
             answer_fragment=answer,
             claim=claim,
             confidence="MEDIUM",
-            status=AgentStatus.ANSWERED.value,
+            status=AgentStatus.PARTIAL.value if missing else AgentStatus.ANSWERED.value,
             claim_type="diagnosis",
+            direct_support=True,
             claim_metadata={
                 "general_guidance": False,
                 "evidence_span": "、".join(checks),
@@ -43,5 +55,10 @@ class TroubleshootingAgent(BaseAgent):
                 "source_page": top.page,
                 "source_section": top.section,
                 "inference_level": "bounded_inference",
+                "expected_led_groups": expected,
+                "found_led_groups": checks,
+                "missing_led_groups": missing,
+                "coverage_ratio": coverage_ratio,
+                "partial_coverage": bool(missing),
             },
         )

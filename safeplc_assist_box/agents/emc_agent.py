@@ -22,13 +22,15 @@ class EMCAgent(BaseAgent):
     def execute(self, task, registry: ToolRegistry, evidence_pool: SharedEvidencePool):
         query = self._join_query(task)
         evidences = rank_evidence(registry.search_text(query, top_k=10), query=query, top_k=12)
-        selected = next(((item, extract_emc_facts(item.text)) for item in evidences if extract_emc_facts(item.text)), None)
-        if not selected:
+        extracted = [(item, extract_emc_facts(item.text)) for item in evidences]
+        extracted = [item for item in extracted if item[1]]
+        if not extracted:
             return self._abstain(task, "No EMC evidence was found.")
-        top, facts = selected
+        preferred = [item for item in extracted if len(item[1]) >= 2]
+        top, facts = max(preferred or extracted, key=lambda item: (len(item[1]), item[0].quality_score))
         claim = "".join(facts)
         if "屏蔽" in query and not re.search(r"屏蔽层|shield (?:connection|termination)", top.text, re.I):
-            claim += "当前证据未直接覆盖屏蔽层连接方法，需要继续查证对应安装章节。"
+            claim += "当前证据未直接覆盖屏蔽层连接方法或端接方法，需要继续查证对应安装章节。"
         answer = f"{claim} Evidence: {top.manual_title or top.source}, page {top.page or '-'}."
         return self._finish_with_evidence(
             task,
@@ -46,5 +48,6 @@ class EMCAgent(BaseAgent):
                 "source_section": top.section,
                 "inference_level": "direct",
                 "partial_coverage": True,
+                "installation_fact_count": len(facts),
             },
         )

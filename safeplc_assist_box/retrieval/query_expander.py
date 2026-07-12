@@ -42,6 +42,32 @@ class QueryExpander:
         low = original.lower()
         identity = extract_model_identity(original)
         interfaces = list(dict.fromkeys(item.upper() for item in re.findall(r"\bX\d+\b", original, re.I)))
+        if max_expanded_queries > 0 and any(term in low for term in ("emc", "电磁兼容", "接地", "屏蔽", "干扰", "抗干扰")):
+            expanded = [
+                "electromagnetic compatibility industrial applications residential areas EN 55011 Class B",
+                "S7-1500 system cabling grounded control cabinets control boxes noise filters supply lines EMC",
+            ][: min(2, max_expanded_queries)]
+            return QueryExpansionResult(
+                original_query=original,
+                expanded_queries=expanded,
+                intent="emc",
+                normalized_model=identity.normalized_model,
+                interface_names=interfaces,
+                expansion_reasons=["emc_english_manual_terms"] * len(expanded),
+            )
+        if max_expanded_queries > 0 and any(term in low for term in ("端子接线", "接线注意", "wiring rules", "terminal wiring")):
+            expanded = [
+                "S7-1500 ET 200MP 系统手册 接线 操作规则和规定 保护导线 SELV PELV",
+                "S7-1500 system wiring rules protective conductor SELV PELV power supply connector",
+            ][: min(2, max_expanded_queries)]
+            return QueryExpansionResult(
+                original_query=original,
+                expanded_queries=expanded,
+                intent="wiring",
+                normalized_model=identity.normalized_model,
+                interface_names=interfaces,
+                expansion_reasons=["system_level_wiring_rules"] * len(expanded),
+            )
         location = any(term in low for term in LOCATION_TERMS) and not any(
             term in low for term in NON_LOCATION_TERMS
         )

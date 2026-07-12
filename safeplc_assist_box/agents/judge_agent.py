@@ -7,6 +7,7 @@ import re
 from typing import Dict, List, Tuple
 
 from ..evidence.claim_value_parser import find_numeric_mismatches, find_unit_mismatches, parse_claim_values
+from ..evidence.fact_extractors import has_wiring_normative_predicate
 from ..evidence.model_identity import classify_model_match, extract_model_identity
 from ..schemas import AgentClaim, AgentResult, AgentStatus, EvidencePool, JudgeConfidence, JudgeDecision, JudgeVerdict, QueryContext
 from .evidence_closed_synthesizer import EvidenceClosedSynthesizer
@@ -86,7 +87,7 @@ class JudgeAgent:
         elif not model_consistency["pass"]:
             verdict, confidence, reason = JudgeVerdict.ABSTAIN.value, JudgeConfidence.LOW.value, "Model or order-number scope is inconsistent."
         elif coverage_score < 0.9 or unsupported or figure_state["missing_required_image"] or any(
-            claim.metadata.get("partial_coverage") for claim in accepted_claims
+            self._claim_has_partial_coverage(claim) for claim in accepted_claims
         ):
             verdict, confidence, reason = JudgeVerdict.PARTIAL.value, JudgeConfidence.MEDIUM.value, "Only the covered, evidence-supported portion can be answered."
         elif quality_scores["grounding"] >= 0.9 and quality_scores["model_consistency"] >= 0.95:
@@ -161,9 +162,31 @@ class JudgeAgent:
             reasons.append("missing_figure_reference")
         if context.question_type == "FIGURE" and claim.claim_type == "location" and not claim.direct_support:
             reasons.append("figure_claim_without_direct_support")
+        if claim.claim_type in {"connection", "wiring"} or claim.metadata.get("fact_type") == "wiring_requirement":
+            if self._low_information_wiring_claim(claim.claim_text):
+                reasons.append("low_information_heading_fragment")
+        if claim.metadata.get("fact_type") == "led_checklist" and not claim.direct_support:
+            reasons.append("led_checklist_without_direct_support")
         if not self._text_support(claim.claim_text, evidences):
             reasons.append("claim_core_terms_not_supported")
         return list(dict.fromkeys(reasons))
+
+    def _claim_has_partial_coverage(self, claim: AgentClaim) -> bool:
+        if claim.metadata.get("partial_coverage"):
+            return True
+        if claim.metadata.get("fact_type") != "led_checklist":
+            return False
+        expected = claim.metadata.get("expected_led_groups") or [
+            "RUN/STOP LED", "ERROR LED", "MAINT LED",
+            "X1 P1 LINK RX/TX LED", "X1 P2 LINK RX/TX LED",
+        ]
+        found = claim.metadata.get("found_led_groups") or []
+        return bool(set(expected) - set(found))
+
+    def _low_information_wiring_claim(self, text: str) -> bool:
+        value = str(text or "").strip()
+        nouns = re.findall(r"接线|端子|接口|分配|图|说明", value)
+        return bool(nouns) and not has_wiring_normative_predicate(value)
 
     def _coverage(self, context: QueryContext, claims: List[AgentClaim]) -> Dict[str, Dict[str, object]]:
         return {

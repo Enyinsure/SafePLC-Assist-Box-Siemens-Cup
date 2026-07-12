@@ -8,6 +8,16 @@ from dataclasses import dataclass, field
 from typing import List, Optional
 
 
+WIRING_ANCHORS = (
+    "端子", "接线", "电源", "保护导线", "保护性导线", "SELV", "PELV",
+    "极性", "线径", "屏蔽", "前连接器", "terminal", "wiring", "power",
+    "protective conductor", "polarity", "wire size", "shield", "front connector",
+)
+WIRING_HEADING_FRAGMENTS = {
+    "接线", "端子", "端子分配", "接线图", "方框图", "端子分配和接口说明", "接线图和方框图",
+}
+
+
 @dataclass
 class ParameterFacts:
     parameter_name: str = ""
@@ -101,21 +111,96 @@ def _range(text: str, labels: tuple[str, ...]) -> Optional[tuple[float, float]]:
 
 
 def extract_wiring_facts(text: str) -> List[str]:
-    terms = ("端子", "接线", "电源隔离", "保护导线", "保护性导线", "selv", "pelv", "极性", "线径", "terminal", "wiring", "protective conductor", "rated voltage")
-    return _sentences_with_terms(text, terms)
+    facts = []
+    for sentence in _sentences(text):
+        if is_wiring_heading_fragment(sentence) or _is_cross_reference(sentence):
+            continue
+        if not any(anchor.lower() in sentence.lower() for anchor in WIRING_ANCHORS):
+            continue
+        if not has_wiring_normative_predicate(sentence):
+            continue
+        facts.append(sentence)
+    return facts[:5]
 
 
-def extract_led_checks(text: str) -> List[str]:
+def has_wiring_normative_predicate(text: str) -> bool:
+    value = str(text or "").strip()
+    if re.search(r"必须|应当|不得|禁止|需要|确保|只能|请勿", value):
+        return True
+    if re.search(r"应(?=设置|采用|连接|使用|确保|检查|核对|符合|设计)", value):
+        return True
+    if re.search(r"需(?=设置|采用|连接|使用|确保|检查|核对|符合)", value):
+        return True
+    if re.search(r"连接(?!器|关系|说明|示意|图|元件)|使用(?!说明)|检查|核对|符合(?!性)|设计为", value):
+        return True
+    return bool(re.search(r"\b(?:must|shall|should|connect|use|ensure|verify|require|designed)\b", value, re.I))
+
+
+def is_wiring_heading_fragment(text: str) -> bool:
+    value = str(text or "").strip()
+    normalized = re.sub(r"[：:。；;\s]+$", "", value)
+    if normalized in WIRING_HEADING_FRAGMENTS:
+        return True
+    if re.match(r"^(?:下图显示|下图所示|在下文中介绍|以下介绍)", normalized):
+        return True
+    if value.endswith(("：", ":")):
+        return True
+    if len(normalized) <= 12 and not has_wiring_normative_predicate(normalized):
+        return True
+    return False
+
+
+def wiring_fact_score(
+    text: str,
+    facts: Optional[List[str]] = None,
+    *,
+    system_level: bool = False,
+    specific_module: bool = False,
+    rh_scope: bool = False,
+) -> int:
+    extracted = facts if facts is not None else extract_wiring_facts(text)
+    score = 3 if any(has_wiring_normative_predicate(item) for item in extracted) else 0
+    specialized = ("保护导线", "保护性导线", "selv", "pelv", "极性", "隔离", "线径")
+    if any(term in " ".join(extracted).lower() for term in specialized):
+        score += 2
+    if system_level:
+        score += 1
+    if is_wiring_heading_fragment(text):
+        score -= 4
+    if _is_cross_reference(text):
+        score -= 3
+    if specific_module:
+        score -= 3
+    if rh_scope:
+        score -= 4
+    return score
+
+
+def _is_cross_reference(text: str) -> bool:
+    value = str(text or "").strip()
+    return bool(re.search(r"https?://|www\.|请参见|参见.+(?:章节|部分)|中的[“\"]?接线[”\"]?部分", value, re.I))
+
+
+def extract_led_checks(text: str, interface_name: str = "X1") -> List[str]:
     value = str(text or "")
-    labels = []
-    patterns = [
-        r"RUN/STOP\s+LED", r"ERROR\s+LED", r"MAINT\s+LED",
-        r"X1\s*P1\s+LINK\s+RX/TX\s+LED", r"X1\s*P2\s+LINK\s+RX/TX\s+LED",
+    labels = [
+        label
+        for label, pattern in (
+            ("RUN/STOP LED", r"RUN/STOP\s+LED"),
+            ("ERROR LED", r"ERROR\s+LED"),
+            ("MAINT LED", r"MAINT\s+LED"),
+        )
+        if re.search(pattern, value, re.I)
     ]
-    for pattern in patterns:
-        match = re.search(pattern, value, re.I)
-        if match:
-            labels.append(re.sub(r"\s+", " ", match.group(0)).upper().replace(" LED", " LED"))
+    interface = interface_name.upper() if re.fullmatch(r"X\d+", str(interface_name or ""), re.I) else "X1"
+    for port in ("P1", "P2"):
+        full = (
+            rf"(?:端口\s*)?{re.escape(interface)}\s*{port}R?\s*(?:的\s*)?"
+            r"LINK\s*(?:RX\s*/\s*TX|TX\s*/\s*RX)\s*LED"
+        )
+        short = rf"(?<![A-Z0-9]){re.escape(interface)}\s*{port}R(?![A-Z0-9])"
+        if re.search(full, value, re.I | re.S) or re.search(short, value, re.I):
+            labels.append(f"{interface} {port} LINK RX/TX LED")
     return labels
 
 
@@ -135,7 +220,7 @@ def extract_emc_facts(text: str) -> List[str]:
         facts.append("可采用接地控制柜或控制箱。")
     if re.search(r"(?:noise filters?|噪声滤波器)[^。\n]{0,50}(?:supply lines?|电源线)?", value, re.I):
         facts.append("可在电源线上使用噪声滤波器。")
-    if re.search(r"industrial environment|工业环境", value, re.I):
+    if re.search(r"industrial (?:environment|applications?)|工业环境", value, re.I):
         facts.append("该系统适用于工业环境。")
     if re.search(r"EN\s*55011[^。\n]{0,30}Class\s*B|住宅环境[^。\n]{0,50}Class\s*B", value, re.I):
         facts.append("用于住宅环境时应满足 EN 55011 Class B。")
@@ -143,5 +228,9 @@ def extract_emc_facts(text: str) -> List[str]:
 
 
 def _sentences_with_terms(text: str, terms: tuple[str, ...]) -> List[str]:
-    sentences = [item.strip() for item in re.split(r"[。；;\n]+", str(text or "")) if item.strip()]
+    sentences = _sentences(text)
     return [item for item in sentences if any(term in item.lower() for term in terms)][:5]
+
+
+def _sentences(text: str) -> List[str]:
+    return [item.strip() for item in re.split(r"[。；;\n]+", str(text or "")) if item.strip()]

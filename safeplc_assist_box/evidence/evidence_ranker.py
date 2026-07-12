@@ -238,6 +238,32 @@ def _directness(query: str, evidence: AgentEvidence) -> float:
         token in low_text for token in ("wiring", "terminal", "power-off", "cabling")
     ):
         score += 0.8
+    if any(token in low_query for token in ("emc", "电磁兼容", "接地", "屏蔽", "干扰", "抗干扰")):
+        score += emc_directness_score(evidence)
+    return score
+
+
+def emc_directness_score(evidence: AgentEvidence) -> float:
+    text = " ".join([evidence.text, evidence.compact_excerpt, evidence.section, evidence.manual_title]).lower()
+    measures = [
+        bool(re.search(r"grounded\s+control\s+(?:cabinets?|boxes?)|接地(?:的)?控制(?:柜|箱)", text, re.I)),
+        bool(re.search(r"noise\s+filters?.{0,30}supply\s+lines?|电源线.{0,20}噪声滤波器", text, re.I)),
+        "industrial environment" in text or "industrial applications" in text or "工业环境" in text,
+        bool(re.search(r"EN\s*55011.{0,30}Class\s*B", text, re.I)),
+    ]
+    count = sum(measures)
+    score = 0.55 * count
+    if "electromagnetic compatibility" in text or "电磁兼容" in text:
+        score += 0.25
+    certification = bool(re.search(r"\b(?:approval|certification|certificate)s?\b|认证|许可", text, re.I))
+    if certification and not count:
+        score -= 1.2
+    if ("electromagnetic compatibility" in text or "emc definition" in text) and not count:
+        score -= 0.65
+    if re.search(r"(?:communication module|通信模块|\b(?:CM|CP)\s*\d)", text, re.I) and certification and not count:
+        score -= 0.7
+    if "siwarex" in text and not count:
+        score -= 0.9
     return score
 
 
