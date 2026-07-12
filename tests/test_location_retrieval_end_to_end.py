@@ -1,3 +1,5 @@
+from conftest import clear_safeplc_runtime_env
+
 from safeplc_assist_box.agents.figure_agent import FigureAgent
 from safeplc_assist_box.agents.judge_agent import JudgeAgent
 from safeplc_assist_box.config import SafePLCConfig
@@ -46,11 +48,14 @@ class TextCollection:
 
 
 def test_location_retrieval_end_to_end_without_jsonl(tmp_path, monkeypatch):
+    monkeypatch.setenv("SAFEPLC_FIGURE_CHROMA_DIR", str(tmp_path))
+    monkeypatch.setenv("SAFEPLC_FIGURE_COLLECTION", "host_figure_collection")
+    clear_safeplc_runtime_env(monkeypatch)
     monkeypatch.setenv("SAFEPLC_ENABLE_QUERY_EXPANSION", "1")
     monkeypatch.setenv("SAFEPLC_MAX_EXPANDED_QUERIES", "2")
     monkeypatch.setenv("SAFEPLC_ALLOW_JSONL_FALLBACK", "0")
     config = SafePLCConfig.from_env(mode="FULL")
-    registry = ToolRegistry(config)
+    registry = ToolRegistry(config, feature_switches={"enable_figure_backend": False})
     retriever = ChromaTextRetriever(str(tmp_path), "manual", embedding_adapter=BatchAdapter())
     retriever.collection = TextCollection()
     registry._text_retriever = retriever
@@ -77,6 +82,7 @@ def test_location_retrieval_end_to_end_without_jsonl(tmp_path, monkeypatch):
     assert all(item.page != 2681 for item in pool_schema.evidences)
     assert registry.backend_audit["chroma_result_count_before_filter"] == 4
     assert registry.backend_audit["chroma_result_count_after_filter"] == 2
+    assert registry.backend_audit["backend_attempted"] == ["chroma_text"]
     assert registry.backend_audit["jsonl_fallback_active"] is False
     assert decision.verdict == "PASS"
     assert decision.confidence == "MEDIUM"
