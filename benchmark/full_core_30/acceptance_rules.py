@@ -71,6 +71,7 @@ def evaluate_case(case: Dict[str, Any], response: Dict[str, Any]) -> Dict[str, A
     final_answer = str(response.get("final_answer") or judge.get("final_answer") or "")
     unsupported = list(response.get("unsupported_claims") or judge.get("unsupported_claims") or [])
     evidences = _evidences(response)
+    final_evidence_ids = [str(item) for item in judge.get("final_evidence_ids") or []]
     final_evidences = _final_evidences(judge, evidences)
     claims = _claims(response)
 
@@ -113,10 +114,45 @@ def evaluate_case(case: Dict[str, Any], response: Dict[str, Any]) -> Dict[str, A
         check("unsupported_claims_empty", not unsupported, unsupported, [])
 
     support_text = _validated_support_text(judge, evidences)
-    for key in ("required_interfaces", "required_order_numbers"):
+    for key in ("required_supported_interfaces", "required_supported_order_numbers"):
         values = expected.get(key) or []
         if values:
             check(key, all(value in support_text for value in values), support_text[:500], values)
+    parsed_fields = {
+        "required_parsed_interfaces": "interface_name",
+        "required_parsed_order_numbers": "order_number",
+    }
+    for key, slot_name in parsed_fields.items():
+        values = expected.get(key) or []
+        if values:
+            parsed = _query_context_slot_values(response, slot_name)
+            check(key, all(value in parsed for value in values), parsed, values)
+    forbidden_supported = expected.get("forbidden_supported_terms") or []
+    if forbidden_supported:
+        check(
+            "forbidden_supported_terms",
+            all(value not in support_text for value in forbidden_supported),
+            support_text[:500],
+            forbidden_supported,
+        )
+    forbidden_supported_patterns = expected.get("forbidden_supported_patterns") or []
+    if forbidden_supported_patterns:
+        check(
+            "forbidden_supported_patterns",
+            not any(re.search(pattern, support_text, re.I) for pattern in forbidden_supported_patterns),
+            support_text[:500],
+            forbidden_supported_patterns,
+        )
+    forbidden_answer_patterns = expected.get("forbidden_answer_patterns") or []
+    if forbidden_answer_patterns:
+        check(
+            "forbidden_answer_patterns",
+            not any(re.search(pattern, final_answer, re.I) for pattern in forbidden_answer_patterns),
+            final_answer,
+            forbidden_answer_patterns,
+        )
+    if expected.get("final_evidence_must_be_empty") is True:
+        check("final_evidence_must_be_empty", not final_evidence_ids, final_evidence_ids, [])
 
     if isinstance(expected.get("evidence_model_scope"), dict):
         _check_model_scope(checks, expected["evidence_model_scope"], final_evidences)
@@ -135,12 +171,13 @@ def evaluate_case(case: Dict[str, Any], response: Dict[str, Any]) -> Dict[str, A
             check("wiring_heading_not_accepted", len(wiring_claims) == len(valid), [item.get("claim_text") for item in wiring_claims], "no heading claim")
 
     missing_slots = set(response.get("missing_slots") or _nested(response, "query_context", "missing_slots") or [])
-    required_slots = set(expected.get("clarification_missing_slots") or [])
-    if required_slots:
-        check("clarification_missing_slots", required_slots.issubset(missing_slots), sorted(missing_slots), sorted(required_slots))
-    clarification_terms = expected.get("clarification_terms") or []
-    if clarification_terms:
-        check("clarification_terms", all(term in final_answer for term in clarification_terms), final_answer, clarification_terms)
+    if action == "CLARIFY":
+        required_slots = set(expected.get("clarification_missing_slots") or [])
+        if required_slots:
+            check("clarification_missing_slots", required_slots.issubset(missing_slots), sorted(missing_slots), sorted(required_slots))
+        clarification_terms = expected.get("clarification_terms") or []
+        if clarification_terms:
+            check("clarification_terms", all(term in final_answer for term in clarification_terms), final_answer, clarification_terms)
 
     if action == "REFUSE" or expected.get("refusal_forbidden_steps"):
         forbidden_steps = list(expected.get("refusal_forbidden_steps") or [])
@@ -154,7 +191,8 @@ def evaluate_case(case: Dict[str, Any], response: Dict[str, Any]) -> Dict[str, A
         check("conditional_rule_matched", len(matching) == 1, len(matching), 1)
         if len(matching) == 1:
             _check_conditional_requirements(
-                check, matching[0].get("requirements") or {}, final_answer, support_text, final_evidences
+                check, matching[0].get("requirements") or {}, final_answer, support_text,
+                final_evidences, selected_agents, missing_slots
             )
 
     failures = [item for item in checks if not item["passed"]]
@@ -244,6 +282,8 @@ def _check_conditional_requirements(
     final_answer: str,
     support_text: str,
     evidences: List[Dict[str, Any]],
+    selected_agents: List[str],
+    missing_slots: set,
 ) -> None:
     required_terms = requirements.get("required_terms") or []
     forbidden_terms = requirements.get("forbidden_terms") or []
@@ -259,7 +299,23 @@ def _check_conditional_requirements(
             support_text[:500],
             forbidden_supported,
         )
-    for key in ("required_interfaces", "required_order_numbers"):
+    required_agents = requirements.get("required_agents") or []
+    if required_agents:
+        check(
+            "conditional_required_agents",
+            set(required_agents).issubset(set(selected_agents)),
+            selected_agents,
+            required_agents,
+        )
+    required_slots = set(requirements.get("clarification_missing_slots") or [])
+    if required_slots:
+        check(
+            "conditional_clarification_missing_slots",
+            required_slots.issubset(missing_slots),
+            sorted(missing_slots),
+            sorted(required_slots),
+        )
+    for key in ("required_supported_interfaces", "required_supported_order_numbers"):
         values = requirements.get(key) or []
         if values:
             check(f"conditional_{key}", all(value in support_text for value in values), support_text[:500], values)
@@ -268,6 +324,10 @@ def _check_conditional_requirements(
         _check_model_scope(nested_checks, requirements["evidence_model_scope"], evidences)
         for item in nested_checks:
             check("conditional_" + item["name"], item["passed"], item["actual"], item["expected"])
+    if requirements.get("final_evidence_must_be_empty") is True:
+        check("conditional_final_evidence_must_be_empty", not evidences, evidences, [])
+    if requirements.get("final_evidence_required") is True:
+        check("conditional_final_evidence_required", bool(evidences), evidences, "non-empty")
 
 
 def _validated_support_text(judge: Dict[str, Any], evidences: List[Dict[str, Any]]) -> str:
@@ -315,6 +375,17 @@ def _without_query_fields(value: Any) -> Any:
     if isinstance(value, list):
         return [_without_query_fields(item) for item in value]
     return value
+
+
+def _query_context_slot_values(response: Dict[str, Any], slot_name: str) -> List[str]:
+    slots = _nested(response, "query_context", "slots") or {}
+    slot = slots.get(slot_name) if isinstance(slots, dict) else None
+    if not isinstance(slot, dict):
+        return []
+    value = slot.get("value")
+    if isinstance(value, list):
+        return [str(item) for item in value if str(item)]
+    return [str(value)] if value not in (None, "") else []
 
 
 def _check_led_invariants(checks: List[Dict[str, Any]], claims: List[Dict[str, Any]], verdict: str) -> None:

@@ -51,7 +51,7 @@ def test_acceptance_checks_action_agents_pages_terms_scope_and_structured_metada
         "required_evidence_pages": [2482], "required_terms": ["X1 P1", "X1 P2"],
         "required_visual_evidence_status": ["page_text_only"],
         "forbidden_terms": ["CPU 1518-4"], "unsupported_claims_empty": True,
-        "required_interfaces": ["X1"],
+        "required_supported_interfaces": ["X1"],
         "evidence_model_scope": {"required_any": ["CPU 1517-3 PN/DP"], "forbidden": ["CPU 1518-4"]},
         "structured_claims": [{
             "fact_type": "led_checklist", "metadata_true": ["structured_led_support"],
@@ -73,7 +73,7 @@ def test_required_interface_does_not_pass_from_original_query_or_retrieval_query
         "allowed_actions": ["ANSWER"], "allowed_verdicts": ["PASS"],
         "required_agents": ["Troubleshooting Agent"], "forbidden_agents": [],
         "required_evidence_pages": [], "required_terms": [], "forbidden_terms": [],
-        "required_interfaces": ["X2"],
+        "required_supported_interfaces": ["X2"],
     }
     actual = response(
         query="CPU 1517-3 PN 的 X2 指示灯是什么？",
@@ -94,7 +94,7 @@ def test_required_interface_does_not_pass_from_original_query_or_retrieval_query
     )
     result = evaluate_case(case(expected), actual)
     assert result["passed"] is False
-    assert any(item["name"] == "required_interfaces" for item in result["failures"])
+    assert any(item["name"] == "required_supported_interfaces" for item in result["failures"])
 
 
 def test_acceptance_checks_clarification_slots():

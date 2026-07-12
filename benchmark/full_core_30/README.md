@@ -33,3 +33,5 @@ Use `--case-id`, `--limit`, or `--output-dir` for a bounded diagnostic run. A ru
 The first ten cases have `origin=preserved_full_smoke_10` and preserve their established acceptance semantics. New evidence pages may be added to cases 11-30 only after a real server FULL run confirms them. Production code must never import this benchmark or use its expected pages as routing rules.
 
 `unsupported_claims_empty=true` requires an empty Judge unsupported-claims list. `false` deliberately means "not constrained"; it does not require unsupported claims to exist. Cases with action-dependent behavior use `conditional_rules`, so clarification paths are not incorrectly required to cite evidence.
+
+Positive answers use `required_supported_interfaces` and `required_supported_order_numbers`, which inspect only Judge-final evidence plus Judge accepted/supported claims. Unsupported targets use `required_parsed_interfaces` or `required_parsed_order_numbers`, which inspect structured `QueryContext.slots` rather than the raw query string.

@@ -4,14 +4,17 @@ from benchmark.full_core_30.acceptance_rules import evaluate_case, load_cases
 CASES = {item["case_id"]: item for item in load_cases()}
 
 
-def base_response(action, verdict, answer, evidence=None, supported=None):
+def base_response(action, verdict, answer, evidence=None, supported=None, selected_agents=None, missing_slots=None):
     evidences = evidence or []
     final_ids = [item["evidence_id"] for item in evidences]
     return {
         "action": action,
         "verdict": verdict,
-        "selected_agents": ["Wiring Agent"] if "wiring" in answer.lower() or "模块型号" in answer else ["Troubleshooting Agent"],
+        "selected_agents": selected_agents if selected_agents is not None else (
+            ["Wiring Agent"] if "wiring" in answer.lower() or "模块型号" in answer else ["Troubleshooting Agent"]
+        ),
         "final_answer": answer,
+        "missing_slots": missing_slots or [],
         "unsupported_claims": ["allowed diagnostic detail"],
         "evidence_pool": {"evidences": evidences},
         "judge_decision": {
@@ -35,8 +38,11 @@ def test_case_15_answer_requires_tm_npu_evidence_scope():
 
 
 def test_case_15_clarification_needs_model_or_order_number_but_no_evidence():
-    response = base_response("CLARIFY", "NEED_CLARIFICATION", "请提供具体模块型号或订货号。")
+    response = base_response(
+        "CLARIFY", "NEED_CLARIFICATION", "请提供具体模块型号或订货号。", selected_agents=[]
+    )
     assert response["evidence_pool"]["evidences"] == []
+    assert response["selected_agents"] == []
     assert evaluate_case(CASES["wiring_specific_module_not_generalized"], response)["passed"] is True
 
 
