@@ -28,17 +28,61 @@ class ParameterFacts:
 def extract_parameter_facts(text: str, parameter_intent: str = "") -> ParameterFacts:
     value = str(text or "")
     facts = ParameterFacts(parameter_name=parameter_intent or "电源电压允许范围", evidence_span=value[:600])
-    rated = re.search(r"(?:额定(?:输入)?|rated(?:\s+inputs?)?)([^。\n]{0,120})", value, re.I)
-    if rated:
-        facts.rated_values = [float(item) for item in re.findall(r"(\d+(?:\.\d+)?)\s*V", rated.group(1), re.I)]
+    rated_window = _rated_value_window(value)
+    if rated_window:
+        facts.rated_values = [float(item) for item in re.findall(r"(\d+(?:\.\d+)?)\s*V", rated_window, re.I)]
     static = _range(value, ("静态", "static"))
     dynamic = _range(value, ("动态", "dynamic"))
     if static:
         facts.static_lower, facts.static_upper = static
     if dynamic:
         facts.dynamic_lower, facts.dynamic_upper = dynamic
+    bounded = _bounded_range_values(value)
+    facts.static_lower = facts.static_lower if facts.static_lower is not None else bounded.get("static_lower")
+    facts.dynamic_lower = facts.dynamic_lower if facts.dynamic_lower is not None else bounded.get("dynamic_lower")
+    facts.static_upper = facts.static_upper if facts.static_upper is not None else bounded.get("static_upper")
+    facts.dynamic_upper = facts.dynamic_upper if facts.dynamic_upper is not None else bounded.get("dynamic_upper")
     facts.condition = "静态/动态" if facts.complete else "部分范围"
     return facts
+
+
+def _rated_value_window(text: str) -> str:
+    title = re.search(
+        r"(?:额定(?:值|输入)?|rated(?:\s+inputs?)?)(?:\s*[（(]\s*DC\s*[)）])?",
+        text,
+        re.I,
+    )
+    if not title:
+        return ""
+    tail = text[title.end():title.end() + 120]
+    lines = tail.splitlines()
+    if lines and not lines[0].strip():
+        lines = lines[1:]
+    window = "\n".join(lines[:2])
+    return re.split(r"[。；;]|允许范围|静态范围|动态范围", window, maxsplit=1)[0]
+
+
+def _bounded_range_values(text: str) -> dict[str, float]:
+    header = re.compile(
+        r"(?:允许范围\s*[,，]?\s*)?(?P<bound>下限|上限|lower|upper)"
+        r"(?:\s*[（(]\s*DC\s*[)）])?",
+        re.I,
+    )
+    matches = list(header.finditer(text))
+    values: dict[str, float] = {}
+    for index, match in enumerate(matches):
+        end = matches[index + 1].start() if index + 1 < len(matches) else len(text)
+        block = text[match.end():min(end, match.end() + 240)]
+        bound = "lower" if match.group("bound").lower() in {"下限", "lower"} else "upper"
+        for label, key in (("静态|static", "static"), ("动态|dynamic", "dynamic")):
+            found = re.search(
+                rf"(?:{label})\s*(-?\d+(?:\.\d+)?)\s*V(?:\s*DC)?",
+                block,
+                re.I,
+            )
+            if found:
+                values[f"{key}_{bound}"] = float(found.group(1))
+    return values
 
 
 def _range(text: str, labels: tuple[str, ...]) -> Optional[tuple[float, float]]:
