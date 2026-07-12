@@ -157,6 +157,9 @@ class AgentEvidence:
     section: str = ""
     figure_id: str = ""
     figure_number: str = ""
+    visual_record_id: str = ""
+    manual_figure_number: str = ""
+    manual_figure_caption: str = ""
     image_path: str = ""
     raw_image_path: str = ""
     resolved_image_path: str = ""
@@ -166,10 +169,21 @@ class AgentEvidence:
     document_id: str = ""
     collection_name: str = ""
     query_text: str = ""
+    retrieval_query: str = ""
+    retrieval_query_index: int = 0
+    query_expansion_reason: str = ""
+    rank_within_query: int = 0
+    query_ranks: Dict[str, int] = field(default_factory=dict)
+    rrf_score: float = 0.0
+    matched_query_count: int = 0
+    best_query_rank: int = 0
     source_path: str = ""
     retrieval_score: float = 0.0
     raw_distance: Optional[float] = None
     normalized_score: float = 0.0
+    distance_metric: str = "unknown"
+    score_conversion: str = "monotonic_inverse_distance"
+    vector_similarity: float = 0.0
     model_match_level: str = "unknown"
     direct_evidence: bool = False
     quality_score: float = 0.0

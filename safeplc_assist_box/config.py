@@ -48,6 +48,8 @@ class SafePLCConfig:
     embedding_query_prefix: str
     allow_chroma_default_embedding: bool
     allow_remote_model_download: bool
+    enable_query_expansion: bool
+    max_expanded_queries: int
     package_root: Path
     project_root: Path
 
@@ -88,6 +90,10 @@ class SafePLCConfig:
             fallback_min_score = float(os.environ.get("SAFEPLC_JSONL_FALLBACK_MIN_SCORE", "0.20"))
         except ValueError:
             fallback_min_score = 0.20
+        try:
+            max_expanded_queries = int(os.environ.get("SAFEPLC_MAX_EXPANDED_QUERIES", "2"))
+        except ValueError:
+            max_expanded_queries = 2
 
         return cls(
             mode=resolved_mode,
@@ -116,6 +122,8 @@ class SafePLCConfig:
             embedding_query_prefix=os.environ.get("SAFEPLC_EMBEDDING_QUERY_PREFIX", ""),
             allow_chroma_default_embedding=_bool_env("SAFEPLC_ALLOW_CHROMA_DEFAULT_EMBEDDING", False),
             allow_remote_model_download=_bool_env("SAFEPLC_ALLOW_REMOTE_MODEL_DOWNLOAD", False),
+            enable_query_expansion=_bool_env("SAFEPLC_ENABLE_QUERY_EXPANSION", True),
+            max_expanded_queries=max(0, min(max_expanded_queries, 2)),
             package_root=package_root,
             project_root=project_root,
         )

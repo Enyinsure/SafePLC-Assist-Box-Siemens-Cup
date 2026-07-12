@@ -12,7 +12,7 @@ from ..schemas import AgentEvidence
 from .chroma_collection_selector import CollectionSelectionError, discover_collections, select_collection
 from .chroma_text_retriever import ChromaUnavailable
 from .embedding_adapter import EmbeddingAdapter, EmbeddingConfigurationError, EmbeddingDimensionMismatch
-from .metadata_normalizer import first_value, load_jsonl_records, normalize_metadata
+from .metadata_normalizer import extract_location_marker, extract_manual_figure, first_value, load_jsonl_records, normalize_metadata
 
 
 class FigureMetadataMapper:
@@ -65,9 +65,11 @@ class FigureMetadataMapper:
             ev.image_path = resolved if exists else ""
             ev.metadata.update({"figure_card_matched": True})
         if not ev.figure_number:
-            m = re.search(r"(?:Figure|Fig\.|图)\s*[\d\-\.]+", ev.text, flags=re.IGNORECASE)
-            if m:
-                ev.figure_number = m.group(0)
+            ev.figure_number, ev.manual_figure_caption = extract_manual_figure(ev.text)
+        ev.manual_figure_number = ev.manual_figure_number or ev.figure_number
+        ev.manual_figure_caption = ev.manual_figure_caption or str((card or {}).get("manual_figure_caption") or "")
+        figure_id_type = str(ev.metadata.get("figure_id_type") or "unknown")
+        ev.visual_record_id = ev.visual_record_id or (ev.figure_id if figure_id_type == "synthetic_visual_id" else "")
         if ev.raw_image_path and not ev.resolved_image_path:
             raw, resolved, exists = self._resolve_image(ev.raw_image_path)
             ev.raw_image_path, ev.resolved_image_path, ev.image_exists = raw, resolved, exists
@@ -88,6 +90,10 @@ class FigureMetadataMapper:
                 "resolved_image_path": ev.resolved_image_path,
                 "image_exists": ev.image_exists,
                 "visual_evidence_status": ev.visual_evidence_status,
+                "manual_figure_number": ev.manual_figure_number,
+                "manual_figure_caption": ev.manual_figure_caption,
+                "visual_record_id": ev.visual_record_id,
+                "location_marker": ev.metadata.get("location_marker") or extract_location_marker(ev.text),
             }
         )
         return ev
@@ -178,6 +184,7 @@ class ChromaFigureRetriever:
             self.backend_audit = {
                 **self.embedding_adapter.last_audit,
                 "collection_name": self.collection_name,
+                "distance_metric": self._distance_metric(collection),
             }
         except (EmbeddingConfigurationError, EmbeddingDimensionMismatch):
             raise
@@ -199,10 +206,18 @@ class ChromaFigureRetriever:
                 source_path=str(self.chroma_dir),
                 raw_distance=distance,
                 modality_hint="figure",
+                distance_metric=self._distance_metric(collection),
             )
             out.append(self.cards.enrich(ev))
         self.last_latency_ms = int((time.perf_counter() - started) * 1000)
         return out
+
+    def _distance_metric(self, collection: object) -> str:
+        metadata = getattr(collection, "metadata", None)
+        if not isinstance(metadata, dict):
+            return "unknown"
+        metric = str(metadata.get("hnsw:space") or "unknown").lower()
+        return metric if metric in {"cosine", "l2", "ip"} else "unknown"
 
     def _client(self):
         if self.client is not None:

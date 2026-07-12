@@ -10,6 +10,7 @@ from ..evidence.claim_value_parser import find_numeric_mismatches, find_unit_mis
 from ..evidence.model_identity import classify_model_match, extract_model_identity
 from ..schemas import AgentClaim, AgentResult, AgentStatus, EvidencePool, JudgeConfidence, JudgeDecision, JudgeVerdict, QueryContext
 from .evidence_closed_synthesizer import EvidenceClosedSynthesizer
+from ..retrieval.query_expander import is_explicit_image_request
 
 
 class JudgeAgent:
@@ -84,11 +85,13 @@ class JudgeAgent:
             verdict, confidence, reason = JudgeVerdict.NEED_MORE_EVIDENCE.value, JudgeConfidence.NOT_AVAILABLE.value, "No claim passed evidence checks; a bounded retrieval retry may be useful."
         elif not model_consistency["pass"]:
             verdict, confidence, reason = JudgeVerdict.ABSTAIN.value, JudgeConfidence.LOW.value, "Model or order-number scope is inconsistent."
-        elif coverage_score < 0.9 or unsupported or figure_state["limited_to_page_text"]:
+        elif coverage_score < 0.9 or unsupported or figure_state["missing_required_image"]:
             verdict, confidence, reason = JudgeVerdict.PARTIAL.value, JudgeConfidence.MEDIUM.value, "Only the covered, evidence-supported portion can be answered."
         elif quality_scores["grounding"] >= 0.9 and quality_scores["model_consistency"] >= 0.95:
             verdict = JudgeVerdict.PASS.value
-            confidence = JudgeConfidence.MEDIUM.value if model_consistency["unknown_evidence_ids"] else JudgeConfidence.HIGH.value
+            confidence = JudgeConfidence.MEDIUM.value if (
+                model_consistency["unknown_evidence_ids"] or figure_state["limited_to_page_text"]
+            ) else JudgeConfidence.HIGH.value
             reason = "Coverage and claim-level evidence checks passed."
         else:
             verdict, confidence, reason = JudgeVerdict.PARTIAL.value, JudgeConfidence.MEDIUM.value, "Evidence is usable but does not meet full PASS thresholds."
@@ -185,7 +188,11 @@ class JudgeAgent:
         }
 
     def _figure_state(self, context: QueryContext, evidences: List[object], pool: EvidencePool) -> Dict[str, object]:
-        required = "figure" in context.required_modalities or context.question_type == "FIGURE"
+        location_information_required = context.question_type == "FIGURE" or any(
+            term in context.original_query.lower() for term in ("哪里", "在哪", "位置", "where", "location")
+        )
+        visual_image_required = is_explicit_image_request(context.original_query)
+        required = location_information_required or visual_image_required
         audit = pool.metadata.get("retrieval_backend_audit", {}) if isinstance(pool.metadata, dict) else {}
         figure_backend_active = bool(audit.get("figure_backend_active")) if isinstance(audit, dict) else False
         chroma_figure = any(item.retrieval_backend == "chroma_figure" for item in evidences)
@@ -194,14 +201,19 @@ class JudgeAgent:
             item.visual_evidence_status == "page_text_only" and (item.page is not None or item.figure_id or item.figure_number)
             for item in evidences
         )
-        complete = not required or (chroma_figure if figure_backend_active else bool(image or page_text))
+        location_complete = not location_information_required or bool(image or page_text)
+        image_complete = not visual_image_required or image
+        complete = bool(location_complete and image_complete)
         return {
             "required": required,
+            "location_information_required": location_information_required,
+            "visual_image_required": visual_image_required,
             "figure_backend_active": figure_backend_active,
             "chroma_figure_present": chroma_figure,
             "image_available": image,
             "page_text_only_present": page_text,
-            "limited_to_page_text": bool(required and page_text and not image),
+            "limited_to_page_text": bool(location_information_required and page_text and not image),
+            "missing_required_image": bool(visual_image_required and not image),
             "pass": complete,
         }
 

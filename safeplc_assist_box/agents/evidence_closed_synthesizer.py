@@ -56,7 +56,7 @@ class EvidenceClosedSynthesizer:
             if item in evidence_by_id
         ]
         if any(item.visual_evidence_status == "page_text_only" for item in used_evidence):
-            answer += "【限制】目前仅有图示页文字证据，未确认可显示的图片文件。"
+            answer += "【图像状态】目前检索到的是图示页文字证据，未找到对应的图像文件。"
         if verdict == "PARTIAL":
             answer += "【待确认】仍有子问题未被可靠证据覆盖，以上只包含已查证部分。"
         return compact_text(answer, 520)
@@ -66,14 +66,17 @@ class EvidenceClosedSynthesizer:
         evidence = next((evidence_by_id[item] for item in claim.evidence_ids if item in evidence_by_id), None)
         model = claim.model_scope or (evidence.module_model if evidence else "目标模块")
         page = metadata.get("page") or (evidence.page if evidence else "")
-        figure = metadata.get("figure_number") or metadata.get("figure_id") or (
-            evidence.figure_number or evidence.figure_id if evidence else ""
+        figure = metadata.get("manual_figure_number") or metadata.get("figure_number") or (
+            evidence.manual_figure_number or evidence.figure_number if evidence else ""
         )
         marker = metadata.get("location_marker") or ""
         ports = list(metadata.get("ports") or [])
-        text = f"{model} 的 X1 位于模块前部连接区域"
+        front = bool(evidence and "不带前面板" in evidence.text)
+        text = f"{model} 的 X1 位于{'拆下前面板后可见的' if front else ''}模块前部连接区域"
         if ports:
             text += f"，端口为 {'、'.join(ports)}"
+        elif metadata.get("has_two_ports"):
+            text += "，X1 是带两个端口的 PROFINET IO 接口"
         if marker:
             text += f"，前视图标号为 {marker}"
         if page or figure:
@@ -94,8 +97,8 @@ class EvidenceClosedSynthesizer:
                     parts.append(evidence.order_number)
                 if evidence.page is not None:
                     parts.append(f"页 {evidence.page}")
-                if evidence.figure_number:
-                    parts.append(evidence.figure_number)
+                if evidence.manual_figure_number or evidence.figure_number:
+                    parts.append(evidence.manual_figure_number or evidence.figure_number)
                 reference = "，".join(filter(None, parts))
                 if reference not in references:
                     references.append(reference)

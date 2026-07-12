@@ -66,18 +66,21 @@ def extract_model_identity(text: str) -> ModelIdentity:
     aliases: List[str] = []
 
     cpu = re.search(
-        r"(?:CPU\s*)?(15(?:11|13|15|16|17|18)(?:-\d)?)\s*(PN/DP|PN|DP|HF|H)?\b",
+        r"(?:CPU\s*)?(15(?:11|13|15|16|17|18))(HF|H|R|T)?(-\d)?\s*(PN/DP|PN|DP)?\b",
         normalized,
     )
     if cpu:
-        base = cpu.group(1)
-        variant = (cpu.group(2) or "").strip()
-        if base == "1517-3" and variant == "PN":
+        technology = (cpu.group(2) or "").strip()
+        base = f"{cpu.group(1)}{technology}{cpu.group(3) or ''}"
+        network = (cpu.group(4) or "").strip()
+        variant = technology or network
+        if base == "1517-3" and network == "PN":
             aliases = ["CPU 1517-3 PN", "CPU 1517-3 PN/DP"]
-            variant = "PN/DP"
-        model = f"CPU {base}" + (f" {variant}" if variant else "")
+            network = "PN/DP"
+        display_base = f"{cpu.group(1)} {technology}" if technology and not cpu.group(3) else base
+        model = f"CPU {display_base}" + (f" {network}" if network else "")
         product_type = "CPU"
-        family = "S7-1500R/H" if variant in {"H", "HF"} else "S7-1500"
+        family = "S7-1500R/H" if technology in {"R", "H", "HF"} else "S7-1500"
     if not model:
         et = re.search(r"ET\s*200\s*(MP|SP)\b", normalized)
         if et:
@@ -104,7 +107,7 @@ def extract_model_identity(text: str) -> ModelIdentity:
             variant = module.group(3) or ""
             family = "S7-1500 MODULE"
 
-    if is_redundant_family_text(normalized):
+    if is_redundant_family_text(normalized) and (not model or variant in {"R", "H", "HF"}):
         family = "S7-1500R/H"
     elif not family and "S7-1500" in normalized:
         family = "S7-1500"

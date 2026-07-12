@@ -12,6 +12,7 @@ from ..config import SafePLCConfig
 from ..evidence.evidence_ranker import rank_evidence
 from ..evidence.model_identity import reject_cross_family
 from ..schemas import AgentEvidence
+from ..retrieval.query_expander import QueryExpander
 from .chroma_figure_retriever import ChromaFigureRetriever
 from .chroma_text_retriever import ChromaTextRetriever, ChromaUnavailable
 from .embedding_adapter import EmbeddingAdapter
@@ -99,7 +100,7 @@ class ToolRegistry:
         filters: Optional[Dict[str, str]] = None,
         top_k: int = 4,
     ) -> List[AgentEvidence]:
-        return self._search(query, {"figure", "visual"}, filters=filters, top_k=top_k, tool="search_figure")
+        return self._search(query, {"figure", "visual", "text"}, filters=filters, top_k=top_k, tool="search_figure")
 
     def search_hybrid(
         self,
@@ -195,7 +196,14 @@ class ToolRegistry:
         if not self.feature_switches.get("enable_figure_backend", True):
             allowed -= {"figure", "visual"}
         if self.config.mode == "FULL":
-            records, call_details = self._search_full(query, allowed, top_k=max(top_k, 8))
+            expansion = QueryExpander().expand(
+                query,
+                max_expanded_queries=self.config.max_expanded_queries if self.config.enable_query_expansion else 0,
+            )
+            records, call_details = self._search_full(
+                query, expansion.all_queries, expansion.expansion_reasons, allowed, top_k_per_query=max(12, top_k * 3)
+            )
+            call_details["expanded_queries"] = expansion.expanded_queries
         else:
             records = self._search_sample(query, allowed, filters=filters, top_k=max(top_k, 8), tool=tool)
             call_details = {
@@ -226,10 +234,18 @@ class ToolRegistry:
             backend_used=call_details["backend_used"],
             fallback_reason=str(call_details.get("fallback_reason") or ""),
             error=str(call_details.get("error") or ""),
+            expanded_queries=list(call_details.get("expanded_queries") or []),
         )
         return records
 
-    def _search_full(self, query: str, allowed: Set[str], top_k: int):
+    def _search_full(
+        self,
+        query: str,
+        retrieval_queries: List[str],
+        expansion_reasons: List[str],
+        allowed: Set[str],
+        top_k_per_query: int,
+    ):
         chroma_records: List[AgentEvidence] = []
         jsonl_records: List[AgentEvidence] = []
         need_text = bool(allowed & {"text", "table", "policy"})
@@ -242,7 +258,7 @@ class ToolRegistry:
         if need_figure and self._figure_retriever:
             attempted.append("chroma_figure")
             try:
-                found = self._figure_retriever.search(query, top_k=top_k)
+                found = self._figure_retriever.search(query, top_k=top_k_per_query)
                 chroma_records.extend(found)
                 if found:
                     used.append("chroma_figure")
@@ -255,7 +271,10 @@ class ToolRegistry:
         if need_text and self._text_retriever:
             attempted.append("chroma_text")
             try:
-                found = self._text_retriever.search(query, top_k=top_k)
+                search_many = getattr(self._text_retriever, "search_many", None)
+                found = search_many(
+                    retrieval_queries, top_k_per_query=top_k_per_query, expansion_reasons=expansion_reasons
+                ) if callable(search_many) else self._text_retriever.search(query, top_k=top_k_per_query)
                 chroma_records.extend(found)
                 if found:
                     used.append("chroma_text")
@@ -273,7 +292,12 @@ class ToolRegistry:
             (float(ev.normalized_score or ev.retrieval_score or 0.0) for ev in chroma_records),
             default=0.0,
         )
-        figure_hit = any(ev.modality in {"figure", "visual"} for ev in chroma_records)
+        figure_hit = any(
+            ev.modality in {"figure", "visual"}
+            or ev.manual_figure_number
+            or bool(re.search(r"(?:前视图|front view|接口位置)", ev.text or "", re.I))
+            for ev in chroma_records
+        )
         reasons: List[str] = []
         if backend_missing or not attempted:
             reasons.append("chroma_backend_unavailable")
@@ -296,19 +320,19 @@ class ToolRegistry:
         if query_jsonl:
             if need_figure and self._figure_jsonl and self._figure_jsonl.available():
                 attempted.append("jsonl_figure")
-                found = self._figure_jsonl.search(query, top_k=top_k, modalities=allowed)
+                found = self._figure_jsonl.search(query, top_k=top_k_per_query, modalities=allowed)
                 jsonl_records.extend(found)
                 if found:
                     used.append("jsonl_figure")
             if need_text and self._jsonl_chunks and self._jsonl_chunks.available():
                 attempted.append("jsonl_chunks")
-                found = self._jsonl_chunks.search(query, top_k=top_k, modalities=allowed)
+                found = self._jsonl_chunks.search(query, top_k=top_k_per_query, modalities=allowed)
                 jsonl_records.extend(found)
                 if found:
                     used.append("jsonl_chunks")
             if need_text and self._jsonl_pages and self._jsonl_pages.available():
                 attempted.append("jsonl_pages")
-                found = self._jsonl_pages.search(query, top_k=top_k, modalities=allowed)
+                found = self._jsonl_pages.search(query, top_k=top_k_per_query, modalities=allowed)
                 jsonl_records.extend(found)
                 if found:
                     used.append("jsonl_pages")
@@ -326,6 +350,8 @@ class ToolRegistry:
                 "chroma_best_score": best_score,
                 "jsonl_result_count": len(jsonl_records),
                 "hybrid_mode": self.config.enable_jsonl_hybrid,
+                "retrieval_queries": retrieval_queries,
+                "candidate_count_before_final_ranking": len(chroma_records) + len(jsonl_records),
             }
         )
         if not chroma_records and not jsonl_records and not self.config.allow_jsonl_fallback:
@@ -363,6 +389,7 @@ class ToolRegistry:
         backend_used: List[str],
         fallback_reason: str = "",
         error: str = "",
+        expanded_queries: Optional[List[str]] = None,
     ) -> None:
         calls = self.backend_audit.setdefault("tool_calls", [])
         assert isinstance(calls, list)
@@ -377,6 +404,7 @@ class ToolRegistry:
                 "latency_ms": int((time.perf_counter() - started) * 1000),
                 "fallback_reason": fallback_reason,
                 "error": error,
+                "expanded_queries": list(expanded_queries or []),
             }
         )
 
@@ -633,6 +661,9 @@ class ToolRegistry:
             section=ev.section,
             figure_id=ev.figure_id,
             figure_number=ev.figure_number,
+            visual_record_id=ev.visual_record_id,
+            manual_figure_number=ev.manual_figure_number,
+            manual_figure_caption=ev.manual_figure_caption,
             image_path=ev.image_path,
             raw_image_path=ev.raw_image_path,
             resolved_image_path=ev.resolved_image_path,
@@ -642,10 +673,21 @@ class ToolRegistry:
             document_id=ev.document_id,
             collection_name=ev.collection_name,
             query_text=ev.query_text,
+            retrieval_query=ev.retrieval_query,
+            retrieval_query_index=ev.retrieval_query_index,
+            query_expansion_reason=ev.query_expansion_reason,
+            rank_within_query=ev.rank_within_query,
+            query_ranks=dict(ev.query_ranks),
+            rrf_score=ev.rrf_score,
+            matched_query_count=ev.matched_query_count,
+            best_query_rank=ev.best_query_rank,
             source_path=ev.source_path,
             retrieval_score=ev.retrieval_score,
             raw_distance=ev.raw_distance,
             normalized_score=ev.normalized_score,
+            distance_metric=ev.distance_metric,
+            score_conversion=ev.score_conversion,
+            vector_similarity=ev.vector_similarity,
             model_match_level=ev.model_match_level,
             direct_evidence=ev.direct_evidence,
             quality_score=ev.quality_score,

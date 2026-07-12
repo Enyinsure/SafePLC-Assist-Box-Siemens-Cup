@@ -8,7 +8,7 @@ import re
 from typing import Dict, Iterable, List, Optional, Tuple
 
 from ..schemas import AgentEvidence
-from .model_identity import classify_model_match
+from .model_identity import classify_model_match, extract_model_identity
 
 
 MODEL_SCORES = {
@@ -20,6 +20,47 @@ MODEL_SCORES = {
     "cross_family": (0.0, 0.0, 0.0),
 }
 
+LOCATION_TERMS = ("哪里", "在哪", "位置", "物理位置", "前面", "后面", "正面", "背面", "front", "where", "location", "layout")
+LOCATION_POSITIVE = (
+    "不带前面板", "模块前视图", "cpu 正视图", "前视图", "操作和显示元件",
+    "操作员控制和连接元件", "连接元件", "接口位置", "标号", "front view", "interface layout",
+)
+LOCATION_NEGATIVE = (
+    "发送周期", "同步域", "耦合", "irt 周期", "尺寸图", "mac 地址分配", "方框图",
+    "电源端子分配", "技术数据", "network synchronization", "cycle time",
+)
+
+
+def reciprocal_rank_fusion(evidences: Iterable[AgentEvidence], k: int = 60) -> List[AgentEvidence]:
+    """Fuse per-query candidates while preserving query provenance."""
+    groups: Dict[str, List[AgentEvidence]] = {}
+    for evidence in evidences:
+        groups.setdefault(evidence.evidence_id or _duplicate_key(evidence), []).append(evidence)
+    fused: List[AgentEvidence] = []
+    for group in groups.values():
+        best = max(group, key=lambda item: float(item.vector_similarity or item.normalized_score or 0.0))
+        ranks: Dict[str, int] = {}
+        for item in group:
+            retrieval_query = str(item.metadata.get("retrieval_query") or item.query_text or "")
+            rank = int(item.metadata.get("rank_within_query") or 10**6)
+            if retrieval_query:
+                ranks[retrieval_query] = min(rank, ranks.get(retrieval_query, rank))
+        rrf_score = sum(1.0 / (max(1, k) + rank) for rank in ranks.values())
+        best.metadata.update(
+            {
+                "query_ranks": ranks,
+                "rrf_score": round(rrf_score, 8),
+                "matched_query_count": len(ranks),
+                "best_query_rank": min(ranks.values(), default=0),
+            }
+        )
+        best.query_ranks = ranks
+        best.rrf_score = round(rrf_score, 8)
+        best.matched_query_count = len(ranks)
+        best.best_query_rank = min(ranks.values(), default=0)
+        fused.append(best)
+    return fused
+
 
 def rank_evidence(
     evidences: Iterable[AgentEvidence],
@@ -27,22 +68,31 @@ def rank_evidence(
     required_modality: Optional[str] = None,
     top_k: int = 12,
 ) -> List[AgentEvidence]:
-    candidates = list(evidences)
+    candidates = reciprocal_rank_fusion(evidences)
     scored: List[Tuple[AgentEvidence, Dict[str, float], float, str]] = []
     for evidence in candidates:
         model_match = classify_model_match(query, evidence) if query else evidence.model_match_level or "unknown"
         exact_model, order_number, same_family = MODEL_SCORES.get(model_match, (0.0, 0.0, 0.0))
         vector_score = float(evidence.normalized_score or evidence.retrieval_score or 0.0)
         lexical_score = _lexical_score(query, evidence)
-        direct_score = _directness(query, evidence)
-        location_query = any(token in query.lower() for token in ("哪里", "位置", "where", "front", "图示", "前视图"))
-        if not location_query:
-            direct_score *= min(1.0, lexical_score * 2.0)
+        direct_score = location_directness_score(query, evidence) if _is_location_query(query) else _directness(query, evidence)
+        location_query = _is_location_query(query)
         modality_score = 0.3 if required_modality and evidence.modality == required_modality else 0.0
         page_score = 0.15 if evidence.page is not None else 0.0
-        figure_score = 0.25 if location_query and (evidence.figure_id or evidence.figure_number) else 0.0
+        manual_figure = evidence.manual_figure_number or evidence.figure_number
+        figure_id_type = str(evidence.metadata.get("figure_id_type") or "unknown")
+        figure_score = 0.3 if location_query and manual_figure else 0.0
+        if figure_id_type == "synthetic_visual_id" and not manual_figure:
+            figure_score = 0.0
         image_score = 0.2 if location_query and (evidence.image_exists or evidence.visual_evidence_status == "image_available") else 0.0
         cross_penalty = 4.0 if model_match == "cross_family" else 0.0
+        same_family_penalty = 0.45 if (
+            model_match == "same_family_general" and extract_model_specific(query) and location_query
+        ) else 0.0
+        rrf_score = float(evidence.metadata.get("rrf_score") or 0.0)
+        low_evidence_text = " ".join([evidence.text, evidence.section, evidence.manual_figure_caption]).lower()
+        irrelevant_section_penalty = 0.35 * sum(term in low_evidence_text for term in LOCATION_NEGATIVE) if location_query else 0.0
+        manual_review_penalty = 0.2 if evidence.metadata.get("manual_review_required") else 0.0
         components = {
             "vector_score": vector_score,
             "lexical_score": lexical_score,
@@ -54,13 +104,21 @@ def rank_evidence(
             "page_score": page_score,
             "figure_score": figure_score,
             "image_score": image_score,
+            "rrf_score": rrf_score,
+            "same_family_general_penalty": same_family_penalty,
+            "different_model_penalty": cross_penalty,
+            "location_directness_bonus": max(0.0, direct_score),
+            "manual_figure_number_bonus": figure_score,
+            "irrelevant_section_penalty": irrelevant_section_penalty,
+            "manual_review_penalty": manual_review_penalty,
             "duplicate_penalty": 0.0,
             "cross_family_penalty": cross_penalty,
         }
         raw_score = (
-            0.45 * vector_score
+            4.0 * rrf_score
+            + 0.3 * vector_score
             + 0.35 * lexical_score
-            + 1.2 * exact_model * max(0.01, lexical_score * lexical_score)
+            + 1.2 * exact_model * max(0.1, lexical_score)
             + 1.5 * order_number
             + 0.2 * same_family
             + direct_score
@@ -68,6 +126,8 @@ def rank_evidence(
             + page_score
             + figure_score
             + image_score
+            - same_family_penalty
+            - manual_review_penalty
             - cross_penalty
         )
         scored.append((evidence, components, raw_score, model_match))
@@ -101,9 +161,9 @@ def rank_evidence(
                 "raw_rank_score": round(raw_score, 6),
                 "normalized_rank_score": round(normalized, 6),
                 "score_components": {key: round(value, 6) for key, value in components.items()},
-                "distance_metric_assumption": evidence.metadata.get(
-                    "distance_metric_assumption", "unknown_metric_inverse_1_plus_distance"
-                ),
+                "distance_metric": evidence.distance_metric,
+                "score_conversion": evidence.score_conversion,
+                "vector_similarity": evidence.vector_similarity,
             }
         )
     adjusted.sort(key=lambda item: (-item[2], item[0].evidence_id))
@@ -179,6 +239,40 @@ def _directness(query: str, evidence: AgentEvidence) -> float:
     ):
         score += 0.8
     return score
+
+
+def _is_location_query(query: str) -> bool:
+    low = str(query or "").lower()
+    return any(token in low for token in LOCATION_TERMS)
+
+
+def extract_model_specific(query: str) -> bool:
+    return bool(re.search(r"\b(?:CPU\s*)?15\d{2}(?:-\d)?\b|\b6ES7", query or "", re.I))
+
+
+def location_directness_score(query: str, evidence: AgentEvidence) -> float:
+    low_query = str(query or "").lower()
+    low_text = " ".join(
+        [evidence.text, evidence.compact_excerpt, evidence.section, evidence.manual_figure_caption, evidence.parameter]
+    ).lower()
+    score = 0.25 if evidence.direct_evidence else 0.0
+    score += 0.28 * sum(term in low_text for term in LOCATION_POSITIVE)
+    score -= 0.35 * sum(term in low_text for term in LOCATION_NEGATIVE)
+    interfaces = re.findall(r"\bX\d+\b", low_query, re.I)
+    if interfaces and all(item.lower() in low_text for item in interfaces):
+        score += 0.35
+    expected = extract_model_identity(query).normalized_model.lower()
+    if expected and expected in low_text and interfaces and any(term in low_text for term in ("前视图", "front view")):
+        score += 0.8
+    if evidence.section and any(term in evidence.section.lower() for term in ("操作和显示元件", "不带前面板的模块前视图")):
+        score += 0.65
+    if evidence.metadata.get("location_marker"):
+        score += 0.3
+    if evidence.manual_figure_number or evidence.figure_number:
+        score += 0.3
+    if re.search(r"PROFINET\s+IO\s+接口\s*[（(]?X\d+[）)]?", evidence.text or "", re.I):
+        score += 0.65
+    return max(-2.0, score)
 
 
 def _duplicate_key(evidence: AgentEvidence) -> str:

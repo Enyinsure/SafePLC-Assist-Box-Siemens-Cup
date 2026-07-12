@@ -78,18 +78,24 @@ class EmbeddingAdapter:
         )
 
     def query_arguments(self, collection: Any, query: str) -> Dict[str, Any]:
+        arguments = self.query_arguments_many(collection, [query])
+        return arguments
+
+    def query_arguments_many(self, collection: Any, queries: List[str]) -> Dict[str, Any]:
+        if not queries:
+            raise EmbeddingConfigurationError("At least one retrieval query is required.")
         collection_dimension = collection_embedding_dimension(collection)
         use_local_encoder = bool(self.model_path) or self.backend == "sentence_transformers"
         if use_local_encoder:
             encoder = self._load_encoder()
-            query_text = f"{self.query_prefix}{query}"
+            query_texts = [f"{self.query_prefix}{query}" for query in queries]
             encoded = encoder.encode(
-                [query_text],
+                query_texts,
                 normalize_embeddings=self.normalize,
                 convert_to_numpy=True,
             )
-            vector = _first_vector(encoded)
-            embedding_dimension = len(vector)
+            vectors = _vectors(encoded)
+            embedding_dimension = len(vectors[0])
             if collection_dimension is not None and embedding_dimension != collection_dimension:
                 raise EmbeddingDimensionMismatch(
                     "Query embedding dimension "
@@ -101,7 +107,7 @@ class EmbeddingAdapter:
                 collection_dimension=collection_dimension,
                 resolved_backend="sentence_transformers",
             )
-            return {"query_embeddings": [vector]}
+            return {"query_embeddings": vectors}
 
         if self.backend == "chroma_default" or (self.backend == "auto" and self.allow_chroma_default):
             if not self.allow_chroma_default:
@@ -112,7 +118,7 @@ class EmbeddingAdapter:
                 collection_dimension=collection_dimension,
                 resolved_backend="chroma_default",
             )
-            return {"query_texts": [query]}
+            return {"query_texts": list(queries)}
 
         raise EmbeddingConfigurationError(
             "No query embedding is configured. Set SAFEPLC_EMBEDDING_MODEL_PATH to the local model used by the "
@@ -207,14 +213,22 @@ def _dimension_from_payload(payload: Any) -> Optional[int]:
 
 
 def _first_vector(encoded: Any) -> List[float]:
+    return _vectors(encoded)[0]
+
+
+def _vectors(encoded: Any) -> List[List[float]]:
     if hasattr(encoded, "tolist"):
         encoded = encoded.tolist()
     if not encoded:
         raise EmbeddingConfigurationError("The configured embedding model returned no query vector.")
-    vector = encoded[0]
-    if hasattr(vector, "tolist"):
-        vector = vector.tolist()
-    return [float(value) for value in vector]
+    vectors: List[List[float]] = []
+    for vector in encoded:
+        if hasattr(vector, "tolist"):
+            vector = vector.tolist()
+        vectors.append([float(value) for value in vector])
+    if not vectors or any(len(item) != len(vectors[0]) for item in vectors):
+        raise EmbeddingConfigurationError("The configured embedding model returned inconsistent query vectors.")
+    return vectors
 
 
 def _sentence_transformer_factory(model_path: str, **kwargs: Any) -> Any:
