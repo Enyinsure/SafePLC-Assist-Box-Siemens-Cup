@@ -299,16 +299,18 @@ class ToolRegistry:
             for ev in chroma_records
         )
         reasons: List[str] = []
-        if backend_missing or not attempted:
-            reasons.append("chroma_backend_unavailable")
+        if not attempted:
+            reasons.append("backend_not_configured")
+        elif backend_missing:
+            reasons.append("requested_modality_backend_unavailable")
         if errors:
-            reasons.append("chroma_query_error")
+            reasons.append("backend_query_failed")
         if before_filter == 0:
-            reasons.append("chroma_returned_zero")
+            reasons.append("backend_zero_results:chroma_returned_zero")
         elif after_filter == 0:
-            reasons.append("all_chroma_results_rejected_by_model_filter")
+            reasons.append("all_candidates_rejected_by_model_filter")
         if after_filter and best_score < self.config.jsonl_fallback_min_score:
-            reasons.append("chroma_best_score_below_threshold")
+            reasons.append("all_candidates_rejected_by_score:below_threshold")
         if need_figure and not figure_hit:
             reasons.append("required_figure_evidence_missing")
 
@@ -352,10 +354,25 @@ class ToolRegistry:
                 "hybrid_mode": self.config.enable_jsonl_hybrid,
                 "retrieval_queries": retrieval_queries,
                 "candidate_count_before_final_ranking": len(chroma_records) + len(jsonl_records),
+                "backend_attempted": list(dict.fromkeys(attempted)),
+                "backend_used": list(dict.fromkeys(used)),
+                "raw_result_count": before_filter,
+                "post_model_filter_count": after_filter,
+                "rejection_counts_by_reason": {
+                    "model_filter": max(0, before_filter - after_filter),
+                    "score": after_filter if after_filter and best_score < self.config.jsonl_fallback_min_score else 0,
+                },
             }
         )
         if not chroma_records and not jsonl_records and not self.config.allow_jsonl_fallback:
-            self.errors.append("FULL retrieval returned no evidence because no active backend is available.")
+            if not attempted:
+                self.errors.append("FULL retrieval backend_not_configured for requested modalities.")
+            elif errors:
+                self.errors.append("FULL retrieval backend_query_failed; inspect backend audit errors.")
+            elif before_filter == 0:
+                self.errors.append("FULL retrieval backend_zero_results.")
+            elif after_filter == 0:
+                self.errors.append("FULL retrieval all_candidates_rejected_by_model_filter.")
         records = chroma_records + jsonl_records if query_jsonl else chroma_records
         return records, {
             "backend_attempted": attempted,
@@ -578,38 +595,51 @@ class ToolRegistry:
                 module_model="S7-1500 / ET 200MP",
                 parameter="terminal wiring",
                 text=(
-                    "Wiring, removing wires and terminal checks should be performed after stop, isolation, "
-                    "power-off verification and qualified review by 具备资质 personnel. 端子接线注意事项包括核对线缆编号、"
-                    "terminal definitions and shield connections against drawings and manuals."
+                    "端子接线应设置电源隔离设备，使用 SELV/PELV 电源并连接保护性导线；"
+                    "核对极性、线径和额定电压范围。"
                 ),
             ),
             self._sample(
                 source="SAMPLE EMC installation note",
                 source_type="sample_manual",
                 modality="text",
-                page=560,
+                page=6495,
                 title="EMC grounding and shielding",
                 manual_title="S7-1500 / ET 200MP manual",
                 module_model="S7-1500 / ET 200MP",
                 parameter="EMC grounding shielding cable layout",
                 text=(
-                    "EMC installation should use low-impedance grounding, correct shield termination, "
-                    "separation of power and signal cables, and avoid long parallel runs near strong interference."
+                    "The system is intended for industrial environment use. For residential environments it must meet EN 55011 Class B. "
+                    "Measures include grounded control cabinets/control boxes and noise filters in supply lines."
                 ),
             ),
             self._sample(
                 source="SAMPLE troubleshooting note",
                 source_type="sample_manual",
                 modality="text",
-                page=3120,
+                page=2482,
                 title="Communication fault and LED troubleshooting",
                 manual_title="S7-1500 diagnostics guide",
-                module_model="CPU / PROFINET device",
+                module_model="CPU 1517-3 PN/DP",
+                order_number="6ES7517-3AP00-0AB0",
                 parameter="communication LED alarm",
                 text=(
-                    "For CPU or PROFINET communication faults, record LED state, alarm diagnostics, device "
-                    "name, IP address, connection state, power state and recent configuration changes."
+                    "RUN/STOP LED, ERROR LED, MAINT LED, X1 P1 LINK RX/TX LED, "
+                    "X1 P2 LINK RX/TX LED and X2 P1 LINK RX/TX LED. Figure 2-240."
                 ),
+            ),
+            self._sample(
+                source="SAMPLE S7-1500R/H topology example",
+                source_type="sample_manual",
+                modality="text",
+                page=1531,
+                title="S7-1500R/H HMI PROFINET example",
+                manual_title="S7-1500R/H redundant system manual",
+                device_family="S7-1500R/H",
+                module_model="S7-1500R/H",
+                parameter="HMI CPU PROFINET relationship",
+                direct_evidence=True,
+                text="In this S7-1500R/H example, HMI PROFINET X1 connects to the R/H CPU PROFINET X2.",
             ),
             self._sample(
                 source="SafePLC offline industrial operation boundary",

@@ -78,6 +78,7 @@ class ContextAnalyzer:
             [
                 r"PS\s*\d+W\s*[\d/]+VDC\s*\w*",
                 r"ET\s*200MP",
+                r"S7[- ]?1500\s*R/H",
                 r"S7[- ]?1500",
             ]
         )
@@ -214,8 +215,13 @@ class ContextAnalyzer:
             required = ["module_model"]
         elif qtype == "TROUBLESHOOTING" and not slots["indicator_state"].value and not slots["alarm_code"].value:
             required = ["alarm_code"]
-        elif qtype == "TOPOLOGY" and "PROFINET" not in text.upper() and "HMI" not in text.upper():
-            required = ["network_type"]
+        elif qtype == "TOPOLOGY":
+            if "PROFINET" not in text.upper() and "HMI" not in text.upper():
+                required = ["network_type"]
+            if _has_any(text, ["哪个接口", "哪一个接口", "X1/X2", "which interface"]) and not (
+                extract_model_identity(text).normalized_model or re.search(r"S7[- ]?1500\s*R/H", text, re.I)
+            ):
+                required.append("module_model")
         missing = []
         for name in required:
             if not slots.get(name) or not slots[name].value:
@@ -226,6 +232,8 @@ class ContextAnalyzer:
     def _clarification_prompt(self, missing: List[str], qtype: str) -> str:
         if not missing:
             return ""
+        if qtype == "TOPOLOGY" and "module_model" in missing:
+            return "请提供 CPU 型号，并说明是标准 S7-1500 还是 S7-1500R/H 冗余系统；不同型号和拓扑使用的 PROFINET 接口可能不同。"
         names = {
             "module_model": "模块型号或订货号",
             "parameter_name": "要查询的参数名称",

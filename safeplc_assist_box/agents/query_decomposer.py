@@ -19,11 +19,13 @@ class QueryDecomposer:
 
         subquestions: List[SubQuestion] = []
         low = query.lower()
+        model = context.slots.get("module_model").value if context.slots.get("module_model") else ""
+        model_prefix = f"{model} 的 " if model else ""
         if "x1" in low and any(token in low for token in ["哪里", "位置", "前面", "front", "where"]):
             subquestions.append(
                 SubQuestion(
                     subquestion_id="sq_x1_location",
-                    text="Locate the X1 physical interface.",
+                    text=f"{model_prefix}X1 接口物理位置在哪里？",
                     objective="Find the direct front-view or figure evidence for X1.",
                     expected_agents=["Figure Agent"],
                     required_modalities=["figure"],
@@ -54,9 +56,9 @@ class QueryDecomposer:
             subquestions.append(
                 SubQuestion(
                     subquestion_id="sq_x1_ports",
-                    text="Identify X1 port count and labels.",
+                    text=f"{model_prefix}X1 包含几个端口？",
                     objective="Verify whether X1 has ports such as X1 P1 and X1 P2.",
-                    expected_agents=["Figure Agent", "Topology Agent"],
+                    expected_agents=["Figure Agent"],
                     required_modalities=["figure", "table"],
                     metadata={"trigger": port_trigger, "source_span": query},
                 )
@@ -65,7 +67,7 @@ class QueryDecomposer:
             subquestions.append(
                 SubQuestion(
                     subquestion_id="sq_profinet_hmi",
-                    text="Check HMI and PROFINET connection guidance.",
+                    text=f"{model_prefix}核对 HMI 与 PROFINET 的设备连接关系。",
                     objective="Separate model-specific interface evidence from general PROFINET guidance.",
                     expected_agents=["Topology Agent"],
                     required_modalities=["text"],
@@ -79,9 +81,20 @@ class QueryDecomposer:
                     subquestion_id="sq_network_notes",
                     text="List supported network and cabling notes.",
                     objective="Return only evidenced PROFINET/HMI notes and mark general guidance.",
-                    expected_agents=["Topology Agent", "Wiring Agent"],
+                    expected_agents=["Topology Agent"],
                     required_modalities=["text"],
                     metadata={"trigger": "network_notes", "source_span": query},
+                )
+            )
+        if any(token in low for token in ["通信不上", "通信异常", "指示灯异常", "led", "run/stop", "error"]):
+            subquestions.append(
+                SubQuestion(
+                    subquestion_id="sq_comm_led_diagnosis",
+                    text=f"{model_prefix}通信不上且指示灯异常时，应先核对哪些 LED 信息？",
+                    objective="Extract only LED checks supported by the manual evidence.",
+                    expected_agents=["Troubleshooting Agent"],
+                    required_modalities=["text"],
+                    metadata={"trigger": "communication_led", "source_span": query},
                 )
             )
 

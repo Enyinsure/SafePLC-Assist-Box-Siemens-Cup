@@ -7,12 +7,14 @@ from ..evidence.evidence_pool import SharedEvidencePool
 from ..schemas import AgentResult, AgentStatus
 from ..tools.tool_registry import ToolRegistry
 from .base_agent import BaseAgent
+from ..evidence.evidence_ranker import rank_evidence
+from ..evidence.fact_extractors import extract_wiring_facts
 
 
 class WiringAgent(BaseAgent):
     agent_name = "Wiring Agent"
     role_description = "Specialist for terminal definitions, wiring constraints and installation safety notes."
-    tool_names = ["search_hybrid", "search_table"]
+    tool_names = ["search_text", "search_table", "search_figure"]
     default_claim_type = "connection"
 
     def execute(self, task, registry: ToolRegistry, evidence_pool: SharedEvidencePool):
@@ -33,15 +35,18 @@ class WiringAgent(BaseAgent):
                 confidence="HIGH" if ids else "NOT_AVAILABLE",
                 abstain_reason="" if ids else "No safety boundary evidence was found.",
             )
-        evidences = registry.search_hybrid(query, modalities=["text", "table", "figure"], top_k=5)
-        if not evidences:
+        candidates = registry.search_text(query, top_k=8) + registry.search_table(query, top_k=8)
+        direct = [(item, extract_wiring_facts(item.text)) for item in rank_evidence(candidates, query=query, top_k=12)]
+        selected = next(((item, facts) for item, facts in direct if facts), None)
+        if not selected:
+            figures = registry.search_figure(query, top_k=5)
+            direct = [(item, extract_wiring_facts(item.text)) for item in figures if extract_wiring_facts(item.text)]
+            selected = direct[0] if direct else None
+        if not selected:
             return self._abstain(task, "No wiring or terminal evidence was found.")
-        top = evidences[0]
+        top, facts = selected
         general = top.model_match_level == "same_family_general"
-        claim = (
-            "具备资质 personnel must verify wiring and terminal work after stop, isolation and power-off confirmation; "
-            "the work must follow cited terminal/cabling evidence."
-        )
+        claim = "；".join(facts[:4]) + "。"
         answer = f"{claim} Evidence: {top.manual_title or top.source}, page {top.page or '-'}."
         return self._finish_with_evidence(
             task,
@@ -58,7 +63,11 @@ class WiringAgent(BaseAgent):
                 "voltage": top.metadata.get("voltage", ""),
                 "polarity": top.metadata.get("polarity", ""),
                 "connection_scope": top.module_model or top.device_family,
-                "warning": "qualified review required",
                 "general_guidance": general,
+                "evidence_span": "；".join(facts),
+                "fact_type": "wiring_requirement",
+                "source_page": top.page,
+                "source_section": top.section,
+                "inference_level": "general_guidance" if general else "direct",
             },
         )

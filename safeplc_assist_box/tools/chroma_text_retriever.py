@@ -115,8 +115,78 @@ class ChromaTextRetriever:
                 evidence.query_expansion_reason = str(evidence.metadata["query_expansion_reason"])
                 evidence.rank_within_query = rank_index
                 out.append(evidence)
+        out.extend(self._same_page_aggregates(collection, out))
         self.last_latency_ms = int((time.perf_counter() - started) * 1000)
         return out
+
+    def _same_page_aggregates(self, collection: object, seeds: List[AgentEvidence]) -> List[AgentEvidence]:
+        aggregates: List[AgentEvidence] = []
+        seen = set()
+        for seed in seeds:
+            key = (seed.source, seed.page, seed.retrieval_query)
+            if not seed.source or seed.page is None or key in seen:
+                continue
+            seen.add(key)
+            siblings = self._fetch_page_siblings(collection, seed.source, seed.page)
+            if len(siblings) < 2:
+                continue
+            siblings.sort(key=lambda item: int(item[1].get("chunk_index") or item[1].get("chunk_id") or 0))
+            siblings = siblings[:3]
+            text = "\n".join(item[0] for item in siblings if item[0])
+            metadata = dict(siblings[0][1])
+            aggregate = normalize_metadata(
+                text=text,
+                metadata=metadata,
+                backend="chroma_text",
+                query_text=seed.retrieval_query or seed.query_text,
+                collection_name=self.collection_name,
+                source_path=str(self.chroma_dir),
+                raw_distance=seed.raw_distance,
+                modality_hint="text",
+                distance_metric=seed.distance_metric,
+            )
+            chunk_ids = [str(item[1].get("chunk_id") or item[1].get("chunk_index") or index) for index, item in enumerate(siblings)]
+            aggregate.metadata.update(
+                {
+                    "aggregated_chunk_ids": chunk_ids,
+                    "aggregated_chunk_count": len(siblings),
+                    "page_aggregate": True,
+                    "retrieval_query": seed.retrieval_query,
+                    "retrieval_query_index": seed.retrieval_query_index,
+                    "query_expansion_reason": seed.query_expansion_reason,
+                    "rank_within_query": seed.rank_within_query,
+                }
+            )
+            aggregate.retrieval_query = seed.retrieval_query
+            aggregate.retrieval_query_index = seed.retrieval_query_index
+            aggregate.query_expansion_reason = seed.query_expansion_reason
+            aggregate.rank_within_query = seed.rank_within_query
+            aggregates.append(aggregate)
+        return aggregates
+
+    def _fetch_page_siblings(self, collection: object, source: str, page: int) -> List[tuple[str, Dict[str, object]]]:
+        getter = getattr(collection, "get", None)
+        if not callable(getter):
+            return []
+        for page_key in ("page_no", "page_index", "page"):
+            for page_value in (page, str(page)):
+                try:
+                    payload = getter(
+                        where={"$and": [{"source": source}, {page_key: page_value}]},
+                        include=["documents", "metadatas"],
+                        limit=3,
+                    )
+                    docs = payload.get("documents") or []
+                    metas = payload.get("metadatas") or []
+                    rows = [
+                        (str(doc or ""), dict(metas[index]) if index < len(metas) and isinstance(metas[index], dict) else {})
+                        for index, doc in enumerate(docs)
+                    ]
+                    if rows:
+                        return [row for row in rows if str(row[1].get("source") or "") == source and int(row[1].get(page_key) or -1) == page]
+                except Exception:
+                    continue
+        return []
 
     def _distance_metric(self, collection: object) -> str:
         metadata = getattr(collection, "metadata", None)

@@ -87,6 +87,11 @@ class FigureAgent(BaseAgent):
                 "visual_evidence_status": visual_status,
                 "image_path": top.resolved_image_path,
                 "visual_image_required": image_requested,
+                "evidence_span": top.compact_excerpt,
+                "fact_type": "interface_location_and_ports" if has_two_ports else "interface_location",
+                "source_page": top.page,
+                "source_section": top.section,
+                "inference_level": "direct",
             },
         )
         if result.claims and target_model != "目标模块":

@@ -7,24 +7,25 @@ from ..evidence.evidence_pool import SharedEvidencePool
 from ..schemas import AgentStatus
 from ..tools.tool_registry import ToolRegistry
 from .base_agent import BaseAgent
+from ..evidence.evidence_ranker import rank_evidence
+from ..evidence.fact_extractors import extract_led_checks
 
 
 class TroubleshootingAgent(BaseAgent):
     agent_name = "Troubleshooting Agent"
     role_description = "Specialist for alarms, LED states, communication faults and evidence-grounded check order."
-    tool_names = ["search_text", "search_table", "search_hybrid"]
+    tool_names = ["search_text", "search_table"]
     default_claim_type = "diagnosis"
 
     def execute(self, task, registry: ToolRegistry, evidence_pool: SharedEvidencePool):
         query = self._join_query(task)
-        evidences = registry.search_hybrid(query, modalities=["text", "table", "figure"], top_k=5)
-        if not evidences:
+        candidates = registry.search_text(query, top_k=10) + registry.search_table(query, top_k=6)
+        ranked = rank_evidence(candidates, query=query, top_k=12)
+        selected = next(((item, extract_led_checks(item.text)) for item in ranked if extract_led_checks(item.text)), None)
+        if not selected:
             return self._abstain(task, "No troubleshooting evidence was found.")
-        top = evidences[0]
-        claim = (
-            "人工确认/人工复核 required for site-only conditions. For communication or LED faults, "
-            "record LED state, diagnostics, device name/IP, connection state, power state and recent changes."
-        )
+        top, checks = selected
+        claim = "通信不上且指示灯异常时，先记录并核对：" + "、".join(checks) + "。"
         answer = f"{claim} Evidence: {top.manual_title or top.source}, page {top.page or '-'}."
         return self._finish_with_evidence(
             task,
@@ -35,5 +36,12 @@ class TroubleshootingAgent(BaseAgent):
             confidence="MEDIUM",
             status=AgentStatus.ANSWERED.value,
             claim_type="diagnosis",
-            claim_metadata={"general_guidance": True, "manual_confirmation_required": True},
+            claim_metadata={
+                "general_guidance": False,
+                "evidence_span": "、".join(checks),
+                "fact_type": "led_checklist",
+                "source_page": top.page,
+                "source_section": top.section,
+                "inference_level": "bounded_inference",
+            },
         )

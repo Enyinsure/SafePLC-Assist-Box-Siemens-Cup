@@ -43,7 +43,7 @@ class EvidenceClosedSynthesizer:
                 continue
             text = compact_text(claim.claim_text, 110)
             if claim.metadata.get("general_guidance"):
-                text = "通用 PROFINET 指南：" + text.removeprefix("General PROFINET guidance:").strip()
+                text = "通用指南：" + text.removeprefix("General PROFINET guidance:").strip()
             answer_parts.append(text)
 
         references = self._evidence_refs(accepted, evidence_by_id)

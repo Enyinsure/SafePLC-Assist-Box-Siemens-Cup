@@ -89,14 +89,17 @@ def extract_model_identity(text: str) -> ModelIdentity:
             product_type = "ET"
             family = model
     if not model:
-        ps = re.search(
-            r"\b(PS|PM)\s+((?:\d+\s*W\s+)?[\d/]+\s*VDC(?:\s+HF)?|[A-Z0-9][A-Z0-9./-]*(?:\s+[A-Z0-9][A-Z0-9./-]*){0,3})",
+        power = re.search(
+            r"\b(PS|PM)\s+(?:(\d+)\s*W\s+)?([\d]+(?:\s*/\s*\d+)*)\s*V\s*(AC\s*/\s*DC|DC|AC)(?:\s+(HF))?\b",
             normalized,
         )
-        if ps:
-            product_type = ps.group(1)
-            model = re.sub(r"\s+", " ", f"{product_type} {ps.group(2).strip()}")
-            variant = "HF" if re.search(r"\bHF\b", model) else ""
+        if power:
+            product_type = power.group(1)
+            watts = f" {power.group(2)}W" if power.group(2) else ""
+            voltage = re.sub(r"\s*/\s*", "/", power.group(3))
+            supply_type = re.sub(r"\s*/\s*", "/", power.group(4))
+            variant = power.group(5) or ""
+            model = f"{product_type}{watts} {voltage}V{supply_type}" + (f" {variant}" if variant else "")
             family = "S7-1500 POWER"
     if not model:
         module = re.search(r"\b(SM|IM|CM|CP|TM)\b\s*([A-Z0-9-]+)?(?:\s+(DI|DQ|AI|AQ))?\b", normalized)
@@ -129,6 +132,26 @@ def extract_model_identity(text: str) -> ModelIdentity:
         normalized_models=normalized_models,
         family_hints=list(dict.fromkeys(family_hints)),
     )
+
+
+def extract_model_identities(text: str) -> List[ModelIdentity]:
+    """Return every supported model mention using the canonical identity parser."""
+    normalized = normalize_text(text)
+    patterns = [
+        r"(?:CPU\s*)?15(?:11|13|15|16|17|18)(?:HF|H|R|T)?(?:-\d)?(?:\s*(?:PN/DP|PN|DP))?\b",
+        r"\b(?:PS|PM)\s+(?:\d+\s*W\s+)?\d+(?:\s*/\s*\d+)*\s*V\s*(?:AC\s*/\s*DC|DC|AC)(?:\s+HF)?\b",
+        r"\bET\s*200\s*(?:MP|SP)\b",
+        r"\b(?:SM|IM|CM|CP|TM)\s+[A-Z0-9-]+(?:\s+(?:DI|DQ|AI|AQ))?\b",
+    ]
+    identities: List[ModelIdentity] = []
+    seen = set()
+    for pattern in patterns:
+        for match in re.finditer(pattern, normalized, re.I):
+            identity = extract_model_identity(match.group(0))
+            if identity.normalized_model and identity.normalized_model not in seen:
+                seen.add(identity.normalized_model)
+                identities.append(identity)
+    return identities
 
 
 def is_redundant_family_text(text: str) -> bool:

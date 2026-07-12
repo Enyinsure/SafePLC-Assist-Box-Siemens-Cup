@@ -85,7 +85,9 @@ class JudgeAgent:
             verdict, confidence, reason = JudgeVerdict.NEED_MORE_EVIDENCE.value, JudgeConfidence.NOT_AVAILABLE.value, "No claim passed evidence checks; a bounded retrieval retry may be useful."
         elif not model_consistency["pass"]:
             verdict, confidence, reason = JudgeVerdict.ABSTAIN.value, JudgeConfidence.LOW.value, "Model or order-number scope is inconsistent."
-        elif coverage_score < 0.9 or unsupported or figure_state["missing_required_image"]:
+        elif coverage_score < 0.9 or unsupported or figure_state["missing_required_image"] or any(
+            claim.metadata.get("partial_coverage") for claim in accepted_claims
+        ):
             verdict, confidence, reason = JudgeVerdict.PARTIAL.value, JudgeConfidence.MEDIUM.value, "Only the covered, evidence-supported portion can be answered."
         elif quality_scores["grounding"] >= 0.9 and quality_scores["model_consistency"] >= 0.95:
             verdict = JudgeVerdict.PASS.value
@@ -127,6 +129,8 @@ class JudgeAgent:
         reasons: List[str] = []
         if not claim.evidence_ids:
             return ["missing_evidence_ids"]
+        if context.subquestions and not claim.subquestion_ids:
+            reasons.append("missing_subquestion_scope")
         if self._raw_ocr_dump(claim.claim_text):
             reasons.append("raw_ocr_dump_detected")
         evidences = [evidence_by_id[item] for item in claim.evidence_ids if item in evidence_by_id]
@@ -137,7 +141,9 @@ class JudgeAgent:
         levels = [classify_model_match(f"{claim.model_scope} {context.original_query}", item) for item in evidences]
         if any(level == "cross_family" for level in levels):
             reasons.append("cross_family_evidence")
-        if any(level == "same_family_general" for level in levels) and not claim.metadata.get("general_guidance"):
+        query_identity = extract_model_identity(context.original_query)
+        model_specific_query = bool(query_identity.normalized_model or query_identity.order_numbers)
+        if model_specific_query and any(level == "same_family_general" for level in levels) and not claim.metadata.get("general_guidance"):
             reasons.append("same_family_general_used_for_model_specific_claim")
         claim_values = parse_claim_values(claim.claim_text)
         evidence_values = parse_claim_values(" ".join(self._evidence_text(item) for item in evidences))

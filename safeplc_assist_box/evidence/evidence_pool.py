@@ -198,7 +198,8 @@ class SharedEvidencePool:
                 if _parameter_values(evidence.text) and _parameter_values(evidence.text) != _parameter_values(other.text):
                     self.record_conflict([other.evidence_id, evidence.evidence_id], "same_model_parameter_value_conflict")
             if same_model and _interface(evidence.text) and _interface(evidence.text) == _interface(other.text):
-                if _ports(evidence.text) and _ports(evidence.text) != _ports(other.text):
+                interface = _interface(evidence.text)
+                if _ports(evidence.text, interface) and _ports(evidence.text, interface) != _ports(other.text, interface):
                     self.record_conflict([other.evidence_id, evidence.evidence_id], "same_interface_port_description_conflict")
             if evidence.figure_number and evidence.figure_number == other.figure_number:
                 if evidence.page != other.page or (evidence.module_model and evidence.module_model != other.module_model):
@@ -265,5 +266,6 @@ def _interface(text: str) -> str:
     return match.group(0) if match else ""
 
 
-def _ports(text: str) -> Set[str]:
-    return set(re.findall(r"\bX[1-9]\s*P[1-9]\b", text.upper()))
+def _ports(text: str, interface: str = "") -> Set[str]:
+    ports = set(re.findall(r"\bX[1-9]\s*P[1-9]\b", text.upper()))
+    return {item for item in ports if not interface or item.replace(" ", "").startswith(interface)}

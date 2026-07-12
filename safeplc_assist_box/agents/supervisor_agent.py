@@ -23,9 +23,9 @@ PROFESSIONAL_AGENTS = [
 AGENT_TOOLS = {
     "Parameter Agent": ["search_table", "search_text"],
     "Figure Agent": ["search_figure", "search_hybrid"],
-    "Wiring Agent": ["search_hybrid", "search_table"],
+    "Wiring Agent": ["search_text", "search_table", "search_figure"],
     "Topology Agent": ["search_hybrid", "search_text", "search_figure"],
-    "Troubleshooting Agent": ["search_text", "search_table", "search_hybrid"],
+    "Troubleshooting Agent": ["search_text", "search_table"],
     "EMC Agent": ["search_text", "search_hybrid"],
     "Safety Boundary Agent": ["search_text"],
     "Work-order Agent": ["structured_export"],
@@ -171,6 +171,8 @@ class SupervisorAgent:
         max_agents: int,
     ) -> List[str]:
         selected: List[str] = []
+        if ctx.question_type == "EMC":
+            return ["EMC Agent"]
         for subq in ctx.subquestions:
             for agent in subq.expected_agents:
                 if agent in ordered and agent not in selected and scores.get(agent, 0) > 0:
@@ -179,6 +181,8 @@ class SupervisorAgent:
                     return selected[:max_agents]
         if not selected:
             selected.append(ordered[0])
+        if any(subq.expected_agents for subq in ctx.subquestions):
+            return selected[:max_agents]
         multi_signal = len(ctx.subquestions) > 1 or any(token in ctx.normalized_query for token in ["并", "同时", "以及", "+", "和"])
         if multi_signal:
             for agent in ordered:
@@ -212,20 +216,19 @@ class SupervisorAgent:
         slot_values = query_context.slot_values()
         for idx, agent in enumerate(selected, start=1):
             objective = self._objective_for(agent, query_context)
-            subquestion_ids = [
-                sq.subquestion_id
-                for sq in query_context.subquestions
-                if not sq.expected_agents or agent in sq.expected_agents
-            ]
+            assigned = [sq for sq in query_context.subquestions if not sq.expected_agents or agent in sq.expected_agents]
+            subquestion_ids = [sq.subquestion_id for sq in assigned]
+            task_query = "\n".join(sq.text for sq in assigned).strip() or query_context.original_query
+            required_evidence = list(dict.fromkeys(item for sq in assigned for item in sq.required_modalities)) or query_context.required_modalities
             tasks[agent] = AgentTask(
                 task_id=f"task_{idx:02d}_{agent.lower().replace(' ', '_').replace('-', '_')}",
                 agent_name=agent,
                 role=agent,
-                query=query_context.original_query,
+                query=task_query,
                 context=query_context.context,
                 objective=objective,
                 input_slots=slot_values,
-                required_evidence_types=query_context.required_modalities,
+                required_evidence_types=required_evidence,
                 tool_names=AGENT_TOOLS.get(agent, []),
                 constraints=[
                     "Only cite evidence returned by ToolRegistry.",
@@ -234,6 +237,7 @@ class SupervisorAgent:
                     "Return structured claims, not raw page OCR.",
                 ],
                 subquestion_ids=subquestion_ids,
+                metadata={"original_query": query_context.original_query},
             )
         reasons = {
             agent: reason_override.get(
@@ -262,9 +266,9 @@ class SupervisorAgent:
         objectives = {
             "Parameter Agent": "Verify model/order number, parameter name, numeric value and unit.",
             "Figure Agent": "Locate interface, figure number, page, marker and image/page-text evidence.",
-            "Wiring Agent": "Verify terminal, wiring constraints and power-off safety notes.",
+            "Wiring Agent": "Extract directly evidenced terminal and wiring requirements.",
             "Topology Agent": "Verify PROFINET/HMI/CPU/IO relationship and connection guidance.",
-            "Troubleshooting Agent": "Separate evidenced checks from site conditions requiring manual confirmation.",
+            "Troubleshooting Agent": "Extract directly supported LED checks for the reported symptom.",
             "EMC Agent": "Verify grounding, shielding, cabling and installation environment requirements.",
             "Safety Boundary Agent": "Refuse dangerous industrial operation steps and provide safe alternatives.",
             "Work-order Agent": "Export the final verified result as structured maintenance assistance record.",

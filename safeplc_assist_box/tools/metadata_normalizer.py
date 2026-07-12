@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, Optional
 
 from ..schemas import AgentEvidence, compact_text
-from ..evidence.model_identity import extract_model_identity, extract_order_numbers, normalize_text
+from ..evidence.model_identity import extract_model_identities, extract_model_identity, extract_order_numbers
 
 
 VALID_BACKENDS = {
@@ -112,16 +112,7 @@ def extract_location_marker(text: str, interface_name: str = "") -> str:
 
 
 def _model_candidates(text: str) -> list[object]:
-    normalized = normalize_text(text)
-    pattern = r"(?:CPU\s*)?15(?:11|13|15|16|17|18)(?:HF|H|R|T)?(?:-\d)?(?:\s*(?:PN/DP|PN|DP))?\b"
-    candidates = []
-    seen = set()
-    for match in re.finditer(pattern, normalized, re.I):
-        identity = extract_model_identity(match.group(0))
-        if identity.normalized_model and identity.normalized_model not in seen:
-            seen.add(identity.normalized_model)
-            candidates.append(identity)
-    return candidates
+    return list(extract_model_identities(text))
 
 
 def _infer_identity(text: str, query_text: str) -> object:
@@ -216,7 +207,7 @@ def normalize_metadata(
     manual_figure_number = str(meta.get("manual_figure_number") or figure_number or extracted_figure_number)
     manual_figure_caption = str(meta.get("manual_figure_caption") or extracted_caption)
     figure_text = bool(re.search(r"(?:Figure|Fig\.|图)\s*[\d\-.]+|front\s+view|前视图", str(text or ""), re.I))
-    visual_status = "image_available" if image_exists else "page_text_only" if (page or figure_id or figure_number or figure_text) else "missing"
+    visual_status = "image_available" if image_exists else "page_text_only" if (figure_id or figure_number or figure_text) else "missing"
     ev = AgentEvidence(
         evidence_id="",
         source=source,
