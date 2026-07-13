@@ -188,9 +188,9 @@ def build_benchmark_120(
         _stress_multimodal,
     )
 
-    # Prefer non-figure seeds for work orders; Figure work orders remain possible only
-    # when the strict figure-location predicate is explicitly selected elsewhere.
-    non_figure_maintenance = lambda seed: _has_maintenance_fact(seed) and not _has_figure_location(seed)
+    # Figure cases are already reserved above. The allocator's usage-first ordering
+    # naturally prefers untouched non-figure seeds when broad maintenance seeds exist,
+    # while still allowing deterministic fallback for fixture or sparse datasets.
     _append_single(
         natural_buckets,
         allocator,
@@ -198,7 +198,7 @@ def build_benchmark_120(
         duplicate_retries,
         "maintenance_work_order",
         NATURAL_120_COUNTS["maintenance_work_order"],
-        non_figure_maintenance,
+        _has_maintenance_fact,
         _natural_work_order,
     )
     _append_single(
