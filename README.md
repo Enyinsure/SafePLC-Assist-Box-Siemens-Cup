@@ -37,6 +37,8 @@ Copy `config/full.env.example` to an ignored local env file and set the collecti
 
 `benchmark/sample_regression` is a local regression set, not evidence of FULL industrial accuracy. Real Chroma, Figure Chroma, image paths, FULL benchmark results, and server performance must be validated by the user on the target server using `docs/FULL_SERVER_VALIDATION.md`; runtime reports belong under the ignored `reports/runtime/` directory.
 
+The auditable FULL-360 benchmark builder, validator, resumable runner, metric definitions, and real-asset generation boundary are documented in [`docs/FULL_360_BENCHMARK.md`](docs/FULL_360_BENCHMARK.md). Formal Natural/Stress cases are generated only from a verified evidence seed bank on the FULL asset host; unit-test fixtures are never published as benchmark data.
+
 ## Evidence Contract
 
 The Supervisor decomposes compound questions and selects a bounded subset of specialist agents. Agents return structured claims with independent evidence IDs and abstain when unsupported. The Shared Evidence Pool normalizes and deduplicates evidence, model identity filtering rejects cross-family matches, and the claim-level Judge plus verifier check coverage, model consistency, numeric support, and figure requirements.

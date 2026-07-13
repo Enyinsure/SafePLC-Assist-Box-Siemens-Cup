@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "safeplc.full_360.case.v1",
+  "title": "SafePLC FULL-360 benchmark case",
+  "oneOf": [
+    {"$ref": "#/$defs/frozenCoreCase"},
+    {"$ref": "#/$defs/generatedCase"}
+  ],
+  "$defs": {
+    "frozenCoreCase": {
+      "type": "object",
+      "required": ["ordinal", "case_id", "category", "query", "origin", "server_verified", "expected"],
+      "properties": {
+        "ordinal": {"type": "integer", "minimum": 1, "maximum": 30},
+        "case_id": {"type": "string", "pattern": "^[a-z][a-z0-9_]+$"},
+        "query": {"type": "string", "minLength": 4},
+        "expected": {"type": "object"}
+      },
+      "additionalProperties": true
+    },
+    "generatedCase": {
+      "type": "object",
+      "required": [
+        "schema_version", "case_id", "benchmark_layer", "category", "difficulty", "query",
+        "origin", "parent_seed_id", "mutation_type", "mutation_fields", "expected_safe_behavior",
+        "target_model", "target_order_number", "expected_action", "expected_verdict", "expected_agents",
+        "required_evidence_modalities", "required_evidence_pages", "required_figure_ids", "required_terms",
+        "forbidden_terms", "required_structured_facts", "forbidden_models", "scope_conditions",
+        "must_have_final_evidence", "must_have_empty_evidence", "source_seed_ids", "source_verified",
+        "manual_reviewed", "review_status", "trigger_condition"
+      ],
+      "properties": {
+        "schema_version": {"const": "safeplc.full_360.case.v1"},
+        "case_id": {"type": "string", "pattern": "^(natural|stress)_[a-z0-9_]+_[0-9]{4}$"},
+        "benchmark_layer": {"enum": ["natural", "stress"]},
+        "category": {
+          "enum": [
+            "parameter", "wiring", "troubleshooting", "figure_location", "topology_clarification",
+            "emc", "compound_multi_agent", "missing_slot_clarification", "maintenance_work_order",
+            "cross_model_contamination", "unsupported_entity", "industrial_safety_refusal",
+            "conflicting_or_distractor_evidence", "multimodal_missing_or_mismatch"
+          ]
+        },
+        "difficulty": {"enum": ["easy", "medium", "hard"]},
+        "query": {"type": "string", "minLength": 8},
+        "origin": {"enum": ["real_manual_seed", "controlled_mutation"]},
+        "parent_seed_id": {"type": "string", "minLength": 6},
+        "mutation_type": {"type": ["string", "null"]},
+        "mutation_fields": {"type": "object"},
+        "expected_safe_behavior": {"type": "string"},
+        "target_model": {"type": "string"},
+        "target_order_number": {"type": "string"},
+        "expected_action": {
+          "type": "array", "minItems": 1, "uniqueItems": true,
+          "items": {"enum": ["ANSWER", "CLARIFY", "ABSTAIN", "REFUSE"]}
+        },
+        "expected_verdict": {
+          "type": "array", "minItems": 1, "uniqueItems": true,
+          "items": {"enum": ["PASS", "PARTIAL", "NEED_CLARIFICATION", "NEED_MORE_EVIDENCE", "ABSTAIN", "REFUSE", "CONFLICT"]}
+        },
+        "expected_agents": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "required_evidence_modalities": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "required_evidence_pages": {"type": "array", "items": {"type": "integer", "minimum": 1}, "uniqueItems": true},
+        "required_figure_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "required_terms": {"type": "array", "items": {"type": "string"}},
+        "forbidden_terms": {"type": "array", "items": {"type": "string"}},
+        "required_structured_facts": {"type": "object"},
+        "forbidden_models": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "scope_conditions": {"type": "object"},
+        "must_have_final_evidence": {"type": "boolean"},
+        "must_have_empty_evidence": {"type": "boolean"},
+        "source_seed_ids": {"type": "array", "minItems": 1, "items": {"type": "string"}, "uniqueItems": true},
+        "source_verified": {"type": "boolean"},
+        "manual_reviewed": {"type": "boolean"},
+        "review_status": {"enum": ["pending", "approved", "rejected", "needs_revision"]},
+        "trigger_condition": {"type": "string"}
+      },
+      "additionalProperties": false
+    }
+  }
+}
