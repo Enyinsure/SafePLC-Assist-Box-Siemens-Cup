@@ -27,20 +27,17 @@ def test_near_duplicate_detector_marks_but_does_not_delete_candidates():
 
 
 def test_repeated_real_world_seed_identity_does_not_duplicate_queries():
-    models = (
-        "CPU 1517-3 PN/DP",
-        "CPU 1518-4 PN/DP",
-        "PS 60W 24/48/60VDC HF",
-        "ET 200MP",
-    )
     seeds = []
     for index in range(1, 101):
         seed = make_seed(index)
-        seed["module_model"] = models[(index - 1) % len(models)]
+        seed["module_model"] = f"CPU 1517-3 PN/DP FIXTURE {(index + 1) // 2:03d}"
         seed["order_number"] = ""
         seed["section"] = "General module data"
         seeds.append(seed)
+    assert len({seed["module_model"] for seed in seeds}) == 50
     core = load_jsonl(CORE_CASES_PATH)
-    generated = build_full_360(seeds, core, core_sha256=sha256_file(CORE_CASES_PATH))["full"]
+    built = build_full_360(seeds, core, core_sha256=sha256_file(CORE_CASES_PATH))
+    generated = built["full"]
     normalized = [normalize_query(case["query"]) for case in generated]
     assert len(normalized) == len(set(normalized)) == 360
+    assert sum(built["duplicate_retry_by_category"].values()) > 0

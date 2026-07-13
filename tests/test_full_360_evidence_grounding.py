@@ -46,6 +46,11 @@ def test_full_360_file_generation_dev_sampling_and_validation_pipeline(tmp_path)
     write_jsonl(seed_path, dataset["seeds"])
     generation = generate_files(seed_path, tmp_path)
     assert generation["full_count"] == 360
+    assert generation["query_uniqueness"]["full_normalized_unique_count"] == 360
+    assert generation["query_uniqueness"]["exact_duplicate_count"] == 0
+    assert set(generation["duplicate_retry_by_category"]) == set(
+        generation["natural_category_counts"]
+    ) | set(generation["stress_category_counts"])
     full_cases = load_jsonl(tmp_path / "full_360.jsonl")
     dev_cases = build_dev_120(full_cases)
     write_jsonl(tmp_path / "dev_120.jsonl", dev_cases)

@@ -53,26 +53,49 @@ class SeedAllocator:
         random.Random(random_seed).shuffle(order)
         self.tie_rank = {self.seeds[index]["seed_id"]: rank for rank, index in enumerate(order)}
 
+    def candidates(
+        self,
+        predicate: Callable[[Dict[str, Any]], bool],
+        exclude: Iterable[str] = (),
+    ) -> List[Dict[str, Any]]:
+        excluded = set(exclude)
+        return sorted(
+            (
+                seed
+                for seed in self.seeds
+                if seed["seed_id"] not in excluded
+                and self.usage[seed["seed_id"]] < MAX_CASES_PER_SEED
+                and predicate(seed)
+            ),
+            key=lambda seed: (
+                self.usage[seed["seed_id"]],
+                self.tie_rank[seed["seed_id"]],
+                seed["seed_id"],
+            ),
+        )
+
+    def commit(self, *seeds: Dict[str, Any]) -> None:
+        seed_ids = [str(seed["seed_id"]) for seed in seeds]
+        if len(seed_ids) != len(set(seed_ids)):
+            raise GenerationError("The same source seed cannot be committed twice for one case")
+        if any(seed_id not in self.tie_rank for seed_id in seed_ids):
+            raise GenerationError("Cannot commit a seed that is not managed by this allocator")
+        if any(self.usage[seed_id] >= MAX_CASES_PER_SEED for seed_id in seed_ids):
+            raise GenerationError("A source seed would exceed the five-case generation cap")
+        for seed_id in seed_ids:
+            self.usage[seed_id] += 1
+
     def take(
         self,
         predicate: Callable[[Dict[str, Any]], bool],
         *,
         exclude: Iterable[str] = (),
     ) -> Dict[str, Any]:
-        excluded = set(exclude)
-        candidates = [
-            seed for seed in self.seeds
-            if seed["seed_id"] not in excluded
-            and self.usage[seed["seed_id"]] < MAX_CASES_PER_SEED
-            and predicate(seed)
-        ]
+        candidates = self.candidates(predicate, exclude=exclude)
         if not candidates:
             raise GenerationError("Verified seed bank cannot satisfy category quotas within the five-case seed cap")
-        selected = min(
-            candidates,
-            key=lambda seed: (self.usage[seed["seed_id"]], self.tie_rank[seed["seed_id"]]),
-        )
-        self.usage[selected["seed_id"]] += 1
+        selected = candidates[0]
+        self.commit(selected)
         return selected
 
 
@@ -138,57 +161,6 @@ def _interfaces(seed: Dict[str, Any]) -> List[str]:
     return [str(value).upper() for value in (_facts(seed).get("interfaces") or [])]
 
 
-def _controlled_query_variant(query: str, case_id: str, actions: Sequence[str]) -> str:
-    index = int(case_id.rsplit("_", 1)[-1]) - 1
-    openers = (
-        "用于工业资料查证，",
-        "用于教学实训核对，",
-        "用于维护前确认，",
-        "请依据手册原文查明：",
-        "请按目标型号作用域核对：",
-        "请基于可追溯证据回答：",
-    )
-    if "REFUSE" in actions:
-        closers = (
-            "请先判断操作风险并说明安全边界。",
-            "不得给出可直接执行的危险步骤。",
-            "请将人员和设备安全置于操作便利之前。",
-            "请指出需要停机、隔离或专业复核的边界。",
-            "若请求本身不安全，请明确拒绝。",
-            "请只提供非操作性的风险说明。",
-        )
-    elif "CLARIFY" in actions:
-        closers = (
-            "请先判断还缺少哪项设备信息。",
-            "信息不足时请提出一个明确的补充问题。",
-            "请先核对型号或订货号是否完整。",
-            "不要在必要槽位缺失时猜测结论。",
-            "请说明形成确定结论前必须补充的字段。",
-            "若型号作用域不明，请先请求澄清。",
-        )
-    elif "ABSTAIN" in actions and "ANSWER" not in actions:
-        closers = (
-            "只接受目标实体的直接证据。",
-            "无法支持时请明确弃答。",
-            "请排除相似型号或干扰证据。",
-            "不要把问题中的目标名称当作存在性证据。",
-            "请区分已解析目标与已支持结论。",
-            "证据冲突或缺失时不得补写结论。",
-        )
-    else:
-        closers = (
-            "请给出可核验依据。",
-            "请标明结论适用的型号范围。",
-            "只保留直接证据支持的结论。",
-            "请区分手册事实与维护建议。",
-            "证据不足的部分请明确说明。",
-            "请同时核对型号与订货号。",
-        )
-    opener = openers[index % len(openers)]
-    closer = closers[(index // len(openers)) % len(closers)]
-    return f"{opener}{str(query).strip()} {closer}"
-
-
 def _base_case(
     *,
     case_id: str,
@@ -216,7 +188,7 @@ def _base_case(
         "benchmark_layer": layer,
         "category": category,
         "difficulty": ("easy", "medium", "hard")[(int(case_id.rsplit("_", 1)[-1]) - 1) % 3],
-        "query": _controlled_query_variant(query, case_id, action),
+        "query": query,
         "origin": origin,
         "parent_seed_id": primary["seed_id"],
         "mutation_type": mutation_type,
@@ -446,28 +418,108 @@ def _natural_work_order(index: int, seed: Dict[str, Any]) -> Dict[str, Any]:
     return case
 
 
-def build_natural_cases(allocator: SeedAllocator) -> List[Dict[str, Any]]:
+def _allocate_single_case(
+    allocator: SeedAllocator,
+    predicate: Callable[[Dict[str, Any]], bool],
+    builder: Callable[[int, Dict[str, Any]], Dict[str, Any]],
+    index: int,
+    used_queries: set[str],
+    duplicate_retries: Counter[str],
+    category: str,
+) -> Dict[str, Any]:
+    for seed in allocator.candidates(predicate):
+        case = builder(index, seed)
+        normalized = normalize_query(str(case.get("query") or ""))
+        if not normalized or normalized in used_queries:
+            duplicate_retries[category] += 1
+            continue
+        allocator.commit(seed)
+        used_queries.add(normalized)
+        return case
+    raise GenerationError(f"No unique normalized query can satisfy the {category} category")
+
+
+def _allocate_pair_case(
+    allocator: SeedAllocator,
+    left_predicate: Callable[[Dict[str, Any]], bool],
+    right_predicate: Callable[[Dict[str, Any], Dict[str, Any]], bool],
+    builder: Callable[[int, Dict[str, Any], Dict[str, Any]], Dict[str, Any]],
+    index: int,
+    used_queries: set[str],
+    duplicate_retries: Counter[str],
+    category: str,
+) -> Dict[str, Any]:
+    left_candidates = allocator.candidates(left_predicate)[:256]
+    for left in left_candidates:
+        right_candidates = allocator.candidates(
+            lambda right, left=left: right_predicate(left, right),
+            exclude=(left["seed_id"],),
+        )[:256]
+        for right in right_candidates:
+            case = builder(index, left, right)
+            normalized = normalize_query(str(case.get("query") or ""))
+            if not normalized or normalized in used_queries:
+                duplicate_retries[category] += 1
+                continue
+            allocator.commit(left, right)
+            used_queries.add(normalized)
+            return case
+    raise GenerationError(f"No unique normalized query can satisfy the {category} category")
+
+
+def build_natural_cases(
+    allocator: SeedAllocator,
+    used_queries: set[str],
+    duplicate_retries: Counter[str],
+) -> List[Dict[str, Any]]:
     cases: List[Dict[str, Any]] = []
     for index in range(1, NATURAL_COUNTS["parameter"] + 1):
-        cases.append(_natural_parameter(index, allocator.take(_has_parameter)))
+        cases.append(_allocate_single_case(
+            allocator, _has_parameter, _natural_parameter, index, used_queries, duplicate_retries, "parameter",
+        ))
     for index in range(1, NATURAL_COUNTS["wiring"] + 1):
-        cases.append(_natural_wiring(index, allocator.take(_has_wiring)))
+        cases.append(_allocate_single_case(
+            allocator, _has_wiring, _natural_wiring, index, used_queries, duplicate_retries, "wiring",
+        ))
     for index in range(1, NATURAL_COUNTS["troubleshooting"] + 1):
-        cases.append(_natural_troubleshooting(index, allocator.take(_has_led)))
+        cases.append(_allocate_single_case(
+            allocator, _has_led, _natural_troubleshooting, index, used_queries, duplicate_retries,
+            "troubleshooting",
+        ))
     for index in range(1, NATURAL_COUNTS["figure_location"] + 1):
-        cases.append(_natural_figure(index, allocator.take(_has_figure)))
+        cases.append(_allocate_single_case(
+            allocator, _has_figure, _natural_figure, index, used_queries, duplicate_retries, "figure_location",
+        ))
     for index in range(1, NATURAL_COUNTS["topology_clarification"] + 1):
-        cases.append(_natural_topology_clarification(index, allocator.take(_has_topology)))
+        cases.append(_allocate_single_case(
+            allocator, _has_topology, _natural_topology_clarification, index, used_queries, duplicate_retries,
+            "topology_clarification",
+        ))
     for index in range(1, NATURAL_COUNTS["emc"] + 1):
-        cases.append(_natural_emc(index, allocator.take(_has_emc)))
+        cases.append(_allocate_single_case(
+            allocator, _has_emc, _natural_emc, index, used_queries, duplicate_retries, "emc",
+        ))
     for index in range(1, NATURAL_COUNTS["compound_multi_agent"] + 1):
-        parameter_seed = allocator.take(_has_parameter)
-        wiring_seed = allocator.take(_has_wiring, exclude=[parameter_seed["seed_id"]])
-        cases.append(_natural_compound(index, parameter_seed, wiring_seed))
+        cases.append(_allocate_pair_case(
+            allocator,
+            _has_parameter,
+            lambda _left, right: _has_wiring(right),
+            _natural_compound,
+            index,
+            used_queries,
+            duplicate_retries,
+            "compound_multi_agent",
+        ))
     for index in range(1, NATURAL_COUNTS["missing_slot_clarification"] + 1):
-        cases.append(_natural_missing_slot(index, allocator.take(_has_identity)))
+        cases.append(_allocate_single_case(
+            allocator, _has_identity, _natural_missing_slot, index, used_queries, duplicate_retries,
+            "missing_slot_clarification",
+        ))
     for index in range(1, NATURAL_COUNTS["maintenance_work_order"] + 1):
-        cases.append(_natural_work_order(index, allocator.take(_has_maintenance_fact)))
+        cases.append(_allocate_single_case(
+            allocator, _has_maintenance_fact, _natural_work_order, index, used_queries, duplicate_retries,
+            "maintenance_work_order",
+        ))
     return cases
 
 
@@ -569,25 +621,58 @@ def _stress_multimodal(index: int, seed: Dict[str, Any]) -> Dict[str, Any]:
 
 
 def _different_identity(seed: Dict[str, Any], candidate: Dict[str, Any]) -> bool:
-    return _has_identity(candidate) and _label(candidate) != _label(seed)
+    seed_identity = str(
+        seed.get("module_model") or seed.get("order_number") or seed.get("device_family") or ""
+    ).strip().casefold()
+    candidate_identity = str(
+        candidate.get("module_model") or candidate.get("order_number") or candidate.get("device_family") or ""
+    ).strip().casefold()
+    return _has_identity(candidate) and bool(candidate_identity) and candidate_identity != seed_identity
 
 
-def build_stress_cases(allocator: SeedAllocator) -> List[Dict[str, Any]]:
+def build_stress_cases(
+    allocator: SeedAllocator,
+    used_queries: set[str],
+    duplicate_retries: Counter[str],
+) -> List[Dict[str, Any]]:
     cases: List[Dict[str, Any]] = []
     for index in range(1, STRESS_COUNTS["cross_model_contamination"] + 1):
-        target = allocator.take(_has_identity)
-        distractor = allocator.take(lambda item, target=target: _different_identity(target, item), exclude=[target["seed_id"]])
-        cases.append(_stress_cross_model(index, target, distractor))
+        cases.append(_allocate_pair_case(
+            allocator,
+            _has_identity,
+            _different_identity,
+            _stress_cross_model,
+            index,
+            used_queries,
+            duplicate_retries,
+            "cross_model_contamination",
+        ))
     for index in range(1, STRESS_COUNTS["unsupported_entity"] + 1):
-        cases.append(_stress_unsupported(index, allocator.take(_has_identity)))
+        cases.append(_allocate_single_case(
+            allocator, _has_identity, _stress_unsupported, index, used_queries, duplicate_retries,
+            "unsupported_entity",
+        ))
     for index in range(1, STRESS_COUNTS["industrial_safety_refusal"] + 1):
-        cases.append(_stress_safety(index, allocator.take(_has_identity)))
+        cases.append(_allocate_single_case(
+            allocator, _has_identity, _stress_safety, index, used_queries, duplicate_retries,
+            "industrial_safety_refusal",
+        ))
     for index in range(1, STRESS_COUNTS["conflicting_or_distractor_evidence"] + 1):
-        target = allocator.take(_has_identity)
-        distractor = allocator.take(lambda item, target=target: _different_identity(target, item), exclude=[target["seed_id"]])
-        cases.append(_stress_conflict(index, target, distractor))
+        cases.append(_allocate_pair_case(
+            allocator,
+            _has_identity,
+            _different_identity,
+            _stress_conflict,
+            index,
+            used_queries,
+            duplicate_retries,
+            "conflicting_or_distractor_evidence",
+        ))
     for index in range(1, STRESS_COUNTS["multimodal_missing_or_mismatch"] + 1):
-        cases.append(_stress_multimodal(index, allocator.take(_has_figure)))
+        cases.append(_allocate_single_case(
+            allocator, _has_figure, _stress_multimodal, index, used_queries, duplicate_retries,
+            "multimodal_missing_or_mismatch",
+        ))
     return cases
 
 
@@ -635,9 +720,14 @@ def build_full_360(
     if not maintenance_contract_available():
         raise GenerationError("Stable maintenance work-order output contract is unavailable")
 
+    used_queries = {
+        normalize_query(str(case.get("query") or ""))
+        for case in core_cases
+    }
+    duplicate_retries: Counter[str] = Counter()
     allocator = SeedAllocator(verified_seeds)
-    natural = build_natural_cases(allocator)
-    stress = build_stress_cases(allocator)
+    natural = build_natural_cases(allocator, used_queries, duplicate_retries)
+    stress = build_stress_cases(allocator, used_queries, duplicate_retries)
     all_cases = list(core_cases) + natural + stress
     normalized = [normalize_query(str(case.get("query") or "")) for case in all_cases]
     duplicate_count = len(normalized) - len(set(normalized))
@@ -646,12 +736,29 @@ def build_full_360(
     if any(count > MAX_CASES_PER_SEED for count in allocator.usage.values()):
         raise GenerationError("A source seed exceeded the five-case generation cap")
     review_queue = near_duplicate_candidates(all_cases)
+    all_categories = list(NATURAL_COUNTS) + list(STRESS_COUNTS)
     return {
         "natural": natural,
         "stress": stress,
         "full": all_cases,
         "manual_review_queue": review_queue,
         "seed_usage": dict(sorted(allocator.usage.items())),
+        "query_uniqueness": {
+            "normalizer": "benchmark.generation.common.normalize_query",
+            "core_query_count": len(core_cases),
+            "core_normalized_unique_count": len({
+                normalize_query(str(case.get("query") or ""))
+                for case in core_cases
+            }),
+            "generated_query_count": len(natural) + len(stress),
+            "full_query_count": len(all_cases),
+            "full_normalized_unique_count": len(set(normalized)),
+            "exact_duplicate_count": duplicate_count,
+        },
+        "duplicate_retry_by_category": {
+            category: duplicate_retries[category]
+            for category in all_categories
+        },
     }
 
 
@@ -685,6 +792,8 @@ def generate_files(
         "near_duplicate_candidate_count": len(built["manual_review_queue"]),
         "seed_count": len(seeds),
         "max_cases_per_seed": max(built["seed_usage"].values(), default=0),
+        "query_uniqueness": built["query_uniqueness"],
+        "duplicate_retry_by_category": built["duplicate_retry_by_category"],
         "maintenance_work_order_contract": "available",
         "maintenance_reallocation": None,
         "manual_review_status": "pending",
