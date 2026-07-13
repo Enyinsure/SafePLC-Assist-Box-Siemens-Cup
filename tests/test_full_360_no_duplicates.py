@@ -30,9 +30,15 @@ def test_repeated_real_world_seed_identity_does_not_duplicate_queries():
     seeds = []
     for index in range(1, 101):
         seed = make_seed(index)
-        seed["module_model"] = f"CPU 1517-3 PN/DP FIXTURE {(index + 1) // 2:03d}"
+        original_model = seed["module_model"]
+        repeated_model = f"CPU 1517-3 PN/DP FIXTURE {(index + 1) // 2:03d}"
+        seed["module_model"] = repeated_model
         seed["order_number"] = ""
         seed["section"] = "General module data"
+        seed["evidence_excerpt"] = seed["evidence_excerpt"].replace(original_model, repeated_model)
+        seed["structured_facts"]["figure"]["caption"] = seed["structured_facts"]["figure"]["caption"].replace(
+            original_model, repeated_model,
+        )
         seeds.append(seed)
     assert len({seed["module_model"] for seed in seeds}) == 50
     core = load_jsonl(CORE_CASES_PATH)

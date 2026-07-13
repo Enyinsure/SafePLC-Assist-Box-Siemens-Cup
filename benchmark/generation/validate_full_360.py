@@ -15,6 +15,7 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from benchmark.full_core_30.acceptance_rules import validate_case_definition
+from benchmark.generation.build_full_360 import generated_case_quality_issues, _has_figure_location
 from benchmark.generation.common import (
     CORE_CASES_PATH,
     FULL_360_DIR,
@@ -170,6 +171,10 @@ def validate_dataset(
             unverified = [seed_id for seed_id in source_ids if seed_id in seed_by_id and seed_by_id[seed_id].get("source_verified") is not True]
             if unverified:
                 _error(errors, "verified_case_uses_unverified_seed", case_id, unverified)
+        source_seeds = [seed_by_id[seed_id] for seed_id in source_ids if seed_id in seed_by_id]
+        quality_issues = generated_case_quality_issues(case, source_seeds)
+        if quality_issues:
+            _error(errors, "generated_query_quality_failed", case_id, quality_issues)
         verified_pages = {
             int(seed_by_id[seed_id].get("page") or 0)
             for seed_id in source_ids if seed_id in seed_by_id and seed_by_id[seed_id].get("source_verified") is True
@@ -185,7 +190,14 @@ def validate_dataset(
         if layer == "stress" and not case.get("parent_seed_id"):
             _error(errors, "stress_parent_seed_missing", case_id)
         if case.get("category") == "industrial_safety_refusal":
-            if "REFUSE" not in (case.get("expected_action") or []) or "Safety Boundary Agent" not in (case.get("expected_agents") or []):
+            scope = case.get("scope_conditions") or {}
+            allowed_agents = set(scope.get("allowed_agents_any") or [])
+            if (
+                "REFUSE" not in (case.get("expected_action") or [])
+                or "REFUSE" not in (case.get("expected_verdict") or [])
+                or not {"Wiring Agent", "Safety Boundary Agent"}.issubset(allowed_agents)
+                or case.get("must_have_empty_evidence") is True
+            ):
                 _error(errors, "invalid_safety_expectation", case_id)
         if case.get("category") in {"missing_slot_clarification", "topology_clarification"}:
             if "CLARIFY" not in (case.get("expected_action") or []):
@@ -193,9 +205,46 @@ def validate_dataset(
         if case.get("category") == "unsupported_entity":
             if "ABSTAIN" not in (case.get("expected_action") or []) or not case.get("trigger_condition"):
                 _error(errors, "unsupported_entity_must_abstain", case_id)
-        if "ANSWER" in (case.get("expected_action") or []) and case.get("category") == "cross_model_contamination":
-            if not case.get("forbidden_models") and not case.get("scope_conditions"):
-                _error(errors, "cross_model_answer_without_scope", case_id)
+        category = str(case.get("category") or "")
+        if category == "cross_model_contamination":
+            actions = set(case.get("expected_action") or [])
+            comparison = (case.get("scope_conditions") or {}).get("cross_model_comparison")
+            if (
+                not {"ANSWER", "ABSTAIN"}.issubset(actions)
+                or not isinstance(comparison, dict)
+                or not comparison.get("target_model")
+                or not comparison.get("distractor_model")
+                or case.get("forbidden_models")
+                or case.get("must_have_empty_evidence") is True
+            ):
+                _error(errors, "invalid_cross_model_comparison_expectation", case_id)
+
+        non_figure_categories = {"parameter", "wiring", "emc", "compound_multi_agent"}
+        if category in non_figure_categories and case.get("required_figure_ids"):
+            _error(errors, "non_figure_case_inherits_figure_requirement", case_id)
+        if (
+            category == "troubleshooting"
+            and case.get("required_figure_ids")
+            and not re.search(r"图|figure", str(case.get("query") or ""), re.I)
+        ):
+            _error(errors, "troubleshooting_inherits_unrequested_figure", case_id)
+        if category == "figure_location" and not case.get("required_figure_ids"):
+            _error(errors, "figure_location_missing_figure_requirement", case_id)
+        if category == "maintenance_work_order" and "Figure Agent" in (case.get("expected_agents") or []):
+            if not source_seeds or not all(_has_figure_location(seed) for seed in source_seeds):
+                _error(errors, "invalid_figure_maintenance_seed", case_id)
+            if not case.get("required_figure_ids"):
+                _error(errors, "figure_maintenance_missing_figure_requirement", case_id)
+
+        parameter = (case.get("required_structured_facts") or {}).get("parameter")
+        if isinstance(parameter, dict):
+            forbidden_parameter_keys = {"complete", "condition", "parameter_name"} & set(parameter)
+            null_parameter_keys = [key for key, value in parameter.items() if value in (None, "", [])]
+            if forbidden_parameter_keys or null_parameter_keys:
+                _error(errors, "invalid_parameter_constraints", case_id, {
+                    "forbidden_keys": sorted(forbidden_parameter_keys),
+                    "empty_keys": sorted(null_parameter_keys),
+                })
 
     overused = {seed_id: count for seed_id, count in seed_usage.items() if count > 5}
     if overused:
