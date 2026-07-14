@@ -1,0 +1,19 @@
+{
+  "schema": "safeplc.figure_v2.audit.v1",
+  "created_at": "2026-07-14T16:43:47",
+  "raw_image_count": 800,
+  "candidate_record_count": 800,
+  "selected_count": 150,
+  "unique_image_hash_count": 150,
+  "page_linked_count": 150,
+  "figure_number_count": 0,
+  "caption_count": 150,
+  "image_exists_count": 150,
+  "collection_name": "s7_figures_v2",
+  "collection_count": 150,
+  "cards_file": "figure_cards_v2.jsonl",
+  "visual_dir": "visuals_v2/",
+  "index_dir": "chroma_figures_v2/",
+  "json_file_count": 2,
+  "json_error_count": 0
+}
