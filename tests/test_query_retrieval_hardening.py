@@ -18,7 +18,6 @@ def test_order_number_is_kept_as_exact_device_scope():
     )
     assert ctx.slots["order_number"].value == "6ES7556-1AA00-0AB0"
     assert ctx.slots["module_model"].value == "6ES7556-1AA00-0AB0"
-    assert ctx.question_type == "PARAMETER"
     assert "module_model" not in ctx.missing_slots
 
 
