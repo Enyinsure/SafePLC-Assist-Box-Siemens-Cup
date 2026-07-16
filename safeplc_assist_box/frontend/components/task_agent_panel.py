@@ -12,6 +12,7 @@ from .common import badge, esc, section_heading
 def render_task_plan(result: Mapping[str, Any]) -> None:
     raw = result.get("raw_response", {})
     plan = raw.get("agent_plan", {}) if isinstance(raw, Mapping) else {}
+    execution = dict(result.get("agent_execution") or {})
     query_context = raw.get("query_context", {}) if isinstance(raw, Mapping) else {}
     tasks = list(result.get("task_plan") or [])
     agents = list(result.get("selected_agents") or [])
@@ -22,7 +23,7 @@ def render_task_plan(result: Mapping[str, Any]) -> None:
         f"""
         <div class="plan-summary">
           <div><span>任务识别</span><strong>{esc(' + '.join(result.get('task_type') or ['UNKNOWN']))}</strong></div>
-          <div><span>执行模式</span><strong>{esc(plan.get('execution_mode') or '未执行')}</strong></div>
+          <div><span>执行模式</span><strong>{esc(execution.get('mode') or plan.get('execution_mode') or '未执行')}</strong></div>
           <div><span>专业 Agent</span><strong>{len(agents)}</strong></div>
           <div><span>缺失槽位</span><strong>{len(missing)}</strong></div>
         </div>
@@ -55,6 +56,7 @@ def render_task_plan(result: Mapping[str, Any]) -> None:
 
 def render_agent_flow(result: Mapping[str, Any]) -> None:
     agents = list(result.get("selected_agents") or [])
+    execution = dict(result.get("agent_execution") or {})
     section_heading("动态 Agent 协作", "AGENTS")
     if not agents:
         st.markdown(
@@ -64,11 +66,7 @@ def render_agent_flow(result: Mapping[str, Any]) -> None:
         )
         return
 
-    nodes = ['<span class="flow-node flow-supervisor">Supervisor</span>']
-    for agent in agents:
-        nodes.append('<span class="flow-arrow">→</span>')
-        nodes.append(f'<span class="flow-node">{esc(agent.get("name"))}</span>')
-    st.markdown(f'<div class="agent-flow">{"".join(nodes)}</div>', unsafe_allow_html=True)
+    _render_execution_flow(execution, agents)
 
     for agent in agents:
         tools = "、".join(agent.get("tools") or []) or "未记录"
@@ -97,3 +95,69 @@ def render_agent_flow(result: Mapping[str, Any]) -> None:
                 st.dataframe(agent["observations"], width="stretch", hide_index=True)
             if agent.get("claims"):
                 st.json(agent["claims"], expanded=False)
+
+
+def _render_execution_flow(
+    execution: Mapping[str, Any],
+    agents: list[Mapping[str, Any]],
+) -> None:
+    mode = str(execution.get("mode") or "single").lower()
+    agent_names = [str(agent.get("name") or "") for agent in agents if agent.get("name")]
+    stages = _execution_stages(execution, agent_names)
+    if mode != "parallel":
+        nodes = ['<span class="flow-node flow-supervisor">Supervisor</span>']
+        for stage in stages:
+            for name in stage:
+                nodes.append('<span class="flow-arrow">→</span>')
+                nodes.append(f'<span class="flow-node">{esc(name)}</span>')
+        nodes.extend(
+            [
+                '<span class="flow-arrow">→</span>',
+                '<span class="flow-node flow-judge">Judge / Verifier</span>',
+            ]
+        )
+        st.markdown(f'<div class="agent-flow">{"".join(nodes)}</div>', unsafe_allow_html=True)
+        return
+
+    stage_html = [
+        '<div class="execution-stage"><span>阶段 1</span>'
+        '<div><b class="flow-node flow-supervisor">Supervisor</b></div></div>'
+    ]
+    for index, stage in enumerate(stages, start=2):
+        stage_type = "并行" if len(stage) > 1 else "顺序"
+        members = "".join(f'<b class="flow-node">{esc(name)}</b>' for name in stage)
+        stage_html.append(
+            f'<div class="execution-stage"><span>阶段 {index} · {stage_type}</span>'
+            f'<div class="execution-members">{members}</div></div>'
+        )
+    judge_index = len(stages) + 2
+    stage_html.append(
+        f'<div class="execution-stage"><span>阶段 {judge_index}</span>'
+        '<div><b class="flow-node flow-judge">Judge / Verifier</b></div></div>'
+    )
+    st.markdown(
+        f'<div class="execution-stages">{"".join(stage_html)}</div>',
+        unsafe_allow_html=True,
+    )
+
+
+def _execution_stages(
+    execution: Mapping[str, Any],
+    agent_names: list[str],
+) -> list[list[str]]:
+    """Return deterministic execution stages without inventing concurrency."""
+    mode = str(execution.get("mode") or "single").lower()
+    order = [str(item) for item in execution.get("execution_order") or [] if str(item)]
+    ordered = list(dict.fromkeys([*order, *agent_names]))
+    if mode != "parallel":
+        return [[name] for name in ordered]
+    stages: list[list[str]] = []
+    seen: set[str] = set()
+    for raw_group in execution.get("parallel_groups") or []:
+        group = [str(item) for item in raw_group if str(item) and str(item) in ordered]
+        group = list(dict.fromkeys(group))
+        if group:
+            stages.append(group)
+            seen.update(group)
+    stages.extend([[name] for name in ordered if name not in seen])
+    return stages

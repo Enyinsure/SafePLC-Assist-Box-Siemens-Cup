@@ -8,18 +8,31 @@ from enum import Enum
 from typing import Any, Dict, List, Mapping
 
 
+FAILURE_STATUSES = {"ERROR", "FAILED", "TIMEOUT", "EXCEPTION"}
+COMPLETED_STATUSES = {"ANSWERED", "PARTIAL", "REFUSE"}
+WAITING_STATUSES = {"WAITING", "NEED_CLARIFICATION"}
+SKIPPED_STATUSES = {"ABSTAIN", "NEED_MORE_EVIDENCE"}
+
+
 def normalize_response(
     response: Any,
     device_context: Mapping[str, str] | None = None,
     source: str = "online_pipeline",
     frontend_mode: str = "auto",
+    declared_demo_context: Mapping[str, str] | None = None,
 ) -> Dict[str, Any]:
     """Convert dataclass or JSON responses while retaining the untouched payload."""
     try:
         raw = _plain(response)
         if not isinstance(raw, dict):
             raise TypeError("The pipeline response is not an object.")
-        return _normalize(raw, dict(device_context or {}), source, frontend_mode)
+        return _normalize(
+            raw,
+            dict(device_context or {}),
+            source,
+            frontend_mode,
+            dict(declared_demo_context or {}),
+        )
     except Exception as exc:
         raw_fallback = _plain_or_repr(response)
         return {
@@ -50,6 +63,11 @@ def normalize_response(
                 "warnings": [f"结果归一化失败：{type(exc).__name__}"],
                 "backend_audit": {},
             },
+            "normalization": {
+                "ok": False,
+                "status": "failed",
+                "error": repr(exc),
+            },
             "compatibility_warnings": [repr(exc)],
             "raw_response": raw_fallback,
         }
@@ -60,6 +78,7 @@ def _normalize(
     selected_device: Dict[str, str],
     source: str,
     frontend_mode: str,
+    declared_demo_context: Dict[str, str],
 ) -> Dict[str, Any]:
     query_context = _mapping(raw.get("query_context"))
     plan = _mapping(raw.get("agent_plan"))
@@ -88,7 +107,13 @@ def _normalize(
     evidence_stats = _evidence_stats(normalized_evidence, rejected, pool)
     agents = _normalize_agents(plan, agent_results)
     task_plan = _normalize_tasks(query_context, plan, agent_results, decision)
-    device = _device_context(selected_device, query_context, normalized_evidence)
+    device = _device_context(
+        selected_device,
+        query_context,
+        normalized_evidence,
+        source,
+        declared_demo_context,
+    )
     answer = _normalize_answer(
         raw,
         query_context,
@@ -120,6 +145,7 @@ def _normalize(
         "task_type": [str(raw.get("question_type") or query_context.get("question_type") or "UNKNOWN")],
         "task_plan": task_plan,
         "selected_agents": agents,
+        "agent_execution": _normalize_agent_execution(plan),
         "evidence_pool": normalized_evidence,
         "rejected_evidence": rejected,
         "evidence_stats": evidence_stats,
@@ -142,6 +168,7 @@ def _normalize(
             "feature_switches": _mapping(metrics.get("feature_switches")),
             "routing_strategy": str(raw.get("routing_strategy") or metrics.get("routing_strategy") or ""),
         },
+        "normalization": {"ok": True, "status": "success", "error": ""},
         "compatibility_warnings": [],
         "raw_response": raw,
     }
@@ -169,17 +196,19 @@ def _normalize_tasks(
                 if task_id in [str(item) for item in _items(assignment.get("subquestion_ids"))]:
                     assigned.append(str(agent_name))
         coverage_item = _mapping(coverage.get(task_id))
-        statuses = [str(result_by_agent[name].get("status") or "") for name in assigned]
+        statuses = [str(result_by_agent[name].get("status") or "").upper() for name in assigned]
         if bool(coverage_item.get("answered")):
+            status = "completed"
+        elif any(item in FAILURE_STATUSES for item in statuses):
+            status = "failed"
+        elif any(item in WAITING_STATUSES for item in statuses):
+            status = "waiting"
+        elif any(item in SKIPPED_STATUSES for item in statuses):
+            status = "skipped"
+        elif statuses and all(item in COMPLETED_STATUSES for item in statuses):
             status = "completed"
         elif bool(plan.get("need_clarification")):
             status = "waiting"
-        elif any(item in {"ABSTAIN", "NEED_MORE_EVIDENCE", "NEED_CLARIFICATION"} for item in statuses):
-            status = "skipped"
-        elif any(item == "REFUSE" for item in statuses):
-            status = "completed"
-        elif assigned and statuses:
-            status = "completed"
         else:
             status = "waiting"
         tasks.append(
@@ -224,19 +253,26 @@ def _normalize_agents(plan: Dict[str, Any], results: List[Dict[str, Any]]) -> Li
         result = result_by_agent.get(name, {})
         assignment = _mapping(assignments.get(name))
         observations = [_mapping(item) for item in _items(result.get("observations"))]
+        result_metadata = _mapping(result.get("metadata"))
         tools = []
         for observation in observations:
             tools.extend(part.strip() for part in str(observation.get("tool_name") or "").split(",") if part.strip())
-        tools.extend(str(item) for item in _items(result.get("metadata", {}).get("available_tools")))
-        raw_status = str(result.get("status") or "WAITING")
-        error = str(result.get("abstain_reason") or "")
+        tools.extend(str(item) for item in _items(result_metadata.get("available_tools")))
+        raw_status = str(result.get("status") or "WAITING").upper()
+        error = str(
+            result.get("error")
+            or result.get("error_message")
+            or result_metadata.get("error")
+            or result.get("abstain_reason")
+            or ""
+        )
         if not error and raw_status in {"ABSTAIN", "NEED_MORE_EVIDENCE", "NEED_CLARIFICATION"}:
             error = "；".join(str(item) for item in _items(result.get("missing_information")))
         agents.append(
             {
                 "agent_id": name.lower().replace(" ", "_").replace("-", "_"),
                 "name": name,
-                "task": str(assignment.get("objective") or result.get("metadata", {}).get("objective") or ""),
+                "task": str(assignment.get("objective") or result_metadata.get("objective") or ""),
                 "status": _agent_status(raw_status),
                 "raw_status": raw_status,
                 "tools": list(dict.fromkeys(tools)),
@@ -251,6 +287,24 @@ def _normalize_agents(plan: Dict[str, Any], results: List[Dict[str, Any]]) -> Li
             }
         )
     return agents
+
+
+def _normalize_agent_execution(plan: Dict[str, Any]) -> Dict[str, Any]:
+    """Preserve the Supervisor's real sequential/parallel execution contract."""
+    execution_order = [str(item) for item in _items(plan.get("execution_order")) if str(item)]
+    groups: List[List[str]] = []
+    for raw_group in _items(plan.get("parallel_groups")):
+        members = [str(item) for item in _items(raw_group) if str(item)]
+        if members:
+            groups.append(members)
+    mode = str(plan.get("execution_mode") or "").lower()
+    if not mode:
+        mode = "single" if len(execution_order) <= 1 else "sequential"
+    return {
+        "mode": mode,
+        "execution_order": execution_order,
+        "parallel_groups": groups,
+    }
 
 
 def _normalize_evidence(
@@ -384,7 +438,7 @@ def _normalize_answer(
                 "metadata": _mapping(claim.get("metadata")),
             }
         )
-    if not claims:
+    if not claims and final_ids:
         display_ids = [evidence_id_map.get(item, item) for item in final_ids]
         for index, text in enumerate(_items(decision.get("supported_claims")), start=1):
             claims.append(
@@ -541,16 +595,39 @@ def _device_context(
     selected: Dict[str, str],
     query_context: Dict[str, Any],
     evidences: List[Dict[str, Any]],
+    source: str,
+    declared_demo_context: Dict[str, str],
 ) -> Dict[str, str]:
     slots = _mapping(query_context.get("slots"))
     model_slot = _mapping(slots.get("module_model"))
-    model = str(selected.get("model") or "")
-    if model in {"", "自动识别"}:
-        model = str(model_slot.get("value") or next((item.get("model") for item in evidences if item.get("model")), ""))
-    family = str(selected.get("family") or "")
-    if family in {"", "自动识别"}:
-        family = str(next((item.get("family") for item in evidences if item.get("family")), ""))
-    detection_source = "user_selected" if selected.get("model") not in {None, "", "自动识别"} else "auto_detected"
+    query_model = str(model_slot.get("value") or "")
+    evidence_model = str(next((item.get("model") for item in evidences if item.get("model")), ""))
+    evidence_family = str(next((item.get("family") for item in evidences if item.get("family")), ""))
+    selected_model = str(selected.get("model") or "")
+    selected_family = str(selected.get("family") or "")
+
+    if source == "offline_demo_snapshot":
+        declared_model = str(declared_demo_context.get("model") or "")
+        declared_family = str(declared_demo_context.get("family") or "")
+        model = _first_constrained(query_model, evidence_model, declared_model, selected_model)
+        family = _first_constrained(evidence_family, declared_family, selected_family)
+        detection_source = "demo_fixed"
+    else:
+        user_selected = selected_model not in {"", "自动识别"}
+        model = selected_model if user_selected else query_model or evidence_model
+        family = (
+            selected_family
+            if selected_family not in {"", "自动识别"}
+            else evidence_family
+        )
+        if user_selected or selected_family not in {"", "自动识别"}:
+            detection_source = "user_selected"
+        elif query_model:
+            detection_source = "query_auto_detected"
+        elif evidence_model or evidence_family:
+            detection_source = "evidence_inferred"
+        else:
+            detection_source = "unknown"
     return {
         "family": family or "未识别",
         "model": model or "未识别",
@@ -559,6 +636,10 @@ def _device_context(
         "task_hint": str(selected.get("task_hint") or "自动识别"),
         "detection_source": detection_source,
     }
+
+
+def _first_constrained(*values: str) -> str:
+    return next((str(value) for value in values if str(value) not in {"", "自动识别"}), "")
 
 
 def _evidence_stats(
@@ -594,15 +675,37 @@ def _evidence_stats(
 
 def _accepted_claims(decision: Dict[str, Any], results: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     metadata = _mapping(decision.get("metadata"))
-    accepted = [_mapping(item) for item in _items(metadata.get("accepted_claims"))]
+    final_ids = {
+        str(item)
+        for item in _items(decision.get("final_evidence_ids"))
+        if str(item)
+    }
+    if not final_ids:
+        return []
+    accepted = []
+    for item in _items(metadata.get("accepted_claims")):
+        claim = _mapping(item)
+        claim_ids = {str(value) for value in _items(claim.get("evidence_ids")) if str(value)}
+        if claim.get("claim_text") and claim_ids.intersection(final_ids):
+            accepted.append(claim)
     if accepted:
         return accepted
-    final_ids = set(str(item) for item in _items(decision.get("final_evidence_ids")))
-    claims = []
+    accepted_agents = {
+        str(item)
+        for item in _items(decision.get("accepted_agent_outputs"))
+        if str(item)
+    }
+    claims: List[Dict[str, Any]] = []
     for result in results:
+        agent_name = str(result.get("agent_name") or "")
+        if accepted_agents and agent_name not in accepted_agents:
+            continue
+        if str(result.get("status") or "").upper() not in {"ANSWERED", "PARTIAL"}:
+            continue
         for item in _items(result.get("claims")):
             claim = _mapping(item)
-            if not final_ids or final_ids.intersection(str(value) for value in _items(claim.get("evidence_ids"))):
+            claim_ids = {str(value) for value in _items(claim.get("evidence_ids")) if str(value)}
+            if claim_ids.intersection(final_ids):
                 claims.append(claim)
     return claims
 
@@ -624,7 +727,12 @@ def _task_status(status: str) -> str:
         "ABSTAIN": "skipped",
         "NEED_MORE_EVIDENCE": "skipped",
         "NEED_CLARIFICATION": "waiting",
-    }.get(status, "waiting")
+        "WAITING": "waiting",
+        "ERROR": "failed",
+        "FAILED": "failed",
+        "TIMEOUT": "failed",
+        "EXCEPTION": "failed",
+    }.get(str(status or "").upper(), "waiting")
 
 
 def _agent_status(status: str) -> str:
@@ -636,7 +744,11 @@ def _agent_status(status: str) -> str:
         "NEED_MORE_EVIDENCE": "skipped",
         "NEED_CLARIFICATION": "waiting",
         "WAITING": "waiting",
-    }.get(status, "failed")
+        "ERROR": "failed",
+        "FAILED": "failed",
+        "TIMEOUT": "failed",
+        "EXCEPTION": "failed",
+    }.get(str(status or "").upper(), "failed")
 
 
 def _confidence_level(score: float) -> str:

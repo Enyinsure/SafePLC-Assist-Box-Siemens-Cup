@@ -31,41 +31,57 @@ streamlit run app.py
 
 The Streamlit frontend is a three-page engineering workspace backed by the same `run_agent_system()` entrypoint as the CLI and benchmark. It does not maintain a separate answer generator.
 
-```bash
-cd <project_root>
-pip install -r requirements.txt
-streamlit run app.py
-```
-
 The navigation contains the intelligent evidence workbench, editable maintenance work order, and system/benchmark audit pages. The former `safeplc_assist_box/app_assist_box.py` command remains available as a single-page compatibility launcher.
 
 ### Frontend Modes
 
 `SAFEPLC_FRONTEND_MODE` controls only how the UI obtains a response. `SAFEPLC_MODE` still controls the production retrieval pipeline (`SAMPLE`, `MOCK`, or `FULL`).
 
+#### SAMPLE / Demo
+
+`requirements.txt` contains the base Streamlit dependency and is sufficient for the SAMPLE pipeline and immutable offline demo pages. It does not install the FULL Chroma/embedding stack.
+
 ```bash
-export SAFEPLC_FRONTEND_MODE=auto
-export SAFEPLC_MODE=SAMPLE
+cd <project_root>
+pip install -r requirements.txt
+
+SAFEPLC_FRONTEND_MODE=demo \
+SAFEPLC_ENABLE_DEMO=1 \
+SAFEPLC_MODE=SAMPLE \
 streamlit run app.py
 ```
 
-`auto` calls the real unified orchestrator first. If that call raises an error, an offline snapshot is allowed only when the user explicitly loaded a matching demo case. A free-form question is never replaced with demo output.
+`demo` only reads immutable SAMPLE response snapshots declared in `safeplc_assist_box/frontend/data/demo_cases.json`. Snapshot use is bound to the case query, context, device scope, task hint, and pipeline mode. The status header marks the result as an offline SAMPLE snapshot and does not report Text/Figure Chroma as connected.
 
 ```bash
-export SAFEPLC_FRONTEND_MODE=online
-export SAFEPLC_MODE=FULL
+SAFEPLC_FRONTEND_MODE=auto \
+SAFEPLC_MODE=SAMPLE \
 streamlit run app.py
 ```
 
-`online` only calls the unified orchestrator and exposes backend errors without substituting demo evidence.
+`auto` calls the real unified orchestrator first. If that call raises an error, an offline snapshot is allowed only when the user explicitly loaded a matching, unchanged demo case. A free-form or modified question is never replaced with demo output.
+
+#### FULL
+
+FULL mode needs both dependency sets. `requirements-full.txt` provides Chroma, local embedding, numeric, dataframe, and image dependencies that are intentionally excluded from base CI.
 
 ```bash
-export SAFEPLC_FRONTEND_MODE=demo
-export SAFEPLC_ENABLE_DEMO=true
+cd <project_root>
+pip install -r requirements.txt
+pip install -r requirements-full.txt
+
+cp config/full.env.example config/full.env
+# Edit config/full.env and replace every /path/to/... placeholder first.
+set -a
+source config/full.env
+set +a
+
+SAFEPLC_FRONTEND_MODE=online \
+SAFEPLC_MODE=FULL \
 streamlit run app.py
 ```
 
-`demo` only reads immutable SAMPLE response snapshots declared in `safeplc_assist_box/frontend/data/demo_cases.json`. The status header marks this mode as offline and does not report Text/Figure Chroma as connected.
+`online` only calls the unified orchestrator and exposes backend errors without substituting demo evidence. Do not source `config/full.env.example` unchanged: it contains placeholders and is not a runnable server configuration. The edited `config/full.env` file is ignored by Git.
 
 ### FULL Assets
 
@@ -76,6 +92,8 @@ Start from `config/full.env.example`. A FULL frontend normally needs:
 - `SAFEPLC_EMBEDDING_BACKEND` and `SAFEPLC_EMBEDDING_MODEL_PATH`
 - `SAFEPLC_VISUAL_DIR` for resolvable manual images
 - optional JSONL paths only when `SAFEPLC_ALLOW_JSONL_FALLBACK=1`
+
+FULL never downloads an embedding model by default. Set `SAFEPLC_EMBEDDING_MODEL_PATH` to an existing local model and keep `SAFEPLC_ALLOW_REMOTE_MODEL_DOWNLOAD=0` for offline server validation.
 
 The header distinguishes an observed backend connection from a merely configured path. Before the first query, an existing FULL path is shown as configured but pending query verification; after a response, the retrieval backend audit supplies the observed state. Missing images show a safe placeholder and retain the original evidence path.
 

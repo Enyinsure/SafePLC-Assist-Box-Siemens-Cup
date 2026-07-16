@@ -26,6 +26,15 @@ STATUS_LABELS = {
     "unknown": "未知",
 }
 
+DETECTION_SOURCE_LABELS = {
+    "user_selected": "用户选择",
+    "query_auto_detected": "查询自动识别",
+    "auto_detected": "查询自动识别",
+    "evidence_inferred": "证据推断",
+    "demo_fixed": "离线案例固定",
+    "unknown": "未识别",
+}
+
 
 def load_styles(path: Path = ASSET_ROOT / "styles.css") -> None:
     try:
@@ -52,6 +61,10 @@ def status_class(status: str) -> str:
 
 def status_label(status: str) -> str:
     return STATUS_LABELS.get(str(status or "").lower(), str(status or "未检查"))
+
+
+def detection_source_label(source: Any) -> str:
+    return DETECTION_SOURCE_LABELS.get(str(source or "").lower(), str(source or "未识别"))
 
 
 def badge(status: str, label: str | None = None) -> str:

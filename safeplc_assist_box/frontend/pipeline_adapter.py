@@ -8,7 +8,7 @@ from typing import Any, Dict
 
 import streamlit as st
 
-from .demo_loader import get_demo_case, load_demo_snapshot
+from .demo_loader import demo_request_matches, get_demo_case, load_demo_snapshot
 from .result_normalizer import normalize_response
 from .runtime import FrontendSettings
 
@@ -20,6 +20,7 @@ LOGGER = logging.getLogger(__name__)
 class PipelineRequest:
     query: str
     context: str = ""
+    user_context: str | None = None
     pipeline_mode: str = "SAMPLE"
     routing_strategy: str = "adaptive"
     max_agents: int = 4
@@ -75,7 +76,7 @@ def execute_pipeline(
             source="online_pipeline",
             frontend_mode=settings.frontend_mode,
         )
-        return PipelineOutcome(ok=True, normalized=normalized, raw=response, source="online_pipeline")
+        return _normalization_outcome(normalized, response, "online_pipeline")
     except Exception as exc:  # The UI must survive optional backend failures.
         LOGGER.exception("SafePLC pipeline execution failed")
         if settings.frontend_mode == "auto" and settings.demo_enabled and request.selected_demo_id:
@@ -107,23 +108,38 @@ def _execute_demo(request: PipelineRequest, settings: FrontendSettings) -> Pipel
             user_error="离线演示只接受已载入的典型案例；自由问题不会生成模拟答案。",
         )
     case = get_demo_case(request.selected_demo_id)
-    if not case or case.get("query", "").strip() != request.query.strip():
+    if not case:
         return PipelineOutcome(
             ok=False,
-            user_error="当前问题已偏离典型案例。请重新载入案例，或切换到 online/auto 模式。",
+            user_error="当前离线案例不存在。请重新载入案例，或切换到 online/auto 模式。",
+        )
+    matches, mismatch_reasons = demo_request_matches(case, request)
+    if not matches:
+        return PipelineOutcome(
+            ok=False,
+            source="offline_demo_snapshot",
+            user_error=(
+                "当前设置已偏离典型案例，不能继续使用原离线快照。"
+                "请重新载入案例或切换到 online/auto 模式。"
+            ),
+            debug_error="；".join(mismatch_reasons),
         )
     try:
         response = load_demo_snapshot(case)
+        declared_context = case.get("device_context")
         normalized = normalize_response(
             response,
             device_context=request.device_context,
             source="offline_demo_snapshot",
             frontend_mode=settings.frontend_mode,
+            declared_demo_context=(
+                declared_context if isinstance(declared_context, dict) else {}
+            ),
         )
         normalized.setdefault("runtime", {}).setdefault("warnings", []).append(
             "离线演示结果来自仓库中的 SAMPLE 流水线快照，不代表 FULL 工业知识库运行结果。"
         )
-        return PipelineOutcome(ok=True, normalized=normalized, raw=response, source="offline_demo_snapshot")
+        return _normalization_outcome(normalized, response, "offline_demo_snapshot")
     except (OSError, ValueError) as exc:
         LOGGER.exception("Offline demo snapshot failed")
         return PipelineOutcome(
@@ -132,3 +148,22 @@ def _execute_demo(request: PipelineRequest, settings: FrontendSettings) -> Pipel
             user_error="离线案例快照不可用。",
             debug_error=repr(exc),
         )
+
+
+def _normalization_outcome(
+    normalized: Dict[str, Any],
+    raw: Any,
+    source: str,
+) -> PipelineOutcome:
+    normalization = normalized.get("normalization")
+    state = normalization if isinstance(normalization, dict) else {}
+    if not bool(state.get("ok")):
+        return PipelineOutcome(
+            ok=False,
+            normalized=normalized,
+            raw=raw,
+            source=source,
+            user_error="流水线已返回响应，但前端无法解析该响应结构。",
+            debug_error=str(state.get("error") or "结果归一化失败"),
+        )
+    return PipelineOutcome(ok=True, normalized=normalized, raw=raw, source=source)

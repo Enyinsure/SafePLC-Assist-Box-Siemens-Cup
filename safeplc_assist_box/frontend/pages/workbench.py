@@ -18,7 +18,7 @@ from ..demo_loader import load_demo_cases
 from ..pipeline_adapter import PipelineRequest, execute_pipeline
 from ..report_loader import load_supported_device_catalog
 from ..runtime import FrontendSettings, probe_runtime
-from ..state import initialize_session_state, record_query
+from ..state import initialize_session_state, reconcile_demo_binding, record_query
 
 
 @st.cache_data(show_spinner=False)
@@ -34,26 +34,36 @@ def _cached_catalog() -> dict[str, list[str]]:
 def render() -> None:
     initialize_session_state(st.session_state)
     settings = FrontendSettings.from_env()
+    initialize_control_state({"pipeline_mode": settings.pipeline_mode})
+    reconcile_demo_binding(st.session_state)
     result = st.session_state.get("pipeline_result")
     response_runtime = result.get("runtime", {}) if isinstance(result, Mapping) else {}
-    runtime = probe_runtime(settings, response_runtime)
-    initialize_control_state(runtime)
+    selected_mode = str(st.session_state.get("ui_pipeline_mode") or settings.pipeline_mode)
+    runtime = probe_runtime(
+        settings,
+        response_runtime,
+        effective_pipeline_mode=selected_mode,
+    )
 
     device_context = (
         result.get("device_context", {})
         if isinstance(result, Mapping)
-        else st.session_state.get("device_context", {})
+        else _device_context_from_controls()
     )
     render_status_header(runtime, device_context, st.session_state.query_status)
 
     left_col, center_col, right_col = st.columns([1.0, 2.1, 1.35], gap="medium")
+    # Demo buttons can update device widget keys. Handle them before those
+    # widgets are instantiated in this Streamlit run.
+    with center_col:
+        submitted = render_query_panel(_cached_cases())
+
     with left_col:
         controls = render_device_panel(_cached_catalog(), runtime, result)
         st.session_state.device_context = controls["device_context"]
         _render_session_history()
 
     with center_col:
-        submitted = render_query_panel(_cached_cases())
         if submitted:
             _run_current_query(controls, settings)
         current_result = st.session_state.get("pipeline_result")
@@ -63,7 +73,7 @@ def render() -> None:
             render_answer_panel(current_result)
         else:
             empty_state("等待智能查证", "Supervisor 计划、动态 Agent 与证据闭合回答将在此显示。")
-            _render_error()
+        _render_error()
 
     with right_col:
         current_result = st.session_state.get("pipeline_result")
@@ -84,6 +94,7 @@ def _run_current_query(controls: Mapping[str, Any], settings: FrontendSettings) 
     request = PipelineRequest(
         query=query,
         context=context,
+        user_context=str(st.session_state.get("query_context_text") or ""),
         pipeline_mode=str(controls.get("pipeline_mode") or settings.pipeline_mode),
         routing_strategy=str(controls.get("routing_strategy") or "adaptive"),
         max_agents=int(controls.get("max_agents") or 4),
@@ -102,10 +113,12 @@ def _run_current_query(controls: Mapping[str, Any], settings: FrontendSettings) 
         st.session_state.query_status = "查证完成"
         record_query(st.session_state, outcome.normalized)
         st.rerun()
-    st.session_state.pipeline_result = None
+    st.session_state.pipeline_result = outcome.normalized
+    st.session_state.raw_pipeline_response = outcome.raw
+    st.session_state.current_work_order = None
     st.session_state.last_error = outcome.user_error
     st.session_state.last_error_detail = outcome.debug_error
-    st.session_state.query_status = "查证失败"
+    st.session_state.query_status = "响应兼容性异常" if outcome.normalized else "查证失败"
     st.rerun()
 
 
@@ -146,3 +159,23 @@ def _render_error() -> None:
     if st.session_state.get("last_error_detail"):
         with st.expander("开发调试信息", expanded=False):
             st.code(st.session_state.last_error_detail, language="text")
+
+
+def _device_context_from_controls() -> dict[str, str]:
+    demo_fixed = bool(st.session_state.get("selected_demo_id"))
+    family = str(st.session_state.get("ui_family") or "自动识别")
+    model = str(st.session_state.get("ui_model") or "自动识别")
+    return {
+        "family": family,
+        "model": model,
+        "document_scope": str(st.session_state.get("ui_document_scope") or "当前型号手册"),
+        "answer_mode": str(st.session_state.get("ui_answer_mode") or "标准查证"),
+        "task_hint": str(st.session_state.get("ui_task_hint") or "自动识别"),
+        "detection_source": (
+            "demo_fixed"
+            if demo_fixed
+            else "user_selected"
+            if family != "自动识别" or model != "自动识别"
+            else "auto_detected"
+        ),
+    }

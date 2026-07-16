@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
+from .demo_loader import load_demo_cases
 from .paths import BENCHMARK_ROOT, REPORT_ROOT
 
 
@@ -46,6 +47,10 @@ def load_report_bundle() -> Dict[str, Any]:
 
 def load_showcase_cases(limit: int = 6) -> List[Dict[str, Any]]:
     """Load distinct real SAMPLE regression cases for one-click reproduction."""
+    demo_lookup = {
+        (str(case.get("query") or "").strip(), str(case.get("context") or "").strip()): case
+        for case in load_demo_cases()
+    }
     case_root = BENCHMARK_ROOT / "sample_regression"
     preferred = [
         "parameter",
@@ -75,8 +80,7 @@ def load_showcase_cases(limit: int = 6) -> List[Dict[str, Any]]:
                 continue
             if not isinstance(item, dict) or not item.get("query"):
                 continue
-            records.append(
-                {
+            record = {
                     "id": str(item.get("case_id") or f"{suite}_{len(records) + 1}"),
                     "title": _case_title(suite),
                     "category": suite,
@@ -85,7 +89,10 @@ def load_showcase_cases(limit: int = 6) -> List[Dict[str, Any]]:
                     "expected_action": str(item.get("expected_action") or ""),
                     "source": str(item.get("source") or ""),
                 }
-            )
+            demo = demo_lookup.get((record["query"].strip(), record["context"].strip()))
+            record["demo_id"] = str((demo or {}).get("id") or "")
+            record["offline_snapshot_available"] = bool(record["demo_id"])
+            records.append(record)
             break
         if len(records) >= limit:
             break

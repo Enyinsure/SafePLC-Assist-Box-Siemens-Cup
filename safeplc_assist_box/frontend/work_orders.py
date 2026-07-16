@@ -44,11 +44,9 @@ def build_editable_work_order(result: Mapping[str, Any]) -> Dict[str, Any]:
             )
         )
 
-    suggested_checks = _strings(backend.get("suggested_checks"))
-    if not suggested_checks:
-        suggested_checks = [
-            _with_refs(claim) for claim in answer.get("claims", []) if isinstance(claim, Mapping)
-        ]
+    accepted_claims = [
+        claim for claim in answer.get("claims", []) if isinstance(claim, Mapping)
+    ]
     safety_notes = [
         str(item.get("text") or "")
         for item in answer.get("safety_notes", [])
@@ -64,6 +62,18 @@ def build_editable_work_order(result: Mapping[str, Any]) -> Dict[str, Any]:
         or "未分级"
     )
     action = str(result.get("runtime", {}).get("action") or "")
+    policy_refusal = action == "REFUSE"
+    inspection_steps = [] if policy_refusal else [_with_refs(claim) for claim in accepted_claims]
+    possible_causes = (
+        []
+        if policy_refusal
+        else [
+            _with_refs(claim)
+            for claim in accepted_claims
+            if str(claim.get("type") or "").lower()
+            in {"cause", "possible_cause", "troubleshooting"}
+        ]
+    )
     if risk_tip and risk_level not in {"SAFE", "LOW", "未分级"} and action == "REFUSE" and risk_tip not in safety_notes:
         safety_notes.append(risk_tip)
 
@@ -74,10 +84,14 @@ def build_editable_work_order(result: Mapping[str, Any]) -> Dict[str, Any]:
         "device_model": str(device.get("model") or "未识别"),
         "symptom": str(backend.get("user_query") or result.get("query") or ""),
         "task_type": "、".join(str(item) for item in result.get("task_type", []) if item),
-        "possible_causes": _strings(backend.get("possible_causes")),
-        "inspection_steps": suggested_checks,
+        "possible_causes": possible_causes,
+        "inspection_steps": inspection_steps,
         "treatment_advice": str(backend.get("final_answer") or answer.get("summary") or ""),
-        "required_tools": _strings(backend.get("required_tools")),
+        "required_tools": (
+            _strings(backend.get("required_tools"))
+            if accepted_claims and not policy_refusal
+            else []
+        ),
         "risk_level": risk_level,
         "safety_notes": safety_notes,
         "evidence_sources": evidence_sources,

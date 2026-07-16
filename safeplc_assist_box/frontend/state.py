@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 from collections.abc import MutableMapping
-from typing import Any, Dict
+from typing import Any, Dict, Mapping
+
+from .demo_loader import demo_case_fingerprint, make_demo_fingerprint
 
 
 DEFAULT_STATE: Dict[str, Any] = {
@@ -23,6 +25,7 @@ DEFAULT_STATE: Dict[str, Any] = {
     "query_history": [],
     "selected_demo_id": "",
     "selected_demo_snapshot": "",
+    "loaded_demo_fingerprint": {},
     "last_error": "",
     "last_error_detail": "",
     "query_status": "等待查询",
@@ -43,11 +46,82 @@ def clear_query_session(state: MutableMapping[str, Any]) -> None:
     state["pipeline_result"] = None
     state["raw_pipeline_response"] = None
     state["current_work_order"] = None
-    state["selected_demo_id"] = ""
-    state["selected_demo_snapshot"] = ""
+    clear_demo_binding(state)
     state["last_error"] = ""
     state["last_error_detail"] = ""
     state["query_status"] = "等待查询"
+
+
+def clear_demo_binding(state: MutableMapping[str, Any]) -> None:
+    """Detach the session from any immutable demo snapshot."""
+    state["selected_demo_id"] = ""
+    state["selected_demo_snapshot"] = ""
+    state["loaded_demo_fingerprint"] = {}
+
+
+def invalidate_query_inputs(state: MutableMapping[str, Any]) -> None:
+    """Invalidate stale results and snapshots after any input/config change."""
+    clear_demo_binding(state)
+    state["pipeline_result"] = None
+    state["raw_pipeline_response"] = None
+    state["current_work_order"] = None
+    state["last_error"] = ""
+    state["last_error_detail"] = ""
+    state["query_status"] = "输入已修改，等待查询"
+
+
+def bind_demo_case(state: MutableMapping[str, Any], case: Mapping[str, Any]) -> None:
+    """Load a manifest case and atomically bind all snapshot-constrained controls."""
+    fingerprint = demo_case_fingerprint(case)
+    state["current_query"] = fingerprint["query"]
+    state["query_context_text"] = fingerprint["context"]
+    state["ui_family"] = fingerprint["family"] or "自动识别"
+    state["ui_model"] = fingerprint["model"] or "自动识别"
+    state["ui_document_scope"] = fingerprint["document_scope"] or "全部资料"
+    state["ui_task_hint"] = fingerprint["task_hint"] or "自动识别"
+    state["ui_pipeline_mode"] = fingerprint["pipeline_mode"] or "SAMPLE"
+    state["device_context"] = {
+        "family": state["ui_family"],
+        "model": state["ui_model"],
+        "document_scope": state["ui_document_scope"],
+        "answer_mode": str(state.get("ui_answer_mode") or "标准查证"),
+        "task_hint": state["ui_task_hint"],
+        "detection_source": "demo_fixed",
+    }
+    state["selected_demo_id"] = str(case.get("id") or "")
+    state["selected_demo_snapshot"] = str(case.get("snapshot") or "")
+    state["loaded_demo_fingerprint"] = fingerprint
+    state["pipeline_result"] = None
+    state["raw_pipeline_response"] = None
+    state["current_work_order"] = None
+    state["last_error"] = ""
+    state["last_error_detail"] = ""
+    state["query_status"] = "已载入离线案例"
+
+
+def reconcile_demo_binding(state: MutableMapping[str, Any]) -> bool:
+    """Drop a stale binding if widget state no longer matches its recorded signature."""
+    if not state.get("selected_demo_id"):
+        return False
+    expected = state.get("loaded_demo_fingerprint")
+    if not isinstance(expected, Mapping) or not expected:
+        clear_demo_binding(state)
+        return False
+    current = make_demo_fingerprint(
+        query=str(state.get("current_query") or ""),
+        context=str(state.get("query_context_text") or ""),
+        device_context={
+            "family": state.get("ui_family"),
+            "model": state.get("ui_model"),
+            "document_scope": state.get("ui_document_scope"),
+            "task_hint": state.get("ui_task_hint"),
+        },
+        pipeline_mode=str(state.get("ui_pipeline_mode") or ""),
+    )
+    if dict(expected) != current:
+        invalidate_query_inputs(state)
+        return False
+    return True
 
 
 def record_query(state: MutableMapping[str, Any], result: Dict[str, Any]) -> None:

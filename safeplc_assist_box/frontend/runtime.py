@@ -40,11 +40,19 @@ class FrontendSettings:
 def probe_runtime(
     settings: FrontendSettings | None = None,
     response_runtime: Mapping[str, Any] | None = None,
+    effective_pipeline_mode: str | None = None,
 ) -> Dict[str, Any]:
     """Describe configured and observed backends without opening Chroma on rerun."""
     settings = settings or FrontendSettings.from_env()
-    config = SafePLCConfig.from_env(mode=settings.pipeline_mode)
-    audit = dict((response_runtime or {}).get("backend_audit") or {})
+    response_runtime = response_runtime or {}
+    effective_mode = str(
+        response_runtime.get("pipeline_mode")
+        or effective_pipeline_mode
+        or settings.pipeline_mode
+    ).upper()
+    config = SafePLCConfig.from_env(mode=effective_mode)
+    audit = dict(response_runtime.get("backend_audit") or {})
+    result_source = str(response_runtime.get("source") or "")
     backend_importable = importlib.util.find_spec("safeplc_assist_box.agents.orchestrator") is not None
 
     if settings.frontend_mode == "demo":
@@ -76,7 +84,9 @@ def probe_runtime(
     return {
         "frontend_mode": settings.frontend_mode,
         "demo_enabled": settings.demo_enabled,
-        "pipeline_mode": settings.pipeline_mode,
+        "pipeline_mode": effective_mode,
+        "result_source": result_source,
+        "result_source_label": _result_source_label(result_source),
         "backend_importable": backend_importable,
         "system": system_state,
         "text_chroma": text_state,
@@ -105,3 +115,10 @@ def _model_state(backend: str, model_path: str) -> str:
     if backend in {"none", "disabled"}:
         return "未启用"
     return f"{backend or 'auto'}，待运行验证"
+
+
+def _result_source_label(source: str) -> str:
+    return {
+        "online_pipeline": "真实流水线",
+        "offline_demo_snapshot": "离线 SAMPLE 快照",
+    }.get(str(source or ""), "尚未查询")

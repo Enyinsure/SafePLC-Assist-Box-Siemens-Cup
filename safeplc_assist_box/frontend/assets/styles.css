@@ -106,7 +106,7 @@ p, li, dd, dt, span, button, label {
 
 .runtime-grid {
   display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
+  grid-template-columns: repeat(9, minmax(0, 1fr));
   gap: 1px;
   overflow: hidden;
   background: var(--safeplc-line);
@@ -337,8 +337,40 @@ p, li, dd, dt, span, button, label {
 }
 
 .flow-supervisor { color: #fff; background: var(--safeplc-navy); border-color: var(--safeplc-navy); }
+.flow-judge { color: #fff; background: var(--safeplc-teal); border-color: var(--safeplc-teal); }
 .flow-muted { color: #6c7b85; background: #f4f6f7; }
 .flow-arrow { color: #6a7c89; font-size: 0.8rem; }
+
+.execution-stages {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
+  gap: 0.45rem;
+  margin-bottom: 0.7rem;
+  padding: 0.65rem;
+  border-left: 3px solid var(--safeplc-navy-2);
+  background: #e9f0f3;
+}
+
+.execution-stage {
+  min-width: 0;
+  padding: 0.5rem;
+  border: 1px solid #cbd8df;
+  background: #f8fafb;
+}
+
+.execution-stage > span {
+  display: block;
+  margin-bottom: 0.4rem;
+  color: #667987;
+  font-size: 0.62rem;
+  font-weight: 700;
+}
+
+.execution-members {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.32rem;
+}
 
 .agent-card {
   margin: 0.55rem 0 0.35rem;
@@ -605,6 +637,7 @@ textarea,
 
 @media (max-width: 1280px) {
   .runtime-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .runtime-cell:last-child { grid-column: 1 / -1; }
 }
 
 @media (max-width: 900px) {
@@ -615,7 +648,6 @@ textarea,
     min-width: min(100%, 22rem) !important;
     flex: 1 1 100% !important;
   }
-  .runtime-cell:last-child { grid-column: 1 / -1; }
   .agent-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 

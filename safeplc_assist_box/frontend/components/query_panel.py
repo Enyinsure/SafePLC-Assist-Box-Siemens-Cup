@@ -6,7 +6,12 @@ from typing import Any, Mapping, Sequence
 
 import streamlit as st
 
-from ..state import clear_query_session
+from ..state import (
+    bind_demo_case,
+    clear_query_session,
+    invalidate_query_inputs,
+    reconcile_demo_binding,
+)
 from .common import section_heading
 
 
@@ -21,13 +26,7 @@ def render_query_panel(cases: Sequence[Mapping[str, Any]]) -> bool:
                 icon=":material/bookmark:",
                 width="stretch",
             ):
-                st.session_state.current_query = str(case.get("query") or "")
-                st.session_state.query_context_text = str(case.get("context") or "")
-                st.session_state.selected_demo_id = str(case.get("id") or "")
-                st.session_state.selected_demo_snapshot = str(case.get("snapshot") or "")
-                st.session_state.pipeline_result = None
-                st.session_state.current_work_order = None
-                st.session_state.query_status = "已载入案例"
+                bind_demo_case(st.session_state, case)
                 st.rerun()
 
     st.text_area(
@@ -35,12 +34,14 @@ def render_query_panel(cases: Sequence[Mapping[str, Any]]) -> bool:
         key="current_query",
         height=126,
         placeholder="输入设备型号、接口、参数或故障现象",
+        on_change=_invalidate_inputs,
     )
     with st.expander("补充上下文", expanded=bool(st.session_state.query_context_text)):
         st.text_area(
             "现场现象、报警码或已知条件",
             key="query_context_text",
             height=86,
+            on_change=_invalidate_inputs,
         )
 
     run_col, clear_col = st.columns([3, 1])
@@ -60,3 +61,12 @@ def render_query_panel(cases: Sequence[Mapping[str, Any]]) -> bool:
             clear_query_session(st.session_state)
             st.rerun()
     return submitted
+
+
+def _invalidate_inputs() -> None:
+    # Streamlit can emit a delayed widget on_change after a demo button restores
+    # the exact manifest value. Keep that valid binding; real edits fail the
+    # fingerprint check and are invalidated by reconcile_demo_binding().
+    if reconcile_demo_binding(st.session_state):
+        return
+    invalidate_query_inputs(st.session_state)

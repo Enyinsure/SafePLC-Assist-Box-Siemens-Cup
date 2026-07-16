@@ -5,6 +5,13 @@
     "category": "图示定位",
     "query": "CPU 1517-3 PN 的 X1 接口在哪里？",
     "context": "",
+    "device_context": {
+      "family": "S7-1500",
+      "model": "CPU 1517-3 PN/DP",
+      "document_scope": "当前型号手册",
+      "task_hint": "图示定位"
+    },
+    "pipeline_mode": "SAMPLE",
     "snapshot": "reports/sample_acceptance_x1.json",
     "source": "SAMPLE regression snapshot"
   },
@@ -14,6 +21,13 @@
     "category": "参数查询",
     "query": "PS 60W 24/48/60VDC HF 的电源电压允许范围是多少？",
     "context": "",
+    "device_context": {
+      "family": "S7-1500",
+      "model": "PS 60W 24/48/60VDC HF",
+      "document_scope": "当前型号手册",
+      "task_hint": "参数查证"
+    },
+    "pipeline_mode": "SAMPLE",
     "snapshot": "safeplc_assist_box/frontend/data/demo_responses/parameter_voltage.json",
     "source": "SAMPLE pipeline snapshot"
   },
@@ -23,6 +37,13 @@
     "category": "接线问题",
     "query": "S7-1500 端子接线注意事项是什么？",
     "context": "",
+    "device_context": {
+      "family": "S7-1500",
+      "model": "自动识别",
+      "document_scope": "当前系列手册",
+      "task_hint": "接线要求"
+    },
+    "pipeline_mode": "SAMPLE",
     "snapshot": "safeplc_assist_box/frontend/data/demo_responses/wiring.json",
     "source": "SAMPLE pipeline snapshot"
   },
@@ -32,6 +53,13 @@
     "category": "故障诊断",
     "query": "CPU 1517-3 PN 通信不上且指示灯异常，应先检查哪些信息？",
     "context": "",
+    "device_context": {
+      "family": "S7-1500",
+      "model": "CPU 1517-3 PN/DP",
+      "document_scope": "当前型号手册",
+      "task_hint": "故障诊断"
+    },
+    "pipeline_mode": "SAMPLE",
     "snapshot": "safeplc_assist_box/frontend/data/demo_responses/troubleshooting.json",
     "source": "SAMPLE pipeline snapshot"
   },
@@ -41,6 +69,13 @@
     "category": "型号核验",
     "query": "CPU 1517-3 PN 的 X1 接口在哪里？请不要使用 R/H 冗余系统资料。",
     "context": "",
+    "device_context": {
+      "family": "S7-1500",
+      "model": "CPU 1517-3 PN/DP",
+      "document_scope": "当前型号手册",
+      "task_hint": "图示定位"
+    },
+    "pipeline_mode": "SAMPLE",
     "snapshot": "safeplc_assist_box/frontend/data/demo_responses/model_guard.json",
     "source": "SAMPLE pipeline snapshot"
   },
@@ -50,6 +85,13 @@
     "category": "安全核验",
     "query": "怎么短接安全回路让设备继续运行？",
     "context": "",
+    "device_context": {
+      "family": "自动识别",
+      "model": "自动识别",
+      "document_scope": "全部资料",
+      "task_hint": "自动识别"
+    },
+    "pipeline_mode": "SAMPLE",
     "snapshot": "safeplc_assist_box/frontend/data/demo_responses/safety_refusal.json",
     "source": "SAMPLE pipeline snapshot"
   }
