@@ -43,6 +43,26 @@ class FigureMetadataMapper:
                 count += 1
         return count
 
+    def find_by_page(self, page: int) -> List[Dict[str, object]]:
+        """Return figure cards whose page matches exactly."""
+        if not self.available():
+            return []
+
+        target_page = int(page)
+        matches: List[Dict[str, object]] = []
+
+        for record in load_jsonl_records(self.cards_jsonl):
+            record_page = _parse_page(
+                first_value(
+                    record,
+                    ("page", "page_no", "page_number", "page_index"),
+                )
+            )
+            if record_page == target_page:
+                matches.append(record)
+
+        return matches
+
     def enrich(self, ev: AgentEvidence) -> AgentEvidence:
         cards = self._load()
         keys = self._keys(
@@ -173,9 +193,47 @@ class ChromaFigureRetriever:
 
     def search(self, query: str, top_k: int = 20) -> List[AgentEvidence]:
         started = time.perf_counter()
+        query_text = str(query or "")
+
+        # 中文：资料页 8078、页码：8078、页8078
+        page_match = re.search(
+            r"(?:资料)?页(?:码)?\s*[:：]?\s*0*(\d+)",
+            query_text,
+            re.I,
+        )
+
+        # 英文：page 8078、page: 8078
+        if page_match is None:
+            page_match = re.search(
+                r"\bpage\s*[:：]?\s*0*(\d+)\b",
+                query_text,
+                re.I,
+            )
+
+        if page_match:
+            page = int(page_match.group(1))
+            direct = self._search_exact_page(query_text, page)
+
+            if direct:
+                self.last_latency_ms = int(
+                    (time.perf_counter() - started) * 1000
+                )
+                self.backend_audit = {
+                    "collection_name": self.collection_name,
+                    "exact_page_lookup": True,
+                    "exact_page": page,
+                    "result_count": len(direct),
+                }
+                return direct[: max(1, top_k)]
+
+        # 没有精确页码命中时，才进入向量检索
         collection = self._collection()
+
         try:
-            query_arguments = self.embedding_adapter.query_arguments(collection, query)
+            query_arguments = self.embedding_adapter.query_arguments(
+                collection,
+                query_text,
+            )
             raw = collection.query(
                 **query_arguments,
                 n_results=max(1, top_k),
@@ -185,23 +243,34 @@ class ChromaFigureRetriever:
                 **self.embedding_adapter.last_audit,
                 "collection_name": self.collection_name,
                 "distance_metric": self._distance_metric(collection),
+                "exact_page_lookup": False,
             }
         except (EmbeddingConfigurationError, EmbeddingDimensionMismatch):
             raise
         except Exception as exc:
-            raise ChromaUnavailable(f"Figure Chroma query failed: {exc}") from exc
+            raise ChromaUnavailable(
+                f"Figure Chroma query failed: {exc}"
+            ) from exc
+
         docs = (raw.get("documents") or [[]])[0]
         metas = (raw.get("metadatas") or [[]])[0]
         distances = (raw.get("distances") or [[]])[0]
+
         out: List[AgentEvidence] = []
+
         for idx, doc in enumerate(docs):
-            meta = metas[idx] if idx < len(metas) and isinstance(metas[idx], dict) else {}
+            meta = (
+                metas[idx]
+                if idx < len(metas) and isinstance(metas[idx], dict)
+                else {}
+            )
             distance = distances[idx] if idx < len(distances) else None
+
             ev = normalize_metadata(
                 text=str(doc or ""),
                 metadata=meta,
                 backend="chroma_figure",
-                query_text=query,
+                query_text=query_text,
                 collection_name=self.collection_name,
                 source_path=str(self.chroma_dir),
                 raw_distance=distance,
@@ -209,8 +278,92 @@ class ChromaFigureRetriever:
                 distance_metric=self._distance_metric(collection),
             )
             out.append(self.cards.enrich(ev))
-        self.last_latency_ms = int((time.perf_counter() - started) * 1000)
+
+        self.last_latency_ms = int(
+            (time.perf_counter() - started) * 1000
+        )
         return out
+
+    def _search_exact_page(
+        self,
+        query: str,
+        page: int,
+    ) -> List[AgentEvidence]:
+        """Resolve an explicitly requested page directly from figure cards."""
+        results: List[AgentEvidence] = []
+
+        for card in self.cards.find_by_page(page):
+            caption = first_value(
+                card,
+                (
+                    "manual_figure_caption",
+                    "caption",
+                    "text",
+                    "content",
+                    "description",
+                ),
+            ).strip()
+
+            if not caption:
+                caption = f"page {page:05d}"
+
+            ev = normalize_metadata(
+                text=caption,
+                metadata=card,
+                backend="chroma_figure",
+                query_text=query,
+                collection_name=self.collection_name,
+                source_path=str(self.chroma_dir),
+                fallback_score=1.0,
+                modality_hint="figure",
+                distance_metric="exact",
+            )
+
+            raw_image = (
+                ev.raw_image_path
+                or str(card.get("image_path") or card.get("image") or "")
+            )
+
+            raw_image, resolved_image, image_exists = (
+                self.cards._resolve_image(raw_image)
+            )
+
+            ev.page = page
+            ev.raw_image_path = raw_image
+            ev.resolved_image_path = resolved_image
+            ev.image_exists = image_exists
+            ev.image_path = resolved_image if image_exists else ""
+            ev.visual_evidence_status = (
+                "image_available" if image_exists else "page_text_only"
+            )
+            ev.retrieval_score = 1.0
+            ev.normalized_score = 1.0
+            ev.vector_similarity = 1.0
+            ev.manual_figure_caption = (
+                ev.manual_figure_caption or caption
+            )
+
+            ev.metadata.update(
+                {
+                    "exact_page_match": True,
+                    "requested_page": page,
+                    "raw_image_path": raw_image,
+                    "resolved_image_path": resolved_image,
+                    "image_exists": image_exists,
+                    "visual_evidence_status": ev.visual_evidence_status,
+                }
+            )
+
+            results.append(ev)
+
+        results.sort(
+            key=lambda item: (
+                not item.image_exists,
+                item.figure_number or "",
+                item.figure_id or "",
+            )
+        )
+        return results
 
     def _distance_metric(self, collection: object) -> str:
         metadata = getattr(collection, "metadata", None)

@@ -250,6 +250,7 @@ class ToolRegistry:
         jsonl_records: List[AgentEvidence] = []
         need_text = bool(allowed & {"text", "table", "policy"})
         need_figure = bool(allowed & {"figure", "visual"})
+        exact_figure_match = False
         attempted: List[str] = []
         used: List[str] = []
         errors: List[str] = []
@@ -260,6 +261,10 @@ class ToolRegistry:
             try:
                 found = self._figure_retriever.search(query, top_k=top_k_per_query)
                 chroma_records.extend(found)
+                exact_figure_match = any(
+                    bool((ev.metadata or {}).get("exact_page_match"))
+                    for ev in found
+                )
                 if found:
                     used.append("chroma_figure")
             except Exception as exc:
@@ -267,6 +272,11 @@ class ToolRegistry:
                 errors.append(str(exc))
         elif need_figure:
             backend_missing = True
+
+        # An explicitly requested page resolved to a real figure card.
+        # Do not launch the expensive and potentially distracting text search.
+        if exact_figure_match:
+            need_text = False
 
         if need_text and self._text_retriever:
             attempted.append("chroma_text")
