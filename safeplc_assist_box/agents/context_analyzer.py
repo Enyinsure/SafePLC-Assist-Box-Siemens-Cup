@@ -74,6 +74,7 @@ class ContextAnalyzer:
             return ""
 
         identity = extract_model_identity(text)
+        order_number = identity.order_numbers[0] if identity.order_numbers else first([r"\b6ES7[A-Z0-9\-]{5,}\b"])
         module = identity.normalized_models[0] if identity.normalized_models else first(
             [
                 r"PS\s*\d+W\s*[\d/]+VDC\s*\w*",
@@ -82,7 +83,12 @@ class ContextAnalyzer:
                 r"S7[- ]?1500",
             ]
         )
-        order_number = identity.order_numbers[0] if identity.order_numbers else first([r"\b6ES\d[\w\-]*\b"])
+        # An order number is a valid exact device scope even when a marketing
+        # model name cannot be inferred. Keeping it in module_model prevents
+        # strict routing from treating an explicitly identified device as vague.
+        if not module and order_number:
+            module = order_number
+
         interface = first([r"\bX\d+\b", r"PROFINET", r"PROFIBUS", r"RJ45"])
         port = first([r"\bX\d+\s*P\d+\b", r"\bX\d+\b", r"端口\s*\d+", r"port\s*\d+"])
         alarm = first([r"(?:报警|报错|故障|error|fault|alarm)[：:\s]*[\w\u4e00-\u9fff\- ]{0,40}"])
@@ -107,7 +113,6 @@ class ContextAnalyzer:
             if word.lower() in text.lower():
                 parameter = word
                 break
-
         values = {
             "module_model": module,
             "order_number": order_number,
@@ -116,9 +121,9 @@ class ContextAnalyzer:
             "port_number": port,
             "alarm_code": alarm,
             "indicator_state": "LED" if _has_any(text, ["指示灯", "LED", "红灯", "绿灯", "黄灯"]) else "",
-            "network_type": "PROFINET" if _has_any(text, ["PROFINET", "环网", "拓扑"]) else "",
+            "network_type": "PROFINET" if _has_any(text, ["PROFINET", "环网", "拓扑", "交换机", "HMI"]) else "",
             "device_type": "HMI" if _has_any(text, ["HMI", "触摸屏", "人机界面"]) else ("CPU" if "CPU" in text.upper() else ""),
-            "operating_condition": "offline_lookup" if _has_any(text, ["查", "查询", "在哪里", "说明"]) else "",
+            "operating_condition": "offline_lookup" if _has_any(text, ["查", "查询", "在哪里", "说明", "核查", "给出"]) else "",
             "expected_output_type": "work_order" if _has_any(text, ["工单", "运维记录", "维护记录"]) else "answer",
         }
         return {
@@ -174,18 +179,38 @@ class ContextAnalyzer:
             return "SAFETY_BOUNDARY"
         if _has_any(text, ["工单", "运维记录", "维护记录"]):
             return "WORK_ORDER"
-        if _has_any(text, ["故障", "报警", "通信不上", "通信异常", "不能启动", "指示灯", "排查"]):
+        if _has_any(text, ["故障", "报警", "通信不上", "通信异常", "通信中断", "不能启动", "指示灯", "排查"]):
             return "TROUBLESHOOTING"
-        has_network = _has_any(text, ["拓扑", "环网", "HMI", "网络连接", "PROFINET"])
+
+        # Explicit EMC/install-language must win over the generic PROFINET
+        # topology trigger. Otherwise a cable-separation question is routed to
+        # Topology/Figure agents and produces an unrelated interface answer.
+        if _has_any(
+            text,
+            [
+                "EMC",
+                "电磁兼容",
+                "屏蔽",
+                "接地",
+                "等电位",
+                "线缆布置",
+                "安装距离",
+                "并行敷设",
+                "动力电缆",
+                "干扰",
+                "噪声滤波",
+            ],
+        ):
+            return "EMC"
+        if _has_any(text, ["接线", "端子", "怎么接", "接到哪里", "线径", "极性", "保护导线", "SELV", "PELV"]):
+            return "WIRING"
+
+        has_network = _has_any(text, ["拓扑", "环网", "HMI", "网络连接", "PROFINET", "交换机"])
         has_figure = _has_any(text, ["接口图", "图纸", "图在哪里", "前面板", "端子图", "X1", "X2", "在哪里"])
         if has_network and not has_figure:
             return "TOPOLOGY"
         if has_figure:
             return "FIGURE" if not has_network else "TOPOLOGY"
-        if _has_any(text, ["接线", "端子", "怎么接", "线缆"]):
-            return "WIRING"
-        if _has_any(text, ["EMC", "电磁兼容", "接地", "屏蔽", "线缆布置", "安装距离"]):
-            return "EMC"
         if _has_any(text, ["电压", "电流", "功率", "温度", "额定", "参数", "订货号", "允许范围"]):
             return "PARAMETER"
         return "GENERAL_INDUSTRIAL_QA"
@@ -210,9 +235,15 @@ class ContextAnalyzer:
             if _has_any(text, ["某个模块", "这个模块", "该模块", "模块的", "电源电压"]):
                 required.append("module_model")
         elif qtype == "FIGURE":
-            required = ["module_model", "interface_name"]
+            # Exact-page figure lookup does not require a model or interface.
+            if not re.search(r"(?:资料)?页(?:码)?\s*[:：]?\s*0*\d+|\bpage\s*[:：]?\s*0*\d+\b", text, re.I):
+                required = ["module_model", "interface_name"]
         elif qtype == "WIRING":
-            required = ["module_model"]
+            # System-level installation questions may be answered with general
+            # manual evidence. Exact terminal/interface questions still require
+            # a device scope.
+            if _has_any(text, ["该模块", "这个模块", "某个模块", "哪个端子", "具体端子", "X1", "X2"]):
+                required = ["module_model"]
         elif qtype == "TROUBLESHOOTING" and not slots["indicator_state"].value and not slots["alarm_code"].value:
             required = ["alarm_code"]
         elif qtype == "TOPOLOGY":
