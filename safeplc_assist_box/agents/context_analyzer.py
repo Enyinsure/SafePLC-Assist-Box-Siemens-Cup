@@ -97,6 +97,8 @@ class ContextAnalyzer:
         for word in [
             "电源电压",
             "输入电压",
+            "供电",
+            "电源",
             "允许范围",
             "额定",
             "电流",
@@ -211,7 +213,7 @@ class ContextAnalyzer:
             return "TOPOLOGY"
         if has_figure:
             return "FIGURE" if not has_network else "TOPOLOGY"
-        if _has_any(text, ["电压", "电流", "功率", "温度", "额定", "参数", "订货号", "允许范围"]):
+        if _has_any(text, ["电压", "电流", "功率", "温度", "额定", "参数", "订货号", "允许范围", "供电", "电源"]):
             return "PARAMETER"
         return "GENERAL_INDUSTRIAL_QA"
 
@@ -232,7 +234,7 @@ class ContextAnalyzer:
         required: List[str] = []
         if qtype == "PARAMETER":
             required = ["parameter_name"]
-            if _has_any(text, ["某个模块", "这个模块", "该模块", "模块的", "电源电压"]):
+            if _has_any(text, ["某个模块", "这个模块", "该模块", "模块的", "电源电压", "供电要求"]):
                 required.append("module_model")
         elif qtype == "FIGURE":
             # Exact-page figure lookup does not require a model or interface.
