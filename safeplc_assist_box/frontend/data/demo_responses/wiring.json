@@ -1,0 +1,945 @@
+{
+  "query": "S7-1500 端子接线注意事项是什么？",
+  "context": "",
+  "mode": "SAMPLE",
+  "query_context": {
+    "original_query": "S7-1500 端子接线注意事项是什么？",
+    "context": "",
+    "normalized_query": "S7-1500 端子接线注意事项是什么？",
+    "question_type": "WIRING",
+    "slots": {
+      "module_model": {
+        "name": "module_model",
+        "value": "S7-1500",
+        "source": "query",
+        "confidence": 0.9,
+        "required": false
+      },
+      "order_number": {
+        "name": "order_number",
+        "value": "",
+        "source": "query",
+        "confidence": 0.0,
+        "required": false
+      },
+      "parameter_name": {
+        "name": "parameter_name",
+        "value": "端子",
+        "source": "query",
+        "confidence": 0.9,
+        "required": false
+      },
+      "interface_name": {
+        "name": "interface_name",
+        "value": "",
+        "source": "query",
+        "confidence": 0.0,
+        "required": false
+      },
+      "port_number": {
+        "name": "port_number",
+        "value": "",
+        "source": "query",
+        "confidence": 0.0,
+        "required": false
+      },
+      "alarm_code": {
+        "name": "alarm_code",
+        "value": "",
+        "source": "query",
+        "confidence": 0.0,
+        "required": false
+      },
+      "indicator_state": {
+        "name": "indicator_state",
+        "value": "",
+        "source": "query",
+        "confidence": 0.0,
+        "required": false
+      },
+      "network_type": {
+        "name": "network_type",
+        "value": "",
+        "source": "query",
+        "confidence": 0.0,
+        "required": false
+      },
+      "device_type": {
+        "name": "device_type",
+        "value": "",
+        "source": "query",
+        "confidence": 0.0,
+        "required": false
+      },
+      "operating_condition": {
+        "name": "operating_condition",
+        "value": "",
+        "source": "query",
+        "confidence": 0.0,
+        "required": false
+      },
+      "expected_output_type": {
+        "name": "expected_output_type",
+        "value": "answer",
+        "source": "query",
+        "confidence": 0.9,
+        "required": false
+      }
+    },
+    "missing_slots": [],
+    "required_modalities": [
+      "figure",
+      "table",
+      "text"
+    ],
+    "risk_level": "CAUTION",
+    "risk_decision": "ANSWER_WITH_SAFETY_TIP",
+    "risk_reason": "Wiring, commissioning or installation topic requires safety note.",
+    "is_dangerous_operation": false,
+    "expected_output_type": "answer",
+    "clarify_question": "",
+    "subquestions": [
+      {
+        "subquestion_id": "sq_main",
+        "text": "S7-1500 端子接线注意事项是什么？",
+        "objective": "Answer the WIRING question using direct evidence.",
+        "expected_agents": [],
+        "required_modalities": [
+          "figure",
+          "table",
+          "text"
+        ],
+        "required_slots": [],
+        "answered": false,
+        "metadata": {
+          "trigger": "WIRING",
+          "source_span": "S7-1500 端子接线注意事项是什么？"
+        }
+      }
+    ],
+    "metadata": {
+      "analyzer": "Context Analyzer",
+      "model_identity": {
+        "models": [],
+        "order_numbers": [],
+        "family_hints": [
+          "S7-1500"
+        ]
+      },
+      "subquestions": [
+        {
+          "subquestion_id": "sq_main",
+          "text": "S7-1500 端子接线注意事项是什么？",
+          "objective": "Answer the WIRING question using direct evidence.",
+          "expected_agents": [],
+          "required_modalities": [
+            "figure",
+            "table",
+            "text"
+          ],
+          "required_slots": [],
+          "answered": false,
+          "metadata": {
+            "trigger": "WIRING",
+            "source_span": "S7-1500 端子接线注意事项是什么？"
+          }
+        }
+      ]
+    }
+  },
+  "agent_plan": {
+    "selected_agents": [
+      "Wiring Agent"
+    ],
+    "rejected_agents": [
+      "Parameter Agent",
+      "Figure Agent",
+      "Topology Agent",
+      "Troubleshooting Agent",
+      "EMC Agent",
+      "Safety Boundary Agent",
+      "Work-order Agent"
+    ],
+    "selection_reason": {
+      "Wiring Agent": "score=7.50; question_type=WIRING; subquestions=1"
+    },
+    "execution_mode": "single",
+    "task_assignments": {
+      "Wiring Agent": {
+        "task_id": "task_01_wiring_agent",
+        "agent_name": "Wiring Agent",
+        "role": "Wiring Agent",
+        "query": "S7-1500 端子接线注意事项是什么？",
+        "context": "",
+        "objective": "Extract directly evidenced terminal and wiring requirements.",
+        "input_slots": {
+          "module_model": "S7-1500",
+          "parameter_name": "端子",
+          "expected_output_type": "answer"
+        },
+        "required_evidence_types": [
+          "figure",
+          "table",
+          "text"
+        ],
+        "tool_names": [
+          "search_text",
+          "search_table",
+          "search_figure"
+        ],
+        "constraints": [
+          "Only cite evidence returned by ToolRegistry.",
+          "Abstain when no evidence supports the task.",
+          "Do not control real PLC devices.",
+          "Return structured claims, not raw page OCR."
+        ],
+        "depends_on": [],
+        "subquestion_ids": [
+          "sq_main"
+        ],
+        "metadata": {
+          "original_query": "S7-1500 端子接线注意事项是什么？"
+        }
+      }
+    },
+    "expected_evidence_types": [
+      "figure",
+      "table",
+      "text"
+    ],
+    "stop_condition": "max_agent_calls_or_sufficient_evidence",
+    "max_agent_calls": 4,
+    "routing_strategy": "adaptive",
+    "execution_order": [
+      "Wiring Agent"
+    ],
+    "parallel_groups": [
+      [
+        "Wiring Agent"
+      ]
+    ],
+    "need_clarification": false,
+    "clarification_prompt": "",
+    "scores": {
+      "Parameter Agent": 0.8,
+      "Figure Agent": 2.3,
+      "Wiring Agent": 7.5,
+      "Topology Agent": 0.4,
+      "Troubleshooting Agent": 0.0,
+      "EMC Agent": 2.0,
+      "Safety Boundary Agent": 0.5,
+      "Work-order Agent": 0.0
+    },
+    "metadata": {
+      "subquestions": [
+        "sq_main"
+      ]
+    }
+  },
+  "agent_results": [
+    {
+      "agent_name": "Wiring Agent",
+      "task_id": "task_01_wiring_agent",
+      "status": "ANSWERED",
+      "answer_fragment": "端子接线应设置电源隔离设备，使用 SELV/PELV 电源并连接保护性导线；核对极性、线径和额定电压范围。 Evidence: S7-1500 / ET 200MP manual, page 1202.",
+      "evidence_ids": [
+        "ev_322342f6b4e37d55"
+      ],
+      "confidence": "MEDIUM",
+      "assumptions": [],
+      "missing_information": [],
+      "conflicts": [],
+      "follow_up_request": "",
+      "latency_ms": 12,
+      "tool_calls": 2,
+      "abstain_reason": "",
+      "observations": [
+        {
+          "tool_name": "search_text,search_table,search_figure",
+          "query": "S7-1500 端子接线注意事项是什么？",
+          "status": "OK",
+          "evidence_ids": [
+            "ev_322342f6b4e37d55"
+          ],
+          "latency_ms": 0,
+          "metadata": {}
+        }
+      ],
+      "claims": [
+        {
+          "claim_id": "claim_55a3d4fa6c5b",
+          "claim_text": "端子接线应设置电源隔离设备，使用 SELV/PELV 电源并连接保护性导线；核对极性、线径和额定电压范围。",
+          "claim_type": "connection",
+          "evidence_ids": [
+            "ev_322342f6b4e37d55"
+          ],
+          "model_scope": "S7-1500 / ET 200MP",
+          "confidence": "MEDIUM",
+          "direct_support": false,
+          "subquestion_ids": [
+            "sq_main"
+          ],
+          "metadata": {
+            "terminal": "",
+            "signal": "",
+            "voltage": "",
+            "polarity": "",
+            "connection_scope": "S7-1500 / ET 200MP",
+            "general_guidance": true,
+            "evidence_span": "端子接线应设置电源隔离设备，使用 SELV/PELV 电源并连接保护性导线；核对极性、线径和额定电压范围",
+            "fact_type": "wiring_requirement",
+            "source_page": 1202,
+            "source_section": "",
+            "inference_level": "general_guidance",
+            "wiring_fact_score": 6
+          }
+        }
+      ],
+      "metadata": {
+        "role_description": "Specialist for terminal definitions, wiring constraints and installation safety notes.",
+        "available_tools": [
+          "search_text",
+          "search_table",
+          "search_figure"
+        ],
+        "objective": "Extract directly evidenced terminal and wiring requirements."
+      }
+    }
+  ],
+  "evidence_pool": {
+    "evidences": [
+      {
+        "evidence_id": "ev_322342f6b4e37d55",
+        "source": "SAMPLE wiring and terminal note",
+        "source_type": "sample_manual",
+        "modality": "text",
+        "text": "端子接线应设置电源隔离设备，使用 SELV/PELV 电源并连接保护性导线；核对极性、线径和额定电压范围。",
+        "retrieval_backend": "sample_fixture",
+        "compact_excerpt": "端子接线应设置电源隔离设备，使用 SELV/PELV 电源并连接保护性导线；核对极性、线径和额定电压范围。",
+        "manual_title": "S7-1500 / ET 200MP manual",
+        "manual_version": "",
+        "device_family": "ET 200MP",
+        "module_model": "S7-1500 / ET 200MP",
+        "order_number": "",
+        "page": 1202,
+        "section": "",
+        "figure_id": "",
+        "figure_number": "",
+        "visual_record_id": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "image_path": "",
+        "raw_image_path": "",
+        "resolved_image_path": "",
+        "image_exists": false,
+        "visual_evidence_status": "missing",
+        "chunk_id": "",
+        "document_id": "",
+        "collection_name": "sample_fixture",
+        "query_text": "",
+        "retrieval_query": "",
+        "retrieval_query_index": 0,
+        "query_expansion_reason": "",
+        "rank_within_query": 0,
+        "query_ranks": {},
+        "rrf_score": 0,
+        "matched_query_count": 0,
+        "best_query_rank": 0,
+        "source_path": "",
+        "retrieval_score": 0.636364,
+        "raw_distance": null,
+        "normalized_score": 0.636364,
+        "distance_metric": "unknown",
+        "score_conversion": "monotonic_inverse_distance",
+        "vector_similarity": 0.8,
+        "model_match_level": "same_family_general",
+        "direct_evidence": false,
+        "quality_score": 1.0,
+        "title": "S7-1500 / ET 200MP manual",
+        "module": "S7-1500 / ET 200MP",
+        "parameter": "terminal wiring",
+        "agent_names": [
+          "Wiring Agent"
+        ],
+        "claim_links": [
+          "claim_55a3d4fa6c5b"
+        ],
+        "conflict_with": [],
+        "metadata": {
+          "source": "SAMPLE wiring and terminal note",
+          "source_type": "sample_manual",
+          "modality": "text",
+          "page": 1202,
+          "title": "Wiring and terminal safety note",
+          "manual_title": "S7-1500 / ET 200MP manual",
+          "module_model": "S7-1500 / ET 200MP",
+          "parameter": "terminal wiring",
+          "retrieval_backend": "sample_fixture",
+          "collection_name": "sample_fixture",
+          "raw_distance": null,
+          "normalized_score": 0.8,
+          "distance_metric": "unknown",
+          "score_conversion": "monotonic_inverse_distance",
+          "vector_similarity": 0.8,
+          "figure_id_type": "unknown",
+          "visual_record_id": "",
+          "manual_figure_number": "",
+          "manual_figure_caption": "",
+          "location_markers": {},
+          "location_marker": "",
+          "location_marker_interface": "",
+          "model_inferred_from_text": false,
+          "order_number_inferred_from_text": false,
+          "query_text": "",
+          "retrieval_query": "",
+          "retrieval_timestamp": "2026-07-16T00:48:26+00:00",
+          "raw_image_path": "",
+          "resolved_image_path": "",
+          "image_exists": false,
+          "visual_evidence_status": "missing",
+          "direct_evidence": false,
+          "retrieval_tool": "search_text",
+          "model_match_level": "same_family_general",
+          "model_identity": {
+            "raw_text": "S7-1500 / ET 200MP",
+            "normalized_model": "ET 200MP",
+            "product_type": "ET",
+            "device_family": "ET 200MP",
+            "model_name": "ET 200MP",
+            "variant": "MP",
+            "order_numbers": [],
+            "aliases": [
+              "ET 200MP"
+            ],
+            "normalized_models": [
+              "ET 200MP"
+            ],
+            "family_hints": [
+              "ET 200MP",
+              "S7-1500"
+            ]
+          },
+          "query_ranks": {},
+          "rrf_score": 0,
+          "matched_query_count": 0,
+          "best_query_rank": 0,
+          "raw_rank_score": 1.254546,
+          "normalized_rank_score": 1.0,
+          "score_components": {
+            "vector_score": 0.636364,
+            "lexical_score": 0.181818,
+            "exact_model_score": 0.0,
+            "order_number_score": 0.0,
+            "same_family_general_score": 0.25,
+            "direct_answer_score": 0.8,
+            "modality_score": 0.0,
+            "page_score": 0.15,
+            "figure_score": 0.0,
+            "image_score": 0.0,
+            "rrf_score": 0.0,
+            "same_family_general_penalty": 0.0,
+            "different_model_penalty": 0.0,
+            "location_directness_bonus": 0.8,
+            "manual_figure_number_bonus": 0.0,
+            "irrelevant_section_penalty": 0.0,
+            "manual_review_penalty": 0.0,
+            "duplicate_penalty": 0.0,
+            "cross_family_penalty": 0.0
+          },
+          "merged_evidence_ids": [
+            "ev_322342f6b4e37d55"
+          ],
+          "merged_backends": [
+            "sample_fixture"
+          ],
+          "merged_sources": [
+            "SAMPLE wiring and terminal note"
+          ]
+        }
+      }
+    ],
+    "agent_claims": {
+      "Wiring Agent": [
+        "端子接线应设置电源隔离设备，使用 SELV/PELV 电源并连接保护性导线；核对极性、线径和额定电压范围。"
+      ]
+    },
+    "conflicts": [],
+    "metadata": {
+      "rejected_evidence": [],
+      "evidence_count": 1,
+      "backend_counts": {
+        "sample_fixture": 1
+      },
+      "retrieval_backend_audit": {
+        "mode": "SAMPLE",
+        "text_backend_active": false,
+        "figure_backend_active": false,
+        "jsonl_fallback_active": false,
+        "jsonl_fallback_triggered": false,
+        "jsonl_fallback_reason": "",
+        "hybrid_mode": false,
+        "tool_calls": [
+          {
+            "tool": "search_text",
+            "query": "S7-1500 端子接线注意事项是什么？ S7-1500 端子 answer Extract directly evidenced terminal and wiring requirements.",
+            "requested_modalities": [
+              "policy",
+              "table",
+              "text"
+            ],
+            "backend_attempted": [
+              "sample_fixture"
+            ],
+            "backend_used": [
+              "sample_fixture"
+            ],
+            "result_count": 7,
+            "latency_ms": 6,
+            "fallback_reason": "",
+            "error": "",
+            "expanded_queries": []
+          },
+          {
+            "tool": "search_table",
+            "query": "S7-1500 端子接线注意事项是什么？ S7-1500 端子 answer Extract directly evidenced terminal and wiring requirements.",
+            "requested_modalities": [
+              "table"
+            ],
+            "backend_attempted": [
+              "sample_fixture"
+            ],
+            "backend_used": [
+              "sample_fixture"
+            ],
+            "result_count": 2,
+            "latency_ms": 1,
+            "fallback_reason": "",
+            "error": "",
+            "expanded_queries": []
+          }
+        ],
+        "sample_fixture_active": true,
+        "errors": []
+      }
+    }
+  },
+  "judge_decision": {
+    "accepted_agent_outputs": [
+      "Wiring Agent"
+    ],
+    "rejected_agent_outputs": [],
+    "conflict_groups": [],
+    "supported_claims": [
+      "端子接线应设置电源隔离设备，使用 SELV/PELV 电源并连接保护性导线；核对极性、线径和额定电压范围。"
+    ],
+    "unsupported_claims": [],
+    "conflicting_claims": [],
+    "final_evidence_ids": [
+      "ev_322342f6b4e37d55"
+    ],
+    "need_more_evidence": false,
+    "need_clarification": false,
+    "final_answer": "【结论】通用指南：端子接线应设置电源隔离设备，使用 SELV/PELV 电源并连接保护性导线；核对极性、线径和额定电压范围。【依据】S7-1500 / ET 200MP manual，S7-1500 / ET 200MP，页 1202。",
+    "verdict": "PASS",
+    "confidence": "HIGH",
+    "decision_reason": "Coverage and claim-level evidence checks passed.",
+    "coverage": {
+      "sq_main": {
+        "answered": true,
+        "supporting_claim_ids": [
+          "claim_55a3d4fa6c5b"
+        ],
+        "supporting_evidence_ids": [
+          "ev_322342f6b4e37d55"
+        ]
+      }
+    },
+    "model_consistency": {
+      "expected_model": "",
+      "expected_order_numbers": [],
+      "accepted_models": [
+        "S7-1500 / ET 200MP"
+      ],
+      "rejected_models": [],
+      "accepted_levels": {
+        "ev_322342f6b4e37d55": "same_family_general"
+      },
+      "cross_family_evidence_ids": [],
+      "unknown_evidence_ids": [],
+      "pass": true
+    },
+    "quality_scores": {
+      "coverage": 1.0,
+      "grounding": 1.0,
+      "model_consistency": 1.0,
+      "order_number_consistency": 1.0,
+      "numeric_consistency": 1.0,
+      "unit_consistency": 1.0,
+      "interface_consistency": 1.0,
+      "figure_completeness": 1.0,
+      "relevance": 1.0,
+      "directness": 0.0,
+      "conciseness": 1.0
+    },
+    "metadata": {
+      "judge_role": "Claim-level evidence judge for coverage, support, identity, values, figures and conflicts.",
+      "accepted_claims": [
+        {
+          "claim_id": "claim_55a3d4fa6c5b",
+          "claim_text": "端子接线应设置电源隔离设备，使用 SELV/PELV 电源并连接保护性导线；核对极性、线径和额定电压范围。",
+          "claim_type": "connection",
+          "evidence_ids": [
+            "ev_322342f6b4e37d55"
+          ],
+          "model_scope": "S7-1500 / ET 200MP",
+          "confidence": "MEDIUM",
+          "direct_support": false,
+          "subquestion_ids": [
+            "sq_main"
+          ],
+          "metadata": {
+            "terminal": "",
+            "signal": "",
+            "voltage": "",
+            "polarity": "",
+            "connection_scope": "S7-1500 / ET 200MP",
+            "general_guidance": true,
+            "evidence_span": "端子接线应设置电源隔离设备，使用 SELV/PELV 电源并连接保护性导线；核对极性、线径和额定电压范围",
+            "fact_type": "wiring_requirement",
+            "source_page": 1202,
+            "source_section": "",
+            "inference_level": "general_guidance",
+            "wiring_fact_score": 6
+          }
+        }
+      ],
+      "coverage_pass": true,
+      "figure_requirement_pass": true,
+      "figure_state": {
+        "required": false,
+        "location_information_required": false,
+        "visual_image_required": false,
+        "figure_backend_active": false,
+        "chroma_figure_present": false,
+        "image_available": false,
+        "page_text_only_present": false,
+        "limited_to_page_text": false,
+        "missing_required_image": false,
+        "pass": true
+      }
+    }
+  },
+  "verifier": {
+    "verifier": "answer_evidence_verifier_v3",
+    "missing_evidence_ids": [],
+    "unsupported_claim_ids": [],
+    "model_mismatch_claim_ids": [],
+    "order_number_mismatch_claim_ids": [],
+    "numeric_mismatch_claim_ids": [],
+    "unit_mismatch_claim_ids": [],
+    "interface_mismatch_claim_ids": [],
+    "missing_figure_claim_ids": [],
+    "raw_ocr_dump_detected": false,
+    "coverage_pass": true,
+    "model_consistency_pass": true,
+    "numeric_consistency_pass": true,
+    "unit_consistency_pass": true,
+    "interface_consistency_pass": true,
+    "conciseness_pass": true,
+    "figure_requirement_pass": true,
+    "has_text_support": true,
+    "has_page_or_figure": true,
+    "unsupported_claims": [],
+    "pass": true
+  },
+  "final_answer": "【结论】通用指南：端子接线应设置电源隔离设备，使用 SELV/PELV 电源并连接保护性导线；核对极性、线径和额定电压范围。【依据】S7-1500 / ET 200MP manual，S7-1500 / ET 200MP，页 1202。",
+  "question_type": "WIRING",
+  "extracted_slots": {
+    "module_model": "S7-1500",
+    "parameter_name": "端子",
+    "expected_output_type": "answer"
+  },
+  "missing_slots": [],
+  "operation_risk_level": "CAUTION",
+  "action": "ANSWER",
+  "routing_strategy": "adaptive",
+  "selected_agents": [
+    "Wiring Agent"
+  ],
+  "execution_order": [
+    "Wiring Agent"
+  ],
+  "evidence_items": [
+    {
+      "evidence_id": "ev_322342f6b4e37d55",
+      "source": "SAMPLE wiring and terminal note",
+      "source_type": "sample_manual",
+      "modality": "text",
+      "text": "端子接线应设置电源隔离设备，使用 SELV/PELV 电源并连接保护性导线；核对极性、线径和额定电压范围。",
+      "retrieval_backend": "sample_fixture",
+      "compact_excerpt": "端子接线应设置电源隔离设备，使用 SELV/PELV 电源并连接保护性导线；核对极性、线径和额定电压范围。",
+      "manual_title": "S7-1500 / ET 200MP manual",
+      "manual_version": "",
+      "device_family": "ET 200MP",
+      "module_model": "S7-1500 / ET 200MP",
+      "order_number": "",
+      "page": 1202,
+      "section": "",
+      "figure_id": "",
+      "figure_number": "",
+      "visual_record_id": "",
+      "manual_figure_number": "",
+      "manual_figure_caption": "",
+      "image_path": "",
+      "raw_image_path": "",
+      "resolved_image_path": "",
+      "image_exists": false,
+      "visual_evidence_status": "missing",
+      "chunk_id": "",
+      "document_id": "",
+      "collection_name": "sample_fixture",
+      "query_text": "",
+      "retrieval_query": "",
+      "retrieval_query_index": 0,
+      "query_expansion_reason": "",
+      "rank_within_query": 0,
+      "query_ranks": {},
+      "rrf_score": 0,
+      "matched_query_count": 0,
+      "best_query_rank": 0,
+      "source_path": "",
+      "retrieval_score": 0.636364,
+      "raw_distance": null,
+      "normalized_score": 0.636364,
+      "distance_metric": "unknown",
+      "score_conversion": "monotonic_inverse_distance",
+      "vector_similarity": 0.8,
+      "model_match_level": "same_family_general",
+      "direct_evidence": false,
+      "quality_score": 1.0,
+      "title": "S7-1500 / ET 200MP manual",
+      "module": "S7-1500 / ET 200MP",
+      "parameter": "terminal wiring",
+      "agent_names": [
+        "Wiring Agent"
+      ],
+      "claim_links": [
+        "claim_55a3d4fa6c5b"
+      ],
+      "conflict_with": [],
+      "metadata": {
+        "source": "SAMPLE wiring and terminal note",
+        "source_type": "sample_manual",
+        "modality": "text",
+        "page": 1202,
+        "title": "Wiring and terminal safety note",
+        "manual_title": "S7-1500 / ET 200MP manual",
+        "module_model": "S7-1500 / ET 200MP",
+        "parameter": "terminal wiring",
+        "retrieval_backend": "sample_fixture",
+        "collection_name": "sample_fixture",
+        "raw_distance": null,
+        "normalized_score": 0.8,
+        "distance_metric": "unknown",
+        "score_conversion": "monotonic_inverse_distance",
+        "vector_similarity": 0.8,
+        "figure_id_type": "unknown",
+        "visual_record_id": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "location_markers": {},
+        "location_marker": "",
+        "location_marker_interface": "",
+        "model_inferred_from_text": false,
+        "order_number_inferred_from_text": false,
+        "query_text": "",
+        "retrieval_query": "",
+        "retrieval_timestamp": "2026-07-16T00:48:26+00:00",
+        "raw_image_path": "",
+        "resolved_image_path": "",
+        "image_exists": false,
+        "visual_evidence_status": "missing",
+        "direct_evidence": false,
+        "retrieval_tool": "search_text",
+        "model_match_level": "same_family_general",
+        "model_identity": {
+          "raw_text": "S7-1500 / ET 200MP",
+          "normalized_model": "ET 200MP",
+          "product_type": "ET",
+          "device_family": "ET 200MP",
+          "model_name": "ET 200MP",
+          "variant": "MP",
+          "order_numbers": [],
+          "aliases": [
+            "ET 200MP"
+          ],
+          "normalized_models": [
+            "ET 200MP"
+          ],
+          "family_hints": [
+            "ET 200MP",
+            "S7-1500"
+          ]
+        },
+        "query_ranks": {},
+        "rrf_score": 0,
+        "matched_query_count": 0,
+        "best_query_rank": 0,
+        "raw_rank_score": 1.254546,
+        "normalized_rank_score": 1.0,
+        "score_components": {
+          "vector_score": 0.636364,
+          "lexical_score": 0.181818,
+          "exact_model_score": 0.0,
+          "order_number_score": 0.0,
+          "same_family_general_score": 0.25,
+          "direct_answer_score": 0.8,
+          "modality_score": 0.0,
+          "page_score": 0.15,
+          "figure_score": 0.0,
+          "image_score": 0.0,
+          "rrf_score": 0.0,
+          "same_family_general_penalty": 0.0,
+          "different_model_penalty": 0.0,
+          "location_directness_bonus": 0.8,
+          "manual_figure_number_bonus": 0.0,
+          "irrelevant_section_penalty": 0.0,
+          "manual_review_penalty": 0.0,
+          "duplicate_penalty": 0.0,
+          "cross_family_penalty": 0.0
+        },
+        "merged_evidence_ids": [
+          "ev_322342f6b4e37d55"
+        ],
+        "merged_backends": [
+          "sample_fixture"
+        ],
+        "merged_sources": [
+          "SAMPLE wiring and terminal note"
+        ]
+      }
+    }
+  ],
+  "supported_claims": [
+    "端子接线应设置电源隔离设备，使用 SELV/PELV 电源并连接保护性导线；核对极性、线径和额定电压范围。"
+  ],
+  "unsupported_claims": [],
+  "conflicting_claims": [],
+  "verdict": "PASS",
+  "confidence": "HIGH",
+  "total_agent_calls": 1,
+  "total_tool_calls": 2,
+  "total_latency_ms": 27,
+  "generated_at": "2026-07-16 08:48:26",
+  "version": "full_rag_multimodal_v2",
+  "work_order": {
+    "user_query": "S7-1500 端子接线注意事项是什么？",
+    "context": "",
+    "device_info": {
+      "module_model": "S7-1500",
+      "parameter_name": "端子",
+      "expected_output_type": "answer"
+    },
+    "phenomenon": "",
+    "verified_evidence": [
+      "ev_322342f6b4e37d55"
+    ],
+    "risk_tip": "Wiring, commissioning or installation topic requires safety note.",
+    "suggested_checks": [
+      "核对型号、订货号、接口名和页码。",
+      "将资料查证结果交由具备资质人员复核。"
+    ],
+    "manual_confirmation_items": [],
+    "final_answer": "【结论】通用指南：端子接线应设置电源隔离设备，使用 SELV/PELV 电源并连接保护性导线；核对极性、线径和额定电压范围。【依据】S7-1500 / ET 200MP manual，S7-1500 / ET 200MP，页 1202。",
+    "generated_at": "2026-07-16 08:48:26"
+  },
+  "metrics": {
+    "selected_agents": [
+      "Wiring Agent"
+    ],
+    "execution_order": [
+      "Wiring Agent"
+    ],
+    "parallel_groups": [
+      [
+        "Wiring Agent"
+      ]
+    ],
+    "total_agent_calls": 1,
+    "total_tool_calls": 2,
+    "tool_call_count": 2,
+    "total_latency_ms": 27,
+    "agent_latency_ms": {
+      "Wiring Agent": 12
+    },
+    "routing_reason": {
+      "Wiring Agent": "score=7.50; question_type=WIRING; subquestions=1"
+    },
+    "early_stop_reason": "sufficient_evidence_after_adaptive_selection",
+    "mode": "SAMPLE",
+    "routing_strategy": "adaptive",
+    "feature_switches": {
+      "enable_dynamic_routing": true,
+      "enable_query_decomposition": true,
+      "enable_model_filter": true,
+      "enable_figure_backend": true,
+      "enable_judge": true,
+      "enable_verifier": true,
+      "enable_second_retrieval": true,
+      "enable_evidence_reranker": true
+    },
+    "retrieval_backend_audit": {
+      "mode": "SAMPLE",
+      "text_backend_active": false,
+      "figure_backend_active": false,
+      "jsonl_fallback_active": false,
+      "jsonl_fallback_triggered": false,
+      "jsonl_fallback_reason": "",
+      "hybrid_mode": false,
+      "tool_calls": [
+        {
+          "tool": "search_text",
+          "query": "S7-1500 端子接线注意事项是什么？ S7-1500 端子 answer Extract directly evidenced terminal and wiring requirements.",
+          "requested_modalities": [
+            "policy",
+            "table",
+            "text"
+          ],
+          "backend_attempted": [
+            "sample_fixture"
+          ],
+          "backend_used": [
+            "sample_fixture"
+          ],
+          "result_count": 7,
+          "latency_ms": 6,
+          "fallback_reason": "",
+          "error": "",
+          "expanded_queries": []
+        },
+        {
+          "tool": "search_table",
+          "query": "S7-1500 端子接线注意事项是什么？ S7-1500 端子 answer Extract directly evidenced terminal and wiring requirements.",
+          "requested_modalities": [
+            "table"
+          ],
+          "backend_attempted": [
+            "sample_fixture"
+          ],
+          "backend_used": [
+            "sample_fixture"
+          ],
+          "result_count": 2,
+          "latency_ms": 1,
+          "fallback_reason": "",
+          "error": "",
+          "expanded_queries": []
+        }
+      ],
+      "sample_fixture_active": true,
+      "errors": []
+    },
+    "subquestion_count": 1
+  },
+  "warnings": []
+}

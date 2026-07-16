@@ -24,8 +24,64 @@ SafePLC-Assist Box supports **Python 3.10 and Python 3.11**.
 ```bash
 python -m safeplc_assist_box.agents.orchestrator "CPU 1517-3 PN 的 X1 接口在哪里" --mode SAMPLE --json
 python -m safeplc_assist_box.evaluation.run_agent_benchmark --cases-dir benchmark/sample_regression --mode SAMPLE --method full
-streamlit run safeplc_assist_box/app_assist_box.py
+streamlit run app.py
 ```
+
+## Frontend Quick Start
+
+The Streamlit frontend is a three-page engineering workspace backed by the same `run_agent_system()` entrypoint as the CLI and benchmark. It does not maintain a separate answer generator.
+
+```bash
+cd <project_root>
+pip install -r requirements.txt
+streamlit run app.py
+```
+
+The navigation contains the intelligent evidence workbench, editable maintenance work order, and system/benchmark audit pages. The former `safeplc_assist_box/app_assist_box.py` command remains available as a single-page compatibility launcher.
+
+### Frontend Modes
+
+`SAFEPLC_FRONTEND_MODE` controls only how the UI obtains a response. `SAFEPLC_MODE` still controls the production retrieval pipeline (`SAMPLE`, `MOCK`, or `FULL`).
+
+```bash
+export SAFEPLC_FRONTEND_MODE=auto
+export SAFEPLC_MODE=SAMPLE
+streamlit run app.py
+```
+
+`auto` calls the real unified orchestrator first. If that call raises an error, an offline snapshot is allowed only when the user explicitly loaded a matching demo case. A free-form question is never replaced with demo output.
+
+```bash
+export SAFEPLC_FRONTEND_MODE=online
+export SAFEPLC_MODE=FULL
+streamlit run app.py
+```
+
+`online` only calls the unified orchestrator and exposes backend errors without substituting demo evidence.
+
+```bash
+export SAFEPLC_FRONTEND_MODE=demo
+export SAFEPLC_ENABLE_DEMO=true
+streamlit run app.py
+```
+
+`demo` only reads immutable SAMPLE response snapshots declared in `safeplc_assist_box/frontend/data/demo_cases.json`. The status header marks this mode as offline and does not report Text/Figure Chroma as connected.
+
+### FULL Assets
+
+Start from `config/full.env.example`. A FULL frontend normally needs:
+
+- `SAFEPLC_CHROMA_DIR` and `SAFEPLC_TEXT_COLLECTION`
+- `SAFEPLC_FIGURE_CHROMA_DIR` and `SAFEPLC_FIGURE_COLLECTION`
+- `SAFEPLC_EMBEDDING_BACKEND` and `SAFEPLC_EMBEDDING_MODEL_PATH`
+- `SAFEPLC_VISUAL_DIR` for resolvable manual images
+- optional JSONL paths only when `SAFEPLC_ALLOW_JSONL_FALLBACK=1`
+
+The header distinguishes an observed backend connection from a merely configured path. Before the first query, an existing FULL path is shown as configured but pending query verification; after a response, the retrieval backend audit supplies the observed state. Missing images show a safe placeholder and retain the original evidence path.
+
+Repository-backed SAMPLE benchmark data is read from `reports/agent_benchmark_sample.json` and `reports/agent_ablation_sample.json`. Reproducible cases come from `benchmark/sample_regression`. The page labels these as SAMPLE regression results, not FULL industrial accuracy. Runtime FULL reports remain under the ignored `reports/runtime/` directory.
+
+For startup failures, check the frontend and pipeline modes first, then run `scripts/check_full_assets.py --mode FULL --strict --require-chroma`. Backend exceptions are logged server-side; the normal UI shows a concise error and keeps details in the developer expander. PDF work-order export is not enabled by the current exporter; JSON, Markdown, and TXT export are available in-session.
 
 ## Modes
 
