@@ -2,11 +2,10 @@
 
 from __future__ import annotations
 
+import logging
 from typing import Any, Dict, Mapping
 
 import streamlit as st
-
-from safeplc_assist_box.agents.orchestrator import AGENT_FACTORY
 
 from ..components.common import empty_state, esc, section_heading
 from ..components.status_header import render_status_header
@@ -14,6 +13,8 @@ from ..report_loader import load_report_bundle, load_showcase_cases, load_suppor
 from ..runtime import FrontendSettings, probe_runtime
 from ..state import initialize_session_state
 
+
+LOGGER = logging.getLogger(__name__)
 
 METRIC_LABELS = {
     "coverage": "问题覆盖率",
@@ -42,6 +43,17 @@ def _catalog() -> dict[str, list[str]]:
     return load_supported_device_catalog()
 
 
+@st.cache_resource(show_spinner=False)
+def _agent_names() -> tuple[list[str], str]:
+    """Read the real Agent factory without making this audit page fragile."""
+    try:
+        from safeplc_assist_box.agents.orchestrator import AGENT_FACTORY
+    except Exception as exc:
+        LOGGER.exception("Unable to load the production Agent factory")
+        return [], type(exc).__name__
+    return list(AGENT_FACTORY), ""
+
+
 def render() -> None:
     initialize_session_state(st.session_state)
     result = st.session_state.get("pipeline_result")
@@ -55,8 +67,9 @@ def render() -> None:
 
     section_heading("系统能力概览", "SYSTEM")
     catalog = _catalog()
+    agent_names, agent_error = _agent_names()
     capability_cols = st.columns(4)
-    capability_cols[0].metric("专业 Agent", len(AGENT_FACTORY))
+    capability_cols[0].metric("专业 Agent", len(agent_names))
     capability_cols[1].metric("已收录系列", len(catalog))
     capability_cols[2].metric("已收录型号", sum(len(items) for items in catalog.values()))
     capability_cols[3].metric("工单导出", "JSON / MD / TXT")
@@ -64,11 +77,21 @@ def render() -> None:
         {"能力": "Text Chroma", "当前状态": runtime.get("text_chroma"), "来源": "运行配置 / 后端审计"},
         {"能力": "Figure Chroma", "当前状态": runtime.get("figure_chroma"), "来源": "运行配置 / 后端审计"},
         {"能力": "Embedding", "当前状态": runtime.get("model"), "来源": "运行配置"},
-        {"能力": "Agent Pool", "当前状态": "、".join(AGENT_FACTORY.keys()), "来源": "AGENT_FACTORY"},
-        {"能力": "Judge / Verifier", "当前状态": "结构化检查可用", "来源": "统一 Orchestrator"},
+        {
+            "能力": "Agent Pool",
+            "当前状态": "、".join(agent_names) if agent_names else "生产 Agent 模块不可用",
+            "来源": "AGENT_FACTORY",
+        },
+        {
+            "能力": "Judge / Verifier",
+            "当前状态": "结构化检查可用" if not agent_error else "生产模块不可用",
+            "来源": "统一 Orchestrator",
+        },
         {"能力": "PDF 工单", "当前状态": "未启用", "来源": "当前 exporter 能力"},
     ]
     st.dataframe(table_rows, width="stretch", hide_index=True)
+    if agent_error:
+        st.warning(f"生产 Agent 能力目录加载失败：{agent_error}。详情已写入服务日志。")
     if catalog:
         with st.expander("真实支持设备目录", expanded=False):
             st.json(catalog, expanded=True)

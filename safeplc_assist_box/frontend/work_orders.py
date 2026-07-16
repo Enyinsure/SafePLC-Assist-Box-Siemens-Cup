@@ -55,7 +55,14 @@ def build_editable_work_order(result: Mapping[str, Any]) -> Dict[str, Any]:
         if isinstance(item, Mapping) and item.get("text")
     ]
     risk_tip = str(backend.get("risk_tip") or "")
-    risk_level = str(raw_response.get("operation_risk_level") or "未分级")
+    raw_query_context = raw_response.get("query_context")
+    query_context = dict(raw_query_context) if isinstance(raw_query_context, Mapping) else {}
+    risk_level = str(
+        raw_response.get("operation_risk_level")
+        or backend.get("risk_level")
+        or query_context.get("risk_level")
+        or "未分级"
+    )
     action = str(result.get("runtime", {}).get("action") or "")
     if risk_tip and risk_level not in {"SAFE", "LOW", "未分级"} and action == "REFUSE" and risk_tip not in safety_notes:
         safety_notes.append(risk_tip)

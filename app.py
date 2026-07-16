@@ -13,7 +13,7 @@ st.set_page_config(
     page_title="SafePLC-Assist Box",
     layout="wide",
     initial_sidebar_state="auto",
-    menu_items={"About": "SafePLC-Assist Box · OFFLINE / READ-ONLY"},
+    menu_items={"About": "SafePLC-Assist Box · Industrial evidence workbench"},
 )
 initialize_session_state(st.session_state)
 load_styles()

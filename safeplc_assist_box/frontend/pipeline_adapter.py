@@ -6,6 +6,8 @@ import logging
 from dataclasses import dataclass, field
 from typing import Any, Dict
 
+import streamlit as st
+
 from .demo_loader import get_demo_case, load_demo_snapshot
 from .result_normalizer import normalize_response
 from .runtime import FrontendSettings
@@ -36,6 +38,14 @@ class PipelineOutcome:
     debug_error: str = ""
 
 
+@st.cache_resource(show_spinner=False)
+def _load_orchestrator() -> Any:
+    """Import the production entrypoint once per Streamlit process."""
+    from safeplc_assist_box.agents.orchestrator import run_agent_system
+
+    return run_agent_system
+
+
 def execute_pipeline(
     request: PipelineRequest,
     settings: FrontendSettings | None = None,
@@ -50,8 +60,7 @@ def execute_pipeline(
         return _execute_demo(request, settings)
 
     try:
-        from safeplc_assist_box.agents.orchestrator import run_agent_system
-
+        run_agent_system = _load_orchestrator()
         response = run_agent_system(
             query,
             context=request.context,
@@ -80,7 +89,11 @@ def execute_pipeline(
         return PipelineOutcome(
             ok=False,
             source="online_pipeline",
-            user_error="真实流水线暂时不可用。自由问题未使用离线数据替代，请检查运行配置或载入带快照的典型案例。",
+            user_error=(
+                "真实流水线请求超时。自由问题未使用离线数据替代，请检查模型、检索后端和超时配置。"
+                if isinstance(exc, TimeoutError)
+                else "真实流水线暂时不可用。自由问题未使用离线数据替代，请检查运行配置或载入带快照的典型案例。"
+            ),
             debug_error=repr(exc),
         )
 

@@ -30,3 +30,33 @@ def test_normalizer_preserves_malformed_raw_response_without_raising() -> None:
     assert result["request_id"] == "normalization_failed"
     assert result["compatibility_warnings"]
     assert result["raw_response"] == ["unexpected", "response"]
+
+
+def test_missing_safety_fields_are_not_presented_as_passed() -> None:
+    result = normalize_response({"query": "测试", "judge_decision": {"verdict": "NEED_MORE_EVIDENCE"}})
+
+    assert result["judge_result"]["checks"]["safety"] == {
+        "status": "not_checked",
+        "score": None,
+        "detail": "未返回结构化安全检查字段",
+    }
+
+
+def test_evidence_safety_check_is_preserved_when_backend_provides_it() -> None:
+    result = normalize_response(
+        {
+            "query": "测试",
+            "evidence_pool": {
+                "evidences": [
+                    {
+                        "evidence_id": "ev_1",
+                        "text": "直接证据",
+                        "metadata": {"safety_checked": True},
+                    }
+                ]
+            },
+            "judge_decision": {"final_evidence_ids": ["ev_1"]},
+        }
+    )
+
+    assert result["evidence_pool"][0]["safety_checked"] is True

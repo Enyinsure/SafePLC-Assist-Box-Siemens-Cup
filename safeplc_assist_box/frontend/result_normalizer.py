@@ -177,7 +177,7 @@ def _normalize_tasks(
         elif any(item in {"ABSTAIN", "NEED_MORE_EVIDENCE", "NEED_CLARIFICATION"} for item in statuses):
             status = "skipped"
         elif any(item == "REFUSE" for item in statuses):
-            status = "failed"
+            status = "completed"
         elif assigned and statuses:
             status = "completed"
         else:
@@ -260,6 +260,7 @@ def _normalize_evidence(
     claim_links: Dict[str, List[str]],
 ) -> Dict[str, Any]:
     raw_id = str(evidence.get("evidence_id") or "")
+    metadata = _mapping(evidence.get("metadata"))
     score = max(
         _number(evidence.get("quality_score")),
         _number(evidence.get("normalized_score")),
@@ -278,6 +279,11 @@ def _normalize_evidence(
         model_consistent = None
     else:
         model_consistent = True
+    safety_checked = evidence.get("safety_checked")
+    if not isinstance(safety_checked, bool):
+        safety_checked = metadata.get("safety_checked")
+    if not isinstance(safety_checked, bool):
+        safety_checked = None
     return {
         "evidence_id": raw_id,
         "display_id": evidence_id_map.get(raw_id, raw_id or "未编号"),
@@ -303,11 +309,11 @@ def _normalize_evidence(
         "supports_claims": claim_links.get(raw_id, [str(item) for item in _items(evidence.get("claim_links"))]),
         "model_match_level": match_level,
         "model_consistent": model_consistent,
-        "safety_checked": None,
+        "safety_checked": safety_checked,
         "accepted": raw_id in final_ids,
         "direct_evidence": bool(evidence.get("direct_evidence")),
         "agents": [str(item) for item in _items(evidence.get("agent_names"))],
-        "metadata": _mapping(evidence.get("metadata")),
+        "metadata": metadata,
     }
 
 
@@ -495,12 +501,16 @@ def _normalize_judge(
     else:
         checks["citation_completeness"] = _check("warning", 0.0, "未返回可核对的结构化 claim")
 
-    risk_level = str(raw.get("operation_risk_level") or query_context.get("risk_level") or "SAFE")
-    risk_decision = str(query_context.get("risk_decision") or "ALLOW")
-    if raw.get("action") == "REFUSE" or risk_decision != "ALLOW":
+    risk_level_value = raw.get("operation_risk_level") or query_context.get("risk_level")
+    risk_decision_value = query_context.get("risk_decision")
+    risk_level = str(risk_level_value or "未记录")
+    risk_decision = str(risk_decision_value or "")
+    if raw.get("action") == "REFUSE" or (risk_decision and risk_decision != "ALLOW"):
         checks["safety"] = _check("warning", 0.75, f"风险级别 {risk_level}，系统已限制操作建议")
-    else:
+    elif risk_level_value is not None or risk_decision_value is not None:
         checks["safety"] = _check("passed", 1.0, f"风险级别 {risk_level}，未触发危险操作边界")
+    else:
+        checks["safety"] = _check("not_checked", None, "未返回结构化安全检查字段")
 
     conflicts = _items(decision.get("conflicting_claims")) + _items(decision.get("conflict_groups"))
     checks["evidence_conflict"] = _check(

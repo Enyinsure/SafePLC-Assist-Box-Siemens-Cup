@@ -46,3 +46,19 @@ def test_demo_mode_loads_real_sample_snapshot_and_marks_source() -> None:
     assert outcome.source == "offline_demo_snapshot"
     assert outcome.normalized["runtime"]["source"] == "offline_demo_snapshot"
     assert any("SAMPLE" in warning for warning in outcome.normalized["runtime"]["warnings"])
+
+
+def test_online_timeout_is_reported_without_demo_substitution(monkeypatch) -> None:
+    from safeplc_assist_box.frontend import pipeline_adapter
+
+    def raise_timeout(*_args, **_kwargs):
+        raise TimeoutError("retrieval timed out")
+
+    monkeypatch.setattr(pipeline_adapter, "_load_orchestrator", lambda: raise_timeout)
+    settings = FrontendSettings(frontend_mode="online", demo_enabled=True, pipeline_mode="FULL")
+
+    outcome = execute_pipeline(PipelineRequest(query="自由问题"), settings)
+
+    assert outcome.ok is False
+    assert "请求超时" in outcome.user_error
+    assert outcome.source == "online_pipeline"

@@ -31,3 +31,19 @@ def test_work_order_exports_keep_evidence_references() -> None:
     assert "E1" in text
     assert work_order["status"] == "待人工复核"
     assert work_order["safety_notes"] == []
+
+
+def test_work_order_uses_query_context_risk_level_as_safe_fallback() -> None:
+    result = {
+        "request_id": "REQ-RISK",
+        "query": "安全检查",
+        "device_context": {},
+        "task_type": [],
+        "answer": {},
+        "evidence_pool": [],
+        "runtime": {},
+        "work_order": {},
+        "raw_response": {"query_context": {"risk_level": "MEDIUM"}},
+    }
+
+    assert build_editable_work_order(result)["risk_level"] == "MEDIUM"
