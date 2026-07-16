@@ -24,6 +24,7 @@ DEFAULT_STATE: Dict[str, Any] = {
     "current_work_order": None,
     "query_history": [],
     "selected_demo_id": "",
+    "selected_demo_preset_id": "",
     "selected_demo_snapshot": "",
     "loaded_demo_fingerprint": {},
     "last_error": "",
@@ -55,6 +56,7 @@ def clear_query_session(state: MutableMapping[str, Any]) -> None:
 def clear_demo_binding(state: MutableMapping[str, Any]) -> None:
     """Detach the session from any immutable demo snapshot."""
     state["selected_demo_id"] = ""
+    state["selected_demo_preset_id"] = ""
     state["selected_demo_snapshot"] = ""
     state["loaded_demo_fingerprint"] = {}
 
@@ -71,32 +73,39 @@ def invalidate_query_inputs(state: MutableMapping[str, Any]) -> None:
 
 
 def bind_demo_case(state: MutableMapping[str, Any], case: Mapping[str, Any]) -> None:
-    """Load a manifest case and atomically bind all snapshot-constrained controls."""
+    """Load a case preset without overriding the user's SAMPLE/FULL selection."""
     fingerprint = demo_case_fingerprint(case)
+    pipeline_mode = str(state.get("ui_pipeline_mode") or fingerprint["pipeline_mode"] or "SAMPLE").upper()
     state["current_query"] = fingerprint["query"]
     state["query_context_text"] = fingerprint["context"]
     state["ui_family"] = fingerprint["family"] or "自动识别"
     state["ui_model"] = fingerprint["model"] or "自动识别"
     state["ui_document_scope"] = fingerprint["document_scope"] or "全部资料"
     state["ui_task_hint"] = fingerprint["task_hint"] or "自动识别"
-    state["ui_pipeline_mode"] = fingerprint["pipeline_mode"] or "SAMPLE"
+    state["ui_pipeline_mode"] = pipeline_mode
     state["device_context"] = {
         "family": state["ui_family"],
         "model": state["ui_model"],
         "document_scope": state["ui_document_scope"],
         "answer_mode": str(state.get("ui_answer_mode") or "标准查证"),
         "task_hint": state["ui_task_hint"],
-        "detection_source": "demo_fixed",
+        "detection_source": "demo_fixed" if pipeline_mode == "SAMPLE" else "demo_preset",
     }
-    state["selected_demo_id"] = str(case.get("id") or "")
-    state["selected_demo_snapshot"] = str(case.get("snapshot") or "")
-    state["loaded_demo_fingerprint"] = fingerprint
+    state["selected_demo_preset_id"] = str(case.get("id") or "")
+    if pipeline_mode == "SAMPLE":
+        state["selected_demo_id"] = str(case.get("id") or "")
+        state["selected_demo_snapshot"] = str(case.get("snapshot") or "")
+        state["loaded_demo_fingerprint"] = fingerprint
+    else:
+        state["selected_demo_id"] = ""
+        state["selected_demo_snapshot"] = ""
+        state["loaded_demo_fingerprint"] = {}
     state["pipeline_result"] = None
     state["raw_pipeline_response"] = None
     state["current_work_order"] = None
     state["last_error"] = ""
     state["last_error_detail"] = ""
-    state["query_status"] = "已载入离线案例"
+    state["query_status"] = "已载入离线案例" if pipeline_mode == "SAMPLE" else "已载入 FULL 查询预设"
 
 
 def reconcile_demo_binding(state: MutableMapping[str, Any]) -> bool:

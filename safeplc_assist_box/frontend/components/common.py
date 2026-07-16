@@ -32,6 +32,7 @@ DETECTION_SOURCE_LABELS = {
     "auto_detected": "查询自动识别",
     "evidence_inferred": "证据推断",
     "demo_fixed": "离线案例固定",
+    "demo_preset": "快捷查询预设",
     "unknown": "未识别",
 }
 

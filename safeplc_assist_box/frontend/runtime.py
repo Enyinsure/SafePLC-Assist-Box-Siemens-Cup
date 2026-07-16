@@ -86,7 +86,7 @@ def probe_runtime(
         "demo_enabled": settings.demo_enabled,
         "pipeline_mode": effective_mode,
         "result_source": result_source,
-        "result_source_label": _result_source_label(result_source),
+        "result_source_label": _result_source_label(result_source, effective_mode),
         "backend_importable": backend_importable,
         "system": system_state,
         "text_chroma": text_state,
@@ -117,8 +117,14 @@ def _model_state(backend: str, model_path: str) -> str:
     return f"{backend or 'auto'}，待运行验证"
 
 
-def _result_source_label(source: str) -> str:
+def _result_source_label(source: str, pipeline_mode: str) -> str:
+    if source == "online_pipeline":
+        mode = str(pipeline_mode or "").upper()
+        if mode == "FULL":
+            return "FULL / 真实工业资料检索"
+        if mode == "SAMPLE":
+            return "SAMPLE / 内置演示证据"
+        return "真实流水线"
     return {
-        "online_pipeline": "真实流水线",
         "offline_demo_snapshot": "离线 SAMPLE 快照",
     }.get(str(source or ""), "尚未查询")

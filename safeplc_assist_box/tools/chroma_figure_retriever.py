@@ -13,6 +13,7 @@ from .chroma_collection_selector import CollectionSelectionError, discover_colle
 from .chroma_text_retriever import ChromaUnavailable
 from .embedding_adapter import EmbeddingAdapter, EmbeddingConfigurationError, EmbeddingDimensionMismatch
 from .metadata_normalizer import extract_location_marker, extract_manual_figure, first_value, load_jsonl_records, normalize_metadata
+from .verified_figure_catalog import enrich_verified_figure_evidence
 
 
 class FigureMetadataMapper:
@@ -116,7 +117,7 @@ class FigureMetadataMapper:
                 "location_marker": ev.metadata.get("location_marker") or extract_location_marker(ev.text, ev.query_text),
             }
         )
-        return ev
+        return enrich_verified_figure_evidence(ev)
 
     def _resolve_image(self, image: str):
         if not image:

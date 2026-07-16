@@ -78,6 +78,22 @@ def test_loaded_demo_binding_is_cleared_after_control_change() -> None:
     assert state["pipeline_result"] is None
 
 
+def test_demo_button_preserves_full_mode_and_does_not_bind_sample_snapshot() -> None:
+    case = load_demo_cases()[0]
+    state: dict = {"ui_answer_mode": "标准查证", "ui_pipeline_mode": "FULL"}
+    initialize_session_state(state)
+
+    bind_demo_case(state, case)
+
+    assert state["ui_pipeline_mode"] == "FULL"
+    assert state["selected_demo_preset_id"] == case["id"]
+    assert state["selected_demo_id"] == ""
+    assert state["selected_demo_snapshot"] == ""
+    assert state["loaded_demo_fingerprint"] == {}
+    assert state["current_query"] == case["query"]
+    assert state["query_status"] == "已载入 FULL 查询预设"
+
+
 def test_offline_snapshot_device_is_not_overridden_by_user_selection() -> None:
     case = load_demo_cases()[0]
     payload = json.loads((PROJECT_ROOT / case["snapshot"]).read_text(encoding="utf-8"))

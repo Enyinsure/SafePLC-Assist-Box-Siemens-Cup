@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "cards": [
+    {
+      "card_id": "verified_cpu1517_3pn_x1_figure_2_237",
+      "figure_id": "fig_cpu1517_3pn_x1_x2",
+      "figure_number": "2-237",
+      "figure_aliases": ["图 2-237", "Figure 2-237"],
+      "page": 2476,
+      "module_model": "CPU 1517-3 PN/DP",
+      "order_number": "6ES7517-3AP00-0AB0",
+      "manual_title": "CPU 1517-3 PN/DP 设备手册",
+      "manual_version": "11/2023",
+      "document_id": "A5E33595080-AF",
+      "caption": "不带前面板的 CPU 1517-3 PN/DP 的前视图",
+      "image_path": "assets/demo/cpu_1517_3_x1_figure_2_237.png",
+      "sha256": "7e73d63df0848cf4b5c101084b7b2a52f48b8a96cfeeb6c3c543866881d0389c",
+      "location_markers": {
+        "X3": "③",
+        "X2": "⑥",
+        "X1": "⑦"
+      }
+    },
+    {
+      "card_id": "verified_cpu1517_3pn_led_figure_2_240",
+      "figure_id": "fig_cpu1517_3pn_led_2_240",
+      "figure_number": "2-240",
+      "figure_aliases": ["图 2-240", "Figure 2-240"],
+      "page": 2482,
+      "module_model": "CPU 1517-3 PN/DP",
+      "order_number": "6ES7517-3AP00-0AB0",
+      "manual_title": "CPU 1517-3 PN/DP 设备手册",
+      "manual_version": "11/2023",
+      "document_id": "A5E33595080-AF",
+      "caption": "CPU 1517-3 PN/DP 的 LED 指示灯（不带前面板）",
+      "image_path": "assets/demo/cpu_1517_3_led_figure_2_240.png",
+      "sha256": "5a4022dbfc399195ef7c17341fd47ba3096e11b5e3d8b1ccc0d0e90358adb187"
+    }
+  ]
+}

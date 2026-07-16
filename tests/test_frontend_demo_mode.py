@@ -100,3 +100,30 @@ def test_free_query_is_never_replaced_by_demo_snapshot(monkeypatch) -> None:
     assert outcome.ok is False
     assert outcome.normalized is None
     assert outcome.source == "online_pipeline"
+
+
+def test_full_pipeline_failure_never_falls_back_to_selected_sample_snapshot(monkeypatch) -> None:
+    from safeplc_assist_box.frontend import pipeline_adapter
+
+    case = load_demo_cases()[0]
+
+    def backend_failure(*_args, **_kwargs):
+        raise RuntimeError("FULL backend unavailable")
+
+    monkeypatch.setattr(pipeline_adapter, "_load_orchestrator", lambda: backend_failure)
+    settings = FrontendSettings(frontend_mode="auto", demo_enabled=True, pipeline_mode="FULL")
+    outcome = execute_pipeline(
+        PipelineRequest(
+            query=case["query"],
+            context=case["context"],
+            user_context=case["context"],
+            device_context=dict(case["device_context"]),
+            pipeline_mode="FULL",
+            selected_demo_id=case["id"],
+        ),
+        settings,
+    )
+
+    assert outcome.ok is False
+    assert outcome.source == "online_pipeline"
+    assert outcome.normalized is None

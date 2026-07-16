@@ -10,6 +10,14 @@ from ..paths import resolve_project_path
 from .common import badge, esc, format_score, section_heading
 
 
+@st.cache_data(show_spinner=False)
+def _read_image_bytes(path: str, mtime_ns: int) -> bytes:
+    """Cache image bytes by both resolved path and file modification time."""
+    del mtime_ns
+    with open(path, "rb") as handle:
+        return handle.read()
+
+
 def render_evidence_pool(result: Mapping[str, Any]) -> None:
     stats = dict(result.get("evidence_stats") or {})
     evidences = list(result.get("evidence_pool") or [])
@@ -53,6 +61,7 @@ def _render_evidence_card(evidence: Mapping[str, Any]) -> None:
     safety_value = evidence.get("safety_checked")
     safety_label = "通过" if safety_value is True else ("失败" if safety_value is False else "未检查")
     safety_status = "passed" if safety_value is True else ("failed" if safety_value is False else "not_checked")
+    visual_status = str(evidence.get("visual_status") or "missing")
     location = " / ".join(
         value
         for value in (
@@ -74,6 +83,7 @@ def _render_evidence_card(evidence: Mapping[str, Any]) -> None:
             <span>{esc(evidence.get('retriever'))}</span>
             <span>{esc(location)}</span>
             <span>支持强度 {esc(evidence.get('confidence_level'))}</span>
+            <span>视觉 {esc(visual_status)}</span>
           </div>
           <p>{esc(evidence.get('excerpt'))}</p>
           <dl>
@@ -88,17 +98,30 @@ def _render_evidence_card(evidence: Mapping[str, Any]) -> None:
         """,
         unsafe_allow_html=True,
     )
-    with st.expander(f"{evidence.get('display_id')} · 原文、图示与检索上下文", expanded=False):
+    image_path = str(evidence.get("image_path") or "")
+    with st.expander(
+        f"{evidence.get('display_id')} · 原文、图示与检索上下文",
+        expanded=bool(image_path and evidence.get("accepted")),
+    ):
         st.markdown(
             f"**检索分值：** {format_score(evidence.get('score'))}  "
             f"**视觉状态：** {evidence.get('visual_status') or 'missing'}  "
             f"**Collection：** {evidence.get('collection') or '未记录'}"
         )
-        image_path = str(evidence.get("image_path") or "")
         if image_path:
             resolved = resolve_project_path(image_path)
             if resolved and resolved.is_file():
-                st.image(str(resolved), caption=f"{evidence.get('figure_number') or evidence.get('display_id')} · {location}")
+                st.image(
+                    _read_image_bytes(str(resolved), resolved.stat().st_mtime_ns),
+                    caption=f"{evidence.get('figure_number') or evidence.get('display_id')} · {location}",
+                )
+                metadata = evidence.get("metadata")
+                verified = metadata if isinstance(metadata, Mapping) else {}
+                if verified.get("verified_figure_integrity") == "verified":
+                    st.caption(
+                        "原始手册页面已校验 · "
+                        f"SHA-256 {str(verified.get('verified_figure_sha256') or '')[:12]}…"
+                    )
             else:
                 st.warning("图像文件不可用；证据记录已保留原始路径。")
                 st.code(image_path, language="text")

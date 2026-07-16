@@ -14,10 +14,11 @@ from ..evidence.model_identity import reject_cross_family
 from ..schemas import AgentEvidence
 from ..retrieval.query_expander import QueryExpander
 from .chroma_figure_retriever import ChromaFigureRetriever
-from .chroma_text_retriever import ChromaTextRetriever, ChromaUnavailable
+from .chroma_text_retriever import ChromaTextRetriever
 from .embedding_adapter import EmbeddingAdapter
 from .jsonl_fallback_retriever import JSONLFallbackRetriever
 from .metadata_normalizer import normalize_metadata
+from .verified_figure_catalog import enrich_verified_figure_evidence
 
 
 DOMAIN_TERMS = [
@@ -212,6 +213,8 @@ class ToolRegistry:
                 "fallback_reason": "",
                 "error": "",
             }
+        if self.feature_switches.get("enable_figure_backend", True):
+            records = [enrich_verified_figure_evidence(ev) for ev in records]
         if self.config.mode != "FULL" and self.feature_switches.get("enable_model_filter", True):
             records = reject_cross_family(records, query)
         if self.feature_switches.get("enable_evidence_reranker", True):
@@ -523,6 +526,8 @@ class ToolRegistry:
             fallback_score=float(kwargs.get("retrieval_score", 0.8) or 0.8),
             modality_hint=str(kwargs.get("modality", "text")),
         )
+        if self.feature_switches.get("enable_figure_backend", True):
+            ev = enrich_verified_figure_evidence(ev)
         ev.direct_evidence = bool(kwargs.get("direct_evidence", False))
         ev.quality_score = ev.retrieval_score
         ev.metadata["direct_evidence"] = ev.direct_evidence
@@ -538,7 +543,9 @@ class ToolRegistry:
                 figure_id="fig_cpu1517_3pn_x1_x2",
                 figure_number="Figure 2-237",
                 title="CPU 1517-3 PN/DP front view",
-                manual_title="S7-1500 CPU manual",
+                manual_title="CPU 1517-3 PN/DP 设备手册",
+                manual_version="11/2023",
+                document_id="A5E33595080-AF",
                 module_model="CPU 1517-3 PN/DP",
                 order_number="6ES7517-3AP00-0AB0",
                 parameter="X1 PROFINET interface",
@@ -629,10 +636,15 @@ class ToolRegistry:
                 modality="text",
                 page=2482,
                 title="Communication fault and LED troubleshooting",
-                manual_title="S7-1500 diagnostics guide",
+                manual_title="CPU 1517-3 PN/DP 设备手册",
+                manual_version="11/2023",
+                document_id="A5E33595080-AF",
                 module_model="CPU 1517-3 PN/DP",
                 order_number="6ES7517-3AP00-0AB0",
+                figure_id="fig_cpu1517_3pn_led_2_240",
+                figure_number="Figure 2-240",
                 parameter="communication LED alarm",
+                direct_evidence=True,
                 text=(
                     "RUN/STOP LED, ERROR LED, MAINT LED, X1 P1 LINK RX/TX LED, "
                     "X1 P2 LINK RX/TX LED and X2 P1 LINK RX/TX LED. Figure 2-240."

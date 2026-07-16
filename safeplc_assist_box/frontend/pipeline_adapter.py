@@ -79,7 +79,12 @@ def execute_pipeline(
         return _normalization_outcome(normalized, response, "online_pipeline")
     except Exception as exc:  # The UI must survive optional backend failures.
         LOGGER.exception("SafePLC pipeline execution failed")
-        if settings.frontend_mode == "auto" and settings.demo_enabled and request.selected_demo_id:
+        if (
+            settings.frontend_mode == "auto"
+            and request.pipeline_mode.upper() == "SAMPLE"
+            and settings.demo_enabled
+            and request.selected_demo_id
+        ):
             fallback = _execute_demo(request, settings)
             if fallback.ok and fallback.normalized:
                 fallback.normalized.setdefault("runtime", {}).setdefault("warnings", []).append(

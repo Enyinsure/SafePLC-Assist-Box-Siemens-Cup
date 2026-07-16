@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Mapping
 
 from .paths import DATA_ROOT, resolve_project_path
+from ..tools.verified_figure_catalog import enrich_verified_figure_payload
 
 
 DEMO_MANIFEST = DATA_ROOT / "demo_cases.json"
@@ -126,4 +127,4 @@ def load_demo_snapshot(case: Dict[str, Any]) -> Dict[str, Any]:
         raise ValueError(f"离线快照 JSON 无法解析：{snapshot.name}") from exc
     if not isinstance(payload, dict):
         raise ValueError(f"离线快照必须是对象：{snapshot.name}")
-    return payload
+    return enrich_verified_figure_payload(payload)
