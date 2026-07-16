@@ -224,21 +224,60 @@ def extract_topology_fact(text: str) -> str:
     cpu_x2 = bool(re.search(r"(?:R/H\s*)?CPU[^。\n]{0,60}PROFINET\s*X2", value, re.I))
     if hmi_x1 and cpu_x2:
         return "在该 S7-1500R/H 示例中，HMI 侧使用 PROFINET X1，CPU 侧使用 PROFINET X2。"
+
+    has_profinet = bool(re.search(r"PROFINET|工业以太网|Industrial Ethernet", value, re.I))
+    has_cpu = bool(re.search(r"\bCPU\b|S7-1500", value, re.I))
+    has_hmi = bool(re.search(r"\bHMI\b|人机界面|触摸屏", value, re.I))
+    has_switch = bool(re.search(r"交换机|SCALANCE|switch", value, re.I))
+    has_io = bool(re.search(r"ET\s*200|分布式\s*I/?O|IO device|I/O device", value, re.I))
+
+    if has_profinet and has_cpu and has_hmi:
+        return "手册证据支持 CPU 与 HMI 通过 PROFINET 网络通信；具体使用 X1、X2 或交换机端口仍应按各设备型号和接口说明确认。"
+    if has_profinet and has_cpu and has_switch:
+        return "手册证据支持 S7-1500 CPU 接入 PROFINET 工业以太网；经交换机连接时，具体端口、拓扑和冗余方式应按 CPU 与交换机型号核对。"
+    if has_profinet and has_cpu and has_io:
+        return "手册证据支持 S7-1500 CPU 与分布式 I/O 通过 PROFINET 建立网络关系；具体接口与设备角色需结合型号和组态确认。"
+    if has_profinet and has_cpu:
+        return "该证据确认 S7-1500 CPU 具备 PROFINET 通信相关配置；HMI、交换机及 I/O 的具体连接端口需依据各自型号手册继续核验。"
     return ""
 
 
 def extract_emc_facts(text: str) -> List[str]:
     value = str(text or "")
-    facts = []
+    facts: List[str] = []
+
+    def add(item: str) -> None:
+        if item and item not in facts:
+            facts.append(item)
+
     if re.search(r"(?:grounded|接地)[^。\n]{0,40}(?:control cabinets?|control boxes?|控制柜|控制箱)", value, re.I):
-        facts.append("可采用接地控制柜或控制箱。")
+        add("可采用接地控制柜或控制箱。")
     if re.search(r"(?:noise filters?|噪声滤波器)[^。\n]{0,50}(?:supply lines?|电源线)?", value, re.I):
-        facts.append("可在电源线上使用噪声滤波器。")
+        add("可在电源线上使用噪声滤波器。")
     if re.search(r"industrial (?:environment|applications?)|designed for industrial use|工业环境", value, re.I):
-        facts.append("该系统适用于工业环境。")
+        add("该系统适用于工业环境。")
     if re.search(r"EN\s*55011[^。\n]{0,30}Class\s*B|住宅环境[^。\n]{0,50}Class\s*B", value, re.I):
-        facts.append("用于住宅环境时应满足 EN 55011 Class B。")
-    return facts
+        add("用于住宅环境时应满足 EN 55011 Class B。")
+
+    for sentence in _sentences(value):
+        low = sentence.lower()
+        if _is_cross_reference(sentence):
+            continue
+        normative = bool(
+            re.search(r"必须|应当|不得|禁止|需要|确保|建议|至少|保持|分开|隔离", sentence)
+            or re.search(r"\b(?:must|shall|should|required|ensure|separate|maintain|avoid|use)\b", sentence, re.I)
+        )
+        if not normative:
+            continue
+        if any(term in low for term in ["屏蔽", "shield", "接地", "ground", "等电位", "equipotential", "emc", "电磁兼容"]):
+            add(sentence[:220] + ("。" if not sentence.endswith("。") else ""))
+        elif any(term in low for term in ["动力电缆", "power cable", "信号电缆", "通信电缆", "间距", "distance", "并行敷设", "separate"]):
+            add(sentence[:220] + ("。" if not sentence.endswith("。") else ""))
+        elif any(term in low for term in ["噪声滤波", "noise filter", "干扰", "interference"]):
+            add(sentence[:220] + ("。" if not sentence.endswith("。") else ""))
+        if len(facts) >= 5:
+            break
+    return facts[:5]
 
 
 def _sentences_with_terms(text: str, terms: tuple[str, ...]) -> List[str]:
