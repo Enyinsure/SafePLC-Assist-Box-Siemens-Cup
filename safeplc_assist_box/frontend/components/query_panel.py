@@ -53,14 +53,19 @@ def render_query_panel(cases: Sequence[Mapping[str, Any]]) -> bool:
             width="stretch",
         )
     with clear_col:
-        if st.button(
+        st.button(
             "清空",
             icon=":material/restart_alt:",
             width="stretch",
-        ):
-            clear_query_session(st.session_state)
-            st.rerun()
+            on_click=_clear_query,
+        )
     return submitted
+
+
+
+def _clear_query() -> None:
+    """Clear widget-backed query state before the next script rerun."""
+    clear_query_session(st.session_state)
 
 
 def _invalidate_inputs() -> None:
