@@ -21,6 +21,34 @@ class QueryDecomposer:
         low = query.lower()
         model = context.slots.get("module_model").value if context.slots.get("module_model") else ""
         model_prefix = f"{model} 的 " if model else ""
+
+        # A work order is an output format, not an evidence source. First route
+        # the problem to the relevant specialist; the Work-order Agent is added
+        # later by Supervisor and consumes the shared Evidence Pool.
+        if context.question_type == "WORK_ORDER":
+            if any(token in low for token in ["电压", "电流", "功率", "参数", "额定", "允许范围"]):
+                specialist = "Parameter Agent"
+                objective = "Verify the requested parameter before exporting the maintenance record."
+                modalities = ["table", "text"]
+            elif any(token in low for token in ["接线", "端子", "线缆", "极性", "线径"]):
+                specialist = "Wiring Agent"
+                objective = "Verify wiring requirements before exporting the maintenance record."
+                modalities = ["text", "table", "figure"]
+            else:
+                specialist = "Troubleshooting Agent"
+                objective = "Retrieve supported diagnostic checks before exporting the maintenance record."
+                modalities = ["text", "table"]
+            subquestions.append(
+                SubQuestion(
+                    subquestion_id="sq_work_order_evidence",
+                    text=query,
+                    objective=objective,
+                    expected_agents=[specialist],
+                    required_modalities=modalities,
+                    metadata={"trigger": "work_order_evidence_first", "source_span": query},
+                )
+            )
+
         if "x1" in low and any(token in low for token in ["哪里", "位置", "前面", "front", "where"]):
             subquestions.append(
                 SubQuestion(
@@ -86,12 +114,12 @@ class QueryDecomposer:
                     metadata={"trigger": "network_notes", "source_span": query},
                 )
             )
-        if any(token in low for token in ["通信不上", "通信异常", "指示灯异常", "led", "run/stop", "error"]):
+        if any(token in low for token in ["通信不上", "通信异常", "通信中断", "指示灯异常", "led", "run/stop", "error"]):
             subquestions.append(
                 SubQuestion(
                     subquestion_id="sq_comm_led_diagnosis",
-                    text=f"{model_prefix}通信不上且指示灯异常时，应先核对哪些 LED 信息？",
-                    objective="Extract only LED checks supported by the manual evidence.",
+                    text=f"{model_prefix}通信异常时，应先核对哪些 LED、接口和诊断信息？",
+                    objective="Extract only communication and LED checks supported by the manual evidence.",
                     expected_agents=["Troubleshooting Agent"],
                     required_modalities=["text"],
                     metadata={"trigger": "communication_led", "source_span": query},
