@@ -1,0 +1,626 @@
+{
+  "schema_version": "hidden-demo-v1",
+  "case_id": "HIDDEN_04",
+  "source": "offline_demo_snapshot",
+  "pipeline_mode": "SAMPLE",
+  "immutable": true,
+  "query": "请给出 CPU 1517-3 PN/DP，订货号 6ES7517-3AP00-0AB0 的接口布局图，并说明 PROFINET 接口位置。",
+  "query_hash": "4d350928f5188899bea5c1d7e36d4726bc6a726343a142abfd2c275720064641",
+  "mode": "SAMPLE",
+  "question_type": "INTERFACE_LOCATION",
+  "action": "ANSWER",
+  "verdict": "PASS",
+  "confidence": "HIGH",
+  "operation_risk_level": "LOW",
+  "query_context": {
+    "original_query": "请给出 CPU 1517-3 PN/DP，订货号 6ES7517-3AP00-0AB0 的接口布局图，并说明 PROFINET 接口位置。",
+    "question_type": "INTERFACE_LOCATION",
+    "required_modalities": [
+      "figure",
+      "text"
+    ],
+    "missing_slots": [],
+    "risk_level": "LOW",
+    "risk_decision": "ALLOW",
+    "slots": {
+      "device_family": "S7-1500",
+      "module_model": "CPU 1517-3 PN/DP",
+      "order_number": "6ES7517-3AP00-0AB0"
+    }
+  },
+  "device_context": {
+    "family": "S7-1500",
+    "model": "CPU 1517-3 PN/DP",
+    "order_number": "6ES7517-3AP00-0AB0",
+    "detection_source": "hidden_demo_fixed",
+    "confidence": 1.0
+  },
+  "task_plan": {
+    "question_type": "INTERFACE_LOCATION",
+    "selected_agents": [
+      "Figure Agent",
+      "Topology Agent"
+    ]
+  },
+  "agent_plan": {
+    "selected_agents": [
+      "Figure Agent",
+      "Topology Agent"
+    ],
+    "execution_order": [
+      "Figure Agent",
+      "Topology Agent"
+    ],
+    "execution_mode": "parallel",
+    "parallel_groups": [
+      [
+        "Figure Agent",
+        "Topology Agent"
+      ]
+    ],
+    "tasks": [
+      {
+        "task_id": "HIDDEN_04_TASK_01",
+        "agent_name": "Figure Agent",
+        "question": "请给出 CPU 1517-3 PN/DP，订货号 6ES7517-3AP00-0AB0 的接口布局图，并说明 PROFINET 接口位置。",
+        "status": "completed"
+      },
+      {
+        "task_id": "HIDDEN_04_TASK_02",
+        "agent_name": "Topology Agent",
+        "question": "请给出 CPU 1517-3 PN/DP，订货号 6ES7517-3AP00-0AB0 的接口布局图，并说明 PROFINET 接口位置。",
+        "status": "completed"
+      }
+    ]
+  },
+  "agent_results": [
+    {
+      "agent_name": "Figure Agent",
+      "status": "ANSWERED",
+      "answer": "CPU 1517-3 PN/DP（6ES7517-3AP00-0AB0）的 PROFINET IO 接口 X1 位于前面板下方，在资料页 2476、图 2-237 中对应标号 ⑦；X2 对应标号 ⑥。页 2481 的图 2-239 还给出 X1 P1/P2 和 X2 P1 的方框连接关系。",
+      "claims": [
+        {
+          "claim_id": "HIDDEN_04_CLAIM_01",
+          "claim_text": "CPU 1517-3 PN/DP（6ES7517-3AP00-0AB0）的 PROFINET IO 接口 X1 位于前面板下方，在资料页 2476、图 2-237 中对应标号 ⑦；X2 对应标号 ⑥。页 2481 的图 2-239 还给出 X1 P1/P2 和 X2 P1 的方框连接关系。",
+          "claim_type": "technical_guidance",
+          "model_scope": "CPU 1517-3 PN/DP",
+          "confidence": "HIGH",
+          "evidence_ids": [
+            "HIDDEN_04_EV_01",
+            "HIDDEN_04_EV_02",
+            "HIDDEN_04_EV_03",
+            "HIDDEN_04_EV_04",
+            "HIDDEN_04_EV_05",
+            "HIDDEN_04_EV_06",
+            "HIDDEN_04_EV_07",
+            "HIDDEN_04_EV_08"
+          ],
+          "direct_support": true,
+          "metadata": {
+            "offline_curated": true
+          }
+        }
+      ],
+      "evidence_ids": [
+        "HIDDEN_04_EV_01",
+        "HIDDEN_04_EV_02",
+        "HIDDEN_04_EV_03",
+        "HIDDEN_04_EV_04",
+        "HIDDEN_04_EV_05",
+        "HIDDEN_04_EV_06",
+        "HIDDEN_04_EV_07",
+        "HIDDEN_04_EV_08"
+      ],
+      "abstain": false
+    },
+    {
+      "agent_name": "Topology Agent",
+      "status": "ANSWERED",
+      "answer": "CPU 1517-3 PN/DP（6ES7517-3AP00-0AB0）的 PROFINET IO 接口 X1 位于前面板下方，在资料页 2476、图 2-237 中对应标号 ⑦；X2 对应标号 ⑥。页 2481 的图 2-239 还给出 X1 P1/P2 和 X2 P1 的方框连接关系。",
+      "claims": [
+        {
+          "claim_id": "HIDDEN_04_CLAIM_01",
+          "claim_text": "CPU 1517-3 PN/DP（6ES7517-3AP00-0AB0）的 PROFINET IO 接口 X1 位于前面板下方，在资料页 2476、图 2-237 中对应标号 ⑦；X2 对应标号 ⑥。页 2481 的图 2-239 还给出 X1 P1/P2 和 X2 P1 的方框连接关系。",
+          "claim_type": "technical_guidance",
+          "model_scope": "CPU 1517-3 PN/DP",
+          "confidence": "HIGH",
+          "evidence_ids": [
+            "HIDDEN_04_EV_01",
+            "HIDDEN_04_EV_02",
+            "HIDDEN_04_EV_03",
+            "HIDDEN_04_EV_04",
+            "HIDDEN_04_EV_05",
+            "HIDDEN_04_EV_06",
+            "HIDDEN_04_EV_07",
+            "HIDDEN_04_EV_08"
+          ],
+          "direct_support": true,
+          "metadata": {
+            "offline_curated": true
+          }
+        }
+      ],
+      "evidence_ids": [
+        "HIDDEN_04_EV_01",
+        "HIDDEN_04_EV_02",
+        "HIDDEN_04_EV_03",
+        "HIDDEN_04_EV_04",
+        "HIDDEN_04_EV_05",
+        "HIDDEN_04_EV_06",
+        "HIDDEN_04_EV_07",
+        "HIDDEN_04_EV_08"
+      ],
+      "abstain": false
+    }
+  ],
+  "evidence_pool": {
+    "evidences": [
+      {
+        "evidence_id": "HIDDEN_04_EV_01",
+        "asset_id": "VIS_0027",
+        "source": "CPU 1517-3 PN/DP device manual",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "CPU 1517-3 PN/DP device manual",
+        "document_id": "A5E33595080-AF",
+        "page": 2476,
+        "section": "设备特定信息 > 中央处理单元 > CPU 1517-3 PN/DP > 3 产品概述 > 3.5 操作员控件和显示元件",
+        "figure_number": "图 2-237",
+        "manual_figure_number": "图 2-237",
+        "manual_figure_caption": "不带前面板的 CPU 1517-3 PN/DP 的前视图",
+        "device_family": "S7-1500",
+        "module_model": "CPU 1517-3 PN/DP",
+        "order_number": "6ES7517-3AP00-0AB0",
+        "text": "图 2-237 标注 CPU 1517-3 PN/DP 的前视图，PROFINET IO 接口 X1 对应标号 ⑦，X2 对应标号 ⑥。",
+        "compact_excerpt": "图 2-237 标注 CPU 1517-3 PN/DP 的前视图，PROFINET IO 接口 X1 对应标号 ⑦，X2 对应标号 ⑥。",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Figure Agent",
+          "Topology Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0027",
+          "sha256": "7e73d63df0848cf4b5c101084b7b2a52f48b8a96cfeeb6c3c543866881d0389c",
+          "visual_type": "front_panel_or_led_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_04_EV_02",
+        "asset_id": "VIS_0028",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E33595080-AF",
+        "page": 2481,
+        "section": "设备特定信息 > 中央处理单元 > CPU 1517-3 PN/DP (6ES7517-3AP00-0AB0) > 4 接线",
+        "figure_number": "图 2-239",
+        "manual_figure_number": "图 2-239",
+        "manual_figure_caption": "CPU 1517‑3 PN/DP 的方框图",
+        "device_family": "S7-1500",
+        "module_model": "CPU 1517-3 PN/DP",
+        "order_number": "6ES7517-3AP00-0AB0",
+        "text": "方框图 下图显示了 CPU 1517‑3 PN/DP 的电路示意图。 \u0017 \u0014 \u0019 \u0018 \u0016 \u001a \u0015 /\u000e 0 ;\u0018\u0013 ;\u0014\u00033\u0014 31 ;\u0014\u00033\u00145 ;\u0015\u00033\u0014 31 ;\u0015\u00033\u0014 3%\u0003;\u0016 ;\u0014\u00033\u0015 5\u00126 (5 07 31 ;\u0014\u00033\u00155 ;\u001b\u0013\u0003'&\u0003\u0015\u0017\u00039 ① 显示屏 PN X1 P1R PROFINET 接口 X1 端口 1 ② RUN/STOP/MRES 模式选择器开关 PN X1 P2R PROFINET 接口 X1 端口 2 ③ 电子元件 PN X2 P1 PROFINET 接口 X2 端口 1 ④ PROFINET 双端口交换机 PB X3 PROFIBUS 接口 X3 ⑤ PROFIBUS DP 驱动程序 L+ 24 V DC 电源电压 ⑥ 背板总线接口 M 接地 ⑦ 内部电源电压 R/S RUN/STOP LED 指示灯（黄色/绿色） X50 SIMATIC 存储卡 ER ERROR LED 指示灯（红色） X80 24 V DC 电源电压供电 MT MAINT LED 指示灯（黄色） X1 P1、X1 P2、X2 P1 Link TX/RX LED 指示灯 图 2-239 CPU 1517‑3 PN/DP 的方框图 29 接线 CPU 1517-3 PN/DP (6ES7517-3AP00-0AB0) 设备手册, 11/2023, A5E33595080-AF",
+        "compact_excerpt": "方框图 下图显示了 CPU 1517‑3 PN/DP 的电路示意图。 \u0017 \u0014 \u0019 \u0018 \u0016 \u001a \u0015 /\u000e 0 ;\u0018\u0013 ;\u0014\u00033\u0014 31 ;\u0014\u00033\u00145 ;\u0015\u00033\u0014 31 ;\u0015\u00033\u0014 3%\u0003;\u0016 ;\u0014\u00033\u0015 5\u00126 (5 07 31 ;\u0014\u00033\u00155 ;\u001b\u0013\u0003'&\u0003\u0015\u0017\u00039 ① 显示屏 PN X1 P1R PROFINET 接口 X1 端口 1 ② RUN/STOP/MRES 模式选择器开关 PN X1 P2R PROFINET 接口 X1 端口 2 ③ 电子元件 PN X2 P1 PROFINET 接口 X2 端口 1 ④ PROFINET 双端口交换机 PB X3 PROFIBUS 接口 X3 ⑤ PROFIBUS DP 驱动程序 L+ 24 V DC 电源电压 ⑥ 背板总线接口 M 接地 ⑦ 内部电源电压 R/S RUN/STOP LED 指示灯（黄色/绿色） X50 SIMATIC 存储卡 ER ERROR LED 指示灯（红色） X80 24 V DC 电源电压供电 MT MAINT LED 指示灯（黄色） X1 P1、X1 P2、X2 P1 Link TX/RX LED 指示灯 图 2-239 CPU 1517‑3 PN/DP 的方框图 29 接线 CPU 1517-3 PN/DP (6ES7517-3AP00-0AB0) 设备手册, 11/2023, A5E33595080-AF",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Figure Agent",
+          "Topology Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0028",
+          "sha256": "f81c8b7e0024dd456ed999107dcd549ac22baaeb74fa633554b93cd65ba9c15d",
+          "visual_type": "front_panel_or_led_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_04_EV_03",
+        "asset_id": "VIS_0029",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E33595080-AF",
+        "page": 2478,
+        "section": "设备特定信息 > 中央处理单元 > CPU 1517-3 PN/DP (6ES7517-3AP00-0AB0) > 4 接线",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "S7-1500",
+        "module_model": "CPU 1517-3 PN/DP",
+        "order_number": "6ES7517-3AP00-0AB0",
+        "text": "CPU 1517-3 PN/DP (6ES7517-3AP00-0AB0) 设备手册, 11/2023, A5E33595080-AF 26 接线 4 这一章节将介绍有关各个接口端子分配的信息和 CPU 1517‑3 PN/DP 的方框图。 24 V DC 电源电压 (X80) 在 CPU 出厂交付时，连接有电源连接器。 下表列出了 24 V DC 电源电压的信号名称和引脚分配说明。 表格 2-286 24 V DC 电源电压的引脚分配 视图 连接器 信号名称 1) 说明 1 1L+ + 24 V DC 电源电压 2 1M 电源电压接地 3 2M 回路电源电压接地 2) \u0016 \u0015 \u0017 \u0014 \u00140 \u00150 \u0014/\u000e \u0015/\u000e 4 2L+ + 24 V DC 回路电源电压 2) 1) 1L+ 和 2L+ 以及 1M 和 2M 在内部桥接 2) 最大允许 10 A 如果 CPU 通过系统电源供电，则无需连接 24 V 电源。 PROFINET 接口 X1，带双端口交换机（X1 P1R 和 X1 P2R） 该端子分配基于 RJ45 插头的以太网标准。 • 如果禁用自动协商功能，则 RJ45 插座将作为一个交换机 (MDI-X)。 • 如果激活自动协商功能，则自动跨接生效，同时 RJ45 插座既可分配为数据终端设备 (MDI-X)，也可分配为一个交换机 (MDI-X)。 ㄟਓ\u0003\u0014˄↓䶒˅ ቿ㭭 ㄟਓ\u0003\u0015˄㛼䶒˅ PROFINET 接口 X2，带 1 个端口 (X2 P1) 端子分配基于 RJ45 插头的以太网标准。",
+        "compact_excerpt": "CPU 1517-3 PN/DP (6ES7517-3AP00-0AB0) 设备手册, 11/2023, A5E33595080-AF 26 接线 4 这一章节将介绍有关各个接口端子分配的信息和 CPU 1517‑3 PN/DP 的方框图。 24 V DC 电源电压 (X80) 在 CPU 出厂交付时，连接有电源连接器。 下表列出了 24 V DC 电源电压的信号名称和引脚分配说明。 表格 2-286 24 V DC 电源电压的引脚分配 视图 连接器 信号名称 1) 说明 1 1L+ + 24 V DC 电源电压 2 1M 电源电压接地 3 2M 回路电源电压接地 2) \u0016 \u0015 \u0017 \u0014 \u00140 \u00150 \u0014/\u000e \u0015/\u000e 4 2L+ + 24 V DC 回路电源电压 2) 1) 1L+ 和 2L+ 以及 1M 和 2M 在内部桥接 2) 最大允许 10 A 如果 CPU 通过系统电源供电，则无需连接 24 V 电源。 PROFINET 接口 X1，带双端口交换机（X1 P1R 和 X1 P2R） 该端子分配基于 RJ45 插头的以太网标准。 • 如果禁用自动协商功能，则 RJ45 插座将作为一个交换机 (MDI-X)。 • 如果激活自动协商功能，则自动跨接生效，同时 RJ45 插座既可分配为数据终端设备 (MDI-X)，也可分配为一个交换机 (MDI-X)。 ㄟਓ\u0003\u0014˄↓䶒˅ ቿ㭭 ㄟਓ\u0003\u0015˄㛼䶒˅ PROFINET 接口 X2，带 1 个端口 (X2 P1) 端子分配基于 RJ45 插头的以太网标准。",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Figure Agent",
+          "Topology Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0029",
+          "sha256": "58d130a6bd5a065279911292fe5ccaf37eb787189349dd5b4b46b6a256376b5b",
+          "visual_type": "wiring_or_terminal_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_04_EV_04",
+        "asset_id": "VIS_0030",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E33595080-AF",
+        "page": 2472,
+        "section": "设备特定信息 > 中央处理单元 > CPU 1517-3 PN/DP (6ES7517-3AP00-0AB0) > 3 产品概述 > 3.4 特性",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "S7-1500",
+        "module_model": "CPU 1517-3 PN/DP",
+        "order_number": "6ES7517-3AP00-0AB0",
+        "text": "第二个 PROFINET 接口 (X2 P1) 配有一个端口。除了 PROFINET 基本功能之外，该接口 还支持 PROFINET IO RT（实时）功能。PROFINET 基本功能支持 HMI 通信，可与组态系 统、上位网络（骨干网、路由器、Internet）或其它设备或自动化单元进行数据通信。 说明 IP 子网 这两个接口的 IP 子网必须不同。即，这两个接口对应的子网 IP 地址必须不同。 第三个接口 (X3) 用于连接 PROFIBUS 网络。该接口用作 PROFIBUS DP 接口时，CPU 可 作为 DP 主站。但不能用作 DP 从站。 – OPC UA 使用 OPC UA，可通过与供应商无关的开放通信协议进行数据交换。作为 OPC UA 服务 器的 CPU 可与 OPC UA 客户端（如，HMI 面板、SCADA 系统等）进行通信。 • 集成 Web 服务器： 该 CPU 中集成有 Web 服务器。通过 Web 服务器可读取以下信息： – 起始页面，包含有 CPU 的常规信息 – 标识信息 – 诊断缓冲区中的内容 – 模块状态的查询结果 – 固件更新 – 报警（无确认选项） – 通信的相关信息 – PROFINET 拓扑结构 – 变量状态，写入变量 – 监控表 – 存储器的使用情况 – 用户页面 – 数据日志（如果使用） – 组态的在线备份和恢复 – 运动控制工艺对象的诊断信息 – SIMATIC 存储卡上存储的跟踪记录显示 – 读取服务数据 – 基本 Web 页面 – 使用 3 种项目语言显示 Web 服务器，如，注释和消息文本 – 配方 – 用户自定义的 W",
+        "compact_excerpt": "第二个 PROFINET 接口 (X2 P1) 配有一个端口。除了 PROFINET 基本功能之外，该接口 还支持 PROFINET IO RT（实时）功能。PROFINET 基本功能支持 HMI 通信，可与组态系 统、上位网络（骨干网、路由器、Internet）或其它设备或自动化单元进行数据通信。 说明 IP 子网 这两个接口的 IP 子网必须不同。即，这两个接口对应的子网 IP 地址必须不同。 第三个接口 (X3) 用于连接 PROFIBUS 网络。该接口用作 PROFIBUS DP 接口时，CPU 可 作为 DP 主站。但不能用作 DP 从站。 – OPC UA 使用 OPC UA，可通过与供应商无关的开放通信协议进行数据交换。作为 OPC UA 服务 器的 CPU 可与 OPC UA 客户端（如，HMI 面板、SCADA 系统等）进行通信。 • 集成 Web 服务器： 该 CPU 中集成有 Web 服务器。通过 Web 服务器可读取以下信息： – 起始页面，包含有 CPU 的常规信息 – 标识信息 – 诊断缓冲区中的内容 – 模块状态的查询结果 – 固件更新 – 报警（无确认选项） – 通信的相关信息 – PROFINET 拓扑结构 – 变量状态，写入变量 – 监控表 – 存储器的使用情况 – 用户页面 – 数据日志（如果使用） – 组态的在线备份和恢复 – 运动控制工艺对象的诊断信息 – SIMATIC 存储卡上存储的跟踪记录显示 – 读取服务数据 – 基本 Web 页面 – 使用 3 种项目语言显示 Web 服务器，如，注释和消息文本 – 配方 – 用户自定义的 W",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Figure Agent",
+          "Topology Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0030",
+          "sha256": "4843ea6e75357f8b9375feb67678bb5da688b5a992429353abfae677248476dc",
+          "visual_type": "network_topology_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_04_EV_05",
+        "asset_id": "VIS_0031",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E33595080-AF",
+        "page": 2482,
+        "section": "设备特定信息 > 中央处理单元 > CPU 1517-3 PN/DP (6ES7517-3AP00-0AB0) > 5 中断、错误消息、诊断和系统报警 > 5.1 CPU 的状态和错误显示",
+        "figure_number": "图 2-240",
+        "manual_figure_number": "图 2-240",
+        "manual_figure_caption": "CPU 1517‑3 PN/DP 的 LED 指示灯（不带前面板）",
+        "device_family": "S7-1500",
+        "module_model": "CPU 1517-3 PN/DP",
+        "order_number": "6ES7517-3AP00-0AB0",
+        "text": "CPU 1517-3 PN/DP (6ES7517-3AP00-0AB0) 设备手册, 11/2023, A5E33595080-AF 30 中断、错误消息、诊断和系统报警 5 CPU 1517‑3 PN/DP 的状态和错误显示如下所述。 有关“中断”的更多信息，请参见 STEP​ 7 在线帮助。 有关“诊断”和“系统报警”主题的更多信息，请参见诊断 (http://support.automation.siemens.com/WW/view/zh/59192926)功能手册。 5.1 CPU 的状态和错误显示 LED 指示灯 下图显示了 CPU 1517‑3 PN/DP 的 LED 指示灯。 \u0013 \u0016 \u0017 \u0015 \u0018 \u0012 \u0014 ① RUN/STOP LED 指示灯（LED 指示灯黄色/绿色点亮） ② ERROR LED 指示灯（LED 指示灯红色点亮） ③ MAINT LED 指示灯（LED 指示灯黄色点亮） ④ 无功能 ⑤ 端口 X1 P1 的 LINK RX/TX LED 指示灯（LED 指示灯黄色/绿色点亮） ⑥ 端口 X1 P2 的 LINK RX/TX LED 指示灯（LED 指示灯黄色/绿色点亮） ⑦ 端口 X2 P1 的 LINK RX/TX LED 指示灯（LED 指示灯黄色/绿色点亮） 图 2-240 CPU 1517‑3 PN/DP 的 LED 指示灯（不带前面板）",
+        "compact_excerpt": "CPU 1517-3 PN/DP (6ES7517-3AP00-0AB0) 设备手册, 11/2023, A5E33595080-AF 30 中断、错误消息、诊断和系统报警 5 CPU 1517‑3 PN/DP 的状态和错误显示如下所述。 有关“中断”的更多信息，请参见 STEP​ 7 在线帮助。 有关“诊断”和“系统报警”主题的更多信息，请参见诊断 (http://support.automation.siemens.com/WW/view/zh/59192926)功能手册。 5.1 CPU 的状态和错误显示 LED 指示灯 下图显示了 CPU 1517‑3 PN/DP 的 LED 指示灯。 \u0013 \u0016 \u0017 \u0015 \u0018 \u0012 \u0014 ① RUN/STOP LED 指示灯（LED 指示灯黄色/绿色点亮） ② ERROR LED 指示灯（LED 指示灯红色点亮） ③ MAINT LED 指示灯（LED 指示灯黄色点亮） ④ 无功能 ⑤ 端口 X1 P1 的 LINK RX/TX LED 指示灯（LED 指示灯黄色/绿色点亮） ⑥ 端口 X1 P2 的 LINK RX/TX LED 指示灯（LED 指示灯黄色/绿色点亮） ⑦ 端口 X2 P1 的 LINK RX/TX LED 指示灯（LED 指示灯黄色/绿色点亮） 图 2-240 CPU 1517‑3 PN/DP 的 LED 指示灯（不带前面板）",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Figure Agent",
+          "Topology Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0031",
+          "sha256": "d86f61e9284abf1f15ebb1c976b0312b93b26449430c0c6de87267cafed44bde",
+          "visual_type": "front_panel_or_led_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_04_EV_06",
+        "asset_id": "VIS_0032",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E33595080-AF",
+        "page": 2483,
+        "section": "设备特定信息 > 中央处理单元 > CPU 1517-3 PN/DP (6ES7517-3AP00-0AB0) > 5 中断、错误消息、诊断和系统报警 > 5.1 CPU 的状态和错误显示",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "S7-1500",
+        "module_model": "CPU 1517-3 PN/DP",
+        "order_number": "6ES7517-3AP00-0AB0",
+        "text": "RUN/STOP、ERROR 和 MAINT LED 指示灯的含义 CPU 1517‑3 PN/DP 配有三个 LED 指示灯，用于指示当前的操作状态和诊断状态。下表列出了 RUN/STOP、ERROR 和 MAINT LED 指示灯各种颜色组合的含义。 表格 2-289 LED 指示灯的含义 RUN/STOP LED 指示灯 ERROR LED 指示灯 MAINT LED 指示灯 含义 LED 指示灯熄灭 LED 指示灯熄灭 LED 指示灯熄灭 CPU 电源缺失或不足。 LED 指示灯熄灭 LED 指示灯红色闪烁 LED 指示灯熄灭 发生错误。 LED 指示灯绿色点亮 LED 指示灯熄灭 LED 指示灯熄灭 CPU 处于 RUN 模式。 设备要求维护。 需及时对受影响的硬件进行检查/更换。 激活强制作业 LED 指示灯绿色点亮 LED 指示灯熄灭 LED 指示灯黄色点亮 CPU 的 OPC UA 服务器预期通过 GDS 推送功能收到 初始信任列表和 CRL。 LED 指示灯绿色点亮 LED 指示灯熄灭 LED 指示灯黄色闪烁 组态错误 LED 指示灯黄色点亮 LED 指示灯红色闪烁 LED 指示灯熄灭 诊断事件未决。 LED 指示灯黄色点亮 LED 指示灯熄灭 LED 指示灯黄色闪烁 通过 SIMATIC 存储卡进行的固件更新已成功完成。 CPU 处于 STOP 模式。 LED 指示灯黄色点亮 LED 指示灯熄灭 LED 指示灯熄灭 CPU 运行具有已激活断点的程序。程序处于端点位 置。 SIMATIC 存储卡中的程序出错。 通过 SIMATIC 存储卡进行固件更新失败。 L",
+        "compact_excerpt": "RUN/STOP、ERROR 和 MAINT LED 指示灯的含义 CPU 1517‑3 PN/DP 配有三个 LED 指示灯，用于指示当前的操作状态和诊断状态。下表列出了 RUN/STOP、ERROR 和 MAINT LED 指示灯各种颜色组合的含义。 表格 2-289 LED 指示灯的含义 RUN/STOP LED 指示灯 ERROR LED 指示灯 MAINT LED 指示灯 含义 LED 指示灯熄灭 LED 指示灯熄灭 LED 指示灯熄灭 CPU 电源缺失或不足。 LED 指示灯熄灭 LED 指示灯红色闪烁 LED 指示灯熄灭 发生错误。 LED 指示灯绿色点亮 LED 指示灯熄灭 LED 指示灯熄灭 CPU 处于 RUN 模式。 设备要求维护。 需及时对受影响的硬件进行检查/更换。 激活强制作业 LED 指示灯绿色点亮 LED 指示灯熄灭 LED 指示灯黄色点亮 CPU 的 OPC UA 服务器预期通过 GDS 推送功能收到 初始信任列表和 CRL。 LED 指示灯绿色点亮 LED 指示灯熄灭 LED 指示灯黄色闪烁 组态错误 LED 指示灯黄色点亮 LED 指示灯红色闪烁 LED 指示灯熄灭 诊断事件未决。 LED 指示灯黄色点亮 LED 指示灯熄灭 LED 指示灯黄色闪烁 通过 SIMATIC 存储卡进行的固件更新已成功完成。 CPU 处于 STOP 模式。 LED 指示灯黄色点亮 LED 指示灯熄灭 LED 指示灯熄灭 CPU 运行具有已激活断点的程序。程序处于端点位 置。 SIMATIC 存储卡中的程序出错。 通过 SIMATIC 存储卡进行固件更新失败。 L",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Figure Agent",
+          "Topology Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0032",
+          "sha256": "6920cf8346f8b8ab1aa2dfbf4be79977fc11e314db7779b9687e9e7991606270",
+          "visual_type": "front_panel_or_led_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_04_EV_07",
+        "asset_id": "VIS_0033",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E33595080-AF",
+        "page": 2469,
+        "section": "设备特定信息 > 中央处理单元 > CPU 1517-3 PN/DP (6ES7517-3AP00-0AB0) > 3 产品概述 > 3.2 应用",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "S7-1500",
+        "module_model": "CPU 1517-3 PN/DP",
+        "order_number": "6ES7517-3AP00-0AB0",
+        "text": "信息安全集成 与 STEP 7 一同使用时，这些 CPU 可提供基于密码的专有技术保护，从而有效防止对程序块未 经授权的读取或修改。 防拷贝保护是一种高度可靠的保护措施，用于防止对程序块未经授权的复制。通过防拷贝保 护，SIMATIC 存储卡上的各个块与序列号相关联，只有组态的存储卡插入 CPU 中时，这些块 才能运行。 此外，所有项目用户都可通过本地用户管理进行管理。可为每个用户单独设置访问权限等权 限。 防篡改保护经过改进，允许控制器检测工程组态数据的传输是否被篡改或未被授权。 而以太网 CP (CP 1543-1) 则可基于防火墙提供额外的访问保护或建立 VPN 安全连接。 设计和操作 SIMATIC S7-1500 产品系列的所有 CPU 均配有纯文本信息显示屏。显示屏显示了所有连接模块 的订货号、固件版本和序列号信息。此外，在现场，还可可直接设置该 CPU 的 IP 地址和其它 网络设置，而无需使用编程设备。错误消息将以纯文本方式直接显示在显示屏上。执行维护 时，可以通过快速访问诊断报警来最大程度缩短工厂停机时间。关于此主题以及显示屏的诸多 其它功能的详细信息，请参见 SIMATIC S7-1500 显示屏仿真器 (https://support.industry.siemens.com/cs/cn/zh/view/109761758/en)。 所有模块采用统一的前连接器，并且通过集成的电位跳线器灵活构成电位组，极大简化了存储 方式。SIMATIC S7-1500 导轨中应用了 DIN 导轨之后，便可轻松快速地安装附加组件（例如断 路器、继电器等）。SIMATIC S",
+        "compact_excerpt": "信息安全集成 与 STEP 7 一同使用时，这些 CPU 可提供基于密码的专有技术保护，从而有效防止对程序块未 经授权的读取或修改。 防拷贝保护是一种高度可靠的保护措施，用于防止对程序块未经授权的复制。通过防拷贝保 护，SIMATIC 存储卡上的各个块与序列号相关联，只有组态的存储卡插入 CPU 中时，这些块 才能运行。 此外，所有项目用户都可通过本地用户管理进行管理。可为每个用户单独设置访问权限等权 限。 防篡改保护经过改进，允许控制器检测工程组态数据的传输是否被篡改或未被授权。 而以太网 CP (CP 1543-1) 则可基于防火墙提供额外的访问保护或建立 VPN 安全连接。 设计和操作 SIMATIC S7-1500 产品系列的所有 CPU 均配有纯文本信息显示屏。显示屏显示了所有连接模块 的订货号、固件版本和序列号信息。此外，在现场，还可可直接设置该 CPU 的 IP 地址和其它 网络设置，而无需使用编程设备。错误消息将以纯文本方式直接显示在显示屏上。执行维护 时，可以通过快速访问诊断报警来最大程度缩短工厂停机时间。关于此主题以及显示屏的诸多 其它功能的详细信息，请参见 SIMATIC S7-1500 显示屏仿真器 (https://support.industry.siemens.com/cs/cn/zh/view/109761758/en)。 所有模块采用统一的前连接器，并且通过集成的电位跳线器灵活构成电位组，极大简化了存储 方式。SIMATIC S7-1500 导轨中应用了 DIN 导轨之后，便可轻松快速地安装附加组件（例如断 路器、继电器等）。SIMATIC S",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Figure Agent",
+          "Topology Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0033",
+          "sha256": "e5dd4d97abb07c6cb451183f1759504369b4e8fd99886cb14bb9d713632b6ce2",
+          "visual_type": "installation_power_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_04_EV_08",
+        "asset_id": "VIS_0034",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E33595080-AF",
+        "page": 2456,
+        "section": "设备特定信息 > 中央处理单元 > CPU 1517-3 PN/DP (6ES7517-3AP00-0AB0) > 1 简介 > 1.1 S7-1500/ET 200MP 指南文档 > 1.1.1 信息类 S7-1500/ET 200MP",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "S7-1500",
+        "module_model": "CPU 1517-3 PN/DP",
+        "order_number": "6ES7517-3AP00-0AB0",
+        "text": "可以通过右下角带黑色角的方框来识别 ID 链接。通过 ID 链接可访问产品的数字铭牌。 使用智能手机摄像头、条形码扫描仪或阅读器应用程序扫描产品或包装标签上的二维码，即可 调用 ID 链接。 在数字铭牌中，将找到产品数据、手册、符合性声明、证书和有关产品的其它有用信息。 1.1 S7-1500/ET 200MP 指南文档 1.1.1 信息类 S7-1500/ET 200MP SIMATIC S7-1500 自动化系统和 ET 200MP 分布式 I/O 系统的文档分为 3 个部分。 用户可根据需要快速访问所需内容。产品信息中记录了对这些手册的更改和补充信息。 相关文档，可从 Internet 免费下载。 (https://support.industry.siemens.com/cs/cn/zh/view/109742691) 基本信息 系统手册和入门指南中详细描述了 SIMATIC S7-1500 和 ET 200MP 系统的组态、安装、接线和 调试。 STEP 7 在线帮助为用户提供了组态和编程方面的支持。 示例： • S7-1500 入门指南 • S7-1500/ET 200MP 系统手册 • TIA Portal 在线帮助 设备信息 设备手册中包含模块特定信息的简要介绍，如特性、接线图、功能特性和技术规范。 示例： • CPU 设备手册 • “接口模块”设备手册 • “数字量模块”设备手册 • “模拟量模块”设备手册 • “通信模块”设备手册 • “工艺模块”设备手册 • “电源模块”设备手册 4 CPU 1517-3 PN/DP (6ES7517-3AP00-0AB0",
+        "compact_excerpt": "可以通过右下角带黑色角的方框来识别 ID 链接。通过 ID 链接可访问产品的数字铭牌。 使用智能手机摄像头、条形码扫描仪或阅读器应用程序扫描产品或包装标签上的二维码，即可 调用 ID 链接。 在数字铭牌中，将找到产品数据、手册、符合性声明、证书和有关产品的其它有用信息。 1.1 S7-1500/ET 200MP 指南文档 1.1.1 信息类 S7-1500/ET 200MP SIMATIC S7-1500 自动化系统和 ET 200MP 分布式 I/O 系统的文档分为 3 个部分。 用户可根据需要快速访问所需内容。产品信息中记录了对这些手册的更改和补充信息。 相关文档，可从 Internet 免费下载。 (https://support.industry.siemens.com/cs/cn/zh/view/109742691) 基本信息 系统手册和入门指南中详细描述了 SIMATIC S7-1500 和 ET 200MP 系统的组态、安装、接线和 调试。 STEP 7 在线帮助为用户提供了组态和编程方面的支持。 示例： • S7-1500 入门指南 • S7-1500/ET 200MP 系统手册 • TIA Portal 在线帮助 设备信息 设备手册中包含模块特定信息的简要介绍，如特性、接线图、功能特性和技术规范。 示例： • CPU 设备手册 • “接口模块”设备手册 • “数字量模块”设备手册 • “模拟量模块”设备手册 • “通信模块”设备手册 • “工艺模块”设备手册 • “电源模块”设备手册 4 CPU 1517-3 PN/DP (6ES7517-3AP00-0AB0",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Figure Agent",
+          "Topology Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0034",
+          "sha256": "a41363b6c16f99f9cd4353207cd34046bb43291ecb413387febcb660293b7aea",
+          "visual_type": "module_cpu_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      }
+    ],
+    "metadata": {
+      "source": "offline_demo_snapshot",
+      "visual_asset_count": 8,
+      "cross_model_blocked": 0,
+      "rejected_evidence": []
+    }
+  },
+  "judge_decision": {
+    "verdict": "PASS",
+    "confidence": "HIGH",
+    "decision_reason": "离线快照仅采用资产清单中可解码、可追溯且经身份检查的手册页。",
+    "final_evidence_ids": [
+      "HIDDEN_04_EV_01",
+      "HIDDEN_04_EV_02",
+      "HIDDEN_04_EV_03",
+      "HIDDEN_04_EV_04",
+      "HIDDEN_04_EV_05",
+      "HIDDEN_04_EV_06",
+      "HIDDEN_04_EV_07",
+      "HIDDEN_04_EV_08"
+    ],
+    "accepted_agent_outputs": [
+      "Figure Agent",
+      "Topology Agent"
+    ],
+    "rejected_agent_outputs": [],
+    "supported_claims": [
+      "CPU 1517-3 PN/DP（6ES7517-3AP00-0AB0）的 PROFINET IO 接口 X1 位于前面板下方，在资料页 2476、图 2-237 中对应标号 ⑦；X2 对应标号 ⑥。页 2481 的图 2-239 还给出 X1 P1/P2 和 X2 P1 的方框连接关系。"
+    ],
+    "unsupported_claims": [],
+    "conflicting_claims": [],
+    "coverage": {
+      "main": {
+        "answered": true
+      }
+    },
+    "model_consistency": {
+      "pass": true,
+      "rejected_evidence_ids": []
+    },
+    "metadata": {
+      "accepted_claims": [
+        {
+          "claim_id": "HIDDEN_04_CLAIM_01",
+          "claim_text": "CPU 1517-3 PN/DP（6ES7517-3AP00-0AB0）的 PROFINET IO 接口 X1 位于前面板下方，在资料页 2476、图 2-237 中对应标号 ⑦；X2 对应标号 ⑥。页 2481 的图 2-239 还给出 X1 P1/P2 和 X2 P1 的方框连接关系。",
+          "claim_type": "technical_guidance",
+          "model_scope": "CPU 1517-3 PN/DP",
+          "confidence": "HIGH",
+          "evidence_ids": [
+            "HIDDEN_04_EV_01",
+            "HIDDEN_04_EV_02",
+            "HIDDEN_04_EV_03",
+            "HIDDEN_04_EV_04",
+            "HIDDEN_04_EV_05",
+            "HIDDEN_04_EV_06",
+            "HIDDEN_04_EV_07",
+            "HIDDEN_04_EV_08"
+          ],
+          "direct_support": true,
+          "metadata": {
+            "offline_curated": true
+          }
+        }
+      ]
+    }
+  },
+  "verifier": {
+    "figure_requirement_pass": true,
+    "numeric_mismatch_claim_ids": [],
+    "grounded_claim_ids": [
+      "HIDDEN_04_CLAIM_01"
+    ],
+    "passed": true
+  },
+  "answer": {
+    "status": "ANSWER",
+    "text": "CPU 1517-3 PN/DP（6ES7517-3AP00-0AB0）的 PROFINET IO 接口 X1 位于前面板下方，在资料页 2476、图 2-237 中对应标号 ⑦；X2 对应标号 ⑥。页 2481 的图 2-239 还给出 X1 P1/P2 和 X2 P1 的方框连接关系。",
+    "evidence_ids": [
+      "HIDDEN_04_EV_01",
+      "HIDDEN_04_EV_02",
+      "HIDDEN_04_EV_03",
+      "HIDDEN_04_EV_04",
+      "HIDDEN_04_EV_05",
+      "HIDDEN_04_EV_06",
+      "HIDDEN_04_EV_07",
+      "HIDDEN_04_EV_08"
+    ]
+  },
+  "final_answer": "CPU 1517-3 PN/DP（6ES7517-3AP00-0AB0）的 PROFINET IO 接口 X1 位于前面板下方，在资料页 2476、图 2-237 中对应标号 ⑦；X2 对应标号 ⑥。页 2481 的图 2-239 还给出 X1 P1/P2 和 X2 P1 的方框连接关系。",
+  "work_order": {
+    "status": "not_requested",
+    "risk_tip": ""
+  },
+  "visual_asset_ids": [
+    "VIS_0027",
+    "VIS_0028",
+    "VIS_0029",
+    "VIS_0030",
+    "VIS_0031",
+    "VIS_0032",
+    "VIS_0033",
+    "VIS_0034"
+  ],
+  "visual_evidence": [
+    {
+      "asset_id": "VIS_0027",
+      "evidence_id": "HIDDEN_04_EV_01",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0028",
+      "evidence_id": "HIDDEN_04_EV_02",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0029",
+      "evidence_id": "HIDDEN_04_EV_03",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0030",
+      "evidence_id": "HIDDEN_04_EV_04",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0031",
+      "evidence_id": "HIDDEN_04_EV_05",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0032",
+      "evidence_id": "HIDDEN_04_EV_06",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0033",
+      "evidence_id": "HIDDEN_04_EV_07",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0034",
+      "evidence_id": "HIDDEN_04_EV_08",
+      "status": "image_available"
+    }
+  ],
+  "visual_coverage_reason": {
+    "VIS_0027": "front_panel_or_led_page，资料页 2476，direct target evidence",
+    "VIS_0028": "front_panel_or_led_page，资料页 2481，direct target evidence",
+    "VIS_0029": "wiring_or_terminal_page，资料页 2478，direct target evidence",
+    "VIS_0030": "network_topology_page，资料页 2472，direct target evidence",
+    "VIS_0031": "front_panel_or_led_page，资料页 2482，direct target evidence",
+    "VIS_0032": "front_panel_or_led_page，资料页 2483，direct target evidence",
+    "VIS_0033": "installation_power_page，资料页 2469，direct target evidence",
+    "VIS_0034": "module_cpu_page，资料页 2456，direct target evidence"
+  },
+  "generated_from_commit": "8403213d89d3f2200b9f40ee1f72d23673c9b4f6",
+  "snapshot_validation": {
+    "valid": true,
+    "errors": []
+  },
+  "warnings": [
+    "该结果是基于仓库内真实手册页面整理的离线 SAMPLE 快照，未调用 FULL 检索后端。"
+  ]
+}

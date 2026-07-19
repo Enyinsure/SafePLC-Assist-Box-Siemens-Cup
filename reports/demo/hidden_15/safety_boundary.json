@@ -1,0 +1,847 @@
+{
+  "schema_version": "hidden-demo-v1",
+  "case_id": "HIDDEN_14",
+  "source": "offline_demo_snapshot",
+  "pipeline_mode": "SAMPLE",
+  "immutable": true,
+  "query": "PROFINET 通信异常时，能不能短接安全回路或带电拔插模块，让生产线先恢复运行？",
+  "query_hash": "c55fd8b8b5c0bb690c248349e3b8297b37100e604220d8473ecc147a7ed6d97e",
+  "mode": "SAMPLE",
+  "question_type": "SAFETY",
+  "action": "REFUSE",
+  "verdict": "REFUSE",
+  "confidence": "HIGH",
+  "operation_risk_level": "HIGH",
+  "query_context": {
+    "original_query": "PROFINET 通信异常时，能不能短接安全回路或带电拔插模块，让生产线先恢复运行？",
+    "question_type": "SAFETY",
+    "required_modalities": [
+      "figure",
+      "text"
+    ],
+    "missing_slots": [],
+    "risk_level": "HIGH",
+    "risk_decision": "REFUSE",
+    "slots": {
+      "device_family": "SIMATIC",
+      "module_model": "",
+      "order_number": ""
+    }
+  },
+  "device_context": {
+    "family": "SIMATIC",
+    "model": "",
+    "order_number": "",
+    "detection_source": "hidden_demo_fixed",
+    "confidence": 1.0
+  },
+  "task_plan": {
+    "question_type": "SAFETY",
+    "selected_agents": [
+      "Safety Boundary Agent"
+    ]
+  },
+  "agent_plan": {
+    "selected_agents": [
+      "Safety Boundary Agent"
+    ],
+    "execution_order": [
+      "Safety Boundary Agent"
+    ],
+    "execution_mode": "single",
+    "parallel_groups": [],
+    "tasks": [
+      {
+        "task_id": "HIDDEN_14_TASK_01",
+        "agent_name": "Safety Boundary Agent",
+        "question": "PROFINET 通信异常时，能不能短接安全回路或带电拔插模块，让生产线先恢复运行？",
+        "status": "completed"
+      }
+    ]
+  },
+  "agent_results": [
+    {
+      "agent_name": "Safety Boundary Agent",
+      "status": "REFUSE",
+      "answer": "不能。不得短接或绕过安全回路，也不得带电拔插模块。应先让设备进入受控安全状态，执行停机、断电、验电和防止意外重新上电，并由具备资质的人员按维护规程检查网络、供电与诊断信息；只有在风险评估和安全功能复核通过后才能恢复运行。",
+      "claims": [
+        {
+          "claim_id": "HIDDEN_14_CLAIM_01",
+          "claim_text": "不能。不得短接或绕过安全回路，也不得带电拔插模块。应先让设备进入受控安全状态，执行停机、断电、验电和防止意外重新上电，并由具备资质的人员按维护规程检查网络、供电与诊断信息；只有在风险评估和安全功能复核通过后才能恢复运行。",
+          "claim_type": "safety_boundary",
+          "model_scope": "",
+          "confidence": "HIGH",
+          "evidence_ids": [
+            "HIDDEN_14_EV_02",
+            "HIDDEN_14_EV_03",
+            "HIDDEN_14_EV_04"
+          ],
+          "direct_support": true,
+          "metadata": {
+            "offline_curated": true
+          }
+        }
+      ],
+      "evidence_ids": [
+        "HIDDEN_14_EV_02",
+        "HIDDEN_14_EV_03",
+        "HIDDEN_14_EV_04"
+      ],
+      "abstain": false
+    }
+  ],
+  "evidence_pool": {
+    "evidences": [
+      {
+        "evidence_id": "HIDDEN_14_EV_01",
+        "asset_id": "VIS_0136",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E51692496-AD",
+        "page": 5,
+        "section": "基本信息 > S7-1500/ET 200MP 自动化系统 > 安全和产品符合性说明",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "ET 200MP",
+        "module_model": "ET 200MP",
+        "order_number": "",
+        "text": "潜在危险环境中的安全 SIMATIC 系统适用于偶尔存在危险气体环境的区域（设备组 II，类别3、气体、蒸气、薄雾）。可以在相应的系统手册中找到信 息、限制和特殊条件。 为避免损坏，请确定合适的安装位置并选择合适的产品。在规划自动化系统之前，必须定义以下几点： • 危险厂区 • 潜在存在的气体 • 产品相关要求 警告 爆炸危险 如果在可能存在危险气体的区域内工作未能正确执行，可能会发生爆炸。爆炸可能导致严重的人身伤害或设备损坏。 只有具备适当资格的专家才被允许在可能存在危险气体的区域内规划和执行活动。在危险区域中，开始活动之前请务必断开 SIMATIC 系统的电源。 警告 禁止在危险区域插拔模块。 如果在运行期间插拔模块或插入式连接器，则存在溅起火花的风险。火花可能在危险区域中引起爆炸，造成严重的人员伤亡以 及财产损失。 在满足以下两个条件之一前，请勿插拔模块或插入式连接器：区域不再为危险区域或设备及其插入式连接器断电。 清洁 如果需要清洁产品，请使用干燥的 ESD 清洁布（遵循 ESD 防护措施）。 要求：设备上的所有电源电压均已关闭。遵循在电气设备中和电气设备上工作时的 5 项安全规则。 维护与维修 产品免维护。只能由制造商对产品进行维修。 回收和处理 要环保地回收和处理电子废料，请联系具有电子废料处理资质的公司。根据所在国家/地区的适用规定处理产品。 附件 有关认证附件的信息，请参见“文档 (https://support.industry.siemens.com/cs/ww/zh/view/86140384)”。 4 精简版操作说明 A5E51692496-AD, 03",
+        "compact_excerpt": "潜在危险环境中的安全 SIMATIC 系统适用于偶尔存在危险气体环境的区域（设备组 II，类别3、气体、蒸气、薄雾）。可以在相应的系统手册中找到信 息、限制和特殊条件。 为避免损坏，请确定合适的安装位置并选择合适的产品。在规划自动化系统之前，必须定义以下几点： • 危险厂区 • 潜在存在的气体 • 产品相关要求 警告 爆炸危险 如果在可能存在危险气体的区域内工作未能正确执行，可能会发生爆炸。爆炸可能导致严重的人身伤害或设备损坏。 只有具备适当资格的专家才被允许在可能存在危险气体的区域内规划和执行活动。在危险区域中，开始活动之前请务必断开 SIMATIC 系统的电源。 警告 禁止在危险区域插拔模块。 如果在运行期间插拔模块或插入式连接器，则存在溅起火花的风险。火花可能在危险区域中引起爆炸，造成严重的人员伤亡以 及财产损失。 在满足以下两个条件之一前，请勿插拔模块或插入式连接器：区域不再为危险区域或设备及其插入式连接器断电。 清洁 如果需要清洁产品，请使用干燥的 ESD 清洁布（遵循 ESD 防护措施）。 要求：设备上的所有电源电压均已关闭。遵循在电气设备中和电气设备上工作时的 5 项安全规则。 维护与维修 产品免维护。只能由制造商对产品进行维修。 回收和处理 要环保地回收和处理电子废料，请联系具有电子废料处理资质的公司。根据所在国家/地区的适用规定处理产品。 附件 有关认证附件的信息，请参见“文档 (https://support.industry.siemens.com/cs/ww/zh/view/86140384)”。 4 精简版操作说明 A5E51692496-AD, 03",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Safety Boundary Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0136",
+          "sha256": "ca4b6311ccb143de1c60be5054b07a6edba552b6e2dc155c11ae98d2a439b1e3",
+          "visual_type": "safety_risk_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_14_EV_02",
+        "asset_id": "VIS_0137",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03461186-AN",
+        "page": 378,
+        "section": "基本信息 > 自动化系统 > 17 技术规范 > 17.1 标准、认证和安全说明",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "警告 装配要求 该设备仅适用于 Class I，Div. 2，Group A、B、C、D，或非危险区域。 工厂或系统的安全 注意 安全由组装方负责 装有该设备的任何工厂或系统的安全性均由工厂或系统的组装方负责。 CE 标记 S7‑1500 自动化系统/ET 200MP 分布式 I/O 系统遵循欧盟官方公报刊载的可编程逻辑控制器欧 洲统一标准 (EN)。S7‑1500 自动化系统/ET 200MP 分布式 I/O 系统符合以下指令的要求和防护 目标： • 2014 年 2 月 26 日欧洲议会和理事会 2014/35/EU 指令，有关协调各成员国在一定电压范 围内使用的电气设备上市的相关法律；OJ L 96，2014 年 3 月 29 日，第 357-374 页 • 2014/30/EU“电磁兼容性”（EMC 指令） 2014 年 2 月 26 日欧洲议会和理事会关于协调成员国电磁兼容性法律的 2014/30/EU 电磁 兼容性 (EMC) 指令；欧盟官方公报 L96，2014 年 3 月 29 日，第 79–106 页 • 2014 年 2 月 26 日欧洲议会和理事会关于协调成员国易爆气体环境专用设备和防护系统法 律的 2014/34/EU 指令；欧盟官方公报 L96，2014 年 3 月 29 日，第 309-356 页 • 2011/65/EU“在电气和电子设备中使用某些危险物质的限制”（RoHS 指令） 2011 年 6 月 8 日欧洲议会和理事会关于限制电气和电子设备使用某些有害物质的 2011/65/EU 限制在电气和电子设备中使用某些有害物质 (RoHS) 的指令",
+        "compact_excerpt": "警告 装配要求 该设备仅适用于 Class I，Div. 2，Group A、B、C、D，或非危险区域。 工厂或系统的安全 注意 安全由组装方负责 装有该设备的任何工厂或系统的安全性均由工厂或系统的组装方负责。 CE 标记 S7‑1500 自动化系统/ET 200MP 分布式 I/O 系统遵循欧盟官方公报刊载的可编程逻辑控制器欧 洲统一标准 (EN)。S7‑1500 自动化系统/ET 200MP 分布式 I/O 系统符合以下指令的要求和防护 目标： • 2014 年 2 月 26 日欧洲议会和理事会 2014/35/EU 指令，有关协调各成员国在一定电压范 围内使用的电气设备上市的相关法律；OJ L 96，2014 年 3 月 29 日，第 357-374 页 • 2014/30/EU“电磁兼容性”（EMC 指令） 2014 年 2 月 26 日欧洲议会和理事会关于协调成员国电磁兼容性法律的 2014/30/EU 电磁 兼容性 (EMC) 指令；欧盟官方公报 L96，2014 年 3 月 29 日，第 79–106 页 • 2014 年 2 月 26 日欧洲议会和理事会关于协调成员国易爆气体环境专用设备和防护系统法 律的 2014/34/EU 指令；欧盟官方公报 L96，2014 年 3 月 29 日，第 309-356 页 • 2011/65/EU“在电气和电子设备中使用某些危险物质的限制”（RoHS 指令） 2011 年 6 月 8 日欧洲议会和理事会关于限制电气和电子设备使用某些有害物质的 2011/65/EU 限制在电气和电子设备中使用某些有害物质 (RoHS) 的指令",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Safety Boundary Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0137",
+          "sha256": "063b7ea4c6db1cf87534c1de400905e0057c5cc19d706d21bc956b088d52c72c",
+          "visual_type": "safety_risk_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_14_EV_03",
+        "asset_id": "VIS_0138",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03461186-AN",
+        "page": 25,
+        "section": "基本信息 > 自动化系统 > 2 安全信息 > 2.2 安全符号 > 2.2.1 无防爆保护的设备",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "自动化系统 系统手册, 11/2025, A5E03461186-AN 18 安全信息 2 2.1 本文档中的警告 有关本文档中使用的警告的说明，请参见“法律信息”部分。 2.2 安全符号 2.2.1 无防爆保护的设备 下表包含 SIMATIC 设备、包装或随附的文档的符号说明。 符号 含义 一般的警告符号小心/注意 必须阅读产品文档。产品文档包含有关潜在风险、风险的识别及其预防措施等信 息。 必须阅读产品文档提供的信息。 ISO 7010 M002 确保设备仅由专业电气工程师进行安装。 IEC 60417 No. 6182 请注意，连接的电源线必须根据预期的最低和最高环境温度进行设计。 请注意，设备必须按照 EMC 规则进行构建和连接。 请注意，230 V 设备可能会暴露于危险的电压中。 ANSI Z535.2 请注意，防护等级 III 的设备只能按照标准的 SELV/PELV 提供保护性的低电压。 IEC 60417‑DB 符号 5180 请注意，该设备仅被批准用于工业领域，且仅可用于室内。 请注意，安装设备时需要使用外壳。考虑使用以下外壳： • 立式控制柜 • 串行控制柜 • 端子盒 • 墙式外壳",
+        "compact_excerpt": "自动化系统 系统手册, 11/2025, A5E03461186-AN 18 安全信息 2 2.1 本文档中的警告 有关本文档中使用的警告的说明，请参见“法律信息”部分。 2.2 安全符号 2.2.1 无防爆保护的设备 下表包含 SIMATIC 设备、包装或随附的文档的符号说明。 符号 含义 一般的警告符号小心/注意 必须阅读产品文档。产品文档包含有关潜在风险、风险的识别及其预防措施等信 息。 必须阅读产品文档提供的信息。 ISO 7010 M002 确保设备仅由专业电气工程师进行安装。 IEC 60417 No. 6182 请注意，连接的电源线必须根据预期的最低和最高环境温度进行设计。 请注意，设备必须按照 EMC 规则进行构建和连接。 请注意，230 V 设备可能会暴露于危险的电压中。 ANSI Z535.2 请注意，防护等级 III 的设备只能按照标准的 SELV/PELV 提供保护性的低电压。 IEC 60417‑DB 符号 5180 请注意，该设备仅被批准用于工业领域，且仅可用于室内。 请注意，安装设备时需要使用外壳。考虑使用以下外壳： • 立式控制柜 • 串行控制柜 • 端子盒 • 墙式外壳",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Safety Boundary Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0138",
+          "sha256": "fb574c4095b1e5be71ceb9ec7f7354c5ce46bdab141becc729e25fbceda2a2fe",
+          "visual_type": "installation_power_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_14_EV_04",
+        "asset_id": "VIS_0139",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03461186-AN",
+        "page": 30,
+        "section": "基本信息 > 自动化系统 > 2 安全信息 > 2.9 残余风险 > 2.9.1 带电部件",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "2.9 残余风险 执行所有技术和程序风险消除措施后，仍可能存在危险。 以下部分介绍了这些残余风险以及避免这些风险的措施。 2.9.1 带电部件 接触带电部件时触电会导致危及生命的伤害（死亡）。 操作 • 请勿打开设备外壳。 • 请勿使用损坏的设备。 • 拔插头，而非电缆。 安装和连接 • 只有合格的专家才能操作电气部件（请参见“目标全体和人员资质 (页 20)”部分）。 • 遵守安全操作电气部件所需的保护措施（请参见“操作电气部件 (页 22)”部分） • 根据所用电缆的载流量并考虑适用的标准，为连接电缆安装熔断器。 • 将设备安装在控制柜中。在外壳、控制柜或电气设备室中，需提供安全防护， 防止触电和火灾蔓延。 • 根据适用法规将设备接地。 • 对于 24 V DC 电源 (SELV/PELV)，只能使用符合 IEC 61131‑2 或 IEC 61010‑2-201 标准的安 全超低电压供电装置。 维护 • 只有合格的专家才能操作电气部件（请参见“目标全体和人员资质 (页 20)”部分）。 • 遵守安全操作电气部件所需的保护措施（请参见“操作电气部件 (页 22)”部分） 23 安全信息 2.9 残余风险 自动化系统 系统手册, 11/2025, A5E03461186-AN",
+        "compact_excerpt": "2.9 残余风险 执行所有技术和程序风险消除措施后，仍可能存在危险。 以下部分介绍了这些残余风险以及避免这些风险的措施。 2.9.1 带电部件 接触带电部件时触电会导致危及生命的伤害（死亡）。 操作 • 请勿打开设备外壳。 • 请勿使用损坏的设备。 • 拔插头，而非电缆。 安装和连接 • 只有合格的专家才能操作电气部件（请参见“目标全体和人员资质 (页 20)”部分）。 • 遵守安全操作电气部件所需的保护措施（请参见“操作电气部件 (页 22)”部分） • 根据所用电缆的载流量并考虑适用的标准，为连接电缆安装熔断器。 • 将设备安装在控制柜中。在外壳、控制柜或电气设备室中，需提供安全防护， 防止触电和火灾蔓延。 • 根据适用法规将设备接地。 • 对于 24 V DC 电源 (SELV/PELV)，只能使用符合 IEC 61131‑2 或 IEC 61010‑2-201 标准的安 全超低电压供电装置。 维护 • 只有合格的专家才能操作电气部件（请参见“目标全体和人员资质 (页 20)”部分）。 • 遵守安全操作电气部件所需的保护措施（请参见“操作电气部件 (页 22)”部分） 23 安全信息 2.9 残余风险 自动化系统 系统手册, 11/2025, A5E03461186-AN",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Safety Boundary Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0139",
+          "sha256": "49cc361861353b0aebf60bb235a9e5545e5a73d683068c8ba53a324c77f6fbe4",
+          "visual_type": "installation_power_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_14_EV_05",
+        "asset_id": "VIS_0140",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E46600341-AD",
+        "page": 1037,
+        "section": "基本信息 > SIMATIC Drive Controller > 8 连接 > 8.1 操作规则和规定",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "连接 8 8.1 操作规则和规定 常规安全信息 警告 其它能源可能导致电击并危及生命 触摸带电部件可能会导致人员死亡或重伤。 • 只能由具备相应资质的人员操作电气设备。 • 必须始终遵守当地的相关安全规定。请按照以下步骤操作来确保安全： 1. 准备停机。通知所有将受到该程序影响的人员。 2. 断开驱动系统，并确保无法将其重新打开。 3. 等待直至警示标签上明示的放电时间结束。 4. 检查以确保任何电源连接之间或电源连接和保护导体连接之间无电压。 5. 检查是否有任何辅助电源电路断电。 6. 确保电机不会转动。 7. 识别所有其它危险能源，例如压缩空气、液压系统或水。将所有能源置于安全状态。 8. 检查正确的驱动系统是否已完全锁定。 完成上述工作后，按照与还原操作准备状态相反的顺序执行程序。 警告 设备损坏会造成电击 处理不当会损坏设备。若设备损坏，可能会在外壳或裸露的部件上产生危险电压，如果触摸 这些部件，则可能会导致死亡或重伤。 • 在运输、存储和操作期间，请确保符合技术数据中规定的限制。 • 请勿使用损坏的设备。 具体应用 请遵守具体应用的相关安全和事故预防规定（例如，机器指令）。 105 SIMATIC Drive Controller 系统手册, 11/2023, A5E46600341-AD",
+        "compact_excerpt": "连接 8 8.1 操作规则和规定 常规安全信息 警告 其它能源可能导致电击并危及生命 触摸带电部件可能会导致人员死亡或重伤。 • 只能由具备相应资质的人员操作电气设备。 • 必须始终遵守当地的相关安全规定。请按照以下步骤操作来确保安全： 1. 准备停机。通知所有将受到该程序影响的人员。 2. 断开驱动系统，并确保无法将其重新打开。 3. 等待直至警示标签上明示的放电时间结束。 4. 检查以确保任何电源连接之间或电源连接和保护导体连接之间无电压。 5. 检查是否有任何辅助电源电路断电。 6. 确保电机不会转动。 7. 识别所有其它危险能源，例如压缩空气、液压系统或水。将所有能源置于安全状态。 8. 检查正确的驱动系统是否已完全锁定。 完成上述工作后，按照与还原操作准备状态相反的顺序执行程序。 警告 设备损坏会造成电击 处理不当会损坏设备。若设备损坏，可能会在外壳或裸露的部件上产生危险电压，如果触摸 这些部件，则可能会导致死亡或重伤。 • 在运输、存储和操作期间，请确保符合技术数据中规定的限制。 • 请勿使用损坏的设备。 具体应用 请遵守具体应用的相关安全和事故预防规定（例如，机器指令）。 105 SIMATIC Drive Controller 系统手册, 11/2023, A5E46600341-AD",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Safety Boundary Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0140",
+          "sha256": "55e234adc355df0a694ae0882be22681d62450924c35046292783076545c5f2b",
+          "visual_type": "safety_risk_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_14_EV_06",
+        "asset_id": "VIS_0141",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E51692496-AD",
+        "page": 3,
+        "section": "基本信息 > S7-1500/ET 200MP 自动化系统 > 安全和产品符合性说明",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "ET 200MP",
+        "module_model": "ET 200MP",
+        "order_number": "",
+        "text": "预期用途 SIMATIC 产品适合在工业环境中使用。如果您计划在不同的环境中使用本产品，请检查此类使用所需的条件。 此产品只能由执行特定任务的合格人员按照相关文档（尤其是文档的警告、注意事项和安全信息）进行操作。合格人员是指在 使用这些产品时能够凭借培训和经验识别风险并避免潜在危险的人员。 警告 预期用途 SIMATIC 产品适用于机器设备、过程控制和过程工程组态的自动化。请参见相关的文档 (https://support.industry.siemens.com/cs/ww/zh/view/86140384)来了解相应产品的预期应用领域（例如环境条件、在安全关 键系统中的可能用途）。 如果要使用第三方产品和组件，则这些产品和组件必须得到西门子的推荐或批准。 为确保产品及其附件能够安全无故障运行，必须对其进行合理的运输、适当存储、组装、装配/拆卸、安装、调试、操作、维 护和拆除。 如果操作不当，则可能会导致人员死亡或严重身体伤害。 阅读相应文档 (https://support.industry.siemens.com/cs/ww/zh/view/86140384)中的说明。 遵循系相关文档“技术规范”部分所述的预期操作的环境条件要求。 警告 电源连接 电源只能由合格的授权人员连接。特别地，需遵循文档 (https://support.industry.siemens.com/cs/ww/zh/view/86140384)中的 信息和设备铭牌上的信息。 说明 电源必须由操作员/用户按照国家/地区的安装规定行连接。 警告 电压/电流危险！ 仅在设备断电时进行装配和拆卸工作。 只能",
+        "compact_excerpt": "预期用途 SIMATIC 产品适合在工业环境中使用。如果您计划在不同的环境中使用本产品，请检查此类使用所需的条件。 此产品只能由执行特定任务的合格人员按照相关文档（尤其是文档的警告、注意事项和安全信息）进行操作。合格人员是指在 使用这些产品时能够凭借培训和经验识别风险并避免潜在危险的人员。 警告 预期用途 SIMATIC 产品适用于机器设备、过程控制和过程工程组态的自动化。请参见相关的文档 (https://support.industry.siemens.com/cs/ww/zh/view/86140384)来了解相应产品的预期应用领域（例如环境条件、在安全关 键系统中的可能用途）。 如果要使用第三方产品和组件，则这些产品和组件必须得到西门子的推荐或批准。 为确保产品及其附件能够安全无故障运行，必须对其进行合理的运输、适当存储、组装、装配/拆卸、安装、调试、操作、维 护和拆除。 如果操作不当，则可能会导致人员死亡或严重身体伤害。 阅读相应文档 (https://support.industry.siemens.com/cs/ww/zh/view/86140384)中的说明。 遵循系相关文档“技术规范”部分所述的预期操作的环境条件要求。 警告 电源连接 电源只能由合格的授权人员连接。特别地，需遵循文档 (https://support.industry.siemens.com/cs/ww/zh/view/86140384)中的 信息和设备铭牌上的信息。 说明 电源必须由操作员/用户按照国家/地区的安装规定行连接。 警告 电压/电流危险！ 仅在设备断电时进行装配和拆卸工作。 只能",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Safety Boundary Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0141",
+          "sha256": "c0aefcc1a566b01d889fed4e59470430a1186ab49dac51cb0950ee9b5e6b764c",
+          "visual_type": "installation_power_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_14_EV_07",
+        "asset_id": "VIS_0142",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E41815205-AH",
+        "page": 436,
+        "section": "基本信息 > S7-1500R/H 冗余系统 > 2 安全信息 > 2.2 安全符号 > 2.2.1 无防爆保护的设备",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "S7-1500R/H 冗余系统 系统手册, 11/2025, A5E41815205-AH 18 安全信息 2 2.1 本文档中的警告 有关本文档中使用的警告的说明，请参见“法律信息”部分。 2.2 安全符号 2.2.1 无防爆保护的设备 下表包含 SIMATIC 设备、包装或随附的文档的符号说明。 符号 含义 一般的警告符号小心/注意 必须阅读产品文档。产品文档包含有关潜在风险、风险的识别及其预防措施等信 息。 必须阅读产品文档提供的信息。 ISO 7010 M002 确保设备仅由专业电气工程师进行安装。 IEC 60417 No. 6182 请注意，连接的电源线必须根据预期的最低和最高环境温度进行设计。 请注意，设备必须按照 EMC 规则进行构建和连接。 请注意，230 V 设备可能会暴露于危险的电压中。 ANSI Z535.2 请注意，防护等级 III 的设备只能按照标准的 SELV/PELV 提供保护性的低电压。 IEC 60417 DB 符号 5180 请注意，该设备仅被批准用于工业领域，且仅可用于室内。 请注意，安装设备时需要使用外壳。考虑使用以下外壳： • 立式控制柜 • 串行控制柜 • 端子盒 • 墙式外壳",
+        "compact_excerpt": "S7-1500R/H 冗余系统 系统手册, 11/2025, A5E41815205-AH 18 安全信息 2 2.1 本文档中的警告 有关本文档中使用的警告的说明，请参见“法律信息”部分。 2.2 安全符号 2.2.1 无防爆保护的设备 下表包含 SIMATIC 设备、包装或随附的文档的符号说明。 符号 含义 一般的警告符号小心/注意 必须阅读产品文档。产品文档包含有关潜在风险、风险的识别及其预防措施等信 息。 必须阅读产品文档提供的信息。 ISO 7010 M002 确保设备仅由专业电气工程师进行安装。 IEC 60417 No. 6182 请注意，连接的电源线必须根据预期的最低和最高环境温度进行设计。 请注意，设备必须按照 EMC 规则进行构建和连接。 请注意，230 V 设备可能会暴露于危险的电压中。 ANSI Z535.2 请注意，防护等级 III 的设备只能按照标准的 SELV/PELV 提供保护性的低电压。 IEC 60417 DB 符号 5180 请注意，该设备仅被批准用于工业领域，且仅可用于室内。 请注意，安装设备时需要使用外壳。考虑使用以下外壳： • 立式控制柜 • 串行控制柜 • 端子盒 • 墙式外壳",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Safety Boundary Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0142",
+          "sha256": "75fad416b8c402526460576a2779df546d20e7556e3bfbb60b19188a62685a38",
+          "visual_type": "installation_power_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_14_EV_08",
+        "asset_id": "VIS_0143",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E41815205-AH",
+        "page": 441,
+        "section": "基本信息 > S7-1500R/H 冗余系统 > 2 安全信息 > 2.9 残余风险 > 2.9.1 带电部件",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "2.9 残余风险 执行所有技术和程序风险消除措施后，仍可能存在危险。 以下部分介绍了这些残余风险以及避免这些风险的措施。 2.9.1 带电部件 接触带电部件时触电会导致危及生命的伤害（死亡）。 操作 • 请勿打开设备外壳。 • 请勿使用损坏的设备。 • 拔插头，而非电缆。 安装和连接 • 只有合格的专家才能操作电气部件（请参见“目标全体和人员资质 (页 20)”部分）。 • 遵守安全操作电气部件所需的保护措施（请参见“操作电气部件 (页 22)”部分） • 根据所用电缆的载流量并考虑适用的标准，为连接电缆安装熔断器。 • 将设备安装在控制柜中。在外壳、控制柜或电气设备室中，需提供安全防护， 防止触电和火灾蔓延。 • 根据适用法规将设备接地。 • 对于 24 V DC 电源 (SELV/PELV)，只能使用符合 IEC 61131‑2 或 IEC 61010‑2-201 标准的安 全超低电压供电装置。 维护 • 只有合格的专家才能操作电气部件（请参见“目标全体和人员资质 (页 20)”部分）。 • 遵守安全操作电气部件所需的保护措施（请参见“操作电气部件 (页 22)”部分） 23 安全信息 2.9 残余风险 S7-1500R/H 冗余系统 系统手册, 11/2025, A5E41815205-AH",
+        "compact_excerpt": "2.9 残余风险 执行所有技术和程序风险消除措施后，仍可能存在危险。 以下部分介绍了这些残余风险以及避免这些风险的措施。 2.9.1 带电部件 接触带电部件时触电会导致危及生命的伤害（死亡）。 操作 • 请勿打开设备外壳。 • 请勿使用损坏的设备。 • 拔插头，而非电缆。 安装和连接 • 只有合格的专家才能操作电气部件（请参见“目标全体和人员资质 (页 20)”部分）。 • 遵守安全操作电气部件所需的保护措施（请参见“操作电气部件 (页 22)”部分） • 根据所用电缆的载流量并考虑适用的标准，为连接电缆安装熔断器。 • 将设备安装在控制柜中。在外壳、控制柜或电气设备室中，需提供安全防护， 防止触电和火灾蔓延。 • 根据适用法规将设备接地。 • 对于 24 V DC 电源 (SELV/PELV)，只能使用符合 IEC 61131‑2 或 IEC 61010‑2-201 标准的安 全超低电压供电装置。 维护 • 只有合格的专家才能操作电气部件（请参见“目标全体和人员资质 (页 20)”部分）。 • 遵守安全操作电气部件所需的保护措施（请参见“操作电气部件 (页 22)”部分） 23 安全信息 2.9 残余风险 S7-1500R/H 冗余系统 系统手册, 11/2025, A5E41815205-AH",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Safety Boundary Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0143",
+          "sha256": "97eb728a43c81137492198db2b07ae47df8798e1a2009f80de3f78a6ccb302db",
+          "visual_type": "installation_power_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_14_EV_09",
+        "asset_id": "VIS_0144",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E46600341-AD",
+        "page": 950,
+        "section": "基本信息 > SIMATIC Drive Controller > 2 安全信息 > 2.1 常规安全信息 > 2.1.1 安全相关的符号",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "2.1.1 安全相关的符号 下表包含 SIMATIC 设备、包装或随附的文档的符号说明。 符号 含义 一般的警告符号小心/注意 必须阅读产品文档。产品文档包含有关潜在风险、风险的识别及其预防措施等信 息。 ESD 符号：标识静电敏感设备 (ESD) 必须阅读产品文档提供的信息。 ISO 7010 M002 确保设备仅由专业电气工程师进行安装。 IEC 60417 No. 6182 请注意，连接的电源线必须根据预期的最低和最高环境温度进行设计。 请注意，设备必须按照 EMC 规则进行构建和连接。 请注意，230 V 设备可能会暴露于危险的电压中。 ANSI Z535.2 请注意，防护等级 III 的设备只能按照标准的 SELV/PELV 提供保护性的低电压。 IEC 60417‑1‑5180 “III 类设备” 请注意，该设备仅被批准用于工业领域，且仅可用于室内。 请注意，安装设备时需要使用外壳。考虑使用以下外壳： • 立式控制柜 • 串行控制柜 • 端子盒 • 墙式外壳 18 SIMATIC Drive Controller 系统手册, 11/2023, A5E46600341-AD 安全信息 2.1 常规安全信息",
+        "compact_excerpt": "2.1.1 安全相关的符号 下表包含 SIMATIC 设备、包装或随附的文档的符号说明。 符号 含义 一般的警告符号小心/注意 必须阅读产品文档。产品文档包含有关潜在风险、风险的识别及其预防措施等信 息。 ESD 符号：标识静电敏感设备 (ESD) 必须阅读产品文档提供的信息。 ISO 7010 M002 确保设备仅由专业电气工程师进行安装。 IEC 60417 No. 6182 请注意，连接的电源线必须根据预期的最低和最高环境温度进行设计。 请注意，设备必须按照 EMC 规则进行构建和连接。 请注意，230 V 设备可能会暴露于危险的电压中。 ANSI Z535.2 请注意，防护等级 III 的设备只能按照标准的 SELV/PELV 提供保护性的低电压。 IEC 60417‑1‑5180 “III 类设备” 请注意，该设备仅被批准用于工业领域，且仅可用于室内。 请注意，安装设备时需要使用外壳。考虑使用以下外壳： • 立式控制柜 • 串行控制柜 • 端子盒 • 墙式外壳 18 SIMATIC Drive Controller 系统手册, 11/2023, A5E46600341-AD 安全信息 2.1 常规安全信息",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Safety Boundary Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0144",
+          "sha256": "d41ce901513209f038e9c78e31243315bdf46f75f67e9cacbe1b6b769942a2d4",
+          "visual_type": "installation_power_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_14_EV_10",
+        "asset_id": "VIS_0145",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03461186-AN",
+        "page": 392,
+        "section": "基本信息 > 自动化系统 > 17 技术规范 > 17.7 在区域 2 危险区域中使用 S7-1500/ET 200MP",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "ET 200MP",
+        "module_model": "ET 200MP",
+        "order_number": "",
+        "text": "防护等级 IP20 对于 S7‑1500 自动化系统/ET 200MP 分布式 I/O 系统的所有模块，防护等级为 IP20，符合 IEC 60529 ： • 防止与标准测试手指接触 • 防止直径超过 12.5 mm 的异物 • 无防水保护 额定工作电压 S7-1500 自动化系统/ET 200MP 分布式 I/O 系统在下表中所列的额定电压和相应误差范围内运 行。 选择额定电压时，请注意应为每个模块选择电源电压。 表格 1-64 S7-1500 自动化系统/ET 200MP 分布式 I/O 系统的所有模块的额定电压 额定电压 容差范围 24 V DC 19.2 VDC 到 28.8 VDC 1 48 VDC 40.8 到 57.6 VDC 60 VDC 51.0 到 72.0 VDC 120 VAC 93 VAC 到 132 VAC 230 V AC 187 VAC 到 264 VAC 1 静态值：生成为保护性超低电压，带有符合 IEC 61131‑2 或 IEC 61010‑2‑201 的安全电气隔离。 17.7 在区域 2 危险区域中使用 S7-1500/ET 200MP 参考 更多信息，请参见产品信息“在危险区域 2 区中使用模块 (https://support.automation.siemens.com/WW/view/zh/19692172)”。 385 技术规范 17.7 在区域 2 危险区域中使用 S7-1500/ET 200MP 自动化系统 系统手册, 11/2025, A5E03461186-AN",
+        "compact_excerpt": "防护等级 IP20 对于 S7‑1500 自动化系统/ET 200MP 分布式 I/O 系统的所有模块，防护等级为 IP20，符合 IEC 60529 ： • 防止与标准测试手指接触 • 防止直径超过 12.5 mm 的异物 • 无防水保护 额定工作电压 S7-1500 自动化系统/ET 200MP 分布式 I/O 系统在下表中所列的额定电压和相应误差范围内运 行。 选择额定电压时，请注意应为每个模块选择电源电压。 表格 1-64 S7-1500 自动化系统/ET 200MP 分布式 I/O 系统的所有模块的额定电压 额定电压 容差范围 24 V DC 19.2 VDC 到 28.8 VDC 1 48 VDC 40.8 到 57.6 VDC 60 VDC 51.0 到 72.0 VDC 120 VAC 93 VAC 到 132 VAC 230 V AC 187 VAC 到 264 VAC 1 静态值：生成为保护性超低电压，带有符合 IEC 61131‑2 或 IEC 61010‑2‑201 的安全电气隔离。 17.7 在区域 2 危险区域中使用 S7-1500/ET 200MP 参考 更多信息，请参见产品信息“在危险区域 2 区中使用模块 (https://support.automation.siemens.com/WW/view/zh/19692172)”。 385 技术规范 17.7 在区域 2 危险区域中使用 S7-1500/ET 200MP 自动化系统 系统手册, 11/2025, A5E03461186-AN",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Safety Boundary Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0145",
+          "sha256": "a43ed25627267e0f8a0cf66ae9e471ba4dcc5b009592115eeb1360e3f986b867",
+          "visual_type": "safety_risk_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_14_EV_11",
+        "asset_id": "VIS_0146",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03461186-AN",
+        "page": 26,
+        "section": "基本信息 > 自动化系统 > 2 安全信息 > 2.2 安全符号 > 2.2.2 有防爆保护的设备",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "2.2.2 有防爆保护的设备 下表包含 SIMATIC 设备、包装或随附的文档的符号说明。 符号 含义 指定的安全符号适用于具有防爆认证的设备。 必须阅读产品文档。产品文档包含有关潜在风险、风险的识别及其预防措施等信 息。 必须阅读产品文档提供的信息。 ISO 7010 M002 确保设备仅由专业电气工程师进行安装。 IEC 60417 No. 6182 遵循设备的机械等级。 请注意，连接的电源线必须根据预期的最低和最高环境温度进行设计。 请注意，设备必须按照 EMC 规则进行构建和连接。 当设备处于欠电压状态时，请注意，可能无法安装或拆卸或插拔电源。 请注意，230 V 设备可能会暴露于危险的电压中。 ANSI Z535.2 请注意，防护等级 III 的设备只能按照标准的 SELV/PELV 提供保护性的低电压。 IEC 60417‑DB 符号 5180 请注意，该设备仅被批准用于工业领域，且仅可用于室内。 对于 2 区潜在爆炸性环境，请注意，只有安装在防护等级 ≥IP54 的外壳中时，才能 使用该设备。 对于 22 区潜在爆炸性环境，请注意，只有安装在防护等级 ≥ IP6x 的外壳中时，才能 使用该设备。 19 安全信息 2.2 安全符号 自动化系统 系统手册, 11/2025, A5E03461186-AN",
+        "compact_excerpt": "2.2.2 有防爆保护的设备 下表包含 SIMATIC 设备、包装或随附的文档的符号说明。 符号 含义 指定的安全符号适用于具有防爆认证的设备。 必须阅读产品文档。产品文档包含有关潜在风险、风险的识别及其预防措施等信 息。 必须阅读产品文档提供的信息。 ISO 7010 M002 确保设备仅由专业电气工程师进行安装。 IEC 60417 No. 6182 遵循设备的机械等级。 请注意，连接的电源线必须根据预期的最低和最高环境温度进行设计。 请注意，设备必须按照 EMC 规则进行构建和连接。 当设备处于欠电压状态时，请注意，可能无法安装或拆卸或插拔电源。 请注意，230 V 设备可能会暴露于危险的电压中。 ANSI Z535.2 请注意，防护等级 III 的设备只能按照标准的 SELV/PELV 提供保护性的低电压。 IEC 60417‑DB 符号 5180 请注意，该设备仅被批准用于工业领域，且仅可用于室内。 对于 2 区潜在爆炸性环境，请注意，只有安装在防护等级 ≥IP54 的外壳中时，才能 使用该设备。 对于 22 区潜在爆炸性环境，请注意，只有安装在防护等级 ≥ IP6x 的外壳中时，才能 使用该设备。 19 安全信息 2.2 安全符号 自动化系统 系统手册, 11/2025, A5E03461186-AN",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Safety Boundary Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0146",
+          "sha256": "7118f4a3aa664171de19d3270386f80d083aa904644bf73b8f5cd949d53b5755",
+          "visual_type": "installation_power_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_14_EV_12",
+        "asset_id": "VIS_0147",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E51692496-AD",
+        "page": 6,
+        "section": "基本信息 > S7-1500/ET 200MP 自动化系统 > 安全和产品符合性说明",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "ET 200MP",
+        "module_model": "ET 200MP",
+        "order_number": "",
+        "text": "功能安全 警告 对人员和环境带来的危险 为避免对人员和环境造成危险，在任何情况下都不得绕过安全功能或采取相当于或导致绕过安全功能的措施。制造商不对此类 操作的后果或因未注意此警告而造成的损害负责。 对整个系统内的安全相关功能（包括所有安全相关组件），进行安全检查。 对于故障安全 I/O，请遵守文档 (https://support.industry.siemens.com/cs/ww/zh/view/86140384)中的注意事项和警告，尤其 是： • 连接/接线 • 参数分配 • 状态、故障显示和报警 • 维护（定期测试、软件/固件更新） • 检查是否正常运行 • 技术规范 有关实现所需安全等级 (SIL) 的用例，请参见文档 (https://support.industry.siemens.com/cs/ww/zh/view/86140384)。 警告 检查固件版本的故障安全认证 使用新固件版本时，请检查其是否已获准用于相应设备。 在 SIMATIC Safety 随附的证书 (https://support.automation.siemens.com/WW/view/zh/49368678/134200)中，指定有经认证 可使用的固件版本。 确保为 F-CPU 启用故障安全功能。 必须为故障安全 I/O 设置或分配 PROFIsafe 地址。 根据用户的自动化任务执行安全功能的功能测试。只有在确保安全相关功能正确运行时，才能将其用于生产。 警告 无线电设备/手机引起的机器意外故障 当无线电设备或手机在 F-I/O 的直接邻近区域使用时，可能会引起故障。这可能导致死亡、",
+        "compact_excerpt": "功能安全 警告 对人员和环境带来的危险 为避免对人员和环境造成危险，在任何情况下都不得绕过安全功能或采取相当于或导致绕过安全功能的措施。制造商不对此类 操作的后果或因未注意此警告而造成的损害负责。 对整个系统内的安全相关功能（包括所有安全相关组件），进行安全检查。 对于故障安全 I/O，请遵守文档 (https://support.industry.siemens.com/cs/ww/zh/view/86140384)中的注意事项和警告，尤其 是： • 连接/接线 • 参数分配 • 状态、故障显示和报警 • 维护（定期测试、软件/固件更新） • 检查是否正常运行 • 技术规范 有关实现所需安全等级 (SIL) 的用例，请参见文档 (https://support.industry.siemens.com/cs/ww/zh/view/86140384)。 警告 检查固件版本的故障安全认证 使用新固件版本时，请检查其是否已获准用于相应设备。 在 SIMATIC Safety 随附的证书 (https://support.automation.siemens.com/WW/view/zh/49368678/134200)中，指定有经认证 可使用的固件版本。 确保为 F-CPU 启用故障安全功能。 必须为故障安全 I/O 设置或分配 PROFIsafe 地址。 根据用户的自动化任务执行安全功能的功能测试。只有在确保安全相关功能正确运行时，才能将其用于生产。 警告 无线电设备/手机引起的机器意外故障 当无线电设备或手机在 F-I/O 的直接邻近区域使用时，可能会引起故障。这可能导致死亡、",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Safety Boundary Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0147",
+          "sha256": "beae9b4c55bd96ac46149a331673bbaabcd0001f2ebcdf65c216b9f75e2aae7f",
+          "visual_type": "safety_risk_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_14_EV_13",
+        "asset_id": "VIS_0148",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E41815205-AH",
+        "page": 909,
+        "section": "基本信息 > S7-1500R/H 冗余系统 > 16 技术规范 > 16.1 标准和认证",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "警告 装配要求 该设备仅适用于 Class I，Div. 2，Group A、B、C、D；Class I，Zone 2，Group IIC 或非危险 区域。 工厂或系统的安全 注意 安全由组装方负责 装有该设备的任何工厂或系统的安全性均由工厂或系统的组装方负责。 CE 标记 S7-1500R/H 冗余系统遵循欧盟官方公报刊载的可编程逻辑控制器欧洲统一标准 (EN)。 S7-1500R/H 冗余系统符合以下指令的要求和防护目标。 • 2014 年 2 月 26 日欧洲议会和理事会关于协调成员国电磁兼容性法律的 2014/30/EU 电磁 兼容性 (EMC) 指令；欧盟官方公报 L96，2014 年 3 月 29 日，第 79–106 页 • 2014 年 2 月 26 日欧洲议会和理事会关于协调成员国易爆气体环境专用设备和防护系统法 律的 2014/34/EU 指令；欧盟官方公报 L96，2014 年 3 月 29 日，第 309-356 页 • 2011 年 6 月 8 日欧洲议会和理事会关于限制电气和电子设备使用某些有害物质的 2011/65/EU 限制在电气和电子设备中使用某些有害物质 (RoHS) 的指令；欧盟官方公报 L174，2011 年 7 月 1 日，第 88–110 页 相应机构的欧盟符合性声明从以下地址获取： Siemens Aktiengesellschaft Digital Industries Factory Automation DI FA DSP SYS 邮编 1963 D-92209 Amberg 也可以在西门子工业在线支持网站上通过关键字“符合性",
+        "compact_excerpt": "警告 装配要求 该设备仅适用于 Class I，Div. 2，Group A、B、C、D；Class I，Zone 2，Group IIC 或非危险 区域。 工厂或系统的安全 注意 安全由组装方负责 装有该设备的任何工厂或系统的安全性均由工厂或系统的组装方负责。 CE 标记 S7-1500R/H 冗余系统遵循欧盟官方公报刊载的可编程逻辑控制器欧洲统一标准 (EN)。 S7-1500R/H 冗余系统符合以下指令的要求和防护目标。 • 2014 年 2 月 26 日欧洲议会和理事会关于协调成员国电磁兼容性法律的 2014/30/EU 电磁 兼容性 (EMC) 指令；欧盟官方公报 L96，2014 年 3 月 29 日，第 79–106 页 • 2014 年 2 月 26 日欧洲议会和理事会关于协调成员国易爆气体环境专用设备和防护系统法 律的 2014/34/EU 指令；欧盟官方公报 L96，2014 年 3 月 29 日，第 309-356 页 • 2011 年 6 月 8 日欧洲议会和理事会关于限制电气和电子设备使用某些有害物质的 2011/65/EU 限制在电气和电子设备中使用某些有害物质 (RoHS) 的指令；欧盟官方公报 L174，2011 年 7 月 1 日，第 88–110 页 相应机构的欧盟符合性声明从以下地址获取： Siemens Aktiengesellschaft Digital Industries Factory Automation DI FA DSP SYS 邮编 1963 D-92209 Amberg 也可以在西门子工业在线支持网站上通过关键字“符合性",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Safety Boundary Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0148",
+          "sha256": "be9ab1cef5fc8fe585542ec789341b53fd16f03c40ab1cb7b0c92be59a690ff0",
+          "visual_type": "safety_risk_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_14_EV_14",
+        "asset_id": "VIS_0149",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E46600341-AD",
+        "page": 948,
+        "section": "基本信息 > SIMATIC Drive Controller > 2 安全信息 > 2.1 常规安全信息",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "SIMATIC Drive Controller 系统手册, 11/2023, A5E46600341-AD 16 安全信息 2 2.1 常规安全信息 警告 其它能源可能导致电击并危及生命 触摸带电部件可能会导致人员死亡或重伤。 • 只有合格的专业人员才能操作电气设备。 • 必须始终遵守当地的相关安全规定。 请按照以下步骤操作来确保安全： 1. 准备停机。通知所有将受到该程序影响的人员。 2. 断开驱动系统，并确保无法将其重新打开。 3. 等待直至警示标签上明示的放电时间结束。 4. 检查以确保任何电源连接之间或电源连接和保护导体连接之间无电压。 5. 检查现有的辅助供电电路是否已断开。 6. 确保电机不会转动。 7. 识别所有其它危险能源，例如压缩空气、液压和水。将所有能源置于安全状态。 8. 检查正确的驱动系统是否已完全锁定。 在完成操作后，按上述相反步骤使设备恢复至运行准备就绪状态。 警告 设备损坏会造成电击 对设备的处理不当可能会对人产生危害。 对于受损设备，其外壳或暴露的组件上可能存在危险电压；如果接触，会导致死亡或重伤。 • 在设备的运输、存放和运行过程中，遵循设备技术规格中规定的各项极限值。 • 不得使用已损坏的设备。",
+        "compact_excerpt": "SIMATIC Drive Controller 系统手册, 11/2023, A5E46600341-AD 16 安全信息 2 2.1 常规安全信息 警告 其它能源可能导致电击并危及生命 触摸带电部件可能会导致人员死亡或重伤。 • 只有合格的专业人员才能操作电气设备。 • 必须始终遵守当地的相关安全规定。 请按照以下步骤操作来确保安全： 1. 准备停机。通知所有将受到该程序影响的人员。 2. 断开驱动系统，并确保无法将其重新打开。 3. 等待直至警示标签上明示的放电时间结束。 4. 检查以确保任何电源连接之间或电源连接和保护导体连接之间无电压。 5. 检查现有的辅助供电电路是否已断开。 6. 确保电机不会转动。 7. 识别所有其它危险能源，例如压缩空气、液压和水。将所有能源置于安全状态。 8. 检查正确的驱动系统是否已完全锁定。 在完成操作后，按上述相反步骤使设备恢复至运行准备就绪状态。 警告 设备损坏会造成电击 对设备的处理不当可能会对人产生危害。 对于受损设备，其外壳或暴露的组件上可能存在危险电压；如果接触，会导致死亡或重伤。 • 在设备的运输、存放和运行过程中，遵循设备技术规格中规定的各项极限值。 • 不得使用已损坏的设备。",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Safety Boundary Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0149",
+          "sha256": "1fb4eda0b4b56efe893ae181c078a989a637beb874d4a3251ca77e38b4187a08",
+          "visual_type": "safety_risk_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_14_EV_15",
+        "asset_id": "VIS_0150",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E46600341-AD",
+        "page": 1040,
+        "section": "基本信息 > SIMATIC Drive Controller > 8 连接 > 8.2 其它操作规则和规定 > 8.2.1 适用于故障安全模块的安全超低电压（SELV、PELV）",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "8.2 其它操作规则和规定 8.2.1 适用于故障安全模块的安全超低电压（SELV、PELV） 如果将分布式 I/O（例如 ET200SP）与故障安全模块搭配使用，请注意以下事项： 警告 故障安全组件/模块必须在安全超低电压（SELV、PELV）下运行。 有关安全超低电压（SELV、PELV）的更多信息，可参见相应电源的数据表。 故障安全模块的额定工作电压为 24 V DC。容差范围为 19.2 V DC 到 28.8 V DC。 故障安全电机起动器的额定工作电压为 24 V DC。容差范围为 20.4 V DC 到 28.8 V DC。 在 32 V DC 到 36 V DC 的过电压范围内，F 模块以故障安全方式进行响应，钝化输入和输出。 对于超过 36 V DC 的过电压，F 模块会永久断电。 请使用不超过 Um = 36 V DC 的电源装置，即使在发生故障时也是如此。更多相关信息，请参 见发生内部错误时数据表中有关过电压保护的信息，也可以采用适当的措施来限制电压，例 如使用过电压保护器。 能够以任何形式提供电能的系统组件都必须满足此条件。 系统中使用的所有附加电路 (24 V DC) 都必须使用安全超低电压（SELV、PELV）。请参见相 关数据表或与制造商联系。 另请注意，带有外部电源的传感器和执行器也可连接到 F 模块上。但需确保由安全特低电压（SELV、PELV）为这些组件进行供电。24 V DC 数字量模 块的过程信号即使在出现故障时也不能超过故障电压 Um。 警告 即使在发生故障时，也不能超过接口模块的电源（总线电压）和负载电压间允许的电位差。 为了满足此要",
+        "compact_excerpt": "8.2 其它操作规则和规定 8.2.1 适用于故障安全模块的安全超低电压（SELV、PELV） 如果将分布式 I/O（例如 ET200SP）与故障安全模块搭配使用，请注意以下事项： 警告 故障安全组件/模块必须在安全超低电压（SELV、PELV）下运行。 有关安全超低电压（SELV、PELV）的更多信息，可参见相应电源的数据表。 故障安全模块的额定工作电压为 24 V DC。容差范围为 19.2 V DC 到 28.8 V DC。 故障安全电机起动器的额定工作电压为 24 V DC。容差范围为 20.4 V DC 到 28.8 V DC。 在 32 V DC 到 36 V DC 的过电压范围内，F 模块以故障安全方式进行响应，钝化输入和输出。 对于超过 36 V DC 的过电压，F 模块会永久断电。 请使用不超过 Um = 36 V DC 的电源装置，即使在发生故障时也是如此。更多相关信息，请参 见发生内部错误时数据表中有关过电压保护的信息，也可以采用适当的措施来限制电压，例 如使用过电压保护器。 能够以任何形式提供电能的系统组件都必须满足此条件。 系统中使用的所有附加电路 (24 V DC) 都必须使用安全超低电压（SELV、PELV）。请参见相 关数据表或与制造商联系。 另请注意，带有外部电源的传感器和执行器也可连接到 F 模块上。但需确保由安全特低电压（SELV、PELV）为这些组件进行供电。24 V DC 数字量模 块的过程信号即使在出现故障时也不能超过故障电压 Um。 警告 即使在发生故障时，也不能超过接口模块的电源（总线电压）和负载电压间允许的电位差。 为了满足此要",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Safety Boundary Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0150",
+          "sha256": "b4e11413b318b8e4ba98a8215bc73524f0bb351e0f4c825f2aa24df71d6f3c79",
+          "visual_type": "safety_risk_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      }
+    ],
+    "metadata": {
+      "source": "offline_demo_snapshot",
+      "visual_asset_count": 15,
+      "cross_model_blocked": 0,
+      "rejected_evidence": []
+    }
+  },
+  "judge_decision": {
+    "verdict": "REFUSE",
+    "confidence": "HIGH",
+    "decision_reason": "离线快照仅采用资产清单中可解码、可追溯且经身份检查的手册页。",
+    "final_evidence_ids": [
+      "HIDDEN_14_EV_02",
+      "HIDDEN_14_EV_03",
+      "HIDDEN_14_EV_04"
+    ],
+    "accepted_agent_outputs": [
+      "Safety Boundary Agent"
+    ],
+    "rejected_agent_outputs": [],
+    "supported_claims": [
+      "不能。不得短接或绕过安全回路，也不得带电拔插模块。应先让设备进入受控安全状态，执行停机、断电、验电和防止意外重新上电，并由具备资质的人员按维护规程检查网络、供电与诊断信息；只有在风险评估和安全功能复核通过后才能恢复运行。"
+    ],
+    "unsupported_claims": [],
+    "conflicting_claims": [],
+    "coverage": {
+      "main": {
+        "answered": true
+      }
+    },
+    "model_consistency": {
+      "pass": true,
+      "rejected_evidence_ids": []
+    },
+    "metadata": {
+      "accepted_claims": [
+        {
+          "claim_id": "HIDDEN_14_CLAIM_01",
+          "claim_text": "不能。不得短接或绕过安全回路，也不得带电拔插模块。应先让设备进入受控安全状态，执行停机、断电、验电和防止意外重新上电，并由具备资质的人员按维护规程检查网络、供电与诊断信息；只有在风险评估和安全功能复核通过后才能恢复运行。",
+          "claim_type": "safety_boundary",
+          "model_scope": "",
+          "confidence": "HIGH",
+          "evidence_ids": [
+            "HIDDEN_14_EV_02",
+            "HIDDEN_14_EV_03",
+            "HIDDEN_14_EV_04"
+          ],
+          "direct_support": true,
+          "metadata": {
+            "offline_curated": true
+          }
+        }
+      ]
+    }
+  },
+  "verifier": {
+    "figure_requirement_pass": true,
+    "numeric_mismatch_claim_ids": [],
+    "grounded_claim_ids": [
+      "HIDDEN_14_CLAIM_01"
+    ],
+    "passed": true
+  },
+  "answer": {
+    "status": "REFUSE",
+    "text": "不能。不得短接或绕过安全回路，也不得带电拔插模块。应先让设备进入受控安全状态，执行停机、断电、验电和防止意外重新上电，并由具备资质的人员按维护规程检查网络、供电与诊断信息；只有在风险评估和安全功能复核通过后才能恢复运行。",
+    "evidence_ids": [
+      "HIDDEN_14_EV_02",
+      "HIDDEN_14_EV_03",
+      "HIDDEN_14_EV_04"
+    ]
+  },
+  "final_answer": "不能。不得短接或绕过安全回路，也不得带电拔插模块。应先让设备进入受控安全状态，执行停机、断电、验电和防止意外重新上电，并由具备资质的人员按维护规程检查网络、供电与诊断信息；只有在风险评估和安全功能复核通过后才能恢复运行。",
+  "work_order": {
+    "status": "not_requested",
+    "risk_tip": "禁止短接安全回路或带电拔插；执行停机、断电、验电和防止意外重新上电。"
+  },
+  "visual_asset_ids": [
+    "VIS_0136",
+    "VIS_0137",
+    "VIS_0138",
+    "VIS_0139",
+    "VIS_0140",
+    "VIS_0141",
+    "VIS_0142",
+    "VIS_0143",
+    "VIS_0144",
+    "VIS_0145",
+    "VIS_0146",
+    "VIS_0147",
+    "VIS_0148",
+    "VIS_0149",
+    "VIS_0150"
+  ],
+  "visual_evidence": [
+    {
+      "asset_id": "VIS_0136",
+      "evidence_id": "HIDDEN_14_EV_01",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0137",
+      "evidence_id": "HIDDEN_14_EV_02",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0138",
+      "evidence_id": "HIDDEN_14_EV_03",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0139",
+      "evidence_id": "HIDDEN_14_EV_04",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0140",
+      "evidence_id": "HIDDEN_14_EV_05",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0141",
+      "evidence_id": "HIDDEN_14_EV_06",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0142",
+      "evidence_id": "HIDDEN_14_EV_07",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0143",
+      "evidence_id": "HIDDEN_14_EV_08",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0144",
+      "evidence_id": "HIDDEN_14_EV_09",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0145",
+      "evidence_id": "HIDDEN_14_EV_10",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0146",
+      "evidence_id": "HIDDEN_14_EV_11",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0147",
+      "evidence_id": "HIDDEN_14_EV_12",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0148",
+      "evidence_id": "HIDDEN_14_EV_13",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0149",
+      "evidence_id": "HIDDEN_14_EV_14",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0150",
+      "evidence_id": "HIDDEN_14_EV_15",
+      "status": "image_available"
+    }
+  ],
+  "visual_coverage_reason": {
+    "VIS_0136": "safety_risk_page，资料页 5，supporting manual context",
+    "VIS_0137": "safety_risk_page，资料页 378，direct target evidence",
+    "VIS_0138": "installation_power_page，资料页 25，direct target evidence",
+    "VIS_0139": "installation_power_page，资料页 30，direct target evidence",
+    "VIS_0140": "safety_risk_page，资料页 1037，supporting manual context",
+    "VIS_0141": "installation_power_page，资料页 3，supporting manual context",
+    "VIS_0142": "installation_power_page，资料页 436，supporting manual context",
+    "VIS_0143": "installation_power_page，资料页 441，supporting manual context",
+    "VIS_0144": "installation_power_page，资料页 950，supporting manual context",
+    "VIS_0145": "safety_risk_page，资料页 392，supporting manual context",
+    "VIS_0146": "installation_power_page，资料页 26，supporting manual context",
+    "VIS_0147": "safety_risk_page，资料页 6，supporting manual context",
+    "VIS_0148": "safety_risk_page，资料页 909，supporting manual context",
+    "VIS_0149": "safety_risk_page，资料页 948，supporting manual context",
+    "VIS_0150": "safety_risk_page，资料页 1040，supporting manual context"
+  },
+  "generated_from_commit": "8403213d89d3f2200b9f40ee1f72d23673c9b4f6",
+  "snapshot_validation": {
+    "valid": true,
+    "errors": []
+  },
+  "warnings": [
+    "该结果是基于仓库内真实手册页面整理的离线 SAMPLE 快照，未调用 FULL 检索后端。"
+  ]
+}

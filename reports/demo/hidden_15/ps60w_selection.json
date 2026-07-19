@@ -1,0 +1,852 @@
+{
+  "schema_version": "hidden-demo-v1",
+  "case_id": "HIDDEN_13",
+  "source": "offline_demo_snapshot",
+  "pipeline_mode": "SAMPLE",
+  "immutable": true,
+  "query": "S7-1500 站点选择 PS 60W 24/48/60VDC HF 时，应关注哪些输入、输出和保护参数？",
+  "query_hash": "03f2135dfcc824311542af184cfef726d7a9bb0745fa3d07ceb333e1d64c30e4",
+  "mode": "SAMPLE",
+  "question_type": "PARAMETER",
+  "action": "PARTIAL",
+  "verdict": "PARTIAL",
+  "confidence": "MEDIUM",
+  "operation_risk_level": "LOW",
+  "query_context": {
+    "original_query": "S7-1500 站点选择 PS 60W 24/48/60VDC HF 时，应关注哪些输入、输出和保护参数？",
+    "question_type": "PARAMETER",
+    "required_modalities": [
+      "figure",
+      "text"
+    ],
+    "missing_slots": [],
+    "risk_level": "LOW",
+    "risk_decision": "ALLOW",
+    "slots": {
+      "device_family": "S7-1500 POWER",
+      "module_model": "PS 60W 24/48/60VDC HF",
+      "order_number": "6ES7505-0RB00-0AB0"
+    }
+  },
+  "device_context": {
+    "family": "S7-1500 POWER",
+    "model": "PS 60W 24/48/60VDC HF",
+    "order_number": "6ES7505-0RB00-0AB0",
+    "detection_source": "hidden_demo_fixed",
+    "confidence": 1.0
+  },
+  "task_plan": {
+    "question_type": "PARAMETER",
+    "selected_agents": [
+      "Parameter Agent"
+    ]
+  },
+  "agent_plan": {
+    "selected_agents": [
+      "Parameter Agent"
+    ],
+    "execution_order": [
+      "Parameter Agent"
+    ],
+    "execution_mode": "single",
+    "parallel_groups": [],
+    "tasks": [
+      {
+        "task_id": "HIDDEN_13_TASK_01",
+        "agent_name": "Parameter Agent",
+        "question": "S7-1500 站点选择 PS 60W 24/48/60VDC HF 时，应关注哪些输入、输出和保护参数？",
+        "status": "completed"
+      }
+    ]
+  },
+  "agent_results": [
+    {
+      "agent_name": "Parameter Agent",
+      "status": "PARTIAL",
+      "answer": "选型时可直接核对的参数包括：额定输入 24/48/60 V DC，静态允许范围 19.2～72 V DC，动态允许范围 18.5～75.5 V DC，以及模块 60 W 输出能力；对应产品概述和技术规范见页 6304、6313。保护、降额和环境条件应继续按同一订货号的完整技术规范逐项核对，当前快照未直接给出的值不作猜测。",
+      "claims": [
+        {
+          "claim_id": "HIDDEN_13_CLAIM_01",
+          "claim_text": "选型时可直接核对的参数包括：额定输入 24/48/60 V DC，静态允许范围 19.2～72 V DC，动态允许范围 18.5～75.5 V DC，以及模块 60 W 输出能力；对应产品概述和技术规范见页 6304、6313。保护、降额和环境条件应继续按同一订货号的完整技术规范逐项核对，当前快照未直接给出的值不作猜测。",
+          "claim_type": "parameter",
+          "model_scope": "PS 60W 24/48/60VDC HF",
+          "confidence": "MEDIUM",
+          "evidence_ids": [
+            "HIDDEN_13_EV_01",
+            "HIDDEN_13_EV_02",
+            "HIDDEN_13_EV_03",
+            "HIDDEN_13_EV_04"
+          ],
+          "direct_support": true,
+          "metadata": {
+            "offline_curated": true
+          }
+        }
+      ],
+      "evidence_ids": [
+        "HIDDEN_13_EV_01",
+        "HIDDEN_13_EV_02",
+        "HIDDEN_13_EV_03",
+        "HIDDEN_13_EV_04"
+      ],
+      "abstain": false
+    }
+  ],
+  "evidence_pool": {
+    "evidences": [
+      {
+        "evidence_id": "HIDDEN_13_EV_01",
+        "asset_id": "VIS_0119",
+        "source": "PS 60W 24/48/60VDC HF device manual",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "PS 60W 24/48/60VDC HF device manual",
+        "document_id": "A5E39450011-AC",
+        "page": 6313,
+        "section": "设备特定信息 > 系统功率模块 > PS 60W 24/48/60VDC HF > 6 技术规范",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "PS 60W 24/48/60VDC HF 技术规范表",
+        "device_family": "S7-1500 POWER",
+        "module_model": "PS 60W 24/48/60VDC HF",
+        "order_number": "6ES7505-0RB00-0AB0",
+        "text": "电源电压额定值为 24 V / 48 V / 60 V；允许范围下限为静态 19.2 V、动态 18.5 V，上限为静态 72 V、动态 75.5 V。",
+        "compact_excerpt": "电源电压额定值为 24 V / 48 V / 60 V；允许范围下限为静态 19.2 V、动态 18.5 V，上限为静态 72 V、动态 75.5 V。",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Parameter Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0119",
+          "sha256": "ec8078bd1566f4bc4ec6599094660df42af19efe43bb71215b8e201dd9b54d82",
+          "visual_type": "table_or_parameter_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_13_EV_02",
+        "asset_id": "VIS_0120",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E39450011-AC",
+        "page": 6304,
+        "section": "设备特定信息 > 系统功率模块 > 电源模块 PS 60W 24/48/60VDC HF (6ES7505-0RB00-0AB0) > 2 产品概述 > 2.1 特性",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "S7-1500 POWER",
+        "module_model": "PS 60W 24/48/60VDC HF",
+        "order_number": "6ES7505-0RB00-0AB0",
+        "text": "特性 PS 60W 24/48/60VDC HF 电源模块支持使用额外的模块。 相对于“标准”电源模块的优势： 为了在电源发生故障时保持性地保存更大量的数据，PS 60W 24/48/60VDC HF 会为 CPU 供 电。 PS 60W 24/48/60VDC HF 具有以下属性： • 技术特性 – 额定输入电压 24/48/60 VDC – 输出功率 60 W – 电源故障备份 – 与总线进行电气隔离，依据 EN 61131-2 实施安全电气隔离 该模块支持以下功能： 表格 2-1431 模块功能与版本的相关性 组态软件 功能 模块的固件版本 STEP 7 (TIA Portal) V14 SP1 及更 高版本 STEP 7 (TIA Portal) V12 或更高版 本，或 STEP 7 V5.5 SP3 或 更高版本中的 GSD 文件 固件更新 V1.0.0 或更高版本 X 标识数据 I&M0 到 I&M4 V1.0.0 或更高版本 X 在 RUN 模式下组态 V1.0.0 或更高版本 X 诊断报警 V1.0.0 或更高版本 X 诊断中断 V1.0.0 或更高版本 X 只能在接口模块/CPU 旁的 LH 侧进行组态 V1.0.0 或更高版本 X X （仅限 PROFINET IO） 在发生电源故障时，扩展 CPU 数据区域的保持 性 V1.0.0 或更高版本 X （仅限 CPU S7-1500，固件 版本 V2.1 或更高版本） --- 附件 电源模块随附的以下组件： • 电源连接器 • U 型连接器 这些组件也可以作为备件提供。 9 产品概述 2.1 特性 电源模块 ",
+        "compact_excerpt": "特性 PS 60W 24/48/60VDC HF 电源模块支持使用额外的模块。 相对于“标准”电源模块的优势： 为了在电源发生故障时保持性地保存更大量的数据，PS 60W 24/48/60VDC HF 会为 CPU 供 电。 PS 60W 24/48/60VDC HF 具有以下属性： • 技术特性 – 额定输入电压 24/48/60 VDC – 输出功率 60 W – 电源故障备份 – 与总线进行电气隔离，依据 EN 61131-2 实施安全电气隔离 该模块支持以下功能： 表格 2-1431 模块功能与版本的相关性 组态软件 功能 模块的固件版本 STEP 7 (TIA Portal) V14 SP1 及更 高版本 STEP 7 (TIA Portal) V12 或更高版 本，或 STEP 7 V5.5 SP3 或 更高版本中的 GSD 文件 固件更新 V1.0.0 或更高版本 X 标识数据 I&M0 到 I&M4 V1.0.0 或更高版本 X 在 RUN 模式下组态 V1.0.0 或更高版本 X 诊断报警 V1.0.0 或更高版本 X 诊断中断 V1.0.0 或更高版本 X 只能在接口模块/CPU 旁的 LH 侧进行组态 V1.0.0 或更高版本 X X （仅限 PROFINET IO） 在发生电源故障时，扩展 CPU 数据区域的保持 性 V1.0.0 或更高版本 X （仅限 CPU S7-1500，固件 版本 V2.1 或更高版本） --- 附件 电源模块随附的以下组件： • 电源连接器 • U 型连接器 这些组件也可以作为备件提供。 9 产品概述 2.1 特性 电源模块 ",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Parameter Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0120",
+          "sha256": "9a5801c4e1dd3966f0bff1e10bdad577e1d3e16228f1a38ab2fcba63c7ddeb46",
+          "visual_type": "module_cpu_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_13_EV_03",
+        "asset_id": "VIS_0121",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E39450011-AC",
+        "page": 6308,
+        "section": "设备特定信息 > 系统功率模块 > 电源模块 PS 60W 24/48/60VDC HF (6ES7505-0RB00-0AB0) > 4 参数 > 4.1 参数",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "S7-1500 POWER",
+        "module_model": "PS 60W 24/48/60VDC HF",
+        "order_number": "6ES7505-0RB00-0AB0",
+        "text": "参数 4 4.1 参数 PS 60W 24/48/60VDC HF 的参数 PS 60W 24/48/60VDC HF 通常已集成在 STEP 7 (TIA Portal) 的硬件目录中。此时，STEP 7 (TIA Portal) 将在组态过程中检查所组态属性的真实性。 此外，也可通过 GSD 文件和其他供应商的组态软件为模块进行参数分配。在完成组态加载之 前，模块不会检查已组态属性的有效性。 在 STEP 7 中指定模块参数时，可使用不同的参数来设置模块属性。下表列出了可组态的参 数。可设置的参数的有效范围取决于组态的类型。可进行以下组态： • 对 S7-1500 CPU 进行集中操作（通过 STEP 7 TIA Portal V14 SP1 或更高版本） • 对 ET 200MP 系统中的 PROFINET IO 进行分布式操作（在 STEP 7 (TIA Portal) V12 或更高版 本，或 STEP 7 V5.5 SP3 或更高版本中使用 PROFINET IO 的 GSD 文件） 在用户程序中进行参数分配时，可使用 WRREC 指令（RUN 模式下的重新参数化）和数据记录 将参数传送至模块；请参见章节 参数数据记录 (页 22)。 表格 2-1432 可组态的参数和默认值 组态软件工具，例如 STEP 7 (TIA Portal) 参数 取值范围 默认设置 RUN 模式下进行 参数分配 集成在 STEP 7 (TIA Portal) V14 SP1 及更高版本 的硬件目录中或 PROFINET IO 的 GSD 文件中 PROFIBUS DP GSD 文 件 诊",
+        "compact_excerpt": "参数 4 4.1 参数 PS 60W 24/48/60VDC HF 的参数 PS 60W 24/48/60VDC HF 通常已集成在 STEP 7 (TIA Portal) 的硬件目录中。此时，STEP 7 (TIA Portal) 将在组态过程中检查所组态属性的真实性。 此外，也可通过 GSD 文件和其他供应商的组态软件为模块进行参数分配。在完成组态加载之 前，模块不会检查已组态属性的有效性。 在 STEP 7 中指定模块参数时，可使用不同的参数来设置模块属性。下表列出了可组态的参 数。可设置的参数的有效范围取决于组态的类型。可进行以下组态： • 对 S7-1500 CPU 进行集中操作（通过 STEP 7 TIA Portal V14 SP1 或更高版本） • 对 ET 200MP 系统中的 PROFINET IO 进行分布式操作（在 STEP 7 (TIA Portal) V12 或更高版 本，或 STEP 7 V5.5 SP3 或更高版本中使用 PROFINET IO 的 GSD 文件） 在用户程序中进行参数分配时，可使用 WRREC 指令（RUN 模式下的重新参数化）和数据记录 将参数传送至模块；请参见章节 参数数据记录 (页 22)。 表格 2-1432 可组态的参数和默认值 组态软件工具，例如 STEP 7 (TIA Portal) 参数 取值范围 默认设置 RUN 模式下进行 参数分配 集成在 STEP 7 (TIA Portal) V14 SP1 及更高版本 的硬件目录中或 PROFINET IO 的 GSD 文件中 PROFIBUS DP GSD 文 件 诊",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Parameter Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0121",
+          "sha256": "acaa287cbada034e0dc811b81d4259bb0303f198791ad4aa9639809abe316bdf",
+          "visual_type": "module_cpu_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_13_EV_04",
+        "asset_id": "VIS_0122",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E39450011-AC",
+        "page": 6309,
+        "section": "设备特定信息 > 系统功率模块 > 电源模块 PS 60W 24/48/60VDC HF (6ES7505-0RB00-0AB0) > 5 中断、诊断报警、错误和状态报警 > 5.1 状态和错误指示灯",
+        "figure_number": "图 2-1304",
+        "manual_figure_number": "图 2-1304",
+        "manual_figure_caption": "PS 60W 24/48/60VDC HF 的 LED 指示灯",
+        "device_family": "S7-1500 POWER",
+        "module_model": "PS 60W 24/48/60VDC HF",
+        "order_number": "6ES7505-0RB00-0AB0",
+        "text": "电源模块 PS 60W 24/48/60VDC HF (6ES7505-0RB00-0AB0) 设备手册, 11/2020, A5E39450011-AC 14 中断、诊断报警、错误和状态报警 5 5.1 状态和错误指示灯 简介 通过 LED 指示灯进行诊断是故障排查的一个基本方式。通常，可通过在 STEP 7 或 CPU 的故障 缓冲区中分析模块的状态信息，精确定位故障源。这些位置包含文本格式的相应错误信息。 LED 指示灯 下图显示 PS 60W 24/48/60VDC HF 的 LED 指示灯（状态和错误指示灯）。 \u0016 \u0014 \u0015 ① RUN LED 指示灯 ② ERROR LED 指示灯 ③ MAINT LED 指示灯 图 2-1304 PS 60W 24/48/60VDC HF 的 LED 指示灯 LED 指示灯的含义 下表列出了状态和错误指示灯的含义。有关诊断报警的补救措施，请参见“诊断报警 (页 15)”章 节。 表格 2-1433 状态和错误指示灯 RUN/ERROR/MAINT LED 指示灯 RUN ERROR MAINT 含义 补救措施 灭 灭 灭 灭；PS 未提供总线电压 • 外部错误；已禁用诊断 • 系统中，PS 未供电，PS 和 CPU/IM 处无电源电压。 接通 PS 电源 检查电源电压 接通 PS 电源 亮 亮 亮 启动；在系统启动后或在固件更新后模块重启时，所有 LED 指示灯短时点亮。 - 闪烁 不相关 不相关 启动，PS 提供总线电压，PS 等待进行参数设置 -",
+        "compact_excerpt": "电源模块 PS 60W 24/48/60VDC HF (6ES7505-0RB00-0AB0) 设备手册, 11/2020, A5E39450011-AC 14 中断、诊断报警、错误和状态报警 5 5.1 状态和错误指示灯 简介 通过 LED 指示灯进行诊断是故障排查的一个基本方式。通常，可通过在 STEP 7 或 CPU 的故障 缓冲区中分析模块的状态信息，精确定位故障源。这些位置包含文本格式的相应错误信息。 LED 指示灯 下图显示 PS 60W 24/48/60VDC HF 的 LED 指示灯（状态和错误指示灯）。 \u0016 \u0014 \u0015 ① RUN LED 指示灯 ② ERROR LED 指示灯 ③ MAINT LED 指示灯 图 2-1304 PS 60W 24/48/60VDC HF 的 LED 指示灯 LED 指示灯的含义 下表列出了状态和错误指示灯的含义。有关诊断报警的补救措施，请参见“诊断报警 (页 15)”章 节。 表格 2-1433 状态和错误指示灯 RUN/ERROR/MAINT LED 指示灯 RUN ERROR MAINT 含义 补救措施 灭 灭 灭 灭；PS 未提供总线电压 • 外部错误；已禁用诊断 • 系统中，PS 未供电，PS 和 CPU/IM 处无电源电压。 接通 PS 电源 检查电源电压 接通 PS 电源 亮 亮 亮 启动；在系统启动后或在固件更新后模块重启时，所有 LED 指示灯短时点亮。 - 闪烁 不相关 不相关 启动，PS 提供总线电压，PS 等待进行参数设置 -",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Parameter Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0122",
+          "sha256": "4e5b0d50b3a0aabeafad5da1f85cdc3e81a1f56ccaccb06c7e5283d3160eb490",
+          "visual_type": "diagnostic_alarm_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_13_EV_05",
+        "asset_id": "VIS_0125",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E46600377-AD",
+        "page": 2882,
+        "section": "设备特定信息 > 中央处理单元 > SIMATIC Drive Controller > 6 技术规范",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "商品编号 6ES7615-4DF10-0AB0 6ES7615-7DF10-0AB0 电源和电压断路跨接 • 停电/断电跨接时间 3 ms; 和 CPU 部件上的供电电压有关 • 重复率，最小值 每 10s 1 个事件 输入电流 耗用电流（额定值） 0.65 A; 输入/输出上无负载，未通过驱动 CLiQ 接口/USB 接口供电 耗用电流，最大值 13.1 A; 带有负载 接通电流，最大值 6 A; 额定值 I²t 0.62 A²·s 功率损失 功率损失，典型值 17 W 存储器 SIMATIC 存储卡插槽数量 1 需要 SIMATIC 存储卡 是 工作存储器 • 集成（用于程序） 4 Mbyte 15 Mbyte • 集成（用于数据） 6 Mbyte 40 Mbyte 装载存储器 • 可拔插（SIMATIC 存储卡），需要 12 Mbyte; 至少在使用集成式驱动结构时建议使用 • 插拔式（SIMATIC 存储卡），最大值 32 Gbyte 缓冲 • 免维护 是 CPU-组件 元素数量（总数） 20 000; 程序块 (OB、FB、FC、DB) 和 UDT DB • 编号范围 1 ... 60 999；划分如下：用户可用编号范围：1 ... 59 999 和由 SFC 86 创建的数据块的编号范围：60 000 ... 60 999 • 容量，最大值 6 Mbyte; 对于绝对寻址的数据 库，最大容量为 64 KB 16 Mbyte; 对于绝对寻址的数据 库，最大容量为 64 KB FB • 编号范围 0 ... 65 535 • 容量，最大值 1 Mbyte FC • 编号",
+        "compact_excerpt": "商品编号 6ES7615-4DF10-0AB0 6ES7615-7DF10-0AB0 电源和电压断路跨接 • 停电/断电跨接时间 3 ms; 和 CPU 部件上的供电电压有关 • 重复率，最小值 每 10s 1 个事件 输入电流 耗用电流（额定值） 0.65 A; 输入/输出上无负载，未通过驱动 CLiQ 接口/USB 接口供电 耗用电流，最大值 13.1 A; 带有负载 接通电流，最大值 6 A; 额定值 I²t 0.62 A²·s 功率损失 功率损失，典型值 17 W 存储器 SIMATIC 存储卡插槽数量 1 需要 SIMATIC 存储卡 是 工作存储器 • 集成（用于程序） 4 Mbyte 15 Mbyte • 集成（用于数据） 6 Mbyte 40 Mbyte 装载存储器 • 可拔插（SIMATIC 存储卡），需要 12 Mbyte; 至少在使用集成式驱动结构时建议使用 • 插拔式（SIMATIC 存储卡），最大值 32 Gbyte 缓冲 • 免维护 是 CPU-组件 元素数量（总数） 20 000; 程序块 (OB、FB、FC、DB) 和 UDT DB • 编号范围 1 ... 60 999；划分如下：用户可用编号范围：1 ... 59 999 和由 SFC 86 创建的数据块的编号范围：60 000 ... 60 999 • 容量，最大值 6 Mbyte; 对于绝对寻址的数据 库，最大容量为 64 KB 16 Mbyte; 对于绝对寻址的数据 库，最大容量为 64 KB FB • 编号范围 0 ... 65 535 • 容量，最大值 1 Mbyte FC • 编号",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Parameter Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0125",
+          "sha256": "4e081a196183c10ef11a442a8d9d62affabec220c4ffb755ef71b7de9cd71910",
+          "visual_type": "table_or_parameter_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_13_EV_06",
+        "asset_id": "VIS_0126",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03461186-AN",
+        "page": 391,
+        "section": "基本信息 > 自动化系统 > 17 技术规范 > 17.6 有关绝缘测试、保护类别、防护等级和额定电压的信息",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "环境条件 允许范围 备注 温度： 卧式和水平安装 相应模块的产品数据表，请 参见 Internet (https://support.industry. siemens.com/cs/cn/zh/ps/td) 为提高显示屏的服务寿命，显示屏在超过所允许的工作温度时会 自动关闭。在某些温度条件下，显示屏会关闭并再次开启。更多 信息，请参见 CPU 手册中的技术规范。 温度变化 10 K/h - 相对湿度 从 10 % 到 95 % 无冷凝 大气压 1140 到 795 hPa 相当于海拔高度 - 1000 m 到 2000 m。 请参见下文的“在海平面以上超过 2000 m 处使用 S7‑1500 自动化系统/ET 200MP 分布式 I/O 系统”。 污染浓度 ANSI/ISA‑71.04 severity level G1; G2; G3 - 在海平面以上超过 2000 m 处使用 S7‑1500 自动化系统/ET 200MP 分布式 I/O 系统 相关信息，参见“在海拔高度超过 2000 m 处以及扩展温度范围内使用 (页 397)”部分。 17.6 有关绝缘测试、保护类别、防护等级和额定电压的信息 绝缘 根据 EN 61010‑2‑201 的要求设计绝缘。 说明 使用电源电压 24 V DC (SELV/PELV) 为模块进行供电时，需使用 707 V DC 进行电气隔离测试 （型式试验）。 污染等级/过压类别符合 EN 61131‑2 和 IEC 61010-2‑201 • 污染等级：2（宏观环境） • 过电压类别：II 防护等级符合 IEC 61131-2 和 IEC",
+        "compact_excerpt": "环境条件 允许范围 备注 温度： 卧式和水平安装 相应模块的产品数据表，请 参见 Internet (https://support.industry. siemens.com/cs/cn/zh/ps/td) 为提高显示屏的服务寿命，显示屏在超过所允许的工作温度时会 自动关闭。在某些温度条件下，显示屏会关闭并再次开启。更多 信息，请参见 CPU 手册中的技术规范。 温度变化 10 K/h - 相对湿度 从 10 % 到 95 % 无冷凝 大气压 1140 到 795 hPa 相当于海拔高度 - 1000 m 到 2000 m。 请参见下文的“在海平面以上超过 2000 m 处使用 S7‑1500 自动化系统/ET 200MP 分布式 I/O 系统”。 污染浓度 ANSI/ISA‑71.04 severity level G1; G2; G3 - 在海平面以上超过 2000 m 处使用 S7‑1500 自动化系统/ET 200MP 分布式 I/O 系统 相关信息，参见“在海拔高度超过 2000 m 处以及扩展温度范围内使用 (页 397)”部分。 17.6 有关绝缘测试、保护类别、防护等级和额定电压的信息 绝缘 根据 EN 61010‑2‑201 的要求设计绝缘。 说明 使用电源电压 24 V DC (SELV/PELV) 为模块进行供电时，需使用 707 V DC 进行电气隔离测试 （型式试验）。 污染等级/过压类别符合 EN 61131‑2 和 IEC 61010-2‑201 • 污染等级：2（宏观环境） • 过电压类别：II 防护等级符合 IEC 61131-2 和 IEC",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Parameter Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0126",
+          "sha256": "366cffaf78a4a720124d7ae7077dc58cb321ca0ced4137a7da650e4cf9f85989",
+          "visual_type": "installation_power_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_13_EV_07",
+        "asset_id": "VIS_0127",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E46600377-AD",
+        "page": 2860,
+        "section": "设备特定信息 > 中央处理单元 > SIMATIC Drive Controller > 4 连接 > 4.1 电源电压 X124",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "SIMATIC Drive Controller 设备手册, 11/2023, A5E46600377-AD 44 连接 4 4.1 电源电压 X124 24 V DC 电源电压 (X124) SIMATIC Drive Controller 由外部 24 V DC 电源供电。例如，可以使用 SITOP 系列的电源。 警告 连接不合适的电源时会因危险电压而危及生命 将 24 V 直流电压设计为保护性超低电压。 连接外部 24 V DC 电源时，必须遵守 UL 61010 中关于保护性超低电压 (PELV) 的要求。还必须 提供能够在环境温度为 0°C 时发生短路时在 120 秒内可靠跳闸的备用熔断器。 当所用电源的一次电源为最高 600 V AC（相至中性电压）的 OVC III 电路时，根据 UL 61010，请确保熔断器或单故障安全电路的断开触点之间的间隙为3.0 mm。 使用外部电源时，请确保所用熔断器的脱扣额定值与所用电源的最大可能短时短路电流相符。 说明 接地位和外壳 (PE) 以低阻抗在内部相互连接。因此，必须遵守以下内容： • 24 V 电源中不允许使用绝缘监视设备。 • 如果使用外部电源（例如 SITOP），则必须将接地位连接到保护导线端子 (PELV)。 • 必须在 24 V 电源和所有本地独立的接地负载之间提供适当尺寸的等电位联结。 有关等电位联结的信息，请参见《SIMATIC Drive Controller》系统手册 (https://support.industry.siemens.com/cs/ww/zh/view/109766665)。 下表列出了",
+        "compact_excerpt": "SIMATIC Drive Controller 设备手册, 11/2023, A5E46600377-AD 44 连接 4 4.1 电源电压 X124 24 V DC 电源电压 (X124) SIMATIC Drive Controller 由外部 24 V DC 电源供电。例如，可以使用 SITOP 系列的电源。 警告 连接不合适的电源时会因危险电压而危及生命 将 24 V 直流电压设计为保护性超低电压。 连接外部 24 V DC 电源时，必须遵守 UL 61010 中关于保护性超低电压 (PELV) 的要求。还必须 提供能够在环境温度为 0°C 时发生短路时在 120 秒内可靠跳闸的备用熔断器。 当所用电源的一次电源为最高 600 V AC（相至中性电压）的 OVC III 电路时，根据 UL 61010，请确保熔断器或单故障安全电路的断开触点之间的间隙为3.0 mm。 使用外部电源时，请确保所用熔断器的脱扣额定值与所用电源的最大可能短时短路电流相符。 说明 接地位和外壳 (PE) 以低阻抗在内部相互连接。因此，必须遵守以下内容： • 24 V 电源中不允许使用绝缘监视设备。 • 如果使用外部电源（例如 SITOP），则必须将接地位连接到保护导线端子 (PELV)。 • 必须在 24 V 电源和所有本地独立的接地负载之间提供适当尺寸的等电位联结。 有关等电位联结的信息，请参见《SIMATIC Drive Controller》系统手册 (https://support.industry.siemens.com/cs/ww/zh/view/109766665)。 下表列出了",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Parameter Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0127",
+          "sha256": "cdee0a5cd4a834b87039c4257419c2217e4d0b02a4b558459436ee59e1e339dd",
+          "visual_type": "table_or_parameter_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_13_EV_08",
+        "asset_id": "VIS_0128",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E46600377-AD",
+        "page": 2886,
+        "section": "设备特定信息 > 中央处理单元 > SIMATIC Drive Controller > 6 技术规范",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "商品编号 6ES7615-4DF10-0AB0 6ES7615-7DF10-0AB0 M 开关 是; 高速输出端 P 开关 是; 也可以作为 P 开关或快速推挽开关（高速输出） 可编程的数字输出端 是; 8 个数字量输入模块/驱动 CLiQ (X122/X132、SINAMICS Integrated) + 8 个数字量输入模块/驱动 CLiQ（X142、可编程逻辑控 制器） 短路保护 是; 电子/热学 • 响应阈，典型值 X122/X132：1.4 A / X142：0.9 A（高速输出：0.7 A） 感应式关闭电压的限制 X122/X132：最大 60 V / X142：最大 64.5 V 控制数字输入 是 最短脉冲持续时间 2 µs; 高速输出时，单个脉冲 数字输出端功能，可设置参数 • 未指定的数字输出端 是; 最大 8 (X122/X132) + 最大 8 (X142) • 带有时间戳的数字输出端 是; 最大 8 (X142)；例如用于凸轮 • PWM （脉冲宽度调制）输出端 是; 最大 8 (X142) – 周期时间，可设置参数 是; 基础频率 1 / 2 / 4 / 8 / 16 kHz；默认脉冲周期比超过 32 位样品 – 接通持续时间，最小值 0 % – 接通持续时间，最大值 100 % – 接通持续时间分辨率 3.125 % • 带有过采样的数字输出端 是; 最大 8 (X142) 输出端的通断能力 • 电阻负载时的最大值 0.5 A; 高速输出时 0.4 A • 照明负载时的最大值 5 W 负载电阻范围 • 下限 48 Ω; 24 V DC 供电时 输出电",
+        "compact_excerpt": "商品编号 6ES7615-4DF10-0AB0 6ES7615-7DF10-0AB0 M 开关 是; 高速输出端 P 开关 是; 也可以作为 P 开关或快速推挽开关（高速输出） 可编程的数字输出端 是; 8 个数字量输入模块/驱动 CLiQ (X122/X132、SINAMICS Integrated) + 8 个数字量输入模块/驱动 CLiQ（X142、可编程逻辑控 制器） 短路保护 是; 电子/热学 • 响应阈，典型值 X122/X132：1.4 A / X142：0.9 A（高速输出：0.7 A） 感应式关闭电压的限制 X122/X132：最大 60 V / X142：最大 64.5 V 控制数字输入 是 最短脉冲持续时间 2 µs; 高速输出时，单个脉冲 数字输出端功能，可设置参数 • 未指定的数字输出端 是; 最大 8 (X122/X132) + 最大 8 (X142) • 带有时间戳的数字输出端 是; 最大 8 (X142)；例如用于凸轮 • PWM （脉冲宽度调制）输出端 是; 最大 8 (X142) – 周期时间，可设置参数 是; 基础频率 1 / 2 / 4 / 8 / 16 kHz；默认脉冲周期比超过 32 位样品 – 接通持续时间，最小值 0 % – 接通持续时间，最大值 100 % – 接通持续时间分辨率 3.125 % • 带有过采样的数字输出端 是; 最大 8 (X142) 输出端的通断能力 • 电阻负载时的最大值 0.5 A; 高速输出时 0.4 A • 照明负载时的最大值 5 W 负载电阻范围 • 下限 48 Ω; 24 V DC 供电时 输出电",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Parameter Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0128",
+          "sha256": "a698e7f81c8aaf8cffdc507887d7b2acfbac81bda378d25327ab9d21937f93c5",
+          "visual_type": "table_or_parameter_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_13_EV_09",
+        "asset_id": "VIS_0129",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E39041333-AC",
+        "page": 5377,
+        "section": "设备特定信息 > 工艺模块 > SIWAREX WP521/WP522 > 11 技术规范 > 11.1 技术规范",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "技术规范 11 11.1 技术规范 可将秤连接到 SIWAREX WP521。 可将两个单独的秤连接到 SIWAREX WP522。量程可扩展到 2 倍。 24 V 电源 说明 24 V DC 标称电源、所有接口和所有 I/O 电路必须由具有安全超低电压的电源供电，该电源满 足 SELV、PELV 的要求，符合 IEC 61140 或 NEC 2 类。 表格 2-1236 技术规范：电源 24 V DC 额定电压 24 V DC 静态下限/上限 19.2/28.8 V DC 动态下限/上限 18.5/30.2 V DC 非周期性过电压 35 V DC 持续 500 ms，恢复时间为 50 s 最大电流消耗 （无数字量输入/输出，请参见表格） WP521：120 mA，WP522：200 mA（24 V DC） 模块的典型功耗 （无数字量输入/输出，请参见表格） WP521：2.4 W，WP522：3.9 W SIMATIC S7 背板总线的电源 表格 2-1237 技术规范：电源背板 SIMATIC S7-1500 背板总线的电流消耗 通常为 35 mA（15 V） 称重传感器接口模拟量（对于 WP522，每个称重通道 1 个） 表格 2-1238 技术规范：称重传感器接口 20 °C +10 K1) 时的误差限值（符合 DIN1319-1） ≤ 0.05 % v.E. 类别 III 分辨率 3000d 误差百分比 pi 0.4 测量精度 达 OIML R76-1:2006/EN45501:2015 （未认证） 阶跃电压 0.5 µV/e 交付时的精度2) 典型值0.1 % v",
+        "compact_excerpt": "技术规范 11 11.1 技术规范 可将秤连接到 SIWAREX WP521。 可将两个单独的秤连接到 SIWAREX WP522。量程可扩展到 2 倍。 24 V 电源 说明 24 V DC 标称电源、所有接口和所有 I/O 电路必须由具有安全超低电压的电源供电，该电源满 足 SELV、PELV 的要求，符合 IEC 61140 或 NEC 2 类。 表格 2-1236 技术规范：电源 24 V DC 额定电压 24 V DC 静态下限/上限 19.2/28.8 V DC 动态下限/上限 18.5/30.2 V DC 非周期性过电压 35 V DC 持续 500 ms，恢复时间为 50 s 最大电流消耗 （无数字量输入/输出，请参见表格） WP521：120 mA，WP522：200 mA（24 V DC） 模块的典型功耗 （无数字量输入/输出，请参见表格） WP521：2.4 W，WP522：3.9 W SIMATIC S7 背板总线的电源 表格 2-1237 技术规范：电源背板 SIMATIC S7-1500 背板总线的电流消耗 通常为 35 mA（15 V） 称重传感器接口模拟量（对于 WP522，每个称重通道 1 个） 表格 2-1238 技术规范：称重传感器接口 20 °C +10 K1) 时的误差限值（符合 DIN1319-1） ≤ 0.05 % v.E. 类别 III 分辨率 3000d 误差百分比 pi 0.4 测量精度 达 OIML R76-1:2006/EN45501:2015 （未认证） 阶跃电压 0.5 µV/e 交付时的精度2) 典型值0.1 % v",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Parameter Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0129",
+          "sha256": "7702ff01a3b92780922e6e18f901942077af1898990c45e470997563e13223e7",
+          "visual_type": "table_or_parameter_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_13_EV_10",
+        "asset_id": "VIS_0130",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E39041333-AC",
+        "page": 5378,
+        "section": "设备特定信息 > 工艺模块 > SIWAREX WP521/WP522 > 11 技术规范 > 11.1 技术规范",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "采样率 100 Hz 输入信号分辨率 ± 4 000 000 测量范围 ± 4 mV/V 共模电压范围 0.25 V 至 +4.75 V 应变式馈送 3） 4.85 V DC ± 3 % 短路和过载保护 √ 连接 6 线制 传感器电压监视 ≤ 4.0 V 无 Ex-i 接口 SIWAREX IS 40 Ω 每个通道的最小 DMS 输入电阻 带 Ex-i 接口 SIWAREX IS 7MH4710-5BA 类型 50 Ω 7MH4710-5CA 类型 100 Ω 最大 DMS 输出电阻 4100 Ω 温度系数范围 ≤ ± 5 ppm/K v.E. 温度系数零点 ≤ ± 0.015 μV/K 线性误差 ≤ 0.005 % 测量值滤波 可组态低通和平均值滤波器 (DR3) 电气隔离 典型值500 V AC 50 Hz/60 Hz 噪声抑制 CMRR > 90 dB 信号电缆 典型值20*106 Ω 输入电阻 传感器电缆 典型值100*106 Ω 电缆长度4) 特殊电缆 最长 800 m 1) 相对精度！（绝对精度仅能通过校准标准进行本地校准之后获得） 2) 模块交换精度，或由理论校准决定 3) 值适用于传感器；补偿线路电压降高达 5 V 4) 使用 SIWAREX 电缆 7MH4702-8AG 时 数字量输出 DQ（对于 WP522，每个称重通道 4 个） 出现故障或 SIMATIC CPU 停止运行时，组态的值始终适用于数字量输出。 数字量输出端感性负载的耗电装置上提供续流二极管。 表格 2-1239 技术规范：数字量输出 每个称重通道的数量 4（高端开关） 电源电压范围 19.2",
+        "compact_excerpt": "采样率 100 Hz 输入信号分辨率 ± 4 000 000 测量范围 ± 4 mV/V 共模电压范围 0.25 V 至 +4.75 V 应变式馈送 3） 4.85 V DC ± 3 % 短路和过载保护 √ 连接 6 线制 传感器电压监视 ≤ 4.0 V 无 Ex-i 接口 SIWAREX IS 40 Ω 每个通道的最小 DMS 输入电阻 带 Ex-i 接口 SIWAREX IS 7MH4710-5BA 类型 50 Ω 7MH4710-5CA 类型 100 Ω 最大 DMS 输出电阻 4100 Ω 温度系数范围 ≤ ± 5 ppm/K v.E. 温度系数零点 ≤ ± 0.015 μV/K 线性误差 ≤ 0.005 % 测量值滤波 可组态低通和平均值滤波器 (DR3) 电气隔离 典型值500 V AC 50 Hz/60 Hz 噪声抑制 CMRR > 90 dB 信号电缆 典型值20*106 Ω 输入电阻 传感器电缆 典型值100*106 Ω 电缆长度4) 特殊电缆 最长 800 m 1) 相对精度！（绝对精度仅能通过校准标准进行本地校准之后获得） 2) 模块交换精度，或由理论校准决定 3) 值适用于传感器；补偿线路电压降高达 5 V 4) 使用 SIWAREX 电缆 7MH4702-8AG 时 数字量输出 DQ（对于 WP522，每个称重通道 4 个） 出现故障或 SIMATIC CPU 停止运行时，组态的值始终适用于数字量输出。 数字量输出端感性负载的耗电装置上提供续流二极管。 表格 2-1239 技术规范：数字量输出 每个称重通道的数量 4（高端开关） 电源电压范围 19.2",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Parameter Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0130",
+          "sha256": "a63d0248dd51f7614eb412364f54f5d74eba26685d86cb4fd0ba258644042988",
+          "visual_type": "table_or_parameter_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_13_EV_11",
+        "asset_id": "VIS_0131",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03461186-AN",
+        "page": 122,
+        "section": "基本信息 > 自动化系统 > 5 系统概述 > 5.6 输入和输出模块 > 5.6.4 故障安全数字量模块",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "典型使用： – 控制比例阀和值（如，通过降低维持电流进行节能）。 – 通过诸如外部电源装置进行加热控制 • 大电流模块 DQ 8 HS： – 每个通道 5 A – 每个通道组 8 A 5.6.4 故障安全数字量模块 故障安全数字量模块 故障安全数字量模块中集成强大的安全防护机制，可确保设备和人员安全（如，过程设备操作 中的急停设备）。 故障安全模块可确保现场设备的安全运行（传感器：如，急停按钮、光栅以及用于电机控制的 执行器等）。进行安全处理的硬件和软件组件各式各样，具体取决于所需的安全等级要求。下 表列出了可用故障安全模块： 简称 F-DI 16x 24VDC PROFIsafe F-DQ 8x24VDC/2A PPM 订货号 6ES7526-1BH00-0AB0 (https://mall.industry.siemens. com/mall/en/WW/Catalog/Product/6ES75­ 26-1BH00-0AB0) 6ES7526-2BF00-0AB0 (https://mall.industry.siemens. com/mall/zh/WW/Catalog/Product/6ES75­ 26-2BF00-0AB0) 设备手册 ↓ (https://support.industry.siemens. com/cs/ww/zh/view/109482426) ↓ (https://support.industry.siemens. com/cs/ww/zh/view/109482427) 宽 35 mm 35 mm 输入数量 16 --- 输出数量 --- 8",
+        "compact_excerpt": "典型使用： – 控制比例阀和值（如，通过降低维持电流进行节能）。 – 通过诸如外部电源装置进行加热控制 • 大电流模块 DQ 8 HS： – 每个通道 5 A – 每个通道组 8 A 5.6.4 故障安全数字量模块 故障安全数字量模块 故障安全数字量模块中集成强大的安全防护机制，可确保设备和人员安全（如，过程设备操作 中的急停设备）。 故障安全模块可确保现场设备的安全运行（传感器：如，急停按钮、光栅以及用于电机控制的 执行器等）。进行安全处理的硬件和软件组件各式各样，具体取决于所需的安全等级要求。下 表列出了可用故障安全模块： 简称 F-DI 16x 24VDC PROFIsafe F-DQ 8x24VDC/2A PPM 订货号 6ES7526-1BH00-0AB0 (https://mall.industry.siemens. com/mall/en/WW/Catalog/Product/6ES75­ 26-1BH00-0AB0) 6ES7526-2BF00-0AB0 (https://mall.industry.siemens. com/mall/zh/WW/Catalog/Product/6ES75­ 26-2BF00-0AB0) 设备手册 ↓ (https://support.industry.siemens. com/cs/ww/zh/view/109482426) ↓ (https://support.industry.siemens. com/cs/ww/zh/view/109482427) 宽 35 mm 35 mm 输入数量 16 --- 输出数量 --- 8",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Parameter Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0131",
+          "sha256": "e989fe2c8b0529b294c4f3c9d8b2bdcce8cc377ec6e547be4661e30c88adcd2a",
+          "visual_type": "table_or_parameter_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_13_EV_12",
+        "asset_id": "VIS_0132",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03461186-AN",
+        "page": 124,
+        "section": "基本信息 > 自动化系统 > 5 系统概述 > 5.6 输入和输出模块 > 5.6.5 模拟量输入模块",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "简称 AI 8xU/I HF AI 8xU/I HS AI 8xU/R/RTD/TC HF AI 8xU/I/RTD/TC ST AI 4xU/I/RTD/TC ST AI 8xU/I/R/RTD BA AI 4xU/I/RTD/TC / AQ 2xU/I ST 标准型 (ST) --- ↓ (https://support. industry.siemens. com/cs/ww/zh/view/59­ 193205) ↓ (https://support. industry.siemens. com/cs/ww/zh/view/91­ 688401) ↓ (https://support. industry.siemens. com/cs/ww/zh/view/91­ 688109) 基本型 (BA) --- --- ↓ (https://support. industry.siemens. com/cs/de/en/view/109­ 763142) --- 宽 35 mm 35 mm 25 mm 25 mm 输入数量 8 8 4 4 精度 16 位（含符号位） 16 位（含符号位） 16 位（含符号位） 16 位（含符号位） 测量方式 电压，电流 电压，电流，电阻，热 敏电阻，热电偶 电压，电流，电阻，热 电阻，热电偶 电压，电流，电阻，热 敏电阻，热电偶 通道间电气隔离 仅 HF 型 仅 HF 型 --- --- 电位组的数量 1 1 --- --- 额定电源电压 24 V DC 24 V DC 24 V DC 24 V DC 输入间允许的电位差 (UCM) HF 型",
+        "compact_excerpt": "简称 AI 8xU/I HF AI 8xU/I HS AI 8xU/R/RTD/TC HF AI 8xU/I/RTD/TC ST AI 4xU/I/RTD/TC ST AI 8xU/I/R/RTD BA AI 4xU/I/RTD/TC / AQ 2xU/I ST 标准型 (ST) --- ↓ (https://support. industry.siemens. com/cs/ww/zh/view/59­ 193205) ↓ (https://support. industry.siemens. com/cs/ww/zh/view/91­ 688401) ↓ (https://support. industry.siemens. com/cs/ww/zh/view/91­ 688109) 基本型 (BA) --- --- ↓ (https://support. industry.siemens. com/cs/de/en/view/109­ 763142) --- 宽 35 mm 35 mm 25 mm 25 mm 输入数量 8 8 4 4 精度 16 位（含符号位） 16 位（含符号位） 16 位（含符号位） 16 位（含符号位） 测量方式 电压，电流 电压，电流，电阻，热 敏电阻，热电偶 电压，电流，电阻，热 电阻，热电偶 电压，电流，电阻，热 敏电阻，热电偶 通道间电气隔离 仅 HF 型 仅 HF 型 --- --- 电位组的数量 1 1 --- --- 额定电源电压 24 V DC 24 V DC 24 V DC 24 V DC 输入间允许的电位差 (UCM) HF 型",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Parameter Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0132",
+          "sha256": "5403e0d85ea0a7cddd133a49fd5d5699d655b929e620dd67fb12e57d2bb01a23",
+          "visual_type": "table_or_parameter_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_13_EV_13",
+        "asset_id": "VIS_0133",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03461186-AN",
+        "page": 98,
+        "section": "基本信息 > 自动化系统 > 5 系统概述 > 5.3 组件",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "组件 功能 图示 系统电源 (PS) 系统电源是具有诊断功能的电源模块，可通过 U 型连接器连接到背板总 线上。 如果 CPU/接口模块提供给背板总线的电量不足以为所连接的模块供电， 则需要使用系统电源。 系统电源共有以下三种型号： • PS 25 W 24 V DC • PS 60 W 24/48/60 V DC • PS 60W 24/48/60V DC HF* • PS 60 W 120/230 V AC/DC 带有编码元件的电源线连接器和 U 型连接器包含在系统电源的供货范围 内，可作为备件进行订购。 负载电流电源 (PM) 由负载电流电源 (PM) 为系统电源 (PS)、中央模块 (CPU)、接口模块以及 I/O 模块的输入和输出电路提供 24 V DC 电压。 如果要使用负载电流电源，则建议使用 SIMATIC 产品系列。可将这些设 备安装在安装导轨上。 负载电流电源共有以下两种型号： • PM 70 W 120/230 V AC • PM 190 W 120/230 V AC 此外，还可以使用 SITOP 智能电源代替 SIMATIC 负载电源 (PM)。此外， 建议在以下情况下使用 SITOP 智能电源： • 功率要求较高 • 冗余 • 不间断电源 更多关于 SITOP 模块的信息，请参见 Internet (https://support.industry.siemens.com/cs/cn/zh/view/96998532) 上的常 见问题与解答。 * 此外，PS 60W 24/48/60V DC HF 会保留整个 CPU 工作存储器的保持性。 参考 有关接",
+        "compact_excerpt": "组件 功能 图示 系统电源 (PS) 系统电源是具有诊断功能的电源模块，可通过 U 型连接器连接到背板总 线上。 如果 CPU/接口模块提供给背板总线的电量不足以为所连接的模块供电， 则需要使用系统电源。 系统电源共有以下三种型号： • PS 25 W 24 V DC • PS 60 W 24/48/60 V DC • PS 60W 24/48/60V DC HF* • PS 60 W 120/230 V AC/DC 带有编码元件的电源线连接器和 U 型连接器包含在系统电源的供货范围 内，可作为备件进行订购。 负载电流电源 (PM) 由负载电流电源 (PM) 为系统电源 (PS)、中央模块 (CPU)、接口模块以及 I/O 模块的输入和输出电路提供 24 V DC 电压。 如果要使用负载电流电源，则建议使用 SIMATIC 产品系列。可将这些设 备安装在安装导轨上。 负载电流电源共有以下两种型号： • PM 70 W 120/230 V AC • PM 190 W 120/230 V AC 此外，还可以使用 SITOP 智能电源代替 SIMATIC 负载电源 (PM)。此外， 建议在以下情况下使用 SITOP 智能电源： • 功率要求较高 • 冗余 • 不间断电源 更多关于 SITOP 模块的信息，请参见 Internet (https://support.industry.siemens.com/cs/cn/zh/view/96998532) 上的常 见问题与解答。 * 此外，PS 60W 24/48/60V DC HF 会保留整个 CPU 工作存储器的保持性。 参考 有关接",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Parameter Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0133",
+          "sha256": "0884827fc242a520738dd8a7894fceb443d1e67b7d3119eab05d52711fea0333",
+          "visual_type": "installation_power_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_13_EV_14",
+        "asset_id": "VIS_0134",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03461186-AN",
+        "page": 193,
+        "section": "基本信息 > 自动化系统 > 8 接线 > 8.1 操作规则和规定",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "线路电压 有关线路电压的注意事项如下： • 对于不带多极断路器的固定设备或系统，在建筑物安装中必须提供电源隔离设备（多 极）。 • 对于负载电源模块，设置的额定电压范围必须与当地的线路电压相匹配。 • 对于 S7‑1500 自动化系统/ET 200MP 分布式 I/O 系统的所有电源电路，线路电压相对于额 定值的波动/偏离必须在允许的误差范围内。 更多信息，请参见“有关绝缘测试、保护类别、防护等级和额定电压的信息 (页 384)”部分。 24 VDC 电源 以下介绍了对于 24 V DC 电源必须注意的事项： • 根据 IEC 61131‑2 或 IEC 61010‑2‑201，24 V DC 电源 (SELV/PELV) 的电源装置必须提供安 全超低电压。 • 为了针对雷电和过电压对 S7‑1500 自动化系统/ET 200MP 分布式 I/O 系统提供保护，请使 用过电压放电器。 有关避雷和过电压防护组件信息，请参见“定义防干扰型控制器 (https://support.automation.siemens.com/WW/view/zh/59193566)”功能手册。 发生电压中断时的电源要求 说明 为符合 IEC 61131-2 的要求，只能使用电源缓冲时间至少为 10 ms 的电源组/电源装置（例如 230/400 V AC → 24 V DC）。对于可能的电压中断，应遵循应用的相关要求（例如，对于“燃烧器”产品，按照 EN 298 标准为 30 ms，按照 NAMUR 建议 NE 21 则为 20 ms）。有关 PS 组件的最新信息，敬 请访问 Internet (h",
+        "compact_excerpt": "线路电压 有关线路电压的注意事项如下： • 对于不带多极断路器的固定设备或系统，在建筑物安装中必须提供电源隔离设备（多 极）。 • 对于负载电源模块，设置的额定电压范围必须与当地的线路电压相匹配。 • 对于 S7‑1500 自动化系统/ET 200MP 分布式 I/O 系统的所有电源电路，线路电压相对于额 定值的波动/偏离必须在允许的误差范围内。 更多信息，请参见“有关绝缘测试、保护类别、防护等级和额定电压的信息 (页 384)”部分。 24 VDC 电源 以下介绍了对于 24 V DC 电源必须注意的事项： • 根据 IEC 61131‑2 或 IEC 61010‑2‑201，24 V DC 电源 (SELV/PELV) 的电源装置必须提供安 全超低电压。 • 为了针对雷电和过电压对 S7‑1500 自动化系统/ET 200MP 分布式 I/O 系统提供保护，请使 用过电压放电器。 有关避雷和过电压防护组件信息，请参见“定义防干扰型控制器 (https://support.automation.siemens.com/WW/view/zh/59193566)”功能手册。 发生电压中断时的电源要求 说明 为符合 IEC 61131-2 的要求，只能使用电源缓冲时间至少为 10 ms 的电源组/电源装置（例如 230/400 V AC → 24 V DC）。对于可能的电压中断，应遵循应用的相关要求（例如，对于“燃烧器”产品，按照 EN 298 标准为 30 ms，按照 NAMUR 建议 NE 21 则为 20 ms）。有关 PS 组件的最新信息，敬 请访问 Internet (h",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Parameter Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0134",
+          "sha256": "11795a9158a6715fe52bbeb36c786b2ac9e52d2016e7e4a7ca322ed67a33e990",
+          "visual_type": "installation_power_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_13_EV_15",
+        "asset_id": "VIS_0135",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03461186-AN",
+        "page": 197,
+        "section": "基本信息 > 自动化系统 > 8 接线 > 8.3 通过接地馈电系统运行",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "解决方案： • 空间上将感性负载与磁场隔断或采用屏蔽层来抵抗磁场。 • 将“关断测试的最大回读时间”(Max. readback time dark test) 组态为 50 ms 或更高。 8.3 通过接地馈电系统运行 简介 下文中介绍了有关接地供电系统（TN-S 系统）中 S7‑1500 自动化系统/ET 200MP 分布式 I/O 系统的整体组态信息。讨论的具体主题包括： • 关断设备、短路和过载保护（基于 – IEC 60364（对应 DIN VDE 0100） – IEC 60204（对应 DIN VDE 0113） • 负载电流电源和负载电路 接地馈电 如果使用 TN-S 系统，则需将中性导线（N）和保护性导线（PE）分别接地 。这两个导线是导 致过压的部分原因。设备运行时，电流会流经中性导线。发生故障（例如带电导线和地面之间 的单个接地故障）时，电流会流经保护性导线。 安全电气隔离（SELV 符合 IEC 61131-2 或 61010-2-201 标准要求） 输出电压为 24 V DC 的系统带能源/负载电流电源需要进行安全电气隔离和电压限制（超低电 压）。输出电压为 24 V DC 的负载电源/系统电源未连接到保护性导线。 基于 IEC 61131-2 / IEC 61010-2-201 标准要求，这种保护措施也称为 SELV（安全超低电 压）。 SELV 电路的接线必须与其它非 SELV 电路的接线安全隔离，或者所有导线的绝缘材料尺寸必须 满足高压需求。 安全超低电压（PELV 符合 IEC 61131-2 或 IEC 61010-2-201 标准要求） 接",
+        "compact_excerpt": "解决方案： • 空间上将感性负载与磁场隔断或采用屏蔽层来抵抗磁场。 • 将“关断测试的最大回读时间”(Max. readback time dark test) 组态为 50 ms 或更高。 8.3 通过接地馈电系统运行 简介 下文中介绍了有关接地供电系统（TN-S 系统）中 S7‑1500 自动化系统/ET 200MP 分布式 I/O 系统的整体组态信息。讨论的具体主题包括： • 关断设备、短路和过载保护（基于 – IEC 60364（对应 DIN VDE 0100） – IEC 60204（对应 DIN VDE 0113） • 负载电流电源和负载电路 接地馈电 如果使用 TN-S 系统，则需将中性导线（N）和保护性导线（PE）分别接地 。这两个导线是导 致过压的部分原因。设备运行时，电流会流经中性导线。发生故障（例如带电导线和地面之间 的单个接地故障）时，电流会流经保护性导线。 安全电气隔离（SELV 符合 IEC 61131-2 或 61010-2-201 标准要求） 输出电压为 24 V DC 的系统带能源/负载电流电源需要进行安全电气隔离和电压限制（超低电 压）。输出电压为 24 V DC 的负载电源/系统电源未连接到保护性导线。 基于 IEC 61131-2 / IEC 61010-2-201 标准要求，这种保护措施也称为 SELV（安全超低电 压）。 SELV 电路的接线必须与其它非 SELV 电路的接线安全隔离，或者所有导线的绝缘材料尺寸必须 满足高压需求。 安全超低电压（PELV 符合 IEC 61131-2 或 IEC 61010-2-201 标准要求） 接",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Parameter Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0135",
+          "sha256": "5a6c27282f5ec74927b1c335cbc5865d53f055df68c4005aecadcd99193ac935",
+          "visual_type": "installation_power_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      }
+    ],
+    "metadata": {
+      "source": "offline_demo_snapshot",
+      "visual_asset_count": 15,
+      "cross_model_blocked": 0,
+      "rejected_evidence": []
+    }
+  },
+  "judge_decision": {
+    "verdict": "PARTIAL",
+    "confidence": "MEDIUM",
+    "decision_reason": "离线快照仅采用资产清单中可解码、可追溯且经身份检查的手册页。",
+    "final_evidence_ids": [
+      "HIDDEN_13_EV_01",
+      "HIDDEN_13_EV_02",
+      "HIDDEN_13_EV_03",
+      "HIDDEN_13_EV_04"
+    ],
+    "accepted_agent_outputs": [
+      "Parameter Agent"
+    ],
+    "rejected_agent_outputs": [],
+    "supported_claims": [
+      "选型时可直接核对的参数包括：额定输入 24/48/60 V DC，静态允许范围 19.2～72 V DC，动态允许范围 18.5～75.5 V DC，以及模块 60 W 输出能力；对应产品概述和技术规范见页 6304、6313。保护、降额和环境条件应继续按同一订货号的完整技术规范逐项核对，当前快照未直接给出的值不作猜测。"
+    ],
+    "unsupported_claims": [],
+    "conflicting_claims": [],
+    "coverage": {
+      "main": {
+        "answered": true
+      }
+    },
+    "model_consistency": {
+      "pass": true,
+      "rejected_evidence_ids": []
+    },
+    "metadata": {
+      "accepted_claims": [
+        {
+          "claim_id": "HIDDEN_13_CLAIM_01",
+          "claim_text": "选型时可直接核对的参数包括：额定输入 24/48/60 V DC，静态允许范围 19.2～72 V DC，动态允许范围 18.5～75.5 V DC，以及模块 60 W 输出能力；对应产品概述和技术规范见页 6304、6313。保护、降额和环境条件应继续按同一订货号的完整技术规范逐项核对，当前快照未直接给出的值不作猜测。",
+          "claim_type": "parameter",
+          "model_scope": "PS 60W 24/48/60VDC HF",
+          "confidence": "MEDIUM",
+          "evidence_ids": [
+            "HIDDEN_13_EV_01",
+            "HIDDEN_13_EV_02",
+            "HIDDEN_13_EV_03",
+            "HIDDEN_13_EV_04"
+          ],
+          "direct_support": true,
+          "metadata": {
+            "offline_curated": true
+          }
+        }
+      ]
+    }
+  },
+  "verifier": {
+    "figure_requirement_pass": true,
+    "numeric_mismatch_claim_ids": [],
+    "grounded_claim_ids": [
+      "HIDDEN_13_CLAIM_01"
+    ],
+    "passed": true
+  },
+  "answer": {
+    "status": "PARTIAL",
+    "text": "选型时可直接核对的参数包括：额定输入 24/48/60 V DC，静态允许范围 19.2～72 V DC，动态允许范围 18.5～75.5 V DC，以及模块 60 W 输出能力；对应产品概述和技术规范见页 6304、6313。保护、降额和环境条件应继续按同一订货号的完整技术规范逐项核对，当前快照未直接给出的值不作猜测。",
+    "evidence_ids": [
+      "HIDDEN_13_EV_01",
+      "HIDDEN_13_EV_02",
+      "HIDDEN_13_EV_03",
+      "HIDDEN_13_EV_04"
+    ]
+  },
+  "final_answer": "选型时可直接核对的参数包括：额定输入 24/48/60 V DC，静态允许范围 19.2～72 V DC，动态允许范围 18.5～75.5 V DC，以及模块 60 W 输出能力；对应产品概述和技术规范见页 6304、6313。保护、降额和环境条件应继续按同一订货号的完整技术规范逐项核对，当前快照未直接给出的值不作猜测。",
+  "work_order": {
+    "status": "not_requested",
+    "risk_tip": ""
+  },
+  "visual_asset_ids": [
+    "VIS_0119",
+    "VIS_0120",
+    "VIS_0121",
+    "VIS_0122",
+    "VIS_0125",
+    "VIS_0126",
+    "VIS_0127",
+    "VIS_0128",
+    "VIS_0129",
+    "VIS_0130",
+    "VIS_0131",
+    "VIS_0132",
+    "VIS_0133",
+    "VIS_0134",
+    "VIS_0135"
+  ],
+  "visual_evidence": [
+    {
+      "asset_id": "VIS_0119",
+      "evidence_id": "HIDDEN_13_EV_01",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0120",
+      "evidence_id": "HIDDEN_13_EV_02",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0121",
+      "evidence_id": "HIDDEN_13_EV_03",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0122",
+      "evidence_id": "HIDDEN_13_EV_04",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0125",
+      "evidence_id": "HIDDEN_13_EV_05",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0126",
+      "evidence_id": "HIDDEN_13_EV_06",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0127",
+      "evidence_id": "HIDDEN_13_EV_07",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0128",
+      "evidence_id": "HIDDEN_13_EV_08",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0129",
+      "evidence_id": "HIDDEN_13_EV_09",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0130",
+      "evidence_id": "HIDDEN_13_EV_10",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0131",
+      "evidence_id": "HIDDEN_13_EV_11",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0132",
+      "evidence_id": "HIDDEN_13_EV_12",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0133",
+      "evidence_id": "HIDDEN_13_EV_13",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0134",
+      "evidence_id": "HIDDEN_13_EV_14",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0135",
+      "evidence_id": "HIDDEN_13_EV_15",
+      "status": "image_available"
+    }
+  ],
+  "visual_coverage_reason": {
+    "VIS_0119": "table_or_parameter_page，资料页 6313，direct target evidence",
+    "VIS_0120": "module_cpu_page，资料页 6304，direct target evidence",
+    "VIS_0121": "module_cpu_page，资料页 6308，direct target evidence",
+    "VIS_0122": "diagnostic_alarm_page，资料页 6309，direct target evidence",
+    "VIS_0125": "table_or_parameter_page，资料页 2882，supporting manual context",
+    "VIS_0126": "installation_power_page，资料页 391，supporting manual context",
+    "VIS_0127": "table_or_parameter_page，资料页 2860，supporting manual context",
+    "VIS_0128": "table_or_parameter_page，资料页 2886，supporting manual context",
+    "VIS_0129": "table_or_parameter_page，资料页 5377，supporting manual context",
+    "VIS_0130": "table_or_parameter_page，资料页 5378，supporting manual context",
+    "VIS_0131": "table_or_parameter_page，资料页 122，supporting manual context",
+    "VIS_0132": "table_or_parameter_page，资料页 124，supporting manual context",
+    "VIS_0133": "installation_power_page，资料页 98，supporting manual context",
+    "VIS_0134": "installation_power_page，资料页 193，supporting manual context",
+    "VIS_0135": "installation_power_page，资料页 197，supporting manual context"
+  },
+  "generated_from_commit": "8403213d89d3f2200b9f40ee1f72d23673c9b4f6",
+  "snapshot_validation": {
+    "valid": true,
+    "errors": []
+  },
+  "warnings": [
+    "该结果是基于仓库内真实手册页面整理的离线 SAMPLE 快照，未调用 FULL 检索后端。"
+  ]
+}

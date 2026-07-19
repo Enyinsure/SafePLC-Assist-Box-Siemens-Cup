@@ -26,6 +26,8 @@ class FrontendSettings:
     frontend_mode: str
     demo_enabled: bool
     pipeline_mode: str
+    hidden_demo_enabled: bool = False
+    hidden_demo_debug: bool = False
 
     @classmethod
     def from_env(cls) -> "FrontendSettings":
@@ -34,6 +36,8 @@ class FrontendSettings:
             frontend_mode=requested if requested in FRONTEND_MODES else "auto",
             demo_enabled=_env_bool("SAFEPLC_ENABLE_DEMO", True),
             pipeline_mode=SafePLCConfig.from_env().mode,
+            hidden_demo_enabled=_env_bool("SAFEPLC_ENABLE_HIDDEN_DEMO", False),
+            hidden_demo_debug=_env_bool("SAFEPLC_SHOW_HIDDEN_DEMO_DEBUG", False),
         )
 
 

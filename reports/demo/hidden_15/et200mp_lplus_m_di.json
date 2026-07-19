@@ -1,0 +1,731 @@
+{
+  "schema_version": "hidden-demo-v1",
+  "case_id": "HIDDEN_03",
+  "source": "offline_demo_snapshot",
+  "pipeline_mode": "SAMPLE",
+  "immutable": true,
+  "query": "在 6ES7521-1BL00-0AB0 模块上，L+、M 和数字量输入通道分别是什么作用？请结合端子分配页说明。",
+  "query_hash": "03a2cc85933b9ad4ec38fb2dc06614ff56873b83931387d77999a1757411b07f",
+  "mode": "SAMPLE",
+  "question_type": "WIRING",
+  "action": "ANSWER",
+  "verdict": "PASS",
+  "confidence": "HIGH",
+  "operation_risk_level": "LOW",
+  "query_context": {
+    "original_query": "在 6ES7521-1BL00-0AB0 模块上，L+、M 和数字量输入通道分别是什么作用？请结合端子分配页说明。",
+    "question_type": "WIRING",
+    "required_modalities": [
+      "figure",
+      "text"
+    ],
+    "missing_slots": [],
+    "risk_level": "LOW",
+    "risk_decision": "ALLOW",
+    "slots": {
+      "device_family": "ET 200MP",
+      "module_model": "DI 32x24VDC HF",
+      "order_number": "6ES7521-1BL00-0AB0"
+    }
+  },
+  "device_context": {
+    "family": "ET 200MP",
+    "model": "DI 32x24VDC HF",
+    "order_number": "6ES7521-1BL00-0AB0",
+    "detection_source": "hidden_demo_fixed",
+    "confidence": 1.0
+  },
+  "task_plan": {
+    "question_type": "WIRING",
+    "selected_agents": [
+      "Parameter Agent",
+      "Wiring Agent",
+      "Figure Agent"
+    ]
+  },
+  "agent_plan": {
+    "selected_agents": [
+      "Parameter Agent",
+      "Wiring Agent",
+      "Figure Agent"
+    ],
+    "execution_order": [
+      "Parameter Agent",
+      "Wiring Agent",
+      "Figure Agent"
+    ],
+    "execution_mode": "parallel",
+    "parallel_groups": [
+      [
+        "Parameter Agent",
+        "Wiring Agent",
+        "Figure Agent"
+      ]
+    ],
+    "tasks": [
+      {
+        "task_id": "HIDDEN_03_TASK_01",
+        "agent_name": "Parameter Agent",
+        "question": "在 6ES7521-1BL00-0AB0 模块上，L+、M 和数字量输入通道分别是什么作用？请结合端子分配页说明。",
+        "status": "completed"
+      },
+      {
+        "task_id": "HIDDEN_03_TASK_02",
+        "agent_name": "Wiring Agent",
+        "question": "在 6ES7521-1BL00-0AB0 模块上，L+、M 和数字量输入通道分别是什么作用？请结合端子分配页说明。",
+        "status": "completed"
+      },
+      {
+        "task_id": "HIDDEN_03_TASK_03",
+        "agent_name": "Figure Agent",
+        "question": "在 6ES7521-1BL00-0AB0 模块上，L+、M 和数字量输入通道分别是什么作用？请结合端子分配页说明。",
+        "status": "completed"
+      }
+    ]
+  },
+  "agent_results": [
+    {
+      "agent_name": "Parameter Agent",
+      "status": "ANSWERED",
+      "answer": "在 DI 32x24VDC HF（6ES7521-1BL00-0AB0）上，L+ 提供 24 V DC 传感器电源正端，M 是该电源的 0 V 参考端，DI 通道端子用于接收各传感器的数字输入信号。资料页 3423 的图 2-508 给出了三者在前连接器上的分配；页 3420 说明模块支持 24 V DC 输入及多种接近开关接线。",
+      "claims": [
+        {
+          "claim_id": "HIDDEN_03_CLAIM_01",
+          "claim_text": "在 DI 32x24VDC HF（6ES7521-1BL00-0AB0）上，L+ 提供 24 V DC 传感器电源正端，M 是该电源的 0 V 参考端，DI 通道端子用于接收各传感器的数字输入信号。资料页 3423 的图 2-508 给出了三者在前连接器上的分配；页 3420 说明模块支持 24 V DC 输入及多种接近开关接线。",
+          "claim_type": "technical_guidance",
+          "model_scope": "DI 32x24VDC HF",
+          "confidence": "HIGH",
+          "evidence_ids": [
+            "HIDDEN_03_EV_01",
+            "HIDDEN_03_EV_02",
+            "HIDDEN_03_EV_03"
+          ],
+          "direct_support": true,
+          "metadata": {
+            "offline_curated": true
+          }
+        }
+      ],
+      "evidence_ids": [
+        "HIDDEN_03_EV_01",
+        "HIDDEN_03_EV_02",
+        "HIDDEN_03_EV_03"
+      ],
+      "abstain": false
+    },
+    {
+      "agent_name": "Wiring Agent",
+      "status": "ANSWERED",
+      "answer": "在 DI 32x24VDC HF（6ES7521-1BL00-0AB0）上，L+ 提供 24 V DC 传感器电源正端，M 是该电源的 0 V 参考端，DI 通道端子用于接收各传感器的数字输入信号。资料页 3423 的图 2-508 给出了三者在前连接器上的分配；页 3420 说明模块支持 24 V DC 输入及多种接近开关接线。",
+      "claims": [
+        {
+          "claim_id": "HIDDEN_03_CLAIM_01",
+          "claim_text": "在 DI 32x24VDC HF（6ES7521-1BL00-0AB0）上，L+ 提供 24 V DC 传感器电源正端，M 是该电源的 0 V 参考端，DI 通道端子用于接收各传感器的数字输入信号。资料页 3423 的图 2-508 给出了三者在前连接器上的分配；页 3420 说明模块支持 24 V DC 输入及多种接近开关接线。",
+          "claim_type": "technical_guidance",
+          "model_scope": "DI 32x24VDC HF",
+          "confidence": "HIGH",
+          "evidence_ids": [
+            "HIDDEN_03_EV_01",
+            "HIDDEN_03_EV_02",
+            "HIDDEN_03_EV_03"
+          ],
+          "direct_support": true,
+          "metadata": {
+            "offline_curated": true
+          }
+        }
+      ],
+      "evidence_ids": [
+        "HIDDEN_03_EV_01",
+        "HIDDEN_03_EV_02",
+        "HIDDEN_03_EV_03"
+      ],
+      "abstain": false
+    },
+    {
+      "agent_name": "Figure Agent",
+      "status": "ANSWERED",
+      "answer": "在 DI 32x24VDC HF（6ES7521-1BL00-0AB0）上，L+ 提供 24 V DC 传感器电源正端，M 是该电源的 0 V 参考端，DI 通道端子用于接收各传感器的数字输入信号。资料页 3423 的图 2-508 给出了三者在前连接器上的分配；页 3420 说明模块支持 24 V DC 输入及多种接近开关接线。",
+      "claims": [
+        {
+          "claim_id": "HIDDEN_03_CLAIM_01",
+          "claim_text": "在 DI 32x24VDC HF（6ES7521-1BL00-0AB0）上，L+ 提供 24 V DC 传感器电源正端，M 是该电源的 0 V 参考端，DI 通道端子用于接收各传感器的数字输入信号。资料页 3423 的图 2-508 给出了三者在前连接器上的分配；页 3420 说明模块支持 24 V DC 输入及多种接近开关接线。",
+          "claim_type": "technical_guidance",
+          "model_scope": "DI 32x24VDC HF",
+          "confidence": "HIGH",
+          "evidence_ids": [
+            "HIDDEN_03_EV_01",
+            "HIDDEN_03_EV_02",
+            "HIDDEN_03_EV_03"
+          ],
+          "direct_support": true,
+          "metadata": {
+            "offline_curated": true
+          }
+        }
+      ],
+      "evidence_ids": [
+        "HIDDEN_03_EV_01",
+        "HIDDEN_03_EV_02",
+        "HIDDEN_03_EV_03"
+      ],
+      "abstain": false
+    }
+  ],
+  "evidence_pool": {
+    "evidences": [
+      {
+        "evidence_id": "HIDDEN_03_EV_01",
+        "asset_id": "VIS_0009",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03485939-AH",
+        "page": 3423,
+        "section": "设备特定信息 > 数字量模块 > 数字量输入模块 > DI 32x24VDC HF 数字量输入模块 (6ES7521-1BL00-0AB0) > 3 接线",
+        "figure_number": "图 2-508",
+        "manual_figure_number": "图 2-508",
+        "manual_figure_caption": "方框图和端子分配",
+        "device_family": "ET 200MP",
+        "module_model": "DI 32x24VDC HF",
+        "order_number": "6ES7521-1BL00-0AB0",
+        "text": "DI 32x24VDC HF 数字量输入模块 (6ES7521-1BL00-0AB0) 设备手册, 05/2022, A5E03485939-AH 14 接线 3 在下文中，介绍了模块的方框图以及各种接线方式。 有关前连接器的接线方式和铺设屏蔽电缆等信息，请参见《S7-1500/ET 200MP 系统手册 (http://support.automation.siemens.com/WW/view/zh/59191792)》中的“接线”部分。 接线图与方框图 下图显示了如何接线模块以及通道地址的分配（输入字节 a 到 d）。在此，可以将通道 0 和 1 设置为用于计数，而通道 2 至 31 则继续用作数字量输入。 \u0014 \u0014/\u000e \u00140 (5525 581 \u0016\u0015[ \u0015[3:5 \u001b \u001a \u0019 \u0018 \u0014\u001b \u0014\u001a \u0014\u0019 \u0014\u0018 \u0014\u0014 \u0014\u0016 \u0014\u0017 \u0014\u0015 \u0014\u0013 \u0014 \u0015\u0013 \u0014 \u0017 \u0016 \u0015 \u0015\u00179 \u0015/\u000e \u00150 \u0015\u00179 \u0015\u001b \u0015\u0014 \u0015\u001a \u0015\u0019 \u0015\u0018 \u0015\u0017 \u0015\u0016 \u0015\u0015 \u0016\u001b \u0016\u001a \u0016\u0019 \u0016\u0018 \u0016\u0014 \u0016\u0016 \u0016\u0017 \u0016\u0015 \u0016\u0013 \u0015 \u0016 \u0017\u0013 &+\u0013 &+\u0014 &+\u0015 &+\u0016 &+\u0017 &+\u0018 &+\u0019 &+\u001a &+\u001b &+ &+\u0014\u0018 &+\u0014\u0013 &+\u0014\u0014 &+\u0014\u0015 &+\u0014\u0016 &+\u0014\u0017 &+\u0014\u0019 &+\u0014\u001a &+\u0014\u001b &+\u0014 &+\u0015\u0013 &+\u0015\u0014 &+\u0015\u0015 &+\u0015\u0016 &+\u0015\u0017 &+\u0015\u0018 &+\u0016\u0014 &+\u0015\u0019 &+\u0015\u001a &+\u0015\u001b &+\u0015 &+\u0016\u0013 D E G F ① 背板总线接口 CHx 通道或通道状态 LED 指示灯（绿色/红色） xL+ 电源电压 24 V DC RUN 状态 LED 指示灯（绿色） xM 接地 ERROR ",
+        "compact_excerpt": "DI 32x24VDC HF 数字量输入模块 (6ES7521-1BL00-0AB0) 设备手册, 05/2022, A5E03485939-AH 14 接线 3 在下文中，介绍了模块的方框图以及各种接线方式。 有关前连接器的接线方式和铺设屏蔽电缆等信息，请参见《S7-1500/ET 200MP 系统手册 (http://support.automation.siemens.com/WW/view/zh/59191792)》中的“接线”部分。 接线图与方框图 下图显示了如何接线模块以及通道地址的分配（输入字节 a 到 d）。在此，可以将通道 0 和 1 设置为用于计数，而通道 2 至 31 则继续用作数字量输入。 \u0014 \u0014/\u000e \u00140 (5525 581 \u0016\u0015[ \u0015[3:5 \u001b \u001a \u0019 \u0018 \u0014\u001b \u0014\u001a \u0014\u0019 \u0014\u0018 \u0014\u0014 \u0014\u0016 \u0014\u0017 \u0014\u0015 \u0014\u0013 \u0014 \u0015\u0013 \u0014 \u0017 \u0016 \u0015 \u0015\u00179 \u0015/\u000e \u00150 \u0015\u00179 \u0015\u001b \u0015\u0014 \u0015\u001a \u0015\u0019 \u0015\u0018 \u0015\u0017 \u0015\u0016 \u0015\u0015 \u0016\u001b \u0016\u001a \u0016\u0019 \u0016\u0018 \u0016\u0014 \u0016\u0016 \u0016\u0017 \u0016\u0015 \u0016\u0013 \u0015 \u0016 \u0017\u0013 &+\u0013 &+\u0014 &+\u0015 &+\u0016 &+\u0017 &+\u0018 &+\u0019 &+\u001a &+\u001b &+ &+\u0014\u0018 &+\u0014\u0013 &+\u0014\u0014 &+\u0014\u0015 &+\u0014\u0016 &+\u0014\u0017 &+\u0014\u0019 &+\u0014\u001a &+\u0014\u001b &+\u0014 &+\u0015\u0013 &+\u0015\u0014 &+\u0015\u0015 &+\u0015\u0016 &+\u0015\u0017 &+\u0015\u0018 &+\u0016\u0014 &+\u0015\u0019 &+\u0015\u001a &+\u0015\u001b &+\u0015 &+\u0016\u0013 D E G F ① 背板总线接口 CHx 通道或通道状态 LED 指示灯（绿色/红色） xL+ 电源电压 24 V DC RUN 状态 LED 指示灯（绿色） xM 接地 ERROR ",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Parameter Agent",
+          "Wiring Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0009",
+          "sha256": "f908abc5560ccfd19c55dbeb7496fb37debc54f6d78079da6bcb615b7e2b5755",
+          "visual_type": "wiring_or_terminal_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_03_EV_02",
+        "asset_id": "VIS_0010",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03485939-AH",
+        "page": 3420,
+        "section": "设备特定信息 > 数字量模块 > 数字量输入模块 > DI 32x24VDC HF 数字量输入模块 (6ES7521-1BL00-0AB0) > 2 产品总览 > 2.1 特性",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "ET 200MP",
+        "module_model": "DI 32x24VDC HF",
+        "order_number": "6ES7521-1BL00-0AB0",
+        "text": "特性 该模块具有下列技术特性： • 32 个数字量输入，按每组 16 个进行电气隔离 – 其中，通道 0 和 1 可具有计数器功能 • 额定输入电压 24 V DC • 可组态的输入延时：0.05 ms 到 20 ms • 可组态的诊断（每个通道） • 可组态的硬件中断（每个通道） • 适用于开关以及 2/3/4 线制接近开关 • 与数字量输入模块 DI 16x24VDC HF (6ES7521-1BH00-0AB0) 的硬件相兼容 该模块支持以下功能： 表格 2-510 该模块的功能与版本的相关性 组态软件 功能 模块的固件版本 STEP 7 (TIA Portal) STEP 7 (TIA Portal) V12 及更高版本， 或 STEP 7 V5.5 SP3 及更高版本 的 GSD 文件 固件更新 V1.0.0 或更高版本 V12 或更高版本 --- / √ 标识数据 I&M0 到 I&M3 V1.0.0 或更高版本 V12 或更高版本 √ RUN 模式下进行参数分配 V1.0.0 或更高版本 V12 或更高版本 √ 等时同步模式 V1.0.0 或更高版本 V12 或更高版本 --- 模块内部 Shared Input (MSI) V2.0.0 或更高版本V13 Update 3 或更高 版本 （仅限 PROFINET IO） √ （仅限 PROFINET IO） 可组态子模块/ Shared Device 子模块 V2.0.0 或更高版本V13 Update 3 或更高 版本 （仅限 PROFINET IO） √ （仅限 PROFINET IO） 通道 0 和 1 可",
+        "compact_excerpt": "特性 该模块具有下列技术特性： • 32 个数字量输入，按每组 16 个进行电气隔离 – 其中，通道 0 和 1 可具有计数器功能 • 额定输入电压 24 V DC • 可组态的输入延时：0.05 ms 到 20 ms • 可组态的诊断（每个通道） • 可组态的硬件中断（每个通道） • 适用于开关以及 2/3/4 线制接近开关 • 与数字量输入模块 DI 16x24VDC HF (6ES7521-1BH00-0AB0) 的硬件相兼容 该模块支持以下功能： 表格 2-510 该模块的功能与版本的相关性 组态软件 功能 模块的固件版本 STEP 7 (TIA Portal) STEP 7 (TIA Portal) V12 及更高版本， 或 STEP 7 V5.5 SP3 及更高版本 的 GSD 文件 固件更新 V1.0.0 或更高版本 V12 或更高版本 --- / √ 标识数据 I&M0 到 I&M3 V1.0.0 或更高版本 V12 或更高版本 √ RUN 模式下进行参数分配 V1.0.0 或更高版本 V12 或更高版本 √ 等时同步模式 V1.0.0 或更高版本 V12 或更高版本 --- 模块内部 Shared Input (MSI) V2.0.0 或更高版本V13 Update 3 或更高 版本 （仅限 PROFINET IO） √ （仅限 PROFINET IO） 可组态子模块/ Shared Device 子模块 V2.0.0 或更高版本V13 Update 3 或更高 版本 （仅限 PROFINET IO） √ （仅限 PROFINET IO） 通道 0 和 1 可",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Parameter Agent",
+          "Wiring Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0010",
+          "sha256": "c14f8d2c2410e91c5deb873d1a5904bb526037c62bf3df7ef8f78afa3589a516",
+          "visual_type": "table_or_parameter_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_03_EV_03",
+        "asset_id": "VIS_0011",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03485939-AH",
+        "page": 3448,
+        "section": "设备特定信息 > 数字量模块 > 数字量输入模块 > DI 32x24VDC HF 数字量输入模块 (6ES7521-1BL00-0AB0) > 6 技术规范",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "ET 200MP",
+        "module_model": "DI 32x24VDC HF",
+        "order_number": "6ES7521-1BL00-0AB0",
+        "text": "商品编号 6ES7521-1BL00-0AB0 数字输入 数字输入端数量 32 可编程的数字输入端 是的 源型输入/漏性输入 P 读取 输入特性符合 IEC 61131，类型 3 是的 数字输入端功能，可设置参数 • Tor 启动/停止 是的 • 未指定的数字输入端 是的 • 计数器 – 数量，最大值 2 – 计数频率，最大值 6 kHz; FS04 和 FW V2.2.1 以上 – 计数宽度 32 bit – 计数方向，正向/反向 正向 输入电压 • 额定值 (DC) 24 V • 对于信号“0” -30 至 +5 V • 对于信号“1” +11 至 +30V 输入电流 • 对于信号“1”，典型值 2.5 mA 输入延迟（输入电压为额定值时） 对于标准输入端 – 可参数化 是的; 0.05 / 0.1 / 0.4 / 1.6 / 3.2 / 12.8 / 20 ms – 从“0”到“1”时，最小值 0.05 ms – 从“0”到“1”时，最大值 20 ms – 从“1”到“0”时，最小值 0.05 ms – 从“1”到“0”时，最大值 20 ms 对于报警输入端 – 可参数化 是的 用于技术功能 – 可参数化 是的 导线长度 • 屏蔽，最大值 1 000 m • 未屏蔽，最大值 600 m 传感器 可连接传感器 • 双线传感器 是的 – 允许的闭路电流（双线传感器） 最大值 1.5 mA 39 技术规范 DI 32x24VDC HF 数字量输入模块 (6ES7521-1BL00-0AB0) 设备手册, 05/2022, A5E03485939-AH",
+        "compact_excerpt": "商品编号 6ES7521-1BL00-0AB0 数字输入 数字输入端数量 32 可编程的数字输入端 是的 源型输入/漏性输入 P 读取 输入特性符合 IEC 61131，类型 3 是的 数字输入端功能，可设置参数 • Tor 启动/停止 是的 • 未指定的数字输入端 是的 • 计数器 – 数量，最大值 2 – 计数频率，最大值 6 kHz; FS04 和 FW V2.2.1 以上 – 计数宽度 32 bit – 计数方向，正向/反向 正向 输入电压 • 额定值 (DC) 24 V • 对于信号“0” -30 至 +5 V • 对于信号“1” +11 至 +30V 输入电流 • 对于信号“1”，典型值 2.5 mA 输入延迟（输入电压为额定值时） 对于标准输入端 – 可参数化 是的; 0.05 / 0.1 / 0.4 / 1.6 / 3.2 / 12.8 / 20 ms – 从“0”到“1”时，最小值 0.05 ms – 从“0”到“1”时，最大值 20 ms – 从“1”到“0”时，最小值 0.05 ms – 从“1”到“0”时，最大值 20 ms 对于报警输入端 – 可参数化 是的 用于技术功能 – 可参数化 是的 导线长度 • 屏蔽，最大值 1 000 m • 未屏蔽，最大值 600 m 传感器 可连接传感器 • 双线传感器 是的 – 允许的闭路电流（双线传感器） 最大值 1.5 mA 39 技术规范 DI 32x24VDC HF 数字量输入模块 (6ES7521-1BL00-0AB0) 设备手册, 05/2022, A5E03485939-AH",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Parameter Agent",
+          "Wiring Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0011",
+          "sha256": "d22cab50386cb2c6eb5f3819cc5f27e8ac09453308f4a82e10814e07302d6f46",
+          "visual_type": "table_or_parameter_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_03_EV_04",
+        "asset_id": "VIS_0020",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E39041333-AC",
+        "page": 5250,
+        "section": "设备特定信息 > 工艺模块 > SIWAREX WP521/WP522 > 4 安装和连接 > 4.7 数字量输入 DI0、DI1 和 DI2",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "4.6 电源电压 L+/M 将电源电压 (24 V DC) 连接到端子 L+ 和 M。内部保护电路可为工艺模块提供电源电压反极性 保护。工艺模块可监视电源电压是否已连接。 4.7 数字量输入 DI0、DI1 和 DI2 每个称重通道有三个数字量输入可用。数字量输入可分配给每个组态的命令。 小心 数字量输入的未知分配 连接时如果不了解数字量输入的分配，可能会损坏系统的部件。 在了解分配前，请勿使用数字量输入创建连接。 交付时，数字量输入未永久分配给命令。调试过程中，通过设置数据记录 DR7 参数对命令的 数字量输入进行分配。 两个 SIWAREX WP522 秤通道的数字量输入相互之间电气隔离。 数字量输入的输入滤波器 可为输入延迟指定下列值： • 无 • 5 ms • 10 ms（预设） • 15 ms • 20 ms • 25 ms • 30 ms • 35 ms • 40 ms 说明 如果选择“否”(No)，则必须使用屏蔽电缆连接数字量输入。 28 SIWAREX WP521/WP522 设备手册, 08/2024, A5E39041333-AC 安装和连接 4.7 数字量输入 DI0、DI1 和 DI2",
+        "compact_excerpt": "4.6 电源电压 L+/M 将电源电压 (24 V DC) 连接到端子 L+ 和 M。内部保护电路可为工艺模块提供电源电压反极性 保护。工艺模块可监视电源电压是否已连接。 4.7 数字量输入 DI0、DI1 和 DI2 每个称重通道有三个数字量输入可用。数字量输入可分配给每个组态的命令。 小心 数字量输入的未知分配 连接时如果不了解数字量输入的分配，可能会损坏系统的部件。 在了解分配前，请勿使用数字量输入创建连接。 交付时，数字量输入未永久分配给命令。调试过程中，通过设置数据记录 DR7 参数对命令的 数字量输入进行分配。 两个 SIWAREX WP522 秤通道的数字量输入相互之间电气隔离。 数字量输入的输入滤波器 可为输入延迟指定下列值： • 无 • 5 ms • 10 ms（预设） • 15 ms • 20 ms • 25 ms • 30 ms • 35 ms • 40 ms 说明 如果选择“否”(No)，则必须使用屏蔽电缆连接数字量输入。 28 SIWAREX WP521/WP522 设备手册, 08/2024, A5E39041333-AC 安装和连接 4.7 数字量输入 DI0、DI1 和 DI2",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Parameter Agent",
+          "Wiring Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0020",
+          "sha256": "08c23dbb2a9a23eeecd3e877d91e321111a0621697456676059d57c302d5307e",
+          "visual_type": "installation_power_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_03_EV_05",
+        "asset_id": "VIS_0021",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E41815205-AH",
+        "page": 673,
+        "section": "基本信息 > S7-1500R/H 冗余系统 > 8 接线 > 8.4 接线规则",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "8.4 接线规则 简介 使用合适的电缆连接 S7‑1500R/H 冗余系统。下表列出了 R/H-CPU 和系统电源/负载电流电源的 接线规则。 小心 在带有端子连接的连接器上使用铜缆。 所有通过端子连接到设备的信号线和电源线，只能使用铜电缆 (Cu)。例如，连接至 24 V DC 电源端子的 24 V DC 电源线应使用铜电缆。 R/H CPU 和系统电源/负载电流电源 表格 1-83 R/H-CPU 和系统电源/负载电流电源的接线规则 适用的接线规则... R/H-CPU 系统电源/负载电流电源 - - 实心电缆的电缆横截面积（铜缆） - - 0.25 至 2.5 mm2 0.5 到 2.5 mm2 无导线端头 AWG1)：24 到 14 AWG1)：20 到 14 0.25 到 1.5 mm2 0.5 到 1.5 mm2 柔性电缆的电缆横截面积（铜 缆） 带导线端头 AWG1)：24 到 16 AWG1)：20 到 16 每个连接的导线数 1 1 导线的剥线长度 10 到 11 mm 7 到 8 mm 无塑料套管 A 型，长 10 mm A 型，长 7 mm 符合 DIN 46228 的导线端头 带塑料套管，0.25 至 1.5 mm2 E 型，长 10 mm A 型，长 7 mm 护套直径 - 8.5 mm 工具 3 - 3.5 mm 螺丝刀，锥形设计 3 - 3.5 mm 螺丝刀，锥形设计 连接系统 直插式端子 螺钉型端子 拧紧扭矩 - 从 0.5 Nm 到 0.6 Nm 1) 美国线缆规格 255 接线 8.4 接线规则 S7-1500R/H 冗余系统 系统手册, 1",
+        "compact_excerpt": "8.4 接线规则 简介 使用合适的电缆连接 S7‑1500R/H 冗余系统。下表列出了 R/H-CPU 和系统电源/负载电流电源的 接线规则。 小心 在带有端子连接的连接器上使用铜缆。 所有通过端子连接到设备的信号线和电源线，只能使用铜电缆 (Cu)。例如，连接至 24 V DC 电源端子的 24 V DC 电源线应使用铜电缆。 R/H CPU 和系统电源/负载电流电源 表格 1-83 R/H-CPU 和系统电源/负载电流电源的接线规则 适用的接线规则... R/H-CPU 系统电源/负载电流电源 - - 实心电缆的电缆横截面积（铜缆） - - 0.25 至 2.5 mm2 0.5 到 2.5 mm2 无导线端头 AWG1)：24 到 14 AWG1)：20 到 14 0.25 到 1.5 mm2 0.5 到 1.5 mm2 柔性电缆的电缆横截面积（铜 缆） 带导线端头 AWG1)：24 到 16 AWG1)：20 到 16 每个连接的导线数 1 1 导线的剥线长度 10 到 11 mm 7 到 8 mm 无塑料套管 A 型，长 10 mm A 型，长 7 mm 符合 DIN 46228 的导线端头 带塑料套管，0.25 至 1.5 mm2 E 型，长 10 mm A 型，长 7 mm 护套直径 - 8.5 mm 工具 3 - 3.5 mm 螺丝刀，锥形设计 3 - 3.5 mm 螺丝刀，锥形设计 连接系统 直插式端子 螺钉型端子 拧紧扭矩 - 从 0.5 Nm 到 0.6 Nm 1) 美国线缆规格 255 接线 8.4 接线规则 S7-1500R/H 冗余系统 系统手册, 1",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Parameter Agent",
+          "Wiring Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0021",
+          "sha256": "dd03fa7941cec3ea4c67b6aa12475f0d399e8e2740b2c268135dec649e6d607b",
+          "visual_type": "wiring_or_terminal_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_03_EV_06",
+        "asset_id": "VIS_0022",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E39041333-AC",
+        "page": 5379,
+        "section": "设备特定信息 > 工艺模块 > SIWAREX WP521/WP522 > 11 技术规范 > 11.1 技术规范",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "数字量输入 DI（对于 WP522，每个称重通道 3个） 表格 2-1240 技术规范：数字量输入 输入端数量 3 额定电压 24 V DC 电源电压范围 最大值DC 30 V 电流消耗（24 V DC） 4 mA 浪涌电压 35 V DC，持续 0.5 s 信号电平逻辑 1（最大值） 15 V DC，输入电流典型值3 mA（24 V DC） 信号电平逻辑 0（最大值） 5 V DC，输入电流 ≤ 2.0 mA 采样率（固件） 10 ms 可组态滤波 (DS 7) 1) 0 到 40 ms，间隔 5ms 电气隔离 500 V AC 类型符合 EN 61131-2:2007 类型 1 到 3 1) 记录比编程时间短的信号变化） RS485 接口（对于 WP522，每个称重通道 1 个） 表格 2-1241 技术规范：RS-485 标准 EIA-485 波特率 最大 115 Kbps* 数据位 7 或 8 奇偶校验 偶校验|奇校验|无 停止位 1 或 2 终端电阻（可激活） 390 Ω/220 Ω/390 Ω 电气隔离 500 V AC 传输协议 用于 Siebert 公司和 Modbus RTU 远程显示器的 ASCII 电缆长度 ≤ 115 kbps 时，最长 1000 m （现场总线 2 芯，屏蔽，例如 6XV1830-0EH10） 以太网（仅可用 1 个） 表格 2-1242 技术规范：以太网 标准 IEEE 802.3 传输速度 10/100 Mbps（自动检测） 电气隔离 1500 V AC 传输协议 TCP/IP、Modbus TCP 自动协商 是 Auto MDI-",
+        "compact_excerpt": "数字量输入 DI（对于 WP522，每个称重通道 3个） 表格 2-1240 技术规范：数字量输入 输入端数量 3 额定电压 24 V DC 电源电压范围 最大值DC 30 V 电流消耗（24 V DC） 4 mA 浪涌电压 35 V DC，持续 0.5 s 信号电平逻辑 1（最大值） 15 V DC，输入电流典型值3 mA（24 V DC） 信号电平逻辑 0（最大值） 5 V DC，输入电流 ≤ 2.0 mA 采样率（固件） 10 ms 可组态滤波 (DS 7) 1) 0 到 40 ms，间隔 5ms 电气隔离 500 V AC 类型符合 EN 61131-2:2007 类型 1 到 3 1) 记录比编程时间短的信号变化） RS485 接口（对于 WP522，每个称重通道 1 个） 表格 2-1241 技术规范：RS-485 标准 EIA-485 波特率 最大 115 Kbps* 数据位 7 或 8 奇偶校验 偶校验|奇校验|无 停止位 1 或 2 终端电阻（可激活） 390 Ω/220 Ω/390 Ω 电气隔离 500 V AC 传输协议 用于 Siebert 公司和 Modbus RTU 远程显示器的 ASCII 电缆长度 ≤ 115 kbps 时，最长 1000 m （现场总线 2 芯，屏蔽，例如 6XV1830-0EH10） 以太网（仅可用 1 个） 表格 2-1242 技术规范：以太网 标准 IEEE 802.3 传输速度 10/100 Mbps（自动检测） 电气隔离 1500 V AC 传输协议 TCP/IP、Modbus TCP 自动协商 是 Auto MDI-",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Parameter Agent",
+          "Wiring Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0022",
+          "sha256": "2c0f6c98d4e944e911095bdfc5d21cce784c8250120f657afb91248c618d25d2",
+          "visual_type": "table_or_parameter_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_03_EV_07",
+        "asset_id": "VIS_0023",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E46600377-AD",
+        "page": 2868,
+        "section": "设备特定信息 > 中央处理单元 > SIMATIC Drive Controller > 4 连接 > 4.4 X122、X132 和 X142 的数字量输入和输出",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "X142 数字量输入/输出的电源 如果将 X142 数字量输入/输出部分用作输入、部分用作输出（混合使用），则需要通过与 SIMATIC Drive Controller 相同的电源（X124 模块电源）来为数字量输入供电。 如果仅将 X142 数字量输入/输出用作输入或输出，则此限制不适用。 X122/X132 数字量输入/输出不受此限制影响。 X142 接口的数字量输出 可以将每个数字量输出组态为源型输出或高速输出： • 源型输出：该数字量输出为相对于 M 的 24 V 源型输出，可承载 0.5 A 的额定负载电流。 • 高速输出：该数字量输出是一个高速推拉式开关，可承载 0.4 A 的额定负载电流。推拉式 开关交替切换至 24 V DC 和接地端。因此，可能会出现陡变边沿。 数字量输出受过载和短路保护。 因此，无需外部接线即可直接连接继电器和接触器。 注意 不当负载导致过热 高速输出会生成陡变边沿。这将使所连接的负载产生非常强大的电荷反转，从而在极高的开 关频率下使负载过热。因此，所连接的负载必须适用于高输入频率。 说明 如果将数字量输出用作源型输出，则其关断响应/关断边沿取决于所连接的负载。因此，可能 无法正确输出极短的脉冲。 说明 为了获得最佳的抗干扰能力和实现高精度信号采集，我们建议在以下情况下使用屏蔽电缆： • 数字量输入端出现短暂信号电平或信号变化很快，例如，用作定时器 DI/测量传感输入、过 采样 DI 或用于事件/周期持续时间测量时 • 为 X142 设置了 1 μs 的输入延时 52 SIMATIC Drive Controller 设备手册, 11/20",
+        "compact_excerpt": "X142 数字量输入/输出的电源 如果将 X142 数字量输入/输出部分用作输入、部分用作输出（混合使用），则需要通过与 SIMATIC Drive Controller 相同的电源（X124 模块电源）来为数字量输入供电。 如果仅将 X142 数字量输入/输出用作输入或输出，则此限制不适用。 X122/X132 数字量输入/输出不受此限制影响。 X142 接口的数字量输出 可以将每个数字量输出组态为源型输出或高速输出： • 源型输出：该数字量输出为相对于 M 的 24 V 源型输出，可承载 0.5 A 的额定负载电流。 • 高速输出：该数字量输出是一个高速推拉式开关，可承载 0.4 A 的额定负载电流。推拉式 开关交替切换至 24 V DC 和接地端。因此，可能会出现陡变边沿。 数字量输出受过载和短路保护。 因此，无需外部接线即可直接连接继电器和接触器。 注意 不当负载导致过热 高速输出会生成陡变边沿。这将使所连接的负载产生非常强大的电荷反转，从而在极高的开 关频率下使负载过热。因此，所连接的负载必须适用于高输入频率。 说明 如果将数字量输出用作源型输出，则其关断响应/关断边沿取决于所连接的负载。因此，可能 无法正确输出极短的脉冲。 说明 为了获得最佳的抗干扰能力和实现高精度信号采集，我们建议在以下情况下使用屏蔽电缆： • 数字量输入端出现短暂信号电平或信号变化很快，例如，用作定时器 DI/测量传感输入、过 采样 DI 或用于事件/周期持续时间测量时 • 为 X142 设置了 1 μs 的输入延时 52 SIMATIC Drive Controller 设备手册, 11/20",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Parameter Agent",
+          "Wiring Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0023",
+          "sha256": "67f506b26ef1760137085153fa93277599fe3e908e29c607a590626a5073fe66",
+          "visual_type": "installation_power_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_03_EV_08",
+        "asset_id": "VIS_0024",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03461186-AN",
+        "page": 162,
+        "section": "基本信息 > 自动化系统 > 6 应用规划 > 6.2 系统电源和负载电源 > 6.2.2 在第一个电源段中使用系统电源的特殊注意事项",
+        "figure_number": "图 1-38",
+        "manual_figure_number": "图 1-38",
+        "manual_figure_caption": "仅通过 CPU/接口模块供电",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "6.2.2 在第一个电源段中使用系统电源的特殊注意事项 馈电选件 有三种方式可以接入背板总线所需要的系统电压： • 通过 CPU/接口模块进行供电 • 通过 CPU/接口模块和系统电源进行供电 • 仅通过插槽 0 中的系统电源供电 通过 CPU/接口模块进行供电 通过 CPU/接口模块馈电通常可满足中小型硬件配置的需要。所连接模块的功耗不能超过由 CPU/接口模块提供的功率。 在这种配置方式中，将通过负载电流电源向 CPU/接口模块提供 24 VDC 电压。 操作步骤 要通过 CPU/接口模块供电，请按以下步骤操作： 1. 在 STEP 7 中打开 CPU/接口模块的“属性”(Properties) 选项卡，然后在导航窗口中选择“系统 电源”(System power supply)。 2. 选择选项“连接到电源电压 L+”(Connection to supply voltage L+)。 图 1-38 仅通过 CPU/接口模块供电 通过 CPU/接口模块和系统电源进行供电 对于较大型的硬件配置，单独通过 CPU/接口模块为背板总线供电已不能满足需求。如果模块 消耗的总功率超出 CPU/接口模块可提供的功率，则需安装额外的系统电源。 为系统电源提供指定的电源电压，并为 CPU/接口模块提供 24 VDC 电压。 系统电源和 CPU/接口模块同时为背板总线供电。总功率为两种方式所提供功率之和。 电量总合为：“系统电源的输入功率”+“CPU/接口模块的输入功率” 155 应用规划 6.2 系统电源和负载电源 自动化系统 系统手册, 11/2025, A5E03461186-AN",
+        "compact_excerpt": "6.2.2 在第一个电源段中使用系统电源的特殊注意事项 馈电选件 有三种方式可以接入背板总线所需要的系统电压： • 通过 CPU/接口模块进行供电 • 通过 CPU/接口模块和系统电源进行供电 • 仅通过插槽 0 中的系统电源供电 通过 CPU/接口模块进行供电 通过 CPU/接口模块馈电通常可满足中小型硬件配置的需要。所连接模块的功耗不能超过由 CPU/接口模块提供的功率。 在这种配置方式中，将通过负载电流电源向 CPU/接口模块提供 24 VDC 电压。 操作步骤 要通过 CPU/接口模块供电，请按以下步骤操作： 1. 在 STEP 7 中打开 CPU/接口模块的“属性”(Properties) 选项卡，然后在导航窗口中选择“系统 电源”(System power supply)。 2. 选择选项“连接到电源电压 L+”(Connection to supply voltage L+)。 图 1-38 仅通过 CPU/接口模块供电 通过 CPU/接口模块和系统电源进行供电 对于较大型的硬件配置，单独通过 CPU/接口模块为背板总线供电已不能满足需求。如果模块 消耗的总功率超出 CPU/接口模块可提供的功率，则需安装额外的系统电源。 为系统电源提供指定的电源电压，并为 CPU/接口模块提供 24 VDC 电压。 系统电源和 CPU/接口模块同时为背板总线供电。总功率为两种方式所提供功率之和。 电量总合为：“系统电源的输入功率”+“CPU/接口模块的输入功率” 155 应用规划 6.2 系统电源和负载电源 自动化系统 系统手册, 11/2025, A5E03461186-AN",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Parameter Agent",
+          "Wiring Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0024",
+          "sha256": "e22bf27eff3907266464f353ac081be41afcbc5d10baa4672d695105c7fb2a4f",
+          "visual_type": "installation_power_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_03_EV_09",
+        "asset_id": "VIS_0025",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03461186-AN",
+        "page": 168,
+        "section": "基本信息 > 自动化系统 > 6 应用规划 > 6.3 供电平衡计算",
+        "figure_number": "图 1-44",
+        "manual_figure_number": "图 1-44",
+        "manual_figure_caption": "使用 STEP 7 进行供电平衡计算的示例",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "使用 STEP 7 进行组态时计算供电平衡 组态时，STEP 7 可检查供电平衡是否合理。 要执行供电平衡计算，请按以下步骤操作： 1. 使用全部所需的模块对 S7‑1500/ET 200MP 进行组态。 2. 在网络视图中，选择 CPU/接口模块或系统电源。 3. 在巡视窗口中打开“属性”(Properties) 选项卡。 4. 在区域导航中，选择“系统电源”(System power supply) 条目。 5. 检查“电源段概览”(Power segment overview) 表，查看供电平衡值是否为正值。如果供电平 衡值为负数，则 STEP 7 会将尚未供电的模块标记为红色。 图 1-44 使用 STEP 7 进行供电平衡计算的示例 针对 CPU/接口模块的过载进行供电平衡计算检查 CPU/接口模块会在以下情况下监视供电平衡是否为正值： • 每次接通电源时 • 已安装的硬件发生变更时 过载的原因 虽然在规划过程中供电平衡值为正值，也可能会发生过载现象。过载的原因可能是硬件配置与 STEP 7 中的配置不相同，例如： • 实际配置中插入的 I/O 模块比 STEP 7 项目中的要多。 • 如果在进行参数分配时指定由 CPU/接口模块提供系统电压，则不连接操作所需的电源电压 L+ (24 V DC)（请参见“在第一个电源段中使用系统电源的特殊注意事项 (页 155)”部分）。 • 未插入运行所需的系统电源。 • 未接通操作所需的系统电源（电源连接插头或 On/Off 开关）。 • 系统电源未插入 U 型连接器。 161 应用规划 6.3 供电平衡计算 自动化系统 系统手册",
+        "compact_excerpt": "使用 STEP 7 进行组态时计算供电平衡 组态时，STEP 7 可检查供电平衡是否合理。 要执行供电平衡计算，请按以下步骤操作： 1. 使用全部所需的模块对 S7‑1500/ET 200MP 进行组态。 2. 在网络视图中，选择 CPU/接口模块或系统电源。 3. 在巡视窗口中打开“属性”(Properties) 选项卡。 4. 在区域导航中，选择“系统电源”(System power supply) 条目。 5. 检查“电源段概览”(Power segment overview) 表，查看供电平衡值是否为正值。如果供电平 衡值为负数，则 STEP 7 会将尚未供电的模块标记为红色。 图 1-44 使用 STEP 7 进行供电平衡计算的示例 针对 CPU/接口模块的过载进行供电平衡计算检查 CPU/接口模块会在以下情况下监视供电平衡是否为正值： • 每次接通电源时 • 已安装的硬件发生变更时 过载的原因 虽然在规划过程中供电平衡值为正值，也可能会发生过载现象。过载的原因可能是硬件配置与 STEP 7 中的配置不相同，例如： • 实际配置中插入的 I/O 模块比 STEP 7 项目中的要多。 • 如果在进行参数分配时指定由 CPU/接口模块提供系统电压，则不连接操作所需的电源电压 L+ (24 V DC)（请参见“在第一个电源段中使用系统电源的特殊注意事项 (页 155)”部分）。 • 未插入运行所需的系统电源。 • 未接通操作所需的系统电源（电源连接插头或 On/Off 开关）。 • 系统电源未插入 U 型连接器。 161 应用规划 6.3 供电平衡计算 自动化系统 系统手册",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Parameter Agent",
+          "Wiring Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0025",
+          "sha256": "93e74c4ed3cfdcde5cfd9dbe6188fe36b11e07b908631aa0f5201acbfc9de48f",
+          "visual_type": "installation_power_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_03_EV_10",
+        "asset_id": "VIS_0026",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03461186-AN",
+        "page": 194,
+        "section": "基本信息 > 自动化系统 > 8 接线 > 8.2 有关操作带有故障安全模块的 S7-1500/ET 200MP 的更多规则和规定 > 8.2.1 适用于故障安全模块的安全超低电压（SELV、PELV）",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "ET 200MP",
+        "module_model": "ET 200MP",
+        "order_number": "",
+        "text": "预防外部电气影响 为避免出现电场效应或故障，请遵守以下规则： • 对于使用 S7‑1500 自动化系统/ ET 200MP 分布式 I/O 系统的所有设备，必须将防电磁干扰 系统连接到横截面足够大的保护性导体。 • 必须确保正确布线和安装电源线、信号线和总线。 • 信号线和总线发生电缆断开、断路或跨接时不会导致设备或系统转入未定义的状态。 参考 更多信息，请参见功能手册“设计防干扰型控制器 (https://support.automation.siemens.com/WW/view/zh/59193566)”。 8.2 有关操作带有故障安全模块的 S7-1500/ET 200MP 的更多规则和规定 8.2.1 适用于故障安全模块的安全超低电压（SELV、PELV） 重要说明 警告 故障安全模块必须在安全超低电压（SELV、PELV）下运行。 有关安全超低电压（SELV、PELV）的更多信息，可参见相应电源的数据表。 故障安全模块的额定工作电压为 24 V DC。容差范围为 19.2 V DC 到 28.8 V DC。 故障安全电机起动器操作的额定电压为 24 V DC。容差范围是 20.4 V DC 到 28.8 V DC。 在从 32 V DC 到 36 V DC 的过电压范围内，F 模块以故障安全方式进行响应，钝化输入和输 出。对于超过 36 V DC 的过电压，F 模块会永久断电。 请使用不超过 Um = 36 V DC 的电源设备，即使在发生故障时也是如此。更多信息，请参见发 生内部错误时数据表中有关过电压保护的信息。或者，采取相应的措施限制电压。如，使用 一个浪涌保",
+        "compact_excerpt": "预防外部电气影响 为避免出现电场效应或故障，请遵守以下规则： • 对于使用 S7‑1500 自动化系统/ ET 200MP 分布式 I/O 系统的所有设备，必须将防电磁干扰 系统连接到横截面足够大的保护性导体。 • 必须确保正确布线和安装电源线、信号线和总线。 • 信号线和总线发生电缆断开、断路或跨接时不会导致设备或系统转入未定义的状态。 参考 更多信息，请参见功能手册“设计防干扰型控制器 (https://support.automation.siemens.com/WW/view/zh/59193566)”。 8.2 有关操作带有故障安全模块的 S7-1500/ET 200MP 的更多规则和规定 8.2.1 适用于故障安全模块的安全超低电压（SELV、PELV） 重要说明 警告 故障安全模块必须在安全超低电压（SELV、PELV）下运行。 有关安全超低电压（SELV、PELV）的更多信息，可参见相应电源的数据表。 故障安全模块的额定工作电压为 24 V DC。容差范围为 19.2 V DC 到 28.8 V DC。 故障安全电机起动器操作的额定电压为 24 V DC。容差范围是 20.4 V DC 到 28.8 V DC。 在从 32 V DC 到 36 V DC 的过电压范围内，F 模块以故障安全方式进行响应，钝化输入和输 出。对于超过 36 V DC 的过电压，F 模块会永久断电。 请使用不超过 Um = 36 V DC 的电源设备，即使在发生故障时也是如此。更多信息，请参见发 生内部错误时数据表中有关过电压保护的信息。或者，采取相应的措施限制电压。如，使用 一个浪涌保",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Parameter Agent",
+          "Wiring Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0026",
+          "sha256": "3906089f057e81aa2dd9bcf0ef2cc90d10f2bbe19a6dca9be3f14e34e53a358f",
+          "visual_type": "installation_power_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      }
+    ],
+    "metadata": {
+      "source": "offline_demo_snapshot",
+      "visual_asset_count": 10,
+      "cross_model_blocked": 0,
+      "rejected_evidence": []
+    }
+  },
+  "judge_decision": {
+    "verdict": "PASS",
+    "confidence": "HIGH",
+    "decision_reason": "离线快照仅采用资产清单中可解码、可追溯且经身份检查的手册页。",
+    "final_evidence_ids": [
+      "HIDDEN_03_EV_01",
+      "HIDDEN_03_EV_02",
+      "HIDDEN_03_EV_03"
+    ],
+    "accepted_agent_outputs": [
+      "Parameter Agent",
+      "Wiring Agent",
+      "Figure Agent"
+    ],
+    "rejected_agent_outputs": [],
+    "supported_claims": [
+      "在 DI 32x24VDC HF（6ES7521-1BL00-0AB0）上，L+ 提供 24 V DC 传感器电源正端，M 是该电源的 0 V 参考端，DI 通道端子用于接收各传感器的数字输入信号。资料页 3423 的图 2-508 给出了三者在前连接器上的分配；页 3420 说明模块支持 24 V DC 输入及多种接近开关接线。"
+    ],
+    "unsupported_claims": [],
+    "conflicting_claims": [],
+    "coverage": {
+      "main": {
+        "answered": true
+      }
+    },
+    "model_consistency": {
+      "pass": true,
+      "rejected_evidence_ids": []
+    },
+    "metadata": {
+      "accepted_claims": [
+        {
+          "claim_id": "HIDDEN_03_CLAIM_01",
+          "claim_text": "在 DI 32x24VDC HF（6ES7521-1BL00-0AB0）上，L+ 提供 24 V DC 传感器电源正端，M 是该电源的 0 V 参考端，DI 通道端子用于接收各传感器的数字输入信号。资料页 3423 的图 2-508 给出了三者在前连接器上的分配；页 3420 说明模块支持 24 V DC 输入及多种接近开关接线。",
+          "claim_type": "technical_guidance",
+          "model_scope": "DI 32x24VDC HF",
+          "confidence": "HIGH",
+          "evidence_ids": [
+            "HIDDEN_03_EV_01",
+            "HIDDEN_03_EV_02",
+            "HIDDEN_03_EV_03"
+          ],
+          "direct_support": true,
+          "metadata": {
+            "offline_curated": true
+          }
+        }
+      ]
+    }
+  },
+  "verifier": {
+    "figure_requirement_pass": true,
+    "numeric_mismatch_claim_ids": [],
+    "grounded_claim_ids": [
+      "HIDDEN_03_CLAIM_01"
+    ],
+    "passed": true
+  },
+  "answer": {
+    "status": "ANSWER",
+    "text": "在 DI 32x24VDC HF（6ES7521-1BL00-0AB0）上，L+ 提供 24 V DC 传感器电源正端，M 是该电源的 0 V 参考端，DI 通道端子用于接收各传感器的数字输入信号。资料页 3423 的图 2-508 给出了三者在前连接器上的分配；页 3420 说明模块支持 24 V DC 输入及多种接近开关接线。",
+    "evidence_ids": [
+      "HIDDEN_03_EV_01",
+      "HIDDEN_03_EV_02",
+      "HIDDEN_03_EV_03"
+    ]
+  },
+  "final_answer": "在 DI 32x24VDC HF（6ES7521-1BL00-0AB0）上，L+ 提供 24 V DC 传感器电源正端，M 是该电源的 0 V 参考端，DI 通道端子用于接收各传感器的数字输入信号。资料页 3423 的图 2-508 给出了三者在前连接器上的分配；页 3420 说明模块支持 24 V DC 输入及多种接近开关接线。",
+  "work_order": {
+    "status": "not_requested",
+    "risk_tip": ""
+  },
+  "visual_asset_ids": [
+    "VIS_0009",
+    "VIS_0010",
+    "VIS_0011",
+    "VIS_0020",
+    "VIS_0021",
+    "VIS_0022",
+    "VIS_0023",
+    "VIS_0024",
+    "VIS_0025",
+    "VIS_0026"
+  ],
+  "visual_evidence": [
+    {
+      "asset_id": "VIS_0009",
+      "evidence_id": "HIDDEN_03_EV_01",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0010",
+      "evidence_id": "HIDDEN_03_EV_02",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0011",
+      "evidence_id": "HIDDEN_03_EV_03",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0020",
+      "evidence_id": "HIDDEN_03_EV_04",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0021",
+      "evidence_id": "HIDDEN_03_EV_05",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0022",
+      "evidence_id": "HIDDEN_03_EV_06",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0023",
+      "evidence_id": "HIDDEN_03_EV_07",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0024",
+      "evidence_id": "HIDDEN_03_EV_08",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0025",
+      "evidence_id": "HIDDEN_03_EV_09",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0026",
+      "evidence_id": "HIDDEN_03_EV_10",
+      "status": "image_available"
+    }
+  ],
+  "visual_coverage_reason": {
+    "VIS_0009": "wiring_or_terminal_page，资料页 3423，direct target evidence",
+    "VIS_0010": "table_or_parameter_page，资料页 3420，direct target evidence",
+    "VIS_0011": "table_or_parameter_page，资料页 3448，direct target evidence",
+    "VIS_0020": "installation_power_page，资料页 5250，supporting manual context",
+    "VIS_0021": "wiring_or_terminal_page，资料页 673，supporting manual context",
+    "VIS_0022": "table_or_parameter_page，资料页 5379，supporting manual context",
+    "VIS_0023": "installation_power_page，资料页 2868，supporting manual context",
+    "VIS_0024": "installation_power_page，资料页 162，supporting manual context",
+    "VIS_0025": "installation_power_page，资料页 168，supporting manual context",
+    "VIS_0026": "installation_power_page，资料页 194，supporting manual context"
+  },
+  "generated_from_commit": "8403213d89d3f2200b9f40ee1f72d23673c9b4f6",
+  "snapshot_validation": {
+    "valid": true,
+    "errors": []
+  },
+  "warnings": [
+    "该结果是基于仓库内真实手册页面整理的离线 SAMPLE 快照，未调用 FULL 检索后端。"
+  ]
+}

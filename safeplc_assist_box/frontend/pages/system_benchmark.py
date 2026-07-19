@@ -10,6 +10,7 @@ import streamlit as st
 from ..components.common import empty_state, esc, section_heading
 from ..components.status_header import render_status_header
 from ..demo_loader import get_demo_case
+from ..hidden_demo_matcher import prevalidate_hidden_snapshots
 from ..report_loader import load_report_bundle, load_showcase_cases, load_supported_device_catalog
 from ..runtime import FrontendSettings, probe_runtime
 from ..state import bind_demo_case, initialize_session_state, invalidate_query_inputs
@@ -137,6 +138,16 @@ def render() -> None:
     if catalog:
         with st.expander("真实支持设备目录", expanded=False):
             st.json(catalog, expanded=True)
+
+    if settings.hidden_demo_enabled:
+        package = prevalidate_hidden_snapshots()
+        section_heading("离线验收包", "OFFLINE SAMPLE")
+        package_cols = st.columns(3)
+        package_cols[0].metric("离线验收快照", package.hidden_case_count)
+        package_cols[1].metric("视觉资产", package.visual_asset_count)
+        package_cols[2].metric("完整性检查", "通过" if package.ok else "失败")
+        if not package.ok:
+            st.error("离线视觉资产校验失败，已禁用验收快照加载。")
 
     section_heading("Benchmark 结果", "EVALUATION")
     benchmark = dict(reports.get("benchmark") or {})

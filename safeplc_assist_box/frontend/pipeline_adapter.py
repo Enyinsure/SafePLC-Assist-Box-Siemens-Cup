@@ -9,6 +9,11 @@ from typing import Any, Dict
 import streamlit as st
 
 from .demo_loader import demo_request_matches, get_demo_case, load_demo_snapshot
+from .hidden_demo_matcher import (
+    load_hidden_demo_snapshot,
+    match_hidden_demo_query,
+    prevalidate_hidden_snapshots,
+)
 from .result_normalizer import normalize_response
 from .runtime import FrontendSettings
 
@@ -108,6 +113,8 @@ def _execute_demo(request: PipelineRequest, settings: FrontendSettings) -> Pipel
     if not settings.demo_enabled:
         return PipelineOutcome(ok=False, user_error="离线演示已被 SAFEPLC_ENABLE_DEMO 禁用。")
     if not request.selected_demo_id:
+        if settings.hidden_demo_enabled:
+            return _execute_hidden_demo(request, settings)
         return PipelineOutcome(
             ok=False,
             user_error="离线演示只接受已载入的典型案例；自由问题不会生成模拟答案。",
@@ -152,6 +159,56 @@ def _execute_demo(request: PipelineRequest, settings: FrontendSettings) -> Pipel
             source="offline_demo_snapshot",
             user_error="离线案例快照不可用。",
             debug_error=repr(exc),
+        )
+
+
+def _execute_hidden_demo(
+    request: PipelineRequest,
+    settings: FrontendSettings,
+) -> PipelineOutcome:
+    match = match_hidden_demo_query(request.query)
+    if not match:
+        return PipelineOutcome(
+            ok=False,
+            user_error="当前问题没有离线快照；自由问题不会生成模拟答案。",
+        )
+    validation = prevalidate_hidden_snapshots()
+    if not validation.ok:
+        return PipelineOutcome(
+            ok=False,
+            source="offline_demo_snapshot",
+            user_error="离线视觉资产校验失败，已禁用隐藏 Demo。",
+            debug_error="；".join(validation.errors) if settings.hidden_demo_debug else "",
+        )
+    try:
+        response = load_hidden_demo_snapshot(match.case)
+        declared = match.case.get("device_context")
+        normalized = normalize_response(
+            response,
+            device_context=request.device_context,
+            source="offline_demo_snapshot",
+            frontend_mode=settings.frontend_mode,
+            declared_demo_context=declared if isinstance(declared, dict) else {},
+        )
+        normalized.setdefault("runtime", {}).setdefault("warnings", []).append(
+            "该问题匹配到已验收的离线演示快照；结果来源为离线 SAMPLE 快照。"
+        )
+        if settings.hidden_demo_debug:
+            normalized["runtime"]["snapshot_debug"] = {
+                "case_id": str(match.case.get("id") or ""),
+                "query_hash": match.query_hash,
+                "match_type": match.match_type,
+                "snapshot": str(match.case.get("snapshot") or ""),
+                "visual_asset_count": len(response.get("visual_asset_ids") or []),
+            }
+        return _normalization_outcome(normalized, response, "offline_demo_snapshot")
+    except (OSError, ValueError) as exc:
+        LOGGER.exception("Hidden offline demo snapshot failed")
+        return PipelineOutcome(
+            ok=False,
+            source="offline_demo_snapshot",
+            user_error="离线案例快照不可用。",
+            debug_error=repr(exc) if settings.hidden_demo_debug else "",
         )
 
 

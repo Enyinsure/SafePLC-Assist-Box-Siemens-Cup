@@ -1,0 +1,466 @@
+{
+  "schema_version": "hidden-demo-v1",
+  "case_id": "HIDDEN_12",
+  "source": "offline_demo_snapshot",
+  "pipeline_mode": "SAMPLE",
+  "immutable": true,
+  "query": "PS 60W 24/48/60VDC HF，订货号 6ES7505-0RB00-0AB0 的静态和动态输入电压范围分别是多少？",
+  "query_hash": "8eb10dd8e0c288ce6eb5c03a987b51b964c2beaef4e4dd8d5fd3b286cc6675be",
+  "mode": "SAMPLE",
+  "question_type": "PARAMETER",
+  "action": "ANSWER",
+  "verdict": "PASS",
+  "confidence": "HIGH",
+  "operation_risk_level": "LOW",
+  "query_context": {
+    "original_query": "PS 60W 24/48/60VDC HF，订货号 6ES7505-0RB00-0AB0 的静态和动态输入电压范围分别是多少？",
+    "question_type": "PARAMETER",
+    "required_modalities": [
+      "figure",
+      "text"
+    ],
+    "missing_slots": [],
+    "risk_level": "LOW",
+    "risk_decision": "ALLOW",
+    "slots": {
+      "device_family": "S7-1500 POWER",
+      "module_model": "PS 60W 24/48/60VDC HF",
+      "order_number": "6ES7505-0RB00-0AB0"
+    }
+  },
+  "device_context": {
+    "family": "S7-1500 POWER",
+    "model": "PS 60W 24/48/60VDC HF",
+    "order_number": "6ES7505-0RB00-0AB0",
+    "detection_source": "hidden_demo_fixed",
+    "confidence": 1.0
+  },
+  "task_plan": {
+    "question_type": "PARAMETER",
+    "selected_agents": [
+      "Parameter Agent"
+    ]
+  },
+  "agent_plan": {
+    "selected_agents": [
+      "Parameter Agent"
+    ],
+    "execution_order": [
+      "Parameter Agent"
+    ],
+    "execution_mode": "single",
+    "parallel_groups": [],
+    "tasks": [
+      {
+        "task_id": "HIDDEN_12_TASK_01",
+        "agent_name": "Parameter Agent",
+        "question": "PS 60W 24/48/60VDC HF，订货号 6ES7505-0RB00-0AB0 的静态和动态输入电压范围分别是多少？",
+        "status": "completed"
+      }
+    ]
+  },
+  "agent_results": [
+    {
+      "agent_name": "Parameter Agent",
+      "status": "ANSWERED",
+      "answer": "PS 60W 24/48/60VDC HF（6ES7505-0RB00-0AB0）的额定输入为 24 V / 48 V / 60 V DC；允许静态输入范围为 19.2～72 V DC，动态输入范围为 18.5～75.5 V DC。数值来自资料页 6313 的技术规范表。",
+      "claims": [
+        {
+          "claim_id": "HIDDEN_12_CLAIM_01",
+          "claim_text": "PS 60W 24/48/60VDC HF（6ES7505-0RB00-0AB0）的额定输入为 24 V / 48 V / 60 V DC；允许静态输入范围为 19.2～72 V DC，动态输入范围为 18.5～75.5 V DC。数值来自资料页 6313 的技术规范表。",
+          "claim_type": "parameter",
+          "model_scope": "PS 60W 24/48/60VDC HF",
+          "confidence": "HIGH",
+          "evidence_ids": [
+            "HIDDEN_12_EV_01",
+            "HIDDEN_12_EV_02",
+            "HIDDEN_12_EV_03",
+            "HIDDEN_12_EV_04",
+            "HIDDEN_12_EV_05",
+            "HIDDEN_12_EV_06"
+          ],
+          "direct_support": true,
+          "metadata": {
+            "offline_curated": true
+          }
+        }
+      ],
+      "evidence_ids": [
+        "HIDDEN_12_EV_01",
+        "HIDDEN_12_EV_02",
+        "HIDDEN_12_EV_03",
+        "HIDDEN_12_EV_04",
+        "HIDDEN_12_EV_05",
+        "HIDDEN_12_EV_06"
+      ],
+      "abstain": false
+    }
+  ],
+  "evidence_pool": {
+    "evidences": [
+      {
+        "evidence_id": "HIDDEN_12_EV_01",
+        "asset_id": "VIS_0119",
+        "source": "PS 60W 24/48/60VDC HF device manual",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "PS 60W 24/48/60VDC HF device manual",
+        "document_id": "A5E39450011-AC",
+        "page": 6313,
+        "section": "设备特定信息 > 系统功率模块 > PS 60W 24/48/60VDC HF > 6 技术规范",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "PS 60W 24/48/60VDC HF 技术规范表",
+        "device_family": "S7-1500 POWER",
+        "module_model": "PS 60W 24/48/60VDC HF",
+        "order_number": "6ES7505-0RB00-0AB0",
+        "text": "电源电压额定值为 24 V / 48 V / 60 V；允许范围下限为静态 19.2 V、动态 18.5 V，上限为静态 72 V、动态 75.5 V。",
+        "compact_excerpt": "电源电压额定值为 24 V / 48 V / 60 V；允许范围下限为静态 19.2 V、动态 18.5 V，上限为静态 72 V、动态 75.5 V。",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Parameter Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0119",
+          "sha256": "ec8078bd1566f4bc4ec6599094660df42af19efe43bb71215b8e201dd9b54d82",
+          "visual_type": "table_or_parameter_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_12_EV_02",
+        "asset_id": "VIS_0120",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E39450011-AC",
+        "page": 6304,
+        "section": "设备特定信息 > 系统功率模块 > 电源模块 PS 60W 24/48/60VDC HF (6ES7505-0RB00-0AB0) > 2 产品概述 > 2.1 特性",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "S7-1500 POWER",
+        "module_model": "PS 60W 24/48/60VDC HF",
+        "order_number": "6ES7505-0RB00-0AB0",
+        "text": "特性 PS 60W 24/48/60VDC HF 电源模块支持使用额外的模块。 相对于“标准”电源模块的优势： 为了在电源发生故障时保持性地保存更大量的数据，PS 60W 24/48/60VDC HF 会为 CPU 供 电。 PS 60W 24/48/60VDC HF 具有以下属性： • 技术特性 – 额定输入电压 24/48/60 VDC – 输出功率 60 W – 电源故障备份 – 与总线进行电气隔离，依据 EN 61131-2 实施安全电气隔离 该模块支持以下功能： 表格 2-1431 模块功能与版本的相关性 组态软件 功能 模块的固件版本 STEP 7 (TIA Portal) V14 SP1 及更 高版本 STEP 7 (TIA Portal) V12 或更高版 本，或 STEP 7 V5.5 SP3 或 更高版本中的 GSD 文件 固件更新 V1.0.0 或更高版本 X 标识数据 I&M0 到 I&M4 V1.0.0 或更高版本 X 在 RUN 模式下组态 V1.0.0 或更高版本 X 诊断报警 V1.0.0 或更高版本 X 诊断中断 V1.0.0 或更高版本 X 只能在接口模块/CPU 旁的 LH 侧进行组态 V1.0.0 或更高版本 X X （仅限 PROFINET IO） 在发生电源故障时，扩展 CPU 数据区域的保持 性 V1.0.0 或更高版本 X （仅限 CPU S7-1500，固件 版本 V2.1 或更高版本） --- 附件 电源模块随附的以下组件： • 电源连接器 • U 型连接器 这些组件也可以作为备件提供。 9 产品概述 2.1 特性 电源模块 ",
+        "compact_excerpt": "特性 PS 60W 24/48/60VDC HF 电源模块支持使用额外的模块。 相对于“标准”电源模块的优势： 为了在电源发生故障时保持性地保存更大量的数据，PS 60W 24/48/60VDC HF 会为 CPU 供 电。 PS 60W 24/48/60VDC HF 具有以下属性： • 技术特性 – 额定输入电压 24/48/60 VDC – 输出功率 60 W – 电源故障备份 – 与总线进行电气隔离，依据 EN 61131-2 实施安全电气隔离 该模块支持以下功能： 表格 2-1431 模块功能与版本的相关性 组态软件 功能 模块的固件版本 STEP 7 (TIA Portal) V14 SP1 及更 高版本 STEP 7 (TIA Portal) V12 或更高版 本，或 STEP 7 V5.5 SP3 或 更高版本中的 GSD 文件 固件更新 V1.0.0 或更高版本 X 标识数据 I&M0 到 I&M4 V1.0.0 或更高版本 X 在 RUN 模式下组态 V1.0.0 或更高版本 X 诊断报警 V1.0.0 或更高版本 X 诊断中断 V1.0.0 或更高版本 X 只能在接口模块/CPU 旁的 LH 侧进行组态 V1.0.0 或更高版本 X X （仅限 PROFINET IO） 在发生电源故障时，扩展 CPU 数据区域的保持 性 V1.0.0 或更高版本 X （仅限 CPU S7-1500，固件 版本 V2.1 或更高版本） --- 附件 电源模块随附的以下组件： • 电源连接器 • U 型连接器 这些组件也可以作为备件提供。 9 产品概述 2.1 特性 电源模块 ",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Parameter Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0120",
+          "sha256": "9a5801c4e1dd3966f0bff1e10bdad577e1d3e16228f1a38ab2fcba63c7ddeb46",
+          "visual_type": "module_cpu_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_12_EV_03",
+        "asset_id": "VIS_0121",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E39450011-AC",
+        "page": 6308,
+        "section": "设备特定信息 > 系统功率模块 > 电源模块 PS 60W 24/48/60VDC HF (6ES7505-0RB00-0AB0) > 4 参数 > 4.1 参数",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "S7-1500 POWER",
+        "module_model": "PS 60W 24/48/60VDC HF",
+        "order_number": "6ES7505-0RB00-0AB0",
+        "text": "参数 4 4.1 参数 PS 60W 24/48/60VDC HF 的参数 PS 60W 24/48/60VDC HF 通常已集成在 STEP 7 (TIA Portal) 的硬件目录中。此时，STEP 7 (TIA Portal) 将在组态过程中检查所组态属性的真实性。 此外，也可通过 GSD 文件和其他供应商的组态软件为模块进行参数分配。在完成组态加载之 前，模块不会检查已组态属性的有效性。 在 STEP 7 中指定模块参数时，可使用不同的参数来设置模块属性。下表列出了可组态的参 数。可设置的参数的有效范围取决于组态的类型。可进行以下组态： • 对 S7-1500 CPU 进行集中操作（通过 STEP 7 TIA Portal V14 SP1 或更高版本） • 对 ET 200MP 系统中的 PROFINET IO 进行分布式操作（在 STEP 7 (TIA Portal) V12 或更高版 本，或 STEP 7 V5.5 SP3 或更高版本中使用 PROFINET IO 的 GSD 文件） 在用户程序中进行参数分配时，可使用 WRREC 指令（RUN 模式下的重新参数化）和数据记录 将参数传送至模块；请参见章节 参数数据记录 (页 22)。 表格 2-1432 可组态的参数和默认值 组态软件工具，例如 STEP 7 (TIA Portal) 参数 取值范围 默认设置 RUN 模式下进行 参数分配 集成在 STEP 7 (TIA Portal) V14 SP1 及更高版本 的硬件目录中或 PROFINET IO 的 GSD 文件中 PROFIBUS DP GSD 文 件 诊",
+        "compact_excerpt": "参数 4 4.1 参数 PS 60W 24/48/60VDC HF 的参数 PS 60W 24/48/60VDC HF 通常已集成在 STEP 7 (TIA Portal) 的硬件目录中。此时，STEP 7 (TIA Portal) 将在组态过程中检查所组态属性的真实性。 此外，也可通过 GSD 文件和其他供应商的组态软件为模块进行参数分配。在完成组态加载之 前，模块不会检查已组态属性的有效性。 在 STEP 7 中指定模块参数时，可使用不同的参数来设置模块属性。下表列出了可组态的参 数。可设置的参数的有效范围取决于组态的类型。可进行以下组态： • 对 S7-1500 CPU 进行集中操作（通过 STEP 7 TIA Portal V14 SP1 或更高版本） • 对 ET 200MP 系统中的 PROFINET IO 进行分布式操作（在 STEP 7 (TIA Portal) V12 或更高版 本，或 STEP 7 V5.5 SP3 或更高版本中使用 PROFINET IO 的 GSD 文件） 在用户程序中进行参数分配时，可使用 WRREC 指令（RUN 模式下的重新参数化）和数据记录 将参数传送至模块；请参见章节 参数数据记录 (页 22)。 表格 2-1432 可组态的参数和默认值 组态软件工具，例如 STEP 7 (TIA Portal) 参数 取值范围 默认设置 RUN 模式下进行 参数分配 集成在 STEP 7 (TIA Portal) V14 SP1 及更高版本 的硬件目录中或 PROFINET IO 的 GSD 文件中 PROFIBUS DP GSD 文 件 诊",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Parameter Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0121",
+          "sha256": "acaa287cbada034e0dc811b81d4259bb0303f198791ad4aa9639809abe316bdf",
+          "visual_type": "module_cpu_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_12_EV_04",
+        "asset_id": "VIS_0122",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E39450011-AC",
+        "page": 6309,
+        "section": "设备特定信息 > 系统功率模块 > 电源模块 PS 60W 24/48/60VDC HF (6ES7505-0RB00-0AB0) > 5 中断、诊断报警、错误和状态报警 > 5.1 状态和错误指示灯",
+        "figure_number": "图 2-1304",
+        "manual_figure_number": "图 2-1304",
+        "manual_figure_caption": "PS 60W 24/48/60VDC HF 的 LED 指示灯",
+        "device_family": "S7-1500 POWER",
+        "module_model": "PS 60W 24/48/60VDC HF",
+        "order_number": "6ES7505-0RB00-0AB0",
+        "text": "电源模块 PS 60W 24/48/60VDC HF (6ES7505-0RB00-0AB0) 设备手册, 11/2020, A5E39450011-AC 14 中断、诊断报警、错误和状态报警 5 5.1 状态和错误指示灯 简介 通过 LED 指示灯进行诊断是故障排查的一个基本方式。通常，可通过在 STEP 7 或 CPU 的故障 缓冲区中分析模块的状态信息，精确定位故障源。这些位置包含文本格式的相应错误信息。 LED 指示灯 下图显示 PS 60W 24/48/60VDC HF 的 LED 指示灯（状态和错误指示灯）。 \u0016 \u0014 \u0015 ① RUN LED 指示灯 ② ERROR LED 指示灯 ③ MAINT LED 指示灯 图 2-1304 PS 60W 24/48/60VDC HF 的 LED 指示灯 LED 指示灯的含义 下表列出了状态和错误指示灯的含义。有关诊断报警的补救措施，请参见“诊断报警 (页 15)”章 节。 表格 2-1433 状态和错误指示灯 RUN/ERROR/MAINT LED 指示灯 RUN ERROR MAINT 含义 补救措施 灭 灭 灭 灭；PS 未提供总线电压 • 外部错误；已禁用诊断 • 系统中，PS 未供电，PS 和 CPU/IM 处无电源电压。 接通 PS 电源 检查电源电压 接通 PS 电源 亮 亮 亮 启动；在系统启动后或在固件更新后模块重启时，所有 LED 指示灯短时点亮。 - 闪烁 不相关 不相关 启动，PS 提供总线电压，PS 等待进行参数设置 -",
+        "compact_excerpt": "电源模块 PS 60W 24/48/60VDC HF (6ES7505-0RB00-0AB0) 设备手册, 11/2020, A5E39450011-AC 14 中断、诊断报警、错误和状态报警 5 5.1 状态和错误指示灯 简介 通过 LED 指示灯进行诊断是故障排查的一个基本方式。通常，可通过在 STEP 7 或 CPU 的故障 缓冲区中分析模块的状态信息，精确定位故障源。这些位置包含文本格式的相应错误信息。 LED 指示灯 下图显示 PS 60W 24/48/60VDC HF 的 LED 指示灯（状态和错误指示灯）。 \u0016 \u0014 \u0015 ① RUN LED 指示灯 ② ERROR LED 指示灯 ③ MAINT LED 指示灯 图 2-1304 PS 60W 24/48/60VDC HF 的 LED 指示灯 LED 指示灯的含义 下表列出了状态和错误指示灯的含义。有关诊断报警的补救措施，请参见“诊断报警 (页 15)”章 节。 表格 2-1433 状态和错误指示灯 RUN/ERROR/MAINT LED 指示灯 RUN ERROR MAINT 含义 补救措施 灭 灭 灭 灭；PS 未提供总线电压 • 外部错误；已禁用诊断 • 系统中，PS 未供电，PS 和 CPU/IM 处无电源电压。 接通 PS 电源 检查电源电压 接通 PS 电源 亮 亮 亮 启动；在系统启动后或在固件更新后模块重启时，所有 LED 指示灯短时点亮。 - 闪烁 不相关 不相关 启动，PS 提供总线电压，PS 等待进行参数设置 -",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Parameter Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0122",
+          "sha256": "4e5b0d50b3a0aabeafad5da1f85cdc3e81a1f56ccaccb06c7e5283d3160eb490",
+          "visual_type": "diagnostic_alarm_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_12_EV_05",
+        "asset_id": "VIS_0123",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E39450011-AC",
+        "page": 6310,
+        "section": "设备特定信息 > 系统功率模块 > 电源模块 PS 60W 24/48/60VDC HF (6ES7505-0RB00-0AB0) > 5 中断、诊断报警、错误和状态报警 > 5.2 诊断报警",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "S7-1500 POWER",
+        "module_model": "PS 60W 24/48/60VDC HF",
+        "order_number": "6ES7505-0RB00-0AB0",
+        "text": "LED 指示灯 RUN ERROR MAINT 含义 补救措施 灭 闪烁 不相关 错误，PS 未提供总线电压 • 电源电压缺失并启用诊断 • 内部错误 有关诊断报警的评估和采取的相 应补救措施，请参见“诊断报警 (页 15)”章节 灭 不相关 亮 维护请求，PS 未提供总线电压 • 开关闭合；提供电源并启用诊断 接通 PS 电源 闪烁 闪烁 闪烁 故障 LED 指示灯持续闪烁 更换 PS 5.2 诊断报警 诊断报警 下表列出了诊断报警的含义及对各种原因的补救措施。 以下“LED 指示灯状态”直接表明：PS 上触发诊断报警。 • 红色 ERROR-LED 指示灯闪烁。 指示发生外部或内部错误。 • 黄色 MAINT-LED 指示灯点亮。 维护；激活一个维护请求。 • 所有 3 个 LED 指示灯持续闪烁 PS 处于“故障”状态。 在 STEP 7 中，可通过在线与诊断视图以纯文本形式显示诊断的结果。并通过“RDREC”指令读取 诊断数据记录。 表格 2-1434 诊断报警、含义以及补救措施 错误 代码 诊断报警 十进制 十六进 制 含义 响应 补救措施 外部错误 电源 电压缺失 266D 010AH 电源电压缺失，或电源连接器未正 确插入 PS。 1 检查电源电压。 内部错误 过热 5D 0005H 印刷电路板过热。 2 检查 PS 负载。隔离 PS 与电源。等待一 分钟后，再次接通 PS 电源。 背板总线过压 267D 010BH 插入的 PS、CPU 或 IM，具有较高的 EMC 干扰或发生故障。 2 消除电磁干扰。检查插入的模块和总线 连接器。隔离 PS 与电源。等待一分钟",
+        "compact_excerpt": "LED 指示灯 RUN ERROR MAINT 含义 补救措施 灭 闪烁 不相关 错误，PS 未提供总线电压 • 电源电压缺失并启用诊断 • 内部错误 有关诊断报警的评估和采取的相 应补救措施，请参见“诊断报警 (页 15)”章节 灭 不相关 亮 维护请求，PS 未提供总线电压 • 开关闭合；提供电源并启用诊断 接通 PS 电源 闪烁 闪烁 闪烁 故障 LED 指示灯持续闪烁 更换 PS 5.2 诊断报警 诊断报警 下表列出了诊断报警的含义及对各种原因的补救措施。 以下“LED 指示灯状态”直接表明：PS 上触发诊断报警。 • 红色 ERROR-LED 指示灯闪烁。 指示发生外部或内部错误。 • 黄色 MAINT-LED 指示灯点亮。 维护；激活一个维护请求。 • 所有 3 个 LED 指示灯持续闪烁 PS 处于“故障”状态。 在 STEP 7 中，可通过在线与诊断视图以纯文本形式显示诊断的结果。并通过“RDREC”指令读取 诊断数据记录。 表格 2-1434 诊断报警、含义以及补救措施 错误 代码 诊断报警 十进制 十六进 制 含义 响应 补救措施 外部错误 电源 电压缺失 266D 010AH 电源电压缺失，或电源连接器未正 确插入 PS。 1 检查电源电压。 内部错误 过热 5D 0005H 印刷电路板过热。 2 检查 PS 负载。隔离 PS 与电源。等待一 分钟后，再次接通 PS 电源。 背板总线过压 267D 010BH 插入的 PS、CPU 或 IM，具有较高的 EMC 干扰或发生故障。 2 消除电磁干扰。检查插入的模块和总线 连接器。隔离 PS 与电源。等待一分钟",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Parameter Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0123",
+          "sha256": "9f4160e1bf5fdf1a27f52b99176d894507c63703cfddeaa99096858893d058c5",
+          "visual_type": "diagnostic_alarm_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_12_EV_06",
+        "asset_id": "VIS_0124",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E39450011-AC",
+        "page": 6297,
+        "section": "设备特定信息 > 系统功率模块 > 电源模块 PS 60W 24/48/60VDC HF (6ES7505-0RB00-0AB0) > 前言 > 前言",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "S7-1500 POWER",
+        "module_model": "PS 60W 24/48/60VDC HF",
+        "order_number": "6ES7505-0RB00-0AB0",
+        "text": "电源模块 PS 60W 24/48/60VDC HF (6ES7505-0RB00-0AB0) 设备手册, 11/2020, A5E39450011-AC 2 前言 前言 本文档的用途 本手册是对系统手册《S7-1500/ET 200MP 自动化系统 (https://support.industry.siemens.com/cs/ww/zh/view/59191792)》的补充。 本手册中介绍了通常与系统相关的功能。 本手册和系统/功能手册中介绍的信息将为您进行系统调试提供技术支持。 较先前版本相比的更改 与前一版本相比，本手册包含以下更改内容： 技术规范更正 约定 本手册中使用的术语“CPU”既可指代 S7-1500 自动化系统的 CPU，也可指代 ET 200MP 分布式 I/O 系统的接口模块。 另请注意下列注意事项： 说明 这些注意事项包含有关本文档中所述产品、产品操作或应特别关注的文档部分的重要信息。",
+        "compact_excerpt": "电源模块 PS 60W 24/48/60VDC HF (6ES7505-0RB00-0AB0) 设备手册, 11/2020, A5E39450011-AC 2 前言 前言 本文档的用途 本手册是对系统手册《S7-1500/ET 200MP 自动化系统 (https://support.industry.siemens.com/cs/ww/zh/view/59191792)》的补充。 本手册中介绍了通常与系统相关的功能。 本手册和系统/功能手册中介绍的信息将为您进行系统调试提供技术支持。 较先前版本相比的更改 与前一版本相比，本手册包含以下更改内容： 技术规范更正 约定 本手册中使用的术语“CPU”既可指代 S7-1500 自动化系统的 CPU，也可指代 ET 200MP 分布式 I/O 系统的接口模块。 另请注意下列注意事项： 说明 这些注意事项包含有关本文档中所述产品、产品操作或应特别关注的文档部分的重要信息。",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Parameter Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0124",
+          "sha256": "49cc35be6a2cf424fead8f55b9b2441167a432a6f4c69333548ea35c7f61d3f2",
+          "visual_type": "module_cpu_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      }
+    ],
+    "metadata": {
+      "source": "offline_demo_snapshot",
+      "visual_asset_count": 6,
+      "cross_model_blocked": 0,
+      "rejected_evidence": []
+    }
+  },
+  "judge_decision": {
+    "verdict": "PASS",
+    "confidence": "HIGH",
+    "decision_reason": "离线快照仅采用资产清单中可解码、可追溯且经身份检查的手册页。",
+    "final_evidence_ids": [
+      "HIDDEN_12_EV_01",
+      "HIDDEN_12_EV_02",
+      "HIDDEN_12_EV_03",
+      "HIDDEN_12_EV_04",
+      "HIDDEN_12_EV_05",
+      "HIDDEN_12_EV_06"
+    ],
+    "accepted_agent_outputs": [
+      "Parameter Agent"
+    ],
+    "rejected_agent_outputs": [],
+    "supported_claims": [
+      "PS 60W 24/48/60VDC HF（6ES7505-0RB00-0AB0）的额定输入为 24 V / 48 V / 60 V DC；允许静态输入范围为 19.2～72 V DC，动态输入范围为 18.5～75.5 V DC。数值来自资料页 6313 的技术规范表。"
+    ],
+    "unsupported_claims": [],
+    "conflicting_claims": [],
+    "coverage": {
+      "main": {
+        "answered": true
+      }
+    },
+    "model_consistency": {
+      "pass": true,
+      "rejected_evidence_ids": []
+    },
+    "metadata": {
+      "accepted_claims": [
+        {
+          "claim_id": "HIDDEN_12_CLAIM_01",
+          "claim_text": "PS 60W 24/48/60VDC HF（6ES7505-0RB00-0AB0）的额定输入为 24 V / 48 V / 60 V DC；允许静态输入范围为 19.2～72 V DC，动态输入范围为 18.5～75.5 V DC。数值来自资料页 6313 的技术规范表。",
+          "claim_type": "parameter",
+          "model_scope": "PS 60W 24/48/60VDC HF",
+          "confidence": "HIGH",
+          "evidence_ids": [
+            "HIDDEN_12_EV_01",
+            "HIDDEN_12_EV_02",
+            "HIDDEN_12_EV_03",
+            "HIDDEN_12_EV_04",
+            "HIDDEN_12_EV_05",
+            "HIDDEN_12_EV_06"
+          ],
+          "direct_support": true,
+          "metadata": {
+            "offline_curated": true
+          }
+        }
+      ]
+    }
+  },
+  "verifier": {
+    "figure_requirement_pass": true,
+    "numeric_mismatch_claim_ids": [],
+    "grounded_claim_ids": [
+      "HIDDEN_12_CLAIM_01"
+    ],
+    "passed": true
+  },
+  "answer": {
+    "status": "ANSWER",
+    "text": "PS 60W 24/48/60VDC HF（6ES7505-0RB00-0AB0）的额定输入为 24 V / 48 V / 60 V DC；允许静态输入范围为 19.2～72 V DC，动态输入范围为 18.5～75.5 V DC。数值来自资料页 6313 的技术规范表。",
+    "evidence_ids": [
+      "HIDDEN_12_EV_01",
+      "HIDDEN_12_EV_02",
+      "HIDDEN_12_EV_03",
+      "HIDDEN_12_EV_04",
+      "HIDDEN_12_EV_05",
+      "HIDDEN_12_EV_06"
+    ]
+  },
+  "final_answer": "PS 60W 24/48/60VDC HF（6ES7505-0RB00-0AB0）的额定输入为 24 V / 48 V / 60 V DC；允许静态输入范围为 19.2～72 V DC，动态输入范围为 18.5～75.5 V DC。数值来自资料页 6313 的技术规范表。",
+  "work_order": {
+    "status": "not_requested",
+    "risk_tip": ""
+  },
+  "visual_asset_ids": [
+    "VIS_0119",
+    "VIS_0120",
+    "VIS_0121",
+    "VIS_0122",
+    "VIS_0123",
+    "VIS_0124"
+  ],
+  "visual_evidence": [
+    {
+      "asset_id": "VIS_0119",
+      "evidence_id": "HIDDEN_12_EV_01",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0120",
+      "evidence_id": "HIDDEN_12_EV_02",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0121",
+      "evidence_id": "HIDDEN_12_EV_03",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0122",
+      "evidence_id": "HIDDEN_12_EV_04",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0123",
+      "evidence_id": "HIDDEN_12_EV_05",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0124",
+      "evidence_id": "HIDDEN_12_EV_06",
+      "status": "image_available"
+    }
+  ],
+  "visual_coverage_reason": {
+    "VIS_0119": "table_or_parameter_page，资料页 6313，direct target evidence",
+    "VIS_0120": "module_cpu_page，资料页 6304，direct target evidence",
+    "VIS_0121": "module_cpu_page，资料页 6308，direct target evidence",
+    "VIS_0122": "diagnostic_alarm_page，资料页 6309，direct target evidence",
+    "VIS_0123": "diagnostic_alarm_page，资料页 6310，direct target evidence",
+    "VIS_0124": "module_cpu_page，资料页 6297，direct target evidence"
+  },
+  "generated_from_commit": "8403213d89d3f2200b9f40ee1f72d23673c9b4f6",
+  "snapshot_validation": {
+    "valid": true,
+    "errors": []
+  },
+  "warnings": [
+    "该结果是基于仓库内真实手册页面整理的离线 SAMPLE 快照，未调用 FULL 检索后端。"
+  ]
+}

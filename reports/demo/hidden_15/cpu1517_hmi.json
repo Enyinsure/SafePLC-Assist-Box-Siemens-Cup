@@ -1,0 +1,906 @@
+{
+  "schema_version": "hidden-demo-v1",
+  "case_id": "HIDDEN_05",
+  "source": "offline_demo_snapshot",
+  "pipeline_mode": "SAMPLE",
+  "immutable": true,
+  "query": "CPU 1517-3 PN/DP 连接一台 HMI 时，应优先使用哪个 PROFINET 接口？请给出接口图和连接注意事项。",
+  "query_hash": "bc1907e4b477032f221abd7324668deb3fb617ba7c2afb8f3e92f10aa3d21d0d",
+  "mode": "SAMPLE",
+  "question_type": "TOPOLOGY",
+  "action": "ANSWER",
+  "verdict": "PASS",
+  "confidence": "MEDIUM",
+  "operation_risk_level": "LOW",
+  "query_context": {
+    "original_query": "CPU 1517-3 PN/DP 连接一台 HMI 时，应优先使用哪个 PROFINET 接口？请给出接口图和连接注意事项。",
+    "question_type": "TOPOLOGY",
+    "required_modalities": [
+      "figure",
+      "text"
+    ],
+    "missing_slots": [],
+    "risk_level": "LOW",
+    "risk_decision": "ALLOW",
+    "slots": {
+      "device_family": "S7-1500",
+      "module_model": "CPU 1517-3 PN/DP",
+      "order_number": "6ES7517-3AP00-0AB0"
+    }
+  },
+  "device_context": {
+    "family": "S7-1500",
+    "model": "CPU 1517-3 PN/DP",
+    "order_number": "6ES7517-3AP00-0AB0",
+    "detection_source": "hidden_demo_fixed",
+    "confidence": 1.0
+  },
+  "task_plan": {
+    "question_type": "TOPOLOGY",
+    "selected_agents": [
+      "Topology Agent",
+      "Figure Agent"
+    ]
+  },
+  "agent_plan": {
+    "selected_agents": [
+      "Topology Agent",
+      "Figure Agent"
+    ],
+    "execution_order": [
+      "Topology Agent",
+      "Figure Agent"
+    ],
+    "execution_mode": "parallel",
+    "parallel_groups": [
+      [
+        "Topology Agent",
+        "Figure Agent"
+      ]
+    ],
+    "tasks": [
+      {
+        "task_id": "HIDDEN_05_TASK_01",
+        "agent_name": "Topology Agent",
+        "question": "CPU 1517-3 PN/DP 连接一台 HMI 时，应优先使用哪个 PROFINET 接口？请给出接口图和连接注意事项。",
+        "status": "completed"
+      },
+      {
+        "task_id": "HIDDEN_05_TASK_02",
+        "agent_name": "Figure Agent",
+        "question": "CPU 1517-3 PN/DP 连接一台 HMI 时，应优先使用哪个 PROFINET 接口？请给出接口图和连接注意事项。",
+        "status": "completed"
+      }
+    ]
+  },
+  "agent_results": [
+    {
+      "agent_name": "Topology Agent",
+      "status": "ANSWERED",
+      "answer": "接口选择应服从网络分段和拓扑，而不是仅凭 HMI 固定指定。该 CPU 的 X1 是带 P1/P2 的双端口 PROFINET 接口，适合线型连接；X2 是单端口 PROFINET 接口，可用于独立网络。接口布局见页 2476 图 2-237 和页 2481 图 2-239；规划时还要保证 X1、X2 所在 IP 子网不重叠。",
+      "claims": [
+        {
+          "claim_id": "HIDDEN_05_CLAIM_01",
+          "claim_text": "接口选择应服从网络分段和拓扑，而不是仅凭 HMI 固定指定。该 CPU 的 X1 是带 P1/P2 的双端口 PROFINET 接口，适合线型连接；X2 是单端口 PROFINET 接口，可用于独立网络。接口布局见页 2476 图 2-237 和页 2481 图 2-239；规划时还要保证 X1、X2 所在 IP 子网不重叠。",
+          "claim_type": "technical_guidance",
+          "model_scope": "CPU 1517-3 PN/DP",
+          "confidence": "MEDIUM",
+          "evidence_ids": [
+            "HIDDEN_05_EV_01",
+            "HIDDEN_05_EV_02",
+            "HIDDEN_05_EV_03"
+          ],
+          "direct_support": true,
+          "metadata": {
+            "offline_curated": true
+          }
+        }
+      ],
+      "evidence_ids": [
+        "HIDDEN_05_EV_01",
+        "HIDDEN_05_EV_02",
+        "HIDDEN_05_EV_03"
+      ],
+      "abstain": false
+    },
+    {
+      "agent_name": "Figure Agent",
+      "status": "ANSWERED",
+      "answer": "接口选择应服从网络分段和拓扑，而不是仅凭 HMI 固定指定。该 CPU 的 X1 是带 P1/P2 的双端口 PROFINET 接口，适合线型连接；X2 是单端口 PROFINET 接口，可用于独立网络。接口布局见页 2476 图 2-237 和页 2481 图 2-239；规划时还要保证 X1、X2 所在 IP 子网不重叠。",
+      "claims": [
+        {
+          "claim_id": "HIDDEN_05_CLAIM_01",
+          "claim_text": "接口选择应服从网络分段和拓扑，而不是仅凭 HMI 固定指定。该 CPU 的 X1 是带 P1/P2 的双端口 PROFINET 接口，适合线型连接；X2 是单端口 PROFINET 接口，可用于独立网络。接口布局见页 2476 图 2-237 和页 2481 图 2-239；规划时还要保证 X1、X2 所在 IP 子网不重叠。",
+          "claim_type": "technical_guidance",
+          "model_scope": "CPU 1517-3 PN/DP",
+          "confidence": "MEDIUM",
+          "evidence_ids": [
+            "HIDDEN_05_EV_01",
+            "HIDDEN_05_EV_02",
+            "HIDDEN_05_EV_03"
+          ],
+          "direct_support": true,
+          "metadata": {
+            "offline_curated": true
+          }
+        }
+      ],
+      "evidence_ids": [
+        "HIDDEN_05_EV_01",
+        "HIDDEN_05_EV_02",
+        "HIDDEN_05_EV_03"
+      ],
+      "abstain": false
+    }
+  ],
+  "evidence_pool": {
+    "evidences": [
+      {
+        "evidence_id": "HIDDEN_05_EV_01",
+        "asset_id": "VIS_0027",
+        "source": "CPU 1517-3 PN/DP device manual",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "CPU 1517-3 PN/DP device manual",
+        "document_id": "A5E33595080-AF",
+        "page": 2476,
+        "section": "设备特定信息 > 中央处理单元 > CPU 1517-3 PN/DP > 3 产品概述 > 3.5 操作员控件和显示元件",
+        "figure_number": "图 2-237",
+        "manual_figure_number": "图 2-237",
+        "manual_figure_caption": "不带前面板的 CPU 1517-3 PN/DP 的前视图",
+        "device_family": "S7-1500",
+        "module_model": "CPU 1517-3 PN/DP",
+        "order_number": "6ES7517-3AP00-0AB0",
+        "text": "图 2-237 标注 CPU 1517-3 PN/DP 的前视图，PROFINET IO 接口 X1 对应标号 ⑦，X2 对应标号 ⑥。",
+        "compact_excerpt": "图 2-237 标注 CPU 1517-3 PN/DP 的前视图，PROFINET IO 接口 X1 对应标号 ⑦，X2 对应标号 ⑥。",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Topology Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0027",
+          "sha256": "7e73d63df0848cf4b5c101084b7b2a52f48b8a96cfeeb6c3c543866881d0389c",
+          "visual_type": "front_panel_or_led_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_05_EV_02",
+        "asset_id": "VIS_0028",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E33595080-AF",
+        "page": 2481,
+        "section": "设备特定信息 > 中央处理单元 > CPU 1517-3 PN/DP (6ES7517-3AP00-0AB0) > 4 接线",
+        "figure_number": "图 2-239",
+        "manual_figure_number": "图 2-239",
+        "manual_figure_caption": "CPU 1517‑3 PN/DP 的方框图",
+        "device_family": "S7-1500",
+        "module_model": "CPU 1517-3 PN/DP",
+        "order_number": "6ES7517-3AP00-0AB0",
+        "text": "方框图 下图显示了 CPU 1517‑3 PN/DP 的电路示意图。 \u0017 \u0014 \u0019 \u0018 \u0016 \u001a \u0015 /\u000e 0 ;\u0018\u0013 ;\u0014\u00033\u0014 31 ;\u0014\u00033\u00145 ;\u0015\u00033\u0014 31 ;\u0015\u00033\u0014 3%\u0003;\u0016 ;\u0014\u00033\u0015 5\u00126 (5 07 31 ;\u0014\u00033\u00155 ;\u001b\u0013\u0003'&\u0003\u0015\u0017\u00039 ① 显示屏 PN X1 P1R PROFINET 接口 X1 端口 1 ② RUN/STOP/MRES 模式选择器开关 PN X1 P2R PROFINET 接口 X1 端口 2 ③ 电子元件 PN X2 P1 PROFINET 接口 X2 端口 1 ④ PROFINET 双端口交换机 PB X3 PROFIBUS 接口 X3 ⑤ PROFIBUS DP 驱动程序 L+ 24 V DC 电源电压 ⑥ 背板总线接口 M 接地 ⑦ 内部电源电压 R/S RUN/STOP LED 指示灯（黄色/绿色） X50 SIMATIC 存储卡 ER ERROR LED 指示灯（红色） X80 24 V DC 电源电压供电 MT MAINT LED 指示灯（黄色） X1 P1、X1 P2、X2 P1 Link TX/RX LED 指示灯 图 2-239 CPU 1517‑3 PN/DP 的方框图 29 接线 CPU 1517-3 PN/DP (6ES7517-3AP00-0AB0) 设备手册, 11/2023, A5E33595080-AF",
+        "compact_excerpt": "方框图 下图显示了 CPU 1517‑3 PN/DP 的电路示意图。 \u0017 \u0014 \u0019 \u0018 \u0016 \u001a \u0015 /\u000e 0 ;\u0018\u0013 ;\u0014\u00033\u0014 31 ;\u0014\u00033\u00145 ;\u0015\u00033\u0014 31 ;\u0015\u00033\u0014 3%\u0003;\u0016 ;\u0014\u00033\u0015 5\u00126 (5 07 31 ;\u0014\u00033\u00155 ;\u001b\u0013\u0003'&\u0003\u0015\u0017\u00039 ① 显示屏 PN X1 P1R PROFINET 接口 X1 端口 1 ② RUN/STOP/MRES 模式选择器开关 PN X1 P2R PROFINET 接口 X1 端口 2 ③ 电子元件 PN X2 P1 PROFINET 接口 X2 端口 1 ④ PROFINET 双端口交换机 PB X3 PROFIBUS 接口 X3 ⑤ PROFIBUS DP 驱动程序 L+ 24 V DC 电源电压 ⑥ 背板总线接口 M 接地 ⑦ 内部电源电压 R/S RUN/STOP LED 指示灯（黄色/绿色） X50 SIMATIC 存储卡 ER ERROR LED 指示灯（红色） X80 24 V DC 电源电压供电 MT MAINT LED 指示灯（黄色） X1 P1、X1 P2、X2 P1 Link TX/RX LED 指示灯 图 2-239 CPU 1517‑3 PN/DP 的方框图 29 接线 CPU 1517-3 PN/DP (6ES7517-3AP00-0AB0) 设备手册, 11/2023, A5E33595080-AF",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Topology Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0028",
+          "sha256": "f81c8b7e0024dd456ed999107dcd549ac22baaeb74fa633554b93cd65ba9c15d",
+          "visual_type": "front_panel_or_led_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_05_EV_03",
+        "asset_id": "VIS_0029",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E33595080-AF",
+        "page": 2478,
+        "section": "设备特定信息 > 中央处理单元 > CPU 1517-3 PN/DP (6ES7517-3AP00-0AB0) > 4 接线",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "S7-1500",
+        "module_model": "CPU 1517-3 PN/DP",
+        "order_number": "6ES7517-3AP00-0AB0",
+        "text": "CPU 1517-3 PN/DP (6ES7517-3AP00-0AB0) 设备手册, 11/2023, A5E33595080-AF 26 接线 4 这一章节将介绍有关各个接口端子分配的信息和 CPU 1517‑3 PN/DP 的方框图。 24 V DC 电源电压 (X80) 在 CPU 出厂交付时，连接有电源连接器。 下表列出了 24 V DC 电源电压的信号名称和引脚分配说明。 表格 2-286 24 V DC 电源电压的引脚分配 视图 连接器 信号名称 1) 说明 1 1L+ + 24 V DC 电源电压 2 1M 电源电压接地 3 2M 回路电源电压接地 2) \u0016 \u0015 \u0017 \u0014 \u00140 \u00150 \u0014/\u000e \u0015/\u000e 4 2L+ + 24 V DC 回路电源电压 2) 1) 1L+ 和 2L+ 以及 1M 和 2M 在内部桥接 2) 最大允许 10 A 如果 CPU 通过系统电源供电，则无需连接 24 V 电源。 PROFINET 接口 X1，带双端口交换机（X1 P1R 和 X1 P2R） 该端子分配基于 RJ45 插头的以太网标准。 • 如果禁用自动协商功能，则 RJ45 插座将作为一个交换机 (MDI-X)。 • 如果激活自动协商功能，则自动跨接生效，同时 RJ45 插座既可分配为数据终端设备 (MDI-X)，也可分配为一个交换机 (MDI-X)。 ㄟਓ\u0003\u0014˄↓䶒˅ ቿ㭭 ㄟਓ\u0003\u0015˄㛼䶒˅ PROFINET 接口 X2，带 1 个端口 (X2 P1) 端子分配基于 RJ45 插头的以太网标准。",
+        "compact_excerpt": "CPU 1517-3 PN/DP (6ES7517-3AP00-0AB0) 设备手册, 11/2023, A5E33595080-AF 26 接线 4 这一章节将介绍有关各个接口端子分配的信息和 CPU 1517‑3 PN/DP 的方框图。 24 V DC 电源电压 (X80) 在 CPU 出厂交付时，连接有电源连接器。 下表列出了 24 V DC 电源电压的信号名称和引脚分配说明。 表格 2-286 24 V DC 电源电压的引脚分配 视图 连接器 信号名称 1) 说明 1 1L+ + 24 V DC 电源电压 2 1M 电源电压接地 3 2M 回路电源电压接地 2) \u0016 \u0015 \u0017 \u0014 \u00140 \u00150 \u0014/\u000e \u0015/\u000e 4 2L+ + 24 V DC 回路电源电压 2) 1) 1L+ 和 2L+ 以及 1M 和 2M 在内部桥接 2) 最大允许 10 A 如果 CPU 通过系统电源供电，则无需连接 24 V 电源。 PROFINET 接口 X1，带双端口交换机（X1 P1R 和 X1 P2R） 该端子分配基于 RJ45 插头的以太网标准。 • 如果禁用自动协商功能，则 RJ45 插座将作为一个交换机 (MDI-X)。 • 如果激活自动协商功能，则自动跨接生效，同时 RJ45 插座既可分配为数据终端设备 (MDI-X)，也可分配为一个交换机 (MDI-X)。 ㄟਓ\u0003\u0014˄↓䶒˅ ቿ㭭 ㄟਓ\u0003\u0015˄㛼䶒˅ PROFINET 接口 X2，带 1 个端口 (X2 P1) 端子分配基于 RJ45 插头的以太网标准。",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Topology Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0029",
+          "sha256": "58d130a6bd5a065279911292fe5ccaf37eb787189349dd5b4b46b6a256376b5b",
+          "visual_type": "wiring_or_terminal_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_05_EV_04",
+        "asset_id": "VIS_0035",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E41815205-AH",
+        "page": 641,
+        "section": "基本信息 > S7-1500R/H 冗余系统 > 6 应用规划 > 6.8 使用 HMI 设备",
+        "figure_number": "图 1-253",
+        "manual_figure_number": "图 1-253",
+        "manual_figure_caption": "CPU 1518HF‑4 PN 组态示例：通过工业以太网和 PROFINET 环网连接 HMI 设备",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "根据 CPU 1518HF‑4 PN/CPU 1517H‑4 PN/CPU 1515R‑2 PN 的示例，通过工业以太网和 PROFINET 环网 连接 HMI 设备 下图举例说明了如何通过工业以太网和 PROFINET 环网将 CPU 1518HF‑4 PN 连接到 HMI 设 备。连接 HMI 设备的方式与 CPU 1517H‑4 PN/CPU 1515R‑2 PN 相同。 )\u000e$16 )\u000e$16 1$ ).* ).* ᐕъ\u0003 ԕཚ㖁 ᓄ⭘〻 ᒿ Ӕᦒᵪ Ӕᦒᵪ Ӕᦒᵪ 图 1-253 CPU 1518HF‑4 PN 组态示例：通过工业以太网和 PROFINET 环网连接 HMI 设备 CPU 1515R-2 PN 具有一个双端口（X1 P1R、X1 P2R）PROFINET IO 接口和一个单端口 (X2 P1) PROFINET 接口。CPUs 1517H-4 PN/1518HF-4 PN 具有双端口（X2 P1、X2 P2）和单端口 (X3 P1) 的额外 PROFINET 接口。 要通过工业以太网将 HMI 设备连接至 CPU，需要使用 CPU 的 X2/X3 PROFINET 接口。 PROFINET 接口 X2/X3 支持 PROFINET 基本功能。举例来说，接口适用于与 HMI 设备或组态和 编程软件（工程师站）进行通信。 说明 CPU 1517H‑4 PN（订货号自 6ES7517-4HQ10-0AB0 起）、CPU 1518HF‑4 PN（订货号自 6ES7518-4JT10-0AB0 起）： 接口 X2 有两个端口：X2 P1 和 X2 P2。 将网络",
+        "compact_excerpt": "根据 CPU 1518HF‑4 PN/CPU 1517H‑4 PN/CPU 1515R‑2 PN 的示例，通过工业以太网和 PROFINET 环网 连接 HMI 设备 下图举例说明了如何通过工业以太网和 PROFINET 环网将 CPU 1518HF‑4 PN 连接到 HMI 设 备。连接 HMI 设备的方式与 CPU 1517H‑4 PN/CPU 1515R‑2 PN 相同。 )\u000e$16 )\u000e$16 1$ ).* ).* ᐕъ\u0003 ԕཚ㖁 ᓄ⭘〻 ᒿ Ӕᦒᵪ Ӕᦒᵪ Ӕᦒᵪ 图 1-253 CPU 1518HF‑4 PN 组态示例：通过工业以太网和 PROFINET 环网连接 HMI 设备 CPU 1515R-2 PN 具有一个双端口（X1 P1R、X1 P2R）PROFINET IO 接口和一个单端口 (X2 P1) PROFINET 接口。CPUs 1517H-4 PN/1518HF-4 PN 具有双端口（X2 P1、X2 P2）和单端口 (X3 P1) 的额外 PROFINET 接口。 要通过工业以太网将 HMI 设备连接至 CPU，需要使用 CPU 的 X2/X3 PROFINET 接口。 PROFINET 接口 X2/X3 支持 PROFINET 基本功能。举例来说，接口适用于与 HMI 设备或组态和 编程软件（工程师站）进行通信。 说明 CPU 1517H‑4 PN（订货号自 6ES7517-4HQ10-0AB0 起）、CPU 1518HF‑4 PN（订货号自 6ES7518-4JT10-0AB0 起）： 接口 X2 有两个端口：X2 P1 和 X2 P2。 将网络",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Topology Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0035",
+          "sha256": "ae75e024d41721144bd6a80e51b019d2f1d074ea8c6d424de30e2e6fea647f11",
+          "visual_type": "network_topology_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_05_EV_05",
+        "asset_id": "VIS_0036",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03461186-AN",
+        "page": 95,
+        "section": "基本信息 > 自动化系统 > 5 系统概述 > 5.3 组件",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "组件 功能 图示 DIN 导轨适配器 使用 DIN 导轨适配器在标准 35 mm DIN 导轨上安装 SIMATIC S7-1500/ET 200MP 自动化系统。 可将 DIN 导轨适配器作为附件/备件 (页 393)订购。 有源背板总线 有源背板总线的特性： • 支持操作过程中插拔 I/O 模块 • 预留容量，供以后使用 活动背板总线可用于以下接口模块： • IM 155‑5 PN HF（6ES7155‑5AA00‑0AC0 固件版本 V4.4 及更高版 本） • IM 155‑5 MF HF（6ES7155‑5MU00‑0CN0 固件版本 V5.0 及更高版 本） 更多关于有源背板总线的信息（如安装、组态、技术规范等），请参见 《有源背板总线设备手册》 (https://support.industry.siemens.com/cs/de/de/view/109778694/zh)。 有源背板总线可作为附件/备件 (页 393)订购。 安装导轨的 PE 连接元件螺钉套件将穿过安装导轨的 T 形槽，将安装导轨接地。 螺钉套件包含在标准长度（160 至 830 mm）安装导轨的交付清单中， 可作为 附件/备件 (页 393) 进行订购。 CPU（标准、故障安全、 紧凑型或 T-CPU） CPU 运行用户程序。CPU 的集成系统电源通过背板总线为模块供电。 CPU 的附加特性和功能： • 通过以太网通信 • 通过 PROFIBUS/PROFINET 通信 • HMI 通信 • 集成 Web 服务器 • OPC UA 服务器 • OPC UA 客户端 • 集成工艺功能（如，运动控",
+        "compact_excerpt": "组件 功能 图示 DIN 导轨适配器 使用 DIN 导轨适配器在标准 35 mm DIN 导轨上安装 SIMATIC S7-1500/ET 200MP 自动化系统。 可将 DIN 导轨适配器作为附件/备件 (页 393)订购。 有源背板总线 有源背板总线的特性： • 支持操作过程中插拔 I/O 模块 • 预留容量，供以后使用 活动背板总线可用于以下接口模块： • IM 155‑5 PN HF（6ES7155‑5AA00‑0AC0 固件版本 V4.4 及更高版 本） • IM 155‑5 MF HF（6ES7155‑5MU00‑0CN0 固件版本 V5.0 及更高版 本） 更多关于有源背板总线的信息（如安装、组态、技术规范等），请参见 《有源背板总线设备手册》 (https://support.industry.siemens.com/cs/de/de/view/109778694/zh)。 有源背板总线可作为附件/备件 (页 393)订购。 安装导轨的 PE 连接元件螺钉套件将穿过安装导轨的 T 形槽，将安装导轨接地。 螺钉套件包含在标准长度（160 至 830 mm）安装导轨的交付清单中， 可作为 附件/备件 (页 393) 进行订购。 CPU（标准、故障安全、 紧凑型或 T-CPU） CPU 运行用户程序。CPU 的集成系统电源通过背板总线为模块供电。 CPU 的附加特性和功能： • 通过以太网通信 • 通过 PROFIBUS/PROFINET 通信 • HMI 通信 • 集成 Web 服务器 • OPC UA 服务器 • OPC UA 客户端 • 集成工艺功能（如，运动控",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Topology Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0036",
+          "sha256": "c7eff696dd4a90e63a79c7765bc045e4a0ca4bb8be35e6d82724bd42ae867ff0",
+          "visual_type": "installation_power_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_05_EV_06",
+        "asset_id": "VIS_0037",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03484629-AK",
+        "page": 6861,
+        "section": "综合信息 > 《CPU 功能手册》 > Web 服务器 > 4 Web 页面 > 4.8 通信",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "③“DNS 服务器列表”(DNS server list) 在该区域，您将接收有关哪些 DNS 服务器可以与 CPU 通信的信息，DNS 的组态已在项目或用 户程序中指定（例如通过 DHCP 远程指定）。 ④“网络连接”(Network connection) 在“网络连接”(Network connection) 下面，将显示用于识别集成 PROFINET 及对应 CPU 的以太 网接口的信息。MAC 地址标于 CPU 中相应 PROFINET 和以太网接口上。 ⑤“IP 参数”(IP parameter) 该参数包含已组态 IP 地址和相应 CPU 所在子网的子网地址。如果已经为 CPU 组态了 DHCP 的 客户端 ID，则会显示在该区域。 ⑥“物理属性”(Physical properties) “物理属性”(Physical properties) 信息域包含了下述接口硬件信息： • 端口号 • 链接状态 • 设置 • 模式 • 连接介质 76 Web 服务器 功能手册, 11/2023, A5E03484629-AK Web 页面 4.8 通信",
+        "compact_excerpt": "③“DNS 服务器列表”(DNS server list) 在该区域，您将接收有关哪些 DNS 服务器可以与 CPU 通信的信息，DNS 的组态已在项目或用 户程序中指定（例如通过 DHCP 远程指定）。 ④“网络连接”(Network connection) 在“网络连接”(Network connection) 下面，将显示用于识别集成 PROFINET 及对应 CPU 的以太 网接口的信息。MAC 地址标于 CPU 中相应 PROFINET 和以太网接口上。 ⑤“IP 参数”(IP parameter) 该参数包含已组态 IP 地址和相应 CPU 所在子网的子网地址。如果已经为 CPU 组态了 DHCP 的 客户端 ID，则会显示在该区域。 ⑥“物理属性”(Physical properties) “物理属性”(Physical properties) 信息域包含了下述接口硬件信息： • 端口号 • 链接状态 • 设置 • 模式 • 连接介质 76 Web 服务器 功能手册, 11/2023, A5E03484629-AK Web 页面 4.8 通信",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Topology Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0037",
+          "sha256": "116cbadb06f56f77746781a4afb35af0d7598fceb1b0c51105c246a13a11ac5d",
+          "visual_type": "network_topology_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_05_EV_07",
+        "asset_id": "VIS_0038",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E53797732-AB",
+        "page": 7067,
+        "section": "综合信息 > 《CPU 功能手册》 > Web 服务器 > 4 设置并调用 Web 服务器 > 4.2 组态 Web 服务器",
+        "figure_number": "图 3-156",
+        "manual_figure_number": "图 3-156",
+        "manual_figure_caption": "在 STEP 7 中激活 Web 服务器时的安全注意事项",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "通过 PG/PC、HMI 设备和移动终端设备访问 CPU 要访问 Web 服务器，请按以下步骤操作： 1. 使用 STEP 7 将其中已激活 Web 服务器的项目下载到 CPU。 2. 使用 PROFINET 接口将显示设备（PG/PC、HMI、移动终端设备）连接至 CPU 或通信模块模 块。 如果使用 WLAN，则需在显示设备中激活 WLAN 并建立与接入点（如，SCALANCE W788-1RR 或 SCALANCE W784-1）的连接，通过该接入点与 CPU 连接。 3. 在显示设备上打开 Web 浏览器。 4. 在 Web 浏览器的“地址”(Address) 字段中，按照以下格式输入连接客户端的 CPU 接口的 IP 地址：https://a.b.c.d（示例输入：https://192.168.3.141）。如果已组态为默认 Web 页 面，将转到登录页面。 通过智能手机访问 CPU 可以使用智能手机通过 WLAN 访问 CPU 的 Web 服务器。有关如何操作的信息，请访问 Internet 查阅相关文档（条目 ID 103473392 (https://support.industry.siemens.com/cs/ww/zh/view/103473392)）。 4.2 组态 Web 服务器 要使用 Web 服务器的完整功能，需要在 STEP 7 中进行以下设置。 启用模块上的 Web 服务器 在组态的 CPU 的默认设置中，禁用 Web 服务器。要激活 Web 服务器，请按以下步骤操作： 1. 在 STEP 7 的项目树中，通过双击打开“设备和网络”(Devi",
+        "compact_excerpt": "通过 PG/PC、HMI 设备和移动终端设备访问 CPU 要访问 Web 服务器，请按以下步骤操作： 1. 使用 STEP 7 将其中已激活 Web 服务器的项目下载到 CPU。 2. 使用 PROFINET 接口将显示设备（PG/PC、HMI、移动终端设备）连接至 CPU 或通信模块模 块。 如果使用 WLAN，则需在显示设备中激活 WLAN 并建立与接入点（如，SCALANCE W788-1RR 或 SCALANCE W784-1）的连接，通过该接入点与 CPU 连接。 3. 在显示设备上打开 Web 浏览器。 4. 在 Web 浏览器的“地址”(Address) 字段中，按照以下格式输入连接客户端的 CPU 接口的 IP 地址：https://a.b.c.d（示例输入：https://192.168.3.141）。如果已组态为默认 Web 页 面，将转到登录页面。 通过智能手机访问 CPU 可以使用智能手机通过 WLAN 访问 CPU 的 Web 服务器。有关如何操作的信息，请访问 Internet 查阅相关文档（条目 ID 103473392 (https://support.industry.siemens.com/cs/ww/zh/view/103473392)）。 4.2 组态 Web 服务器 要使用 Web 服务器的完整功能，需要在 STEP 7 中进行以下设置。 启用模块上的 Web 服务器 在组态的 CPU 的默认设置中，禁用 Web 服务器。要激活 Web 服务器，请按以下步骤操作： 1. 在 STEP 7 的项目树中，通过双击打开“设备和网络”(Devi",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Topology Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0038",
+          "sha256": "d94d41cc63f8b8511066e730be7830484784795c2af3c172360bf5938c84e156",
+          "visual_type": "network_topology_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_05_EV_08",
+        "asset_id": "VIS_0039",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03735819-AN",
+        "page": 8078,
+        "section": "综合信息 > 《通信功能手册》 > 通信 > 5 通信服务 > 5.2 以太网通信的通信协议和端口号",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "S7-1500 软件控制器的通信层和日志（通过 Windows 端的以太网接口） 下表列出了 S7-1500 软件控制器支持的协议，通过以太网接口分配给 Windows 系统。 表格 3-377 S7-1500 软件控制器的通信层和日志（通过 Windows 端的以太网接口） 协议/角色 端口号 (2) 链路层 (4) 传输层 说明/功能 注意/默认设置 PROFINET 协议 DCP 不相关 (2) Ethertype 0x8892 (PROFINET) PROFINET Discovery and Basic Configuration Protocol. DCP 决定 PROFINET 设备并启用基本 设置。 默认值：版本 V30.0 及以下版本启 用。自版本 V30.1 起启用写保护。 在有效的通信关系期间，DCP 不允许 在写保护模式下从外部发出 DCP Set 命令。 可通过 CPU 属性中的 Boundary“可访 问节点检测结束”(End of detection of accessible nodes) 禁用此功能。 DHCP 客户端 68 (4) UDP Dynamic Host Configuration Protocol. IP 地址套件是在 PROFINET 接口启动 期间从 DHCP 服务器获取的。 默认值：取消激活。 可以在 CPU 属性中更改（自固件版本 2.9 起）。 面向连接的通信协议 HTTP 服务器 可调节 1 (4) TCP Hypertext Transfer Protocol。 HTTP 用于与 CPU 内部 Web 服务器通 信。",
+        "compact_excerpt": "S7-1500 软件控制器的通信层和日志（通过 Windows 端的以太网接口） 下表列出了 S7-1500 软件控制器支持的协议，通过以太网接口分配给 Windows 系统。 表格 3-377 S7-1500 软件控制器的通信层和日志（通过 Windows 端的以太网接口） 协议/角色 端口号 (2) 链路层 (4) 传输层 说明/功能 注意/默认设置 PROFINET 协议 DCP 不相关 (2) Ethertype 0x8892 (PROFINET) PROFINET Discovery and Basic Configuration Protocol. DCP 决定 PROFINET 设备并启用基本 设置。 默认值：版本 V30.0 及以下版本启 用。自版本 V30.1 起启用写保护。 在有效的通信关系期间，DCP 不允许 在写保护模式下从外部发出 DCP Set 命令。 可通过 CPU 属性中的 Boundary“可访 问节点检测结束”(End of detection of accessible nodes) 禁用此功能。 DHCP 客户端 68 (4) UDP Dynamic Host Configuration Protocol. IP 地址套件是在 PROFINET 接口启动 期间从 DHCP 服务器获取的。 默认值：取消激活。 可以在 CPU 属性中更改（自固件版本 2.9 起）。 面向连接的通信协议 HTTP 服务器 可调节 1 (4) TCP Hypertext Transfer Protocol。 HTTP 用于与 CPU 内部 Web 服务器通 信。",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Topology Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0039",
+          "sha256": "bae4fdc4a13c2b66b1ba18d8acb30a1888a8ec2955ebc2d514acf23c6d6e4255",
+          "visual_type": "network_topology_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_05_EV_09",
+        "asset_id": "VIS_0040",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E41815205-AH",
+        "page": 642,
+        "section": "基本信息 > S7-1500R/H 冗余系统 > 6 应用规划 > 6.8 使用 HMI 设备",
+        "figure_number": "图 1-254",
+        "manual_figure_number": "图 1-254",
+        "manual_figure_caption": "CPU 1513R‑1 PN 组态示例：通过交换机连接 HMI 设备",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "PROFINET 环网是通过 CPU 的 PROFINET IO 接口 (X1) 建立的。如果在环网内操作 HMI 设备， 需要将 MRP 角色“客户端”分配给 MRP 域。有关 HMI 设备应用规划的更多信息，请参见“要求 (页 125)”部分。 说明 将 HMI 设备连接到线型拓扑 要将 HMI 设备连接到线型拓扑，还需要通过交换机将 HMI 设备连接到线型拓扑。为 HMI 设备 分配 MRP 角色“非环网中的设备”(Not device in the ring)。 有关 CPUs 1518HF-4 PN/1517H‑4 PN/1515R-2 PN 的更多信息，请参见相关的设备手册。 使用 CPU 1513R‑1 PN 通过工业以太网连接 HMI 设备 下图显示了如何通过工业以太网将 HMI 设备连接至 CPU 1513R‑1 PN。 5*\" +0, Ӕᦒᵪ Ӕᦒᵪ Ӕᦒᵪ ᐕъԕཚ㖁 ᐕ〻ᐸㄉ 3\u000e$16 3\u000e$16 图 1-254 CPU 1513R‑1 PN 组态示例：通过交换机连接 HMI 设备 CPU 1513R‑1 PN 配有一个双端口的 PROFINET IO 接口（X1 P1R R 和 X1 P2R）。 要通过工业以太网连接 HMI 设备和 CPU，则需通过 PROFINET 接口 X1 构建 PROFINET 环网。 将交换机集成到 PROFINET 环网。使用此方法可建立工业以太网连接。 有关 CPU 1513R‑1 PN 的接口的更多信息，请参见相关的设备手册。 参考 有关系统 IP 地址的更多信息，请参见“组态过程”部分和《通信 (https://s",
+        "compact_excerpt": "PROFINET 环网是通过 CPU 的 PROFINET IO 接口 (X1) 建立的。如果在环网内操作 HMI 设备， 需要将 MRP 角色“客户端”分配给 MRP 域。有关 HMI 设备应用规划的更多信息，请参见“要求 (页 125)”部分。 说明 将 HMI 设备连接到线型拓扑 要将 HMI 设备连接到线型拓扑，还需要通过交换机将 HMI 设备连接到线型拓扑。为 HMI 设备 分配 MRP 角色“非环网中的设备”(Not device in the ring)。 有关 CPUs 1518HF-4 PN/1517H‑4 PN/1515R-2 PN 的更多信息，请参见相关的设备手册。 使用 CPU 1513R‑1 PN 通过工业以太网连接 HMI 设备 下图显示了如何通过工业以太网将 HMI 设备连接至 CPU 1513R‑1 PN。 5*\" +0, Ӕᦒᵪ Ӕᦒᵪ Ӕᦒᵪ ᐕъԕཚ㖁 ᐕ〻ᐸㄉ 3\u000e$16 3\u000e$16 图 1-254 CPU 1513R‑1 PN 组态示例：通过交换机连接 HMI 设备 CPU 1513R‑1 PN 配有一个双端口的 PROFINET IO 接口（X1 P1R R 和 X1 P2R）。 要通过工业以太网连接 HMI 设备和 CPU，则需通过 PROFINET 接口 X1 构建 PROFINET 环网。 将交换机集成到 PROFINET 环网。使用此方法可建立工业以太网连接。 有关 CPU 1513R‑1 PN 的接口的更多信息，请参见相关的设备手册。 参考 有关系统 IP 地址的更多信息，请参见“组态过程”部分和《通信 (https://s",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Topology Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0040",
+          "sha256": "a6f02c717046a8749b3adceef7fffeeaf6955f94af46a8298cfd4a4915e29031",
+          "visual_type": "network_topology_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_05_EV_10",
+        "asset_id": "VIS_0041",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E41815205-AH",
+        "page": 699,
+        "section": "基本信息 > S7-1500R/H 冗余系统 > 9 组态 > 9.2 组态 R/H CPU",
+        "figure_number": "图 1-289",
+        "manual_figure_number": "图 1-289",
+        "manual_figure_caption": "项目树中的冗余系统",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "冗余 ID 在 STEP 7 项目树中，这两个 CPU 将分别显示在冗余系统中各自的树中： 图 1-289 项目树中的冗余系统 在冗余系统中，每个 CPU 都有一个冗余 ID。通过冗余 ID 在 STEP 7 中将项目树分配给实际的 CPU。两个 CPU 中最顶端的 CPU 通常为冗余 ID 为“1”的 CPU。底部 CPU 的冗余 ID 为“2”。 如果 CPU 带有有效的硬件配置，同时用户更改了该 CPU 的冗余 ID，则还需更改该 CPU 的名称 和 IP 地址。更多信息，请参见“冗余 ID (页 373)”部分。 3.分配系统 IP 地址 除了各 CPU 的设备 IP 地址之外，还可为 S7‑1500R/H 冗余系统分配系统 IP 地址。 通过系统 IP 地址，可与其它设备（如，HMI 设备、CPU、PG/PC）进行通信。这些设备通常基 于系统 IP 地址与冗余系统的主 CPU 进行数据通信。这样，可确保在冗余操作中原来的主 CPU 发生故障后，通信伙伴可在 RUN-Solo 系统状态下与新的主 CPU（之前的备用 CPU）进行数据 通信。 按以下步骤激活两个 CPU 的 PROFINET 接口 X1 的系统 IP 地址： 1. 在网络视图中，选择一个 CPU。在巡视窗口中，选择“属性”(Properties) 选项卡。 2. 在区域导航中，选择区域“PROFINET 接口 [X1]”(PROFINET interface [X1]) 和“切换通信的系 统 IP 地址”(System IP address for switched communication) 部分。 ",
+        "compact_excerpt": "冗余 ID 在 STEP 7 项目树中，这两个 CPU 将分别显示在冗余系统中各自的树中： 图 1-289 项目树中的冗余系统 在冗余系统中，每个 CPU 都有一个冗余 ID。通过冗余 ID 在 STEP 7 中将项目树分配给实际的 CPU。两个 CPU 中最顶端的 CPU 通常为冗余 ID 为“1”的 CPU。底部 CPU 的冗余 ID 为“2”。 如果 CPU 带有有效的硬件配置，同时用户更改了该 CPU 的冗余 ID，则还需更改该 CPU 的名称 和 IP 地址。更多信息，请参见“冗余 ID (页 373)”部分。 3.分配系统 IP 地址 除了各 CPU 的设备 IP 地址之外，还可为 S7‑1500R/H 冗余系统分配系统 IP 地址。 通过系统 IP 地址，可与其它设备（如，HMI 设备、CPU、PG/PC）进行通信。这些设备通常基 于系统 IP 地址与冗余系统的主 CPU 进行数据通信。这样，可确保在冗余操作中原来的主 CPU 发生故障后，通信伙伴可在 RUN-Solo 系统状态下与新的主 CPU（之前的备用 CPU）进行数据 通信。 按以下步骤激活两个 CPU 的 PROFINET 接口 X1 的系统 IP 地址： 1. 在网络视图中，选择一个 CPU。在巡视窗口中，选择“属性”(Properties) 选项卡。 2. 在区域导航中，选择区域“PROFINET 接口 [X1]”(PROFINET interface [X1]) 和“切换通信的系 统 IP 地址”(System IP address for switched communication) 部分。 ",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Topology Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0041",
+          "sha256": "2a742f2b5cf55134a1a1684f2fe399a288bc1f8f690440cd5f068aff123dfc8e",
+          "visual_type": "network_topology_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_05_EV_11",
+        "asset_id": "VIS_0042",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E41815205-AH",
+        "page": 726,
+        "section": "基本信息 > S7-1500R/H 冗余系统 > 10 程序执行的基本知识 > 10.1 S7-1500R/H 编程",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "CPU 角色），需满足此要求。更多信息，请 参见 S7-1500R/H 系统手册中的“S7-1500R 的两个冗余连接以 ≤ 1 500 ms 的间隔发生 故障 (页 197)”部分以及“S7-1500R 的两个冗 余连接以 ≤ 55 ms 的间隔发生故障 (页 203)”部分。 使用 mode=11 调用指令后，冗余系统再次 处于明确的状态：主 CPU 处于 RUN 模式， 备用 CPU 处于 STOP 模式。 对于 R-CPU，自订货号 6ES7513‑1RM03‑0AB0、 6ES7515‑2RN03‑0AB0 起支持此功能。 14 允许通过开放式 PROFINET 环网执行 SYNCUP。 在“SYNCUP”系统状态下关闭预期的 MRP 检 查。 在 SYNCUP 执行期间，PROFINET 设备会因 PROFINET 环网的第二个位置在备用 CPU 启动期 间未闭合而临时发生故障。因此，在 PROFINET 环网中的两个未闭合位置之间无法连接到 PROFINET 设备。 Mode=14 适用于最终调试之前进行的功能测 试，例如，当组态原因导致并非 PROFINET 环网 中的所有 PROFINET 设备均可访问时。 V3.1 15 指定将 R/H 系统的两个冗余 CPU 中的哪一个 CPU 上的已组态系统 IP 地址激活。 激活具有指定硬件 ID（Xn 或 W1）的 PROFINET 接口上已组态的系统 IP 地址。 仅适用于 RUN-Redundant 系统状态。 当 PROFINET 接口出现连接问题时，可通过系统 IP 地址提高 R/H 系统的可访问性。 在 R",
+        "compact_excerpt": "CPU 角色），需满足此要求。更多信息，请 参见 S7-1500R/H 系统手册中的“S7-1500R 的两个冗余连接以 ≤ 1 500 ms 的间隔发生 故障 (页 197)”部分以及“S7-1500R 的两个冗 余连接以 ≤ 55 ms 的间隔发生故障 (页 203)”部分。 使用 mode=11 调用指令后，冗余系统再次 处于明确的状态：主 CPU 处于 RUN 模式， 备用 CPU 处于 STOP 模式。 对于 R-CPU，自订货号 6ES7513‑1RM03‑0AB0、 6ES7515‑2RN03‑0AB0 起支持此功能。 14 允许通过开放式 PROFINET 环网执行 SYNCUP。 在“SYNCUP”系统状态下关闭预期的 MRP 检 查。 在 SYNCUP 执行期间，PROFINET 设备会因 PROFINET 环网的第二个位置在备用 CPU 启动期 间未闭合而临时发生故障。因此，在 PROFINET 环网中的两个未闭合位置之间无法连接到 PROFINET 设备。 Mode=14 适用于最终调试之前进行的功能测 试，例如，当组态原因导致并非 PROFINET 环网 中的所有 PROFINET 设备均可访问时。 V3.1 15 指定将 R/H 系统的两个冗余 CPU 中的哪一个 CPU 上的已组态系统 IP 地址激活。 激活具有指定硬件 ID（Xn 或 W1）的 PROFINET 接口上已组态的系统 IP 地址。 仅适用于 RUN-Redundant 系统状态。 当 PROFINET 接口出现连接问题时，可通过系统 IP 地址提高 R/H 系统的可访问性。 在 R",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Topology Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0042",
+          "sha256": "951e108df8bdf2ea883ea8f395f7a9baa94e23e9b0e108e7ebbac0c2a0b8f5cc",
+          "visual_type": "network_topology_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_05_EV_12",
+        "asset_id": "VIS_0043",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03461186-AN",
+        "page": 99,
+        "section": "基本信息 > 自动化系统 > 5 系统概述 > 5.4 CPU",
+        "figure_number": "图 1-20",
+        "manual_figure_number": "图 1-20",
+        "manual_figure_caption": "控制器",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "5.4 CPU 图 1-20 控制器 SIMATIC S7-1500 的性能卓越，具有高性能的背板总线、快速的端到端响应以及极速的信号处 理功能。 控制器 (CPU) 可执行各种用户程序。控制器中集成有系统电源，可通过背板总线为所连模块进 行供电。 所有 SIMATIC S7-1500 控制器（紧凑型 CPU 以及冗余 CPU 1513R-1 PN 和 CPU 1515R-2 PN 除 外）均提供有故障安全型号。要在 TIA Portal 中使用安全功能时，需要安装选件包“STEP 7 Safety Advanced”。 在工厂调试过程中，可直接在显示屏上更改 CPU 的 IP 地址，从而节省大量的时间和成本。维 修时，通过快速访问诊断报警，显著减少工厂停工时间。 SIMATIC S7-1500 的所有 CPU 变量都具有强大跟踪功能，可实现驱动装置和控件的高效调试和 快速优化。 SIMATIC S7-1500 控制器还支持以下功能： • 通过以太网/PROFINET 进行数据通信 • 通过 PROFIBUS 进行数据通信 • HMI 通信 • 通过 OPC 进行通信 • Web 服务器，工艺功能，系统诊断，集成保护功能 • 使用 F-CPU 时，还支持安全模式 • 使用 S7-1500 R/H CPU 时：冗余 • 使用 T-CPU 时：扩展运动控制功能 92 自动化系统 系统手册, 11/2025, A5E03461186-AN 系统概述 5.4 CPU",
+        "compact_excerpt": "5.4 CPU 图 1-20 控制器 SIMATIC S7-1500 的性能卓越，具有高性能的背板总线、快速的端到端响应以及极速的信号处 理功能。 控制器 (CPU) 可执行各种用户程序。控制器中集成有系统电源，可通过背板总线为所连模块进 行供电。 所有 SIMATIC S7-1500 控制器（紧凑型 CPU 以及冗余 CPU 1513R-1 PN 和 CPU 1515R-2 PN 除 外）均提供有故障安全型号。要在 TIA Portal 中使用安全功能时，需要安装选件包“STEP 7 Safety Advanced”。 在工厂调试过程中，可直接在显示屏上更改 CPU 的 IP 地址，从而节省大量的时间和成本。维 修时，通过快速访问诊断报警，显著减少工厂停工时间。 SIMATIC S7-1500 的所有 CPU 变量都具有强大跟踪功能，可实现驱动装置和控件的高效调试和 快速优化。 SIMATIC S7-1500 控制器还支持以下功能： • 通过以太网/PROFINET 进行数据通信 • 通过 PROFIBUS 进行数据通信 • HMI 通信 • 通过 OPC 进行通信 • Web 服务器，工艺功能，系统诊断，集成保护功能 • 使用 F-CPU 时，还支持安全模式 • 使用 S7-1500 R/H CPU 时：冗余 • 使用 T-CPU 时：扩展运动控制功能 92 自动化系统 系统手册, 11/2025, A5E03461186-AN 系统概述 5.4 CPU",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Topology Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0043",
+          "sha256": "e24bb4f4f0bccad70b78d3fd191eb1c24182af83f3f79958ddc37340221ce0e3",
+          "visual_type": "installation_power_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_05_EV_13",
+        "asset_id": "VIS_0044",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03461186-AN",
+        "page": 156,
+        "section": "基本信息 > 自动化系统 > 6 应用规划 > 6.1 硬件配置 > 6.1.2 带有 PROFINET 接口模块的 ET 200MP 分布式 I/O 系统的硬件配置",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "ET 200MP",
+        "module_model": "ET 200MP",
+        "order_number": "",
+        "text": "支持的模块 下表列出了各插槽中可插入的模块： 表格 1-8 插槽号分配 模块类型 允许使用的插槽 最大模块数量 负载电流电源 (PM)* 0** 无限制 / 在 STEP 7 中只能 组态 1 个 PM 系统电源 (PS) 0；2 到 31 3 PS 60W 24/48/60VDC HF 系统电源 0 1*** CPU 1 1 模拟量和数字量 I/O 模块 2 到 31 30 通信模块 • 点对点 2 到 31 30 • PROFINET/以太网、PROFIBUS 使用 CPU 1511‑1(F) PN、CPU 1511C‑1 PN、CPU 1511T(F)‑1 PN 时 2 到 31 4 使用 CPU 1512C-1 PN 时 2 到 31 6 使用 CPU 1513(F)-1 PN 时 2 到 31 6 使用 CPU 1515(F)‑2 PN、CPU 1515T(F)‑2 PN 时 2 到 31 6 使用 CPU 1516(F)‑3 PN/DP、CPU 1516T(F)-3 PN/DP、CPU 1516T(F)‑3 PN 时 2 到 31 8 使用 CPU 1517(F)‑3 PN/DP、CPU 1517(F)‑3 PN、CPU 1517T(F)‑3 PN/DP 、CPU 1517T(F)‑3 PN 时 2 到 31 8 使用 CPU 1518(F)‑4 PN/DP、CPU 1518T(F)-4 PN/DP、CPU 1518(F)-4 PN/DP MFP、CPU 1518(F)‑3 PN、CPU 1518T(F)‑3 PN 时 2 到 31 8 工艺模块 2 到 31 30",
+        "compact_excerpt": "支持的模块 下表列出了各插槽中可插入的模块： 表格 1-8 插槽号分配 模块类型 允许使用的插槽 最大模块数量 负载电流电源 (PM)* 0** 无限制 / 在 STEP 7 中只能 组态 1 个 PM 系统电源 (PS) 0；2 到 31 3 PS 60W 24/48/60VDC HF 系统电源 0 1*** CPU 1 1 模拟量和数字量 I/O 模块 2 到 31 30 通信模块 • 点对点 2 到 31 30 • PROFINET/以太网、PROFIBUS 使用 CPU 1511‑1(F) PN、CPU 1511C‑1 PN、CPU 1511T(F)‑1 PN 时 2 到 31 4 使用 CPU 1512C-1 PN 时 2 到 31 6 使用 CPU 1513(F)-1 PN 时 2 到 31 6 使用 CPU 1515(F)‑2 PN、CPU 1515T(F)‑2 PN 时 2 到 31 6 使用 CPU 1516(F)‑3 PN/DP、CPU 1516T(F)-3 PN/DP、CPU 1516T(F)‑3 PN 时 2 到 31 8 使用 CPU 1517(F)‑3 PN/DP、CPU 1517(F)‑3 PN、CPU 1517T(F)‑3 PN/DP 、CPU 1517T(F)‑3 PN 时 2 到 31 8 使用 CPU 1518(F)‑4 PN/DP、CPU 1518T(F)-4 PN/DP、CPU 1518(F)-4 PN/DP MFP、CPU 1518(F)‑3 PN、CPU 1518T(F)‑3 PN 时 2 到 31 8 工艺模块 2 到 31 30",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Topology Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0044",
+          "sha256": "1b1dccabb22e06aef8d5f7fe3ed87d9b583ec5fa365d249b1f7f0d57be24fb6c",
+          "visual_type": "installation_power_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_05_EV_14",
+        "asset_id": "VIS_0045",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03735819-AN",
+        "page": 8075,
+        "section": "综合信息 > 《通信功能手册》 > 通信 > 5 通信服务 > 5.2 以太网通信的通信协议和端口号",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "S7-1500 CPU 和软件控制器的通信层和协议（通过 CPU 的 PROFINET 接口） 下表列出了 S7‑1500 CPU、ET 200SP CPU 和 1513/1516pro‑2 PN CPU 支持的协议。S7‑1500 软件控制器也支持下表中所列协议，以太网接口将基于这些协议分配给相应的软件控制器。 表格 3-376 S7‑1500 CPU 和软件控制器的通信层和协议（通过 CPU 的 PROFINET 接口） 协议/角色 端口号 (2) 链路层 (4) 传输层 说明/功能 默认设置/说明 PROFINET 协议 DCP 不相关 (2) Ethertype 0x8892 (PROFINET) PROFINET Discovery and Basic Configuration Protocol. DCP 决定 PROFINET 设备并启用基本 设置。 默认值：固件版本 V3.0 及以下版本启 用，固件版本 V3.1 及更高版本启用写 保护。 在有效的通信关系期间，DCP 不允许 在写保护模式下从外部发出 DCP Set 命令。 可通过 CPU 属性中接口的 Boundary“可访问节点检测结束”(End of detection of accessible nodes) 取消 激活此功能。 DHCP 客户端 68 (4) UDP Dynamic Host Configuration Protocol. IP 地址套件是在 PROFINET 接口启动 期间从 DHCP 服务器获取的。 默认值：取消激活。 可以在 CPU 属性中更改（自固件版本 2.9 起）。 LLD",
+        "compact_excerpt": "S7-1500 CPU 和软件控制器的通信层和协议（通过 CPU 的 PROFINET 接口） 下表列出了 S7‑1500 CPU、ET 200SP CPU 和 1513/1516pro‑2 PN CPU 支持的协议。S7‑1500 软件控制器也支持下表中所列协议，以太网接口将基于这些协议分配给相应的软件控制器。 表格 3-376 S7‑1500 CPU 和软件控制器的通信层和协议（通过 CPU 的 PROFINET 接口） 协议/角色 端口号 (2) 链路层 (4) 传输层 说明/功能 默认设置/说明 PROFINET 协议 DCP 不相关 (2) Ethertype 0x8892 (PROFINET) PROFINET Discovery and Basic Configuration Protocol. DCP 决定 PROFINET 设备并启用基本 设置。 默认值：固件版本 V3.0 及以下版本启 用，固件版本 V3.1 及更高版本启用写 保护。 在有效的通信关系期间，DCP 不允许 在写保护模式下从外部发出 DCP Set 命令。 可通过 CPU 属性中接口的 Boundary“可访问节点检测结束”(End of detection of accessible nodes) 取消 激活此功能。 DHCP 客户端 68 (4) UDP Dynamic Host Configuration Protocol. IP 地址套件是在 PROFINET 接口启动 期间从 DHCP 服务器获取的。 默认值：取消激活。 可以在 CPU 属性中更改（自固件版本 2.9 起）。 LLD",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Topology Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0045",
+          "sha256": "e44fec107ba455f09619f35fc089bcce6c2641fd78aa5321be391a2387c4f7a8",
+          "visual_type": "network_topology_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_05_EV_15",
+        "asset_id": "VIS_0046",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "unknown",
+        "page": 423,
+        "section": "基本信息 > S7-1500R/H 冗余系统 > 目录",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "5 系统概述......................................................................................................................................... 66 5.1 什么是 S7-1500R/H 冗余系统？.................................................................................... 66 5.1.1 应用范围...................................................................................................................... 67 5.1.2 S7-1500R/H 冗余系统的工作原理................................................................................. 71 5.1.3 工厂组件与自动化层级................................................................................................. 80 5.1.4 可扩展性.......................................................................",
+        "compact_excerpt": "5 系统概述......................................................................................................................................... 66 5.1 什么是 S7-1500R/H 冗余系统？.................................................................................... 66 5.1.1 应用范围...................................................................................................................... 67 5.1.2 S7-1500R/H 冗余系统的工作原理................................................................................. 71 5.1.3 工厂组件与自动化层级................................................................................................. 80 5.1.4 可扩展性.......................................................................",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Topology Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0046",
+          "sha256": "65883434b2ef578b271920bc2dbbbd8ecfbf941ceb2c0e9132c893aa63c5d538",
+          "visual_type": "network_topology_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      }
+    ],
+    "metadata": {
+      "source": "offline_demo_snapshot",
+      "visual_asset_count": 15,
+      "cross_model_blocked": 0,
+      "rejected_evidence": []
+    }
+  },
+  "judge_decision": {
+    "verdict": "PASS",
+    "confidence": "MEDIUM",
+    "decision_reason": "离线快照仅采用资产清单中可解码、可追溯且经身份检查的手册页。",
+    "final_evidence_ids": [
+      "HIDDEN_05_EV_01",
+      "HIDDEN_05_EV_02",
+      "HIDDEN_05_EV_03"
+    ],
+    "accepted_agent_outputs": [
+      "Topology Agent",
+      "Figure Agent"
+    ],
+    "rejected_agent_outputs": [],
+    "supported_claims": [
+      "接口选择应服从网络分段和拓扑，而不是仅凭 HMI 固定指定。该 CPU 的 X1 是带 P1/P2 的双端口 PROFINET 接口，适合线型连接；X2 是单端口 PROFINET 接口，可用于独立网络。接口布局见页 2476 图 2-237 和页 2481 图 2-239；规划时还要保证 X1、X2 所在 IP 子网不重叠。"
+    ],
+    "unsupported_claims": [],
+    "conflicting_claims": [],
+    "coverage": {
+      "main": {
+        "answered": true
+      }
+    },
+    "model_consistency": {
+      "pass": true,
+      "rejected_evidence_ids": []
+    },
+    "metadata": {
+      "accepted_claims": [
+        {
+          "claim_id": "HIDDEN_05_CLAIM_01",
+          "claim_text": "接口选择应服从网络分段和拓扑，而不是仅凭 HMI 固定指定。该 CPU 的 X1 是带 P1/P2 的双端口 PROFINET 接口，适合线型连接；X2 是单端口 PROFINET 接口，可用于独立网络。接口布局见页 2476 图 2-237 和页 2481 图 2-239；规划时还要保证 X1、X2 所在 IP 子网不重叠。",
+          "claim_type": "technical_guidance",
+          "model_scope": "CPU 1517-3 PN/DP",
+          "confidence": "MEDIUM",
+          "evidence_ids": [
+            "HIDDEN_05_EV_01",
+            "HIDDEN_05_EV_02",
+            "HIDDEN_05_EV_03"
+          ],
+          "direct_support": true,
+          "metadata": {
+            "offline_curated": true
+          }
+        }
+      ]
+    }
+  },
+  "verifier": {
+    "figure_requirement_pass": true,
+    "numeric_mismatch_claim_ids": [],
+    "grounded_claim_ids": [
+      "HIDDEN_05_CLAIM_01"
+    ],
+    "passed": true
+  },
+  "answer": {
+    "status": "ANSWER",
+    "text": "接口选择应服从网络分段和拓扑，而不是仅凭 HMI 固定指定。该 CPU 的 X1 是带 P1/P2 的双端口 PROFINET 接口，适合线型连接；X2 是单端口 PROFINET 接口，可用于独立网络。接口布局见页 2476 图 2-237 和页 2481 图 2-239；规划时还要保证 X1、X2 所在 IP 子网不重叠。",
+    "evidence_ids": [
+      "HIDDEN_05_EV_01",
+      "HIDDEN_05_EV_02",
+      "HIDDEN_05_EV_03"
+    ]
+  },
+  "final_answer": "接口选择应服从网络分段和拓扑，而不是仅凭 HMI 固定指定。该 CPU 的 X1 是带 P1/P2 的双端口 PROFINET 接口，适合线型连接；X2 是单端口 PROFINET 接口，可用于独立网络。接口布局见页 2476 图 2-237 和页 2481 图 2-239；规划时还要保证 X1、X2 所在 IP 子网不重叠。",
+  "work_order": {
+    "status": "not_requested",
+    "risk_tip": ""
+  },
+  "visual_asset_ids": [
+    "VIS_0027",
+    "VIS_0028",
+    "VIS_0029",
+    "VIS_0035",
+    "VIS_0036",
+    "VIS_0037",
+    "VIS_0038",
+    "VIS_0039",
+    "VIS_0040",
+    "VIS_0041",
+    "VIS_0042",
+    "VIS_0043",
+    "VIS_0044",
+    "VIS_0045",
+    "VIS_0046"
+  ],
+  "visual_evidence": [
+    {
+      "asset_id": "VIS_0027",
+      "evidence_id": "HIDDEN_05_EV_01",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0028",
+      "evidence_id": "HIDDEN_05_EV_02",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0029",
+      "evidence_id": "HIDDEN_05_EV_03",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0035",
+      "evidence_id": "HIDDEN_05_EV_04",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0036",
+      "evidence_id": "HIDDEN_05_EV_05",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0037",
+      "evidence_id": "HIDDEN_05_EV_06",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0038",
+      "evidence_id": "HIDDEN_05_EV_07",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0039",
+      "evidence_id": "HIDDEN_05_EV_08",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0040",
+      "evidence_id": "HIDDEN_05_EV_09",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0041",
+      "evidence_id": "HIDDEN_05_EV_10",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0042",
+      "evidence_id": "HIDDEN_05_EV_11",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0043",
+      "evidence_id": "HIDDEN_05_EV_12",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0044",
+      "evidence_id": "HIDDEN_05_EV_13",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0045",
+      "evidence_id": "HIDDEN_05_EV_14",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0046",
+      "evidence_id": "HIDDEN_05_EV_15",
+      "status": "image_available"
+    }
+  ],
+  "visual_coverage_reason": {
+    "VIS_0027": "front_panel_or_led_page，资料页 2476，direct target evidence",
+    "VIS_0028": "front_panel_or_led_page，资料页 2481，direct target evidence",
+    "VIS_0029": "wiring_or_terminal_page，资料页 2478，direct target evidence",
+    "VIS_0035": "network_topology_page，资料页 641，supporting manual context",
+    "VIS_0036": "installation_power_page，资料页 95，supporting manual context",
+    "VIS_0037": "network_topology_page，资料页 6861，supporting manual context",
+    "VIS_0038": "network_topology_page，资料页 7067，supporting manual context",
+    "VIS_0039": "network_topology_page，资料页 8078，supporting manual context",
+    "VIS_0040": "network_topology_page，资料页 642，supporting manual context",
+    "VIS_0041": "network_topology_page，资料页 699，supporting manual context",
+    "VIS_0042": "network_topology_page，资料页 726，supporting manual context",
+    "VIS_0043": "installation_power_page，资料页 99，supporting manual context",
+    "VIS_0044": "installation_power_page，资料页 156，supporting manual context",
+    "VIS_0045": "network_topology_page，资料页 8075，supporting manual context",
+    "VIS_0046": "network_topology_page，资料页 423，supporting manual context"
+  },
+  "generated_from_commit": "8403213d89d3f2200b9f40ee1f72d23673c9b4f6",
+  "snapshot_validation": {
+    "valid": true,
+    "errors": []
+  },
+  "warnings": [
+    "该结果是基于仓库内真实手册页面整理的离线 SAMPLE 快照，未调用 FULL 检索后端。"
+  ]
+}

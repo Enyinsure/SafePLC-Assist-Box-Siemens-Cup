@@ -1,0 +1,899 @@
+{
+  "schema_version": "hidden-demo-v1",
+  "case_id": "HIDDEN_08",
+  "source": "offline_demo_snapshot",
+  "pipeline_mode": "SAMPLE",
+  "immutable": true,
+  "query": "CPU 1517-3 PN/DP 与 ET 200MP 通信时，BF 红色闪烁，SF 未亮，远程 I/O 已上电。请给出排查顺序和手册证据。",
+  "query_hash": "8a690a8c2b001817ed1f541c188998e7b8146bf481fa5fe2c818506ad1e529ed",
+  "mode": "SAMPLE",
+  "question_type": "TROUBLESHOOTING",
+  "action": "ANSWER",
+  "verdict": "PASS",
+  "confidence": "MEDIUM",
+  "operation_risk_level": "LOW",
+  "query_context": {
+    "original_query": "CPU 1517-3 PN/DP 与 ET 200MP 通信时，BF 红色闪烁，SF 未亮，远程 I/O 已上电。请给出排查顺序和手册证据。",
+    "question_type": "TROUBLESHOOTING",
+    "required_modalities": [
+      "figure",
+      "text"
+    ],
+    "missing_slots": [],
+    "risk_level": "LOW",
+    "risk_decision": "ALLOW",
+    "slots": {
+      "device_family": "S7-1500 / ET 200MP",
+      "module_model": "CPU 1517-3 PN/DP",
+      "order_number": "6ES7517-3AP00-0AB0"
+    }
+  },
+  "device_context": {
+    "family": "S7-1500 / ET 200MP",
+    "model": "CPU 1517-3 PN/DP",
+    "order_number": "6ES7517-3AP00-0AB0",
+    "detection_source": "hidden_demo_fixed",
+    "confidence": 1.0
+  },
+  "task_plan": {
+    "question_type": "TROUBLESHOOTING",
+    "selected_agents": [
+      "Troubleshooting Agent",
+      "Topology Agent"
+    ]
+  },
+  "agent_plan": {
+    "selected_agents": [
+      "Troubleshooting Agent",
+      "Topology Agent"
+    ],
+    "execution_order": [
+      "Troubleshooting Agent",
+      "Topology Agent"
+    ],
+    "execution_mode": "parallel",
+    "parallel_groups": [
+      [
+        "Troubleshooting Agent",
+        "Topology Agent"
+      ]
+    ],
+    "tasks": [
+      {
+        "task_id": "HIDDEN_08_TASK_01",
+        "agent_name": "Troubleshooting Agent",
+        "question": "CPU 1517-3 PN/DP 与 ET 200MP 通信时，BF 红色闪烁，SF 未亮，远程 I/O 已上电。请给出排查顺序和手册证据。",
+        "status": "completed"
+      },
+      {
+        "task_id": "HIDDEN_08_TASK_02",
+        "agent_name": "Topology Agent",
+        "question": "CPU 1517-3 PN/DP 与 ET 200MP 通信时，BF 红色闪烁，SF 未亮，远程 I/O 已上电。请给出排查顺序和手册证据。",
+        "status": "completed"
+      }
+    ]
+  },
+  "agent_results": [
+    {
+      "agent_name": "Troubleshooting Agent",
+      "status": "ANSWERED",
+      "answer": "按低风险顺序排查：先检查 CPU、ET 200MP 的 PROFINET 线缆、端口链路灯和接口模块供电；再核对设备名称；然后核对 IP、子网和重复地址；接着比较 TIA Portal 硬件组态与实际模块；最后读取 CPU 和 ET 200MP 接口模块诊断缓冲区。BF 红闪而 SF 未亮不能替代上述逐项查证，检查前禁止带电插拔。",
+      "claims": [
+        {
+          "claim_id": "HIDDEN_08_CLAIM_01",
+          "claim_text": "按低风险顺序排查：先检查 CPU、ET 200MP 的 PROFINET 线缆、端口链路灯和接口模块供电；再核对设备名称；然后核对 IP、子网和重复地址；接着比较 TIA Portal 硬件组态与实际模块；最后读取 CPU 和 ET 200MP 接口模块诊断缓冲区。BF 红闪而 SF 未亮不能替代上述逐项查证，检查前禁止带电插拔。",
+          "claim_type": "technical_guidance",
+          "model_scope": "CPU 1517-3 PN/DP",
+          "confidence": "MEDIUM",
+          "evidence_ids": [
+            "HIDDEN_08_EV_01",
+            "HIDDEN_08_EV_02"
+          ],
+          "direct_support": true,
+          "metadata": {
+            "offline_curated": true
+          }
+        }
+      ],
+      "evidence_ids": [
+        "HIDDEN_08_EV_01",
+        "HIDDEN_08_EV_02"
+      ],
+      "abstain": false
+    },
+    {
+      "agent_name": "Topology Agent",
+      "status": "ANSWERED",
+      "answer": "按低风险顺序排查：先检查 CPU、ET 200MP 的 PROFINET 线缆、端口链路灯和接口模块供电；再核对设备名称；然后核对 IP、子网和重复地址；接着比较 TIA Portal 硬件组态与实际模块；最后读取 CPU 和 ET 200MP 接口模块诊断缓冲区。BF 红闪而 SF 未亮不能替代上述逐项查证，检查前禁止带电插拔。",
+      "claims": [
+        {
+          "claim_id": "HIDDEN_08_CLAIM_01",
+          "claim_text": "按低风险顺序排查：先检查 CPU、ET 200MP 的 PROFINET 线缆、端口链路灯和接口模块供电；再核对设备名称；然后核对 IP、子网和重复地址；接着比较 TIA Portal 硬件组态与实际模块；最后读取 CPU 和 ET 200MP 接口模块诊断缓冲区。BF 红闪而 SF 未亮不能替代上述逐项查证，检查前禁止带电插拔。",
+          "claim_type": "technical_guidance",
+          "model_scope": "CPU 1517-3 PN/DP",
+          "confidence": "MEDIUM",
+          "evidence_ids": [
+            "HIDDEN_08_EV_01",
+            "HIDDEN_08_EV_02"
+          ],
+          "direct_support": true,
+          "metadata": {
+            "offline_curated": true
+          }
+        }
+      ],
+      "evidence_ids": [
+        "HIDDEN_08_EV_01",
+        "HIDDEN_08_EV_02"
+      ],
+      "abstain": false
+    }
+  ],
+  "evidence_pool": {
+    "evidences": [
+      {
+        "evidence_id": "HIDDEN_08_EV_01",
+        "asset_id": "VIS_0027",
+        "source": "CPU 1517-3 PN/DP device manual",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "CPU 1517-3 PN/DP device manual",
+        "document_id": "A5E33595080-AF",
+        "page": 2476,
+        "section": "设备特定信息 > 中央处理单元 > CPU 1517-3 PN/DP > 3 产品概述 > 3.5 操作员控件和显示元件",
+        "figure_number": "图 2-237",
+        "manual_figure_number": "图 2-237",
+        "manual_figure_caption": "不带前面板的 CPU 1517-3 PN/DP 的前视图",
+        "device_family": "S7-1500",
+        "module_model": "CPU 1517-3 PN/DP",
+        "order_number": "6ES7517-3AP00-0AB0",
+        "text": "图 2-237 标注 CPU 1517-3 PN/DP 的前视图，PROFINET IO 接口 X1 对应标号 ⑦，X2 对应标号 ⑥。",
+        "compact_excerpt": "图 2-237 标注 CPU 1517-3 PN/DP 的前视图，PROFINET IO 接口 X1 对应标号 ⑦，X2 对应标号 ⑥。",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Topology Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0027",
+          "sha256": "7e73d63df0848cf4b5c101084b7b2a52f48b8a96cfeeb6c3c543866881d0389c",
+          "visual_type": "front_panel_or_led_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_08_EV_02",
+        "asset_id": "VIS_0028",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E33595080-AF",
+        "page": 2481,
+        "section": "设备特定信息 > 中央处理单元 > CPU 1517-3 PN/DP (6ES7517-3AP00-0AB0) > 4 接线",
+        "figure_number": "图 2-239",
+        "manual_figure_number": "图 2-239",
+        "manual_figure_caption": "CPU 1517‑3 PN/DP 的方框图",
+        "device_family": "S7-1500",
+        "module_model": "CPU 1517-3 PN/DP",
+        "order_number": "6ES7517-3AP00-0AB0",
+        "text": "方框图 下图显示了 CPU 1517‑3 PN/DP 的电路示意图。 \u0017 \u0014 \u0019 \u0018 \u0016 \u001a \u0015 /\u000e 0 ;\u0018\u0013 ;\u0014\u00033\u0014 31 ;\u0014\u00033\u00145 ;\u0015\u00033\u0014 31 ;\u0015\u00033\u0014 3%\u0003;\u0016 ;\u0014\u00033\u0015 5\u00126 (5 07 31 ;\u0014\u00033\u00155 ;\u001b\u0013\u0003'&\u0003\u0015\u0017\u00039 ① 显示屏 PN X1 P1R PROFINET 接口 X1 端口 1 ② RUN/STOP/MRES 模式选择器开关 PN X1 P2R PROFINET 接口 X1 端口 2 ③ 电子元件 PN X2 P1 PROFINET 接口 X2 端口 1 ④ PROFINET 双端口交换机 PB X3 PROFIBUS 接口 X3 ⑤ PROFIBUS DP 驱动程序 L+ 24 V DC 电源电压 ⑥ 背板总线接口 M 接地 ⑦ 内部电源电压 R/S RUN/STOP LED 指示灯（黄色/绿色） X50 SIMATIC 存储卡 ER ERROR LED 指示灯（红色） X80 24 V DC 电源电压供电 MT MAINT LED 指示灯（黄色） X1 P1、X1 P2、X2 P1 Link TX/RX LED 指示灯 图 2-239 CPU 1517‑3 PN/DP 的方框图 29 接线 CPU 1517-3 PN/DP (6ES7517-3AP00-0AB0) 设备手册, 11/2023, A5E33595080-AF",
+        "compact_excerpt": "方框图 下图显示了 CPU 1517‑3 PN/DP 的电路示意图。 \u0017 \u0014 \u0019 \u0018 \u0016 \u001a \u0015 /\u000e 0 ;\u0018\u0013 ;\u0014\u00033\u0014 31 ;\u0014\u00033\u00145 ;\u0015\u00033\u0014 31 ;\u0015\u00033\u0014 3%\u0003;\u0016 ;\u0014\u00033\u0015 5\u00126 (5 07 31 ;\u0014\u00033\u00155 ;\u001b\u0013\u0003'&\u0003\u0015\u0017\u00039 ① 显示屏 PN X1 P1R PROFINET 接口 X1 端口 1 ② RUN/STOP/MRES 模式选择器开关 PN X1 P2R PROFINET 接口 X1 端口 2 ③ 电子元件 PN X2 P1 PROFINET 接口 X2 端口 1 ④ PROFINET 双端口交换机 PB X3 PROFIBUS 接口 X3 ⑤ PROFIBUS DP 驱动程序 L+ 24 V DC 电源电压 ⑥ 背板总线接口 M 接地 ⑦ 内部电源电压 R/S RUN/STOP LED 指示灯（黄色/绿色） X50 SIMATIC 存储卡 ER ERROR LED 指示灯（红色） X80 24 V DC 电源电压供电 MT MAINT LED 指示灯（黄色） X1 P1、X1 P2、X2 P1 Link TX/RX LED 指示灯 图 2-239 CPU 1517‑3 PN/DP 的方框图 29 接线 CPU 1517-3 PN/DP (6ES7517-3AP00-0AB0) 设备手册, 11/2023, A5E33595080-AF",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Topology Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0028",
+          "sha256": "f81c8b7e0024dd456ed999107dcd549ac22baaeb74fa633554b93cd65ba9c15d",
+          "visual_type": "front_panel_or_led_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_08_EV_03",
+        "asset_id": "VIS_0073",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E39041333-AC",
+        "page": 5355,
+        "section": "设备特定信息 > 工艺模块 > SIWAREX WP521/WP522 > 7 报警记录 > 7.5 消息列表 > 7.5.5 模块上的 LED 发出的消息",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "与所有 S7-1500 工艺和信号模块相同，在该区域顶部配有颜色分别为绿色、红色和黄色的 3 个 LED。下表说明了 LED 动态变化的含义。 表格 2-1222 LED 动态变化的含义 LED 状态 含义 绿 色 2Hz S7-终端模块启动 RUN LED 准备操作 SF/ERROR LED 红 色 2Hz 系统故障（模块/通道诊断报警未决，如运行错误或固件更新） [红色 LED 至少闪烁 3 秒钟] MAINT LED / 2Hz 维护 LED - 无 WP52x 功能 红 色 2Hz 运行错误未决（例如：已组态独立模式，但 S7 通信 独立模式激活（无需使用可操作的 S7 CPU 仍可以继续工作） D（诊断） 就绪 绿 色 2Hz 维修模式已激活 （关闭） 正常运行 1 限值 1 已响应 2 限值 2 已响应 3 已触发限位 3 （关闭） 无静止 状态静止未决 最大值 红 色 2Hz 超出称重范围 红 色 2Hz 称重传感器错误 测得的 LC 阻抗超出组态的设定值范围 LC 称重传感器状态正常 COM R/T RS485 通信激活（接收/发送） 发送/接收消息帧的脉冲时间为 0.5 秒；Modbus 接收：激活独立于从站地址。 自定期传送起，永久使用“Siebert”组态 LAN R/T LAN 与该通道的通信已激活（例如，仅使用 Siwatool/Modbus TCP – 而不使用 FTP） 发送/接收一帧的脉冲时间为 0.5 秒 → 在 Siwatool/Modbus 链路激活期间变换为连续光。 WP522：该 LED 通过通道特定 TCP 端口的通道特定驱动进行通信",
+        "compact_excerpt": "与所有 S7-1500 工艺和信号模块相同，在该区域顶部配有颜色分别为绿色、红色和黄色的 3 个 LED。下表说明了 LED 动态变化的含义。 表格 2-1222 LED 动态变化的含义 LED 状态 含义 绿 色 2Hz S7-终端模块启动 RUN LED 准备操作 SF/ERROR LED 红 色 2Hz 系统故障（模块/通道诊断报警未决，如运行错误或固件更新） [红色 LED 至少闪烁 3 秒钟] MAINT LED / 2Hz 维护 LED - 无 WP52x 功能 红 色 2Hz 运行错误未决（例如：已组态独立模式，但 S7 通信 独立模式激活（无需使用可操作的 S7 CPU 仍可以继续工作） D（诊断） 就绪 绿 色 2Hz 维修模式已激活 （关闭） 正常运行 1 限值 1 已响应 2 限值 2 已响应 3 已触发限位 3 （关闭） 无静止 状态静止未决 最大值 红 色 2Hz 超出称重范围 红 色 2Hz 称重传感器错误 测得的 LC 阻抗超出组态的设定值范围 LC 称重传感器状态正常 COM R/T RS485 通信激活（接收/发送） 发送/接收消息帧的脉冲时间为 0.5 秒；Modbus 接收：激活独立于从站地址。 自定期传送起，永久使用“Siebert”组态 LAN R/T LAN 与该通道的通信已激活（例如，仅使用 Siwatool/Modbus TCP – 而不使用 FTP） 发送/接收一帧的脉冲时间为 0.5 秒 → 在 Siwatool/Modbus 链路激活期间变换为连续光。 WP522：该 LED 通过通道特定 TCP 端口的通道特定驱动进行通信",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Topology Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0073",
+          "sha256": "9f82dad8b45d00430fd1b8f94cb66094c92c3d6e63a87dd07992f0f81f2d8473",
+          "visual_type": "diagnostic_alarm_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_08_EV_04",
+        "asset_id": "VIS_0074",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03484629-AK",
+        "page": 6795,
+        "section": "综合信息 > 《CPU 功能手册》 > Web 服务器 > 1 简介",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "新增内容 客户收益 信息出处 Web 页面“拓扑结 构”(Topology)：选择可用的 PROFINET 接口，如 X1、X2、CM 1542-1 选择 PROFINET 接口 X1、X2 以及所连接 PROFINET 通信模块的拓扑结构显示方式。 “拓扑结构 (页 80)”部分 Web 页面“数据日 志”(DataLog)：新增删除数据 日志文件列 通过 Web 服务器，删除数据日志文件。 “数据日志 (页 115)”部分 Web 页面“记录”(Record)：更 改跟踪记录的显示方式 通过更多显示信息，更为详细地评估跟踪记 录。 更改的内容 Web 页面“记录”(Record)：新 增算术运算功能 测量完成后，可对测量到的信号进行算术运 算，并生成尚未记录的信号。 例如，计算两个信号的差异，清晰显示锅炉 当前压力与设定值之间的差异。 “记录 (页 97)”部分 与 12/2014 版相比，09/2016 版 Web 服务器功能手册的新增内容 新增内容 客户收益 信息出处 改变了证书的处理方式 通过安全传输协议“HTTPS”（含特定的 Web 服务器证书）保护 Web 服务器连接，防止通 过访问窃听通信或造成通信失真。 “组态 Web 服务器 (页 23)”部分 Web 服务器界面的 4 种附加 语言 Web 服务器界面可设置为以下几种语言： • 韩语 • 俄语 • 土耳其语 • 葡萄牙语（巴西） “起始页面，包含有 CPU 的常规 信息 (页 42)”部分 扩展了不同项目语言的分配 在 Web 服务器的用户界面语言中，可为注 释、报警文本和诊断信息指定多达三种不同 的项目",
+        "compact_excerpt": "新增内容 客户收益 信息出处 Web 页面“拓扑结 构”(Topology)：选择可用的 PROFINET 接口，如 X1、X2、CM 1542-1 选择 PROFINET 接口 X1、X2 以及所连接 PROFINET 通信模块的拓扑结构显示方式。 “拓扑结构 (页 80)”部分 Web 页面“数据日 志”(DataLog)：新增删除数据 日志文件列 通过 Web 服务器，删除数据日志文件。 “数据日志 (页 115)”部分 Web 页面“记录”(Record)：更 改跟踪记录的显示方式 通过更多显示信息，更为详细地评估跟踪记 录。 更改的内容 Web 页面“记录”(Record)：新 增算术运算功能 测量完成后，可对测量到的信号进行算术运 算，并生成尚未记录的信号。 例如，计算两个信号的差异，清晰显示锅炉 当前压力与设定值之间的差异。 “记录 (页 97)”部分 与 12/2014 版相比，09/2016 版 Web 服务器功能手册的新增内容 新增内容 客户收益 信息出处 改变了证书的处理方式 通过安全传输协议“HTTPS”（含特定的 Web 服务器证书）保护 Web 服务器连接，防止通 过访问窃听通信或造成通信失真。 “组态 Web 服务器 (页 23)”部分 Web 服务器界面的 4 种附加 语言 Web 服务器界面可设置为以下几种语言： • 韩语 • 俄语 • 土耳其语 • 葡萄牙语（巴西） “起始页面，包含有 CPU 的常规 信息 (页 42)”部分 扩展了不同项目语言的分配 在 Web 服务器的用户界面语言中，可为注 释、报警文本和诊断信息指定多达三种不同 的项目",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Topology Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0074",
+          "sha256": "9994e23bcbd0ef62c11e46c6b8576637a0034e56036e99220126e5925ba13a51",
+          "visual_type": "diagnostic_alarm_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_08_EV_05",
+        "asset_id": "VIS_0075",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E41815205-AH",
+        "page": 601,
+        "section": "基本信息 > S7-1500R/H 冗余系统 > 6 应用规划 > 6.4 冗余案例 > 6.4.7 S7-1500H 特定冗余案例 > 6.4.7.5 PROFINET 环网中 R1 设备中的接口模块故障",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "事件顺序 1. R1 设备的左侧接口模块（插槽 0）在 PROFINET 环网 1 中发生故障并中断 PROFINET 环网 1。 2. 冗余系统将保持在 RUN-Redundant 系统状态下：主 CPU 和备用 CPU 保持为 RUN-Redundant 工作状态。主 CPU 和备用 CPU 的角色不会更改。 3. 冗余系统选择基于备用 CPU 和 PROFINET 环网 2 的替代连接。这允许冗余系统访问 R1 设 备（通过插槽 1 的右侧接口模块）。 4. 系统冗余受到限制。但该限制对此过程无影响。如果另一个系统组件发生故障， S7-1500R/H 冗余系统可能会因此发生故障。 诊断 接口模块故障后的系统状态、操作状态和错误显示： • 冗余系统 → RUN-Redundant 系统状态 • 主 CPU/备用 CPU → RUN-Redundant 操作状态 – MAINT LED 指示灯 → 黄色点亮：接口模块故障。PROFINET 环网 1 断开。无备用 AR。 说明 诊断显示存在偏差 如果移除 R1 设备的接口模块，则另一个接口模块会报错，即 ERROR LED 将呈红色闪烁。尽管 LED 指示灯显示错误，但因为 R1 设备的第二个接口模块会接管工作，所以过程也不会受到影 响。 在 STEP 7 在线诊断中，R1 设备仅显示为“要求维护，下级组件出错”(Maintenance demanded, error in lower-level component)。原因是 R1 设备和 H-CPU 在诊断上的视野范围不同。 IO 设备仅面向本地，因此会指示缺少模块。而 H",
+        "compact_excerpt": "事件顺序 1. R1 设备的左侧接口模块（插槽 0）在 PROFINET 环网 1 中发生故障并中断 PROFINET 环网 1。 2. 冗余系统将保持在 RUN-Redundant 系统状态下：主 CPU 和备用 CPU 保持为 RUN-Redundant 工作状态。主 CPU 和备用 CPU 的角色不会更改。 3. 冗余系统选择基于备用 CPU 和 PROFINET 环网 2 的替代连接。这允许冗余系统访问 R1 设 备（通过插槽 1 的右侧接口模块）。 4. 系统冗余受到限制。但该限制对此过程无影响。如果另一个系统组件发生故障， S7-1500R/H 冗余系统可能会因此发生故障。 诊断 接口模块故障后的系统状态、操作状态和错误显示： • 冗余系统 → RUN-Redundant 系统状态 • 主 CPU/备用 CPU → RUN-Redundant 操作状态 – MAINT LED 指示灯 → 黄色点亮：接口模块故障。PROFINET 环网 1 断开。无备用 AR。 说明 诊断显示存在偏差 如果移除 R1 设备的接口模块，则另一个接口模块会报错，即 ERROR LED 将呈红色闪烁。尽管 LED 指示灯显示错误，但因为 R1 设备的第二个接口模块会接管工作，所以过程也不会受到影 响。 在 STEP 7 在线诊断中，R1 设备仅显示为“要求维护，下级组件出错”(Maintenance demanded, error in lower-level component)。原因是 R1 设备和 H-CPU 在诊断上的视野范围不同。 IO 设备仅面向本地，因此会指示缺少模块。而 H",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Topology Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0075",
+          "sha256": "4faf71d09085a10eef13e2e6f6b936b5a2374c807cc11bc362458265f100520e",
+          "visual_type": "diagnostic_alarm_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_08_EV_06",
+        "asset_id": "VIS_0076",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E41815205-AH",
+        "page": 612,
+        "section": "基本信息 > S7-1500R/H 冗余系统 > 6 应用规划 > 6.5 故障案例 > 6.5.2 PROFINET 环网中的交换机（采用额外的线型拓扑）发生故障",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "事件顺序 1. PROFINET 环网中的交换机（采用额外的线型拓扑）发生故障。 2. PROFINET 环网中断。 3. 适用情况下，冗余系统会选择 IO 设备的其它连接 ④ 和 ⑤ 切换到备用 CPU。这样，冗余 系统即可重新访问 PROFINET 环网中的所有 IO 设备。 4. 由于不能继续访问额外线型拓扑中的 IO 设备，因此交换机故障会影响过程。 如果发生故障的输入和输出在系统中具有重要功能，其故障会严重影响过程。 诊断 交换机故障后的系统状态、操作状态和错误显示： • 冗余系统 → RUN-Redundant 系统状态 • 主 CPU/备用 CPU → RUN-Redundant 操作状态 – MAINT LED 指示灯 → 黄色点亮：PROFINET 环网断开。 – ERROR LED 指示灯 → 红色闪烁：一个或多个 IO 设备故障。 警告 冗余系统故障 如果除 PROFINET 电缆之外，主 CPU 也发生故障，备用 CPU 会切换为 STOP 操作状态。更多 信息，请参见“PROFINET 环网中的 IO 设备发生故障时主 CPU 发生故障 (页 199)”部分。 说明 如需了解详细的诊断信息，请查看诊断缓冲区。 解决方法 更换故障的交换机。有关这些操作步骤的更多信息，请参见“更换故障的 I/O 设备/交换机 (页 468)”部分。 194 S7-1500R/H 冗余系统 系统手册, 11/2025, A5E41815205-AH 应用规划 6.5 故障案例",
+        "compact_excerpt": "事件顺序 1. PROFINET 环网中的交换机（采用额外的线型拓扑）发生故障。 2. PROFINET 环网中断。 3. 适用情况下，冗余系统会选择 IO 设备的其它连接 ④ 和 ⑤ 切换到备用 CPU。这样，冗余 系统即可重新访问 PROFINET 环网中的所有 IO 设备。 4. 由于不能继续访问额外线型拓扑中的 IO 设备，因此交换机故障会影响过程。 如果发生故障的输入和输出在系统中具有重要功能，其故障会严重影响过程。 诊断 交换机故障后的系统状态、操作状态和错误显示： • 冗余系统 → RUN-Redundant 系统状态 • 主 CPU/备用 CPU → RUN-Redundant 操作状态 – MAINT LED 指示灯 → 黄色点亮：PROFINET 环网断开。 – ERROR LED 指示灯 → 红色闪烁：一个或多个 IO 设备故障。 警告 冗余系统故障 如果除 PROFINET 电缆之外，主 CPU 也发生故障，备用 CPU 会切换为 STOP 操作状态。更多 信息，请参见“PROFINET 环网中的 IO 设备发生故障时主 CPU 发生故障 (页 199)”部分。 说明 如需了解详细的诊断信息，请查看诊断缓冲区。 解决方法 更换故障的交换机。有关这些操作步骤的更多信息，请参见“更换故障的 I/O 设备/交换机 (页 468)”部分。 194 S7-1500R/H 冗余系统 系统手册, 11/2025, A5E41815205-AH 应用规划 6.5 故障案例",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Topology Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0076",
+          "sha256": "2f03defab1457c69947c0ee05c7fc3b04db18df90744ee3aa85dde524d163fbc",
+          "visual_type": "front_panel_or_led_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_08_EV_07",
+        "asset_id": "VIS_0077",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E41815205-AH",
+        "page": 616,
+        "section": "基本信息 > S7-1500R/H 冗余系统 > 6 应用规划 > 6.5 故障案例 > 6.5.3 S7-1500R 特有的故障案例 > 6.5.3.2 S7-1500R 中的 PROFINET 环网中有两处电缆中断（间隔不超过 1500 ms）",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "事件顺序 1. PROFINET 环网 2 处中断的时间间隔不超过 1500 ms。 2. 冗余系统切换为未定义的系统状态：主 CPU 保持在 RUN 操作状态下。备用 CPU 成为主 CPU，并仍处于 RUN 操作状态。 3. 两个主 CPU 会继续与可访问的 IO 设备交换过程数据。 4. 系统冗余故障。冗余系统当前的系统状态未定义。未定义的系统状态可导致过程中存在危 险状态。 警告 S7-1500R 冗余系统将转入未定义的系统状态，同时 PROFINET 环网中有 2 处电缆断开（间隔不超过 1500 ms） 将 PROFINET 放置在免受损坏的安全位置。PROFINET 电缆始终应分开放置，以免 PROFINET 电缆同时损坏（在不超过 1500 ms 的时间内）。 诊断 电缆中断后的系统状态和操作状态： • 冗余系统 → 系统状态错误（未定义：每个 R 系统处于 RUN-Solo 系统状态。） • 主 CPU → RUN 操作状态 – MAINT LED 指示灯 → 黄色点亮：R 系统未处于 RUN-Redundant 系统状态。R 系统中未 找到伙伴 CPU。PROFINET 环网断开。 – ERROR LED 指示灯 → 红色闪烁：IO 设备故障。 • 主 CPU（之前的备用 CPU）→ RUN 操作状态 – MAINT LED 指示灯 → 黄色点亮：R 系统未处于 RUN-Redundant 系统状态。R 系统中未 找到伙伴 CPU。PROFINET 环网断开。 – ERROR LED 指示灯 → 红色闪烁：IO 设备故障。 说明 如需了解详细的诊断信息，请查",
+        "compact_excerpt": "事件顺序 1. PROFINET 环网 2 处中断的时间间隔不超过 1500 ms。 2. 冗余系统切换为未定义的系统状态：主 CPU 保持在 RUN 操作状态下。备用 CPU 成为主 CPU，并仍处于 RUN 操作状态。 3. 两个主 CPU 会继续与可访问的 IO 设备交换过程数据。 4. 系统冗余故障。冗余系统当前的系统状态未定义。未定义的系统状态可导致过程中存在危 险状态。 警告 S7-1500R 冗余系统将转入未定义的系统状态，同时 PROFINET 环网中有 2 处电缆断开（间隔不超过 1500 ms） 将 PROFINET 放置在免受损坏的安全位置。PROFINET 电缆始终应分开放置，以免 PROFINET 电缆同时损坏（在不超过 1500 ms 的时间内）。 诊断 电缆中断后的系统状态和操作状态： • 冗余系统 → 系统状态错误（未定义：每个 R 系统处于 RUN-Solo 系统状态。） • 主 CPU → RUN 操作状态 – MAINT LED 指示灯 → 黄色点亮：R 系统未处于 RUN-Redundant 系统状态。R 系统中未 找到伙伴 CPU。PROFINET 环网断开。 – ERROR LED 指示灯 → 红色闪烁：IO 设备故障。 • 主 CPU（之前的备用 CPU）→ RUN 操作状态 – MAINT LED 指示灯 → 黄色点亮：R 系统未处于 RUN-Redundant 系统状态。R 系统中未 找到伙伴 CPU。PROFINET 环网断开。 – ERROR LED 指示灯 → 红色闪烁：IO 设备故障。 说明 如需了解详细的诊断信息，请查",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Topology Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0077",
+          "sha256": "20c8815bfe3e01f85d7b49b2611de9391df27c16a7e24f3133d35790013867b9",
+          "visual_type": "front_panel_or_led_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_08_EV_08",
+        "asset_id": "VIS_0078",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E41815205-AH",
+        "page": 883,
+        "section": "基本信息 > S7-1500R/H 冗余系统 > 14 维护 > 14.2 仍换 S7-1500R/H 冗余系统的组件 > 14.2.5 更换故障的 SIMATIC 存储卡",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "14.2.4 更换故障的 PROFINET 电缆 初始情况 PROFINET 已在任意指定点断开。两个 CPU 上的 MAINT LED 指示灯均为黄色点亮。S7-1500R 显示屏上将显示以下信息：单次配对，包含接口和端口的信息。 S7‑1500R/H 冗余系统处于 RUN-Redundant 系统状态。 操作步骤：更换 PROFINET 电缆 要更换故障的 PROFINET 电缆，请按以下步骤操作： 1. 检查主 CPU 和备用 CPU 上的 X1 P1/X1 P2 LED 指示灯。如果 LED 指示灯熄灭，说明 PROFINET 环网断开。 2. 确定 PROFINET 环网中故障的 PROFINET 电缆。检查 PROFINET 节点的链路 RX/TX LED。如 果链路 RX/TX LED 已关闭，则 PROFINET 设备上的 PROFINET 接口与通信伙伴之间没有连 接。 3. 更换故障的 PROFINET 电缆。 结果 故障 PROFINET 电缆已更换。 主 CPU 和备用 CPU 上的 X1 P1/X1 P2 LED 指示灯均为黄色点亮。两个 CPU 上的 MAINT LED 指 示灯均熄灭。 14.2.5 更换故障的 SIMATIC 存储卡 初始情况 CPU 的 SIMATIC 存储卡发生故障。系统诊断报告系统错误。受影响的 CPU 切换为 STOP 操作 状态。 S7‑1500R/H 冗余系统处于 RUN-Solo 系统状态。 说明 更换 HF-CPU（包含安全程序）中有故障的 SIMATIC 存储卡 要了解准确的步骤，请参见编程与操作手册《SIMAT",
+        "compact_excerpt": "14.2.4 更换故障的 PROFINET 电缆 初始情况 PROFINET 已在任意指定点断开。两个 CPU 上的 MAINT LED 指示灯均为黄色点亮。S7-1500R 显示屏上将显示以下信息：单次配对，包含接口和端口的信息。 S7‑1500R/H 冗余系统处于 RUN-Redundant 系统状态。 操作步骤：更换 PROFINET 电缆 要更换故障的 PROFINET 电缆，请按以下步骤操作： 1. 检查主 CPU 和备用 CPU 上的 X1 P1/X1 P2 LED 指示灯。如果 LED 指示灯熄灭，说明 PROFINET 环网断开。 2. 确定 PROFINET 环网中故障的 PROFINET 电缆。检查 PROFINET 节点的链路 RX/TX LED。如 果链路 RX/TX LED 已关闭，则 PROFINET 设备上的 PROFINET 接口与通信伙伴之间没有连 接。 3. 更换故障的 PROFINET 电缆。 结果 故障 PROFINET 电缆已更换。 主 CPU 和备用 CPU 上的 X1 P1/X1 P2 LED 指示灯均为黄色点亮。两个 CPU 上的 MAINT LED 指 示灯均熄灭。 14.2.5 更换故障的 SIMATIC 存储卡 初始情况 CPU 的 SIMATIC 存储卡发生故障。系统诊断报告系统错误。受影响的 CPU 切换为 STOP 操作 状态。 S7‑1500R/H 冗余系统处于 RUN-Solo 系统状态。 说明 更换 HF-CPU（包含安全程序）中有故障的 SIMATIC 存储卡 要了解准确的步骤，请参见编程与操作手册《SIMAT",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Topology Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0078",
+          "sha256": "2e0febbb644df95f93947bad52079132ef49208eb36c76a96aee9c25e9e8735c",
+          "visual_type": "front_panel_or_led_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_08_EV_09",
+        "asset_id": "VIS_0079",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E46600377-AD",
+        "page": 2876,
+        "section": "设备特定信息 > 中央处理单元 > SIMATIC Drive Controller > 5 中断、诊断报警、错误消息和系统报警 > 5.1 状态和错误指示灯 > 5.1.3 SINAMICS Integrated 的状态和错误指示灯",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "RUN/STOP LED 指 示灯 ERROR LED 指示灯MAINT LED 指示灯 含义 诊断事件未决。 LED 指示灯呈黄色 点亮 LED 指示灯红色闪 烁 LED 指示灯熄灭 STOP 下的服务数据备份结束，并出现错误 CPU 处于 STOP 状态时，将执行内部活动， 如 STOP、固件更新之后的启动。 CPU 存储服务数据 从 SIMATIC 存储卡下载用户程序 LED 指示灯黄色闪 烁 LED 指示灯熄灭 LED 指示灯熄灭 CPU 运行具有已激活断点的程序。程序当 前正从一个断点移动到下一个断点。 LED 指示灯 黄色/绿色闪烁 LED 指示灯熄灭 LED 指示灯熄灭 启动（从 STOP 转换为 RUN） 启动（CPU 正在启动） 启动、插入模块时测试 LED 指示灯。 LED 指示灯 黄色/绿色闪烁 LED 指示灯红色闪 烁 LED 指示灯黄色闪 烁 LED 指示灯闪烁测试 LED 指示灯呈黄色 点亮 LED 指示灯呈黄色 点亮 LED 指示灯呈黄色 点亮 上电时执行灯泡测试 注：卡槽上的所有六个 LED 指示灯和 ACT-LED 均呈黄色点亮。 5.1.3 SINAMICS Integrated 的状态和错误指示灯 RDY LED 状态 表格 2-362 SINAMICS Integrated RDY LED RDY LED 含义 LED 指示灯熄灭 电子器件电源缺失或超出允许的公差范围 LED 指示灯呈绿色点 亮 组件运行准备就绪。 循环 DRIVE-CLiQ 通信激活，或者 SINAMICS Integrated 正在等待第一次调试。 LED 指示灯绿灯",
+        "compact_excerpt": "RUN/STOP LED 指 示灯 ERROR LED 指示灯MAINT LED 指示灯 含义 诊断事件未决。 LED 指示灯呈黄色 点亮 LED 指示灯红色闪 烁 LED 指示灯熄灭 STOP 下的服务数据备份结束，并出现错误 CPU 处于 STOP 状态时，将执行内部活动， 如 STOP、固件更新之后的启动。 CPU 存储服务数据 从 SIMATIC 存储卡下载用户程序 LED 指示灯黄色闪 烁 LED 指示灯熄灭 LED 指示灯熄灭 CPU 运行具有已激活断点的程序。程序当 前正从一个断点移动到下一个断点。 LED 指示灯 黄色/绿色闪烁 LED 指示灯熄灭 LED 指示灯熄灭 启动（从 STOP 转换为 RUN） 启动（CPU 正在启动） 启动、插入模块时测试 LED 指示灯。 LED 指示灯 黄色/绿色闪烁 LED 指示灯红色闪 烁 LED 指示灯黄色闪 烁 LED 指示灯闪烁测试 LED 指示灯呈黄色 点亮 LED 指示灯呈黄色 点亮 LED 指示灯呈黄色 点亮 上电时执行灯泡测试 注：卡槽上的所有六个 LED 指示灯和 ACT-LED 均呈黄色点亮。 5.1.3 SINAMICS Integrated 的状态和错误指示灯 RDY LED 状态 表格 2-362 SINAMICS Integrated RDY LED RDY LED 含义 LED 指示灯熄灭 电子器件电源缺失或超出允许的公差范围 LED 指示灯呈绿色点 亮 组件运行准备就绪。 循环 DRIVE-CLiQ 通信激活，或者 SINAMICS Integrated 正在等待第一次调试。 LED 指示灯绿灯",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Topology Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0079",
+          "sha256": "40ee17026005e3ae8579122ffb953570d04d7a48fcf57d3b15d4972176a81690",
+          "visual_type": "front_panel_or_led_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_08_EV_10",
+        "asset_id": "VIS_0080",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03484629-AK",
+        "page": 6870,
+        "section": "综合信息 > 《CPU 功能手册》 > Web 服务器 > 4 Web 页面 > 4.9 拓扑结构 > 4.9.3 表格视图",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "② 符号的含义与 PROFINET 设备的模块状态有关 表格 3-47 符号的含义与 PROFINET 设备的模块状态有关 符号 颜色 含义 绿色 组件正常。 灰色 PROFIBUS 或 PROFINET 设备已禁用。 黑色 无法确定状态。 • 例如，在 CPU 处于 STOP 模式时，或 CPU 重新启动后“报告系统错误”对所有 已组态 I/O 模块和 I/O 系统进行启动评估期间，始终会显示“无法确定状 态”(Status cannot be determined)。 • 但是，如果在所有模块上突然发生诊断中断，则此状态也可以在操作期间暂 时显示。 • 无法确定与 CP 相连的某个子系统上模块的状态。 红色 组件故障或无法访问。 • 如果模块已移除或已组态的模块不存在，则将显示“无法访问”。 绿色 需要维护（Maintenance Required） 黄色 要求维护（Maintenance Demanded） 红色 错误 - 组件故障或因类型错误而不可使用。 ! - 较低模块级别中的模块不具有状态“组件正常”。 参考 有关“报告系统错误”(Report System Error) 的更多信息，请参见 STEP 7 在线帮助，关键词：“系 统诊断”。 85 Web 页面 4.9 拓扑结构 Web 服务器 功能手册, 11/2023, A5E03484629-AK",
+        "compact_excerpt": "② 符号的含义与 PROFINET 设备的模块状态有关 表格 3-47 符号的含义与 PROFINET 设备的模块状态有关 符号 颜色 含义 绿色 组件正常。 灰色 PROFIBUS 或 PROFINET 设备已禁用。 黑色 无法确定状态。 • 例如，在 CPU 处于 STOP 模式时，或 CPU 重新启动后“报告系统错误”对所有 已组态 I/O 模块和 I/O 系统进行启动评估期间，始终会显示“无法确定状 态”(Status cannot be determined)。 • 但是，如果在所有模块上突然发生诊断中断，则此状态也可以在操作期间暂 时显示。 • 无法确定与 CP 相连的某个子系统上模块的状态。 红色 组件故障或无法访问。 • 如果模块已移除或已组态的模块不存在，则将显示“无法访问”。 绿色 需要维护（Maintenance Required） 黄色 要求维护（Maintenance Demanded） 红色 错误 - 组件故障或因类型错误而不可使用。 ! - 较低模块级别中的模块不具有状态“组件正常”。 参考 有关“报告系统错误”(Report System Error) 的更多信息，请参见 STEP 7 在线帮助，关键词：“系 统诊断”。 85 Web 页面 4.9 拓扑结构 Web 服务器 功能手册, 11/2023, A5E03484629-AK",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Topology Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0080",
+          "sha256": "741f436deb8b3426d4a97e74049259541ba57e38a194bdbe19dd45daf54e6e30",
+          "visual_type": "diagnostic_alarm_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_08_EV_11",
+        "asset_id": "VIS_0081",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03484629-AK",
+        "page": 6954,
+        "section": "综合信息 > 《CPU 功能手册》 > Web 服务器 > 5 API（应用程序编程接口） > 5.4 Web API 基本功能 > 5.4.2 Api.GetPermissions",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "可检查权限 可使用 Web API 检查以下功能的授权。 操作 用户认证 CPU 的最低固件版本 flash_leds 识别设备 V2.8 acknowledge_alarms 确认报警 V2.8 read_diagnostics 从 CPU 查询诊断数据而无权更改数据。 V2.8 read_value 从 CPU 读取过程数据。 V2.8 write_value 将过程数据写入 CPU。 V2.8 open_user_pages 在 CPU 上调用用户自定义页面。 V2.8 manage_user_pages 在 CPU 上更改用户自定义页面。 V2.9 read_file* 读取 CPU 上的文件内容。 V2.8 write_file* 更改 CPU 上的文件和文件夹内容。 V2.8 change_operating_mode 更改操作模式。 V2.8 backup_plc 备份 CPU 组态。 V2.8 restore_plc 恢复 CPU 的组态。 V2.8 failsafe_admin 对 CPU 进行故障安全更改。 V2.8 update_firmware 执行固件更新 V3.0 read_watch_table_value 读取监控表中的变量值 V3.1 write_watch_table_value 向监控表中写入变量值 V3.1 read_syslog* 读取 CPU 的 SysLog 缓冲区 V3.1 change_time_settings 更改 CPU 的系统时间设置 V3.1 change_webserver_default_page 更改 Web 服",
+        "compact_excerpt": "可检查权限 可使用 Web API 检查以下功能的授权。 操作 用户认证 CPU 的最低固件版本 flash_leds 识别设备 V2.8 acknowledge_alarms 确认报警 V2.8 read_diagnostics 从 CPU 查询诊断数据而无权更改数据。 V2.8 read_value 从 CPU 读取过程数据。 V2.8 write_value 将过程数据写入 CPU。 V2.8 open_user_pages 在 CPU 上调用用户自定义页面。 V2.8 manage_user_pages 在 CPU 上更改用户自定义页面。 V2.9 read_file* 读取 CPU 上的文件内容。 V2.8 write_file* 更改 CPU 上的文件和文件夹内容。 V2.8 change_operating_mode 更改操作模式。 V2.8 backup_plc 备份 CPU 组态。 V2.8 restore_plc 恢复 CPU 的组态。 V2.8 failsafe_admin 对 CPU 进行故障安全更改。 V2.8 update_firmware 执行固件更新 V3.0 read_watch_table_value 读取监控表中的变量值 V3.1 write_watch_table_value 向监控表中写入变量值 V3.1 read_syslog* 读取 CPU 的 SysLog 缓冲区 V3.1 change_time_settings 更改 CPU 的系统时间设置 V3.1 change_webserver_default_page 更改 Web 服",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Topology Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0081",
+          "sha256": "27cebdf37c84172018d20cf096ce705868a9b2f2595ad7e073775b0afd5b47f0",
+          "visual_type": "diagnostic_alarm_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_08_EV_12",
+        "asset_id": "VIS_0082",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03735842-AJ",
+        "page": 7828,
+        "section": "综合信息 > 《诊断功能手册》 > 诊断 > 5 组态和确定系统诊断 > 5.1 在 CPU 属性中组态系统诊断",
+        "figure_number": "图 3-333",
+        "manual_figure_number": "图 3-333",
+        "manual_figure_caption": "CPU 属性中的系统诊断",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "5.1 在 CPU 属性中组态系统诊断 要求 • 项目已打开 • STEP 7 中显示网络视图 操作步骤 要在 CPU 属性中组态系统诊断，请按以下步骤操作： 1. 在 STEP 7 的网络视图中选择所需 CPU。 2. 在巡视窗口中，转至“属性 > 系统诊断”(Properties> System diagnostics)。 3. 选择 CPU 是否针对特定的事件发出报警。 根据所用 CPU 的固件版本，提供以下选项： 图 3-333 CPU 属性中的系统诊断 – 使用固定数字作为报警 ID： 该选项在所有 CPU 上可用，并在基本设置中激活。 系统诊断报警接收固定的报警号，从 1 到 512。例如，如果用户更改报警类型的顺序， 报警号保持不变。 – 将网络故障报告为维护而不是故障： 该选项适用于自固件版本 V2.5 起的所有 CPU 并在基本设置中禁用。 如果激活此选项，CPU 将所有网络错误报告为“要求维护”(Maintenance demanded)。 – 抑制未激活 IO 设备的报警： 该选项适用于自固件版本 V3.0 起的所有 CPU 并在基本设置中禁用。 如果激活此选项，CPU 不会为 PROFINET IO 系统上未激活但已组态的 IO 设备输出任何 报警。 – 检测负载电压故障： 该选项适用于自固件版本 V3.1 起的所有 CPU 并在基本设置中禁用。 如果激活此选项，CPU 会在用户程序中报告中央或分布式 I/O 的负载电压电源故障。 结果：已在 CPU 属性中组态系统诊断的报警设置。 26 诊断 功能手册, 11/2024, A5E03735842-AJ ",
+        "compact_excerpt": "5.1 在 CPU 属性中组态系统诊断 要求 • 项目已打开 • STEP 7 中显示网络视图 操作步骤 要在 CPU 属性中组态系统诊断，请按以下步骤操作： 1. 在 STEP 7 的网络视图中选择所需 CPU。 2. 在巡视窗口中，转至“属性 > 系统诊断”(Properties> System diagnostics)。 3. 选择 CPU 是否针对特定的事件发出报警。 根据所用 CPU 的固件版本，提供以下选项： 图 3-333 CPU 属性中的系统诊断 – 使用固定数字作为报警 ID： 该选项在所有 CPU 上可用，并在基本设置中激活。 系统诊断报警接收固定的报警号，从 1 到 512。例如，如果用户更改报警类型的顺序， 报警号保持不变。 – 将网络故障报告为维护而不是故障： 该选项适用于自固件版本 V2.5 起的所有 CPU 并在基本设置中禁用。 如果激活此选项，CPU 将所有网络错误报告为“要求维护”(Maintenance demanded)。 – 抑制未激活 IO 设备的报警： 该选项适用于自固件版本 V3.0 起的所有 CPU 并在基本设置中禁用。 如果激活此选项，CPU 不会为 PROFINET IO 系统上未激活但已组态的 IO 设备输出任何 报警。 – 检测负载电压故障： 该选项适用于自固件版本 V3.1 起的所有 CPU 并在基本设置中禁用。 如果激活此选项，CPU 会在用户程序中报告中央或分布式 I/O 的负载电压电源故障。 结果：已在 CPU 属性中组态系统诊断的报警设置。 26 诊断 功能手册, 11/2024, A5E03735842-AJ ",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Topology Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0082",
+          "sha256": "25c8e6f285b952b28dd52646b385fbf8d5081c8d7d461b6b813e8b6c2238b5ef",
+          "visual_type": "diagnostic_alarm_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_08_EV_13",
+        "asset_id": "VIS_0083",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E41815205-AH",
+        "page": 851,
+        "section": "基本信息 > S7-1500R/H 冗余系统 > 13 显示屏 > 13.1 CPU 显示屏",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "状态数据的颜色和图标 含义 • 已组态访问保护。 • 采用以下组态时错误地显示： 尚未组态访问控制，“匿名”用户不具备 CPU 的完全访问权限（例如只读访问）。 • CPU 中至少激活了一个报警。 • CPU 中未插入 SIMATIC 存储卡。 • 用户程序未加载。 CPU 中激活了强制作业。 F 功能已激活。安全模式激活。如果安全模式已取消激活，则该符号呈灰色。 故障安全 CPU 图注 ②：菜单名称 下表列出了显示屏中的可用菜单。 表格 1-124 菜单名称 主菜单项 含义 说明 概述 “概述”(Overview) 菜单包含以下信息： • 本地 CPU 的特性 • F CPU 的特性 – 安全模块的状态 – 集体签名 – 上次更改日期 • 冗余特性，例如 – 角色显示（主 CPU 或备用 CPU） – 显示和设置冗余 ID – 显示配对状态 – 激活/取消激活单机模式（仅 R-CPU） • 已插入 SIMATIC 存储卡的特性 诊断 “诊断”(Diagnostics) 菜单包括： • 显示报警 • 显示诊断缓冲区 • 对强制表和监控表进行读访问和写访问 • 循环时间的显示 • 显示存储器使用情况 设置 在“设置”(Settings) 菜单中，用户可以： • 分配 CPU 的 IP 地址和 PROFINET 设备名称。 • 设置日期、时间和时区 • 设置操作模式 (RUN/STOP) • 执行 CPU 存储器复位或复位为出厂设置 • 禁用和启用密码 • 使用显示密码禁用/启用显示 • 格式化 SIMATIC 存储卡 • 执行固件更新和显示状态 • 转换 SIMATIC 存储卡或",
+        "compact_excerpt": "状态数据的颜色和图标 含义 • 已组态访问保护。 • 采用以下组态时错误地显示： 尚未组态访问控制，“匿名”用户不具备 CPU 的完全访问权限（例如只读访问）。 • CPU 中至少激活了一个报警。 • CPU 中未插入 SIMATIC 存储卡。 • 用户程序未加载。 CPU 中激活了强制作业。 F 功能已激活。安全模式激活。如果安全模式已取消激活，则该符号呈灰色。 故障安全 CPU 图注 ②：菜单名称 下表列出了显示屏中的可用菜单。 表格 1-124 菜单名称 主菜单项 含义 说明 概述 “概述”(Overview) 菜单包含以下信息： • 本地 CPU 的特性 • F CPU 的特性 – 安全模块的状态 – 集体签名 – 上次更改日期 • 冗余特性，例如 – 角色显示（主 CPU 或备用 CPU） – 显示和设置冗余 ID – 显示配对状态 – 激活/取消激活单机模式（仅 R-CPU） • 已插入 SIMATIC 存储卡的特性 诊断 “诊断”(Diagnostics) 菜单包括： • 显示报警 • 显示诊断缓冲区 • 对强制表和监控表进行读访问和写访问 • 循环时间的显示 • 显示存储器使用情况 设置 在“设置”(Settings) 菜单中，用户可以： • 分配 CPU 的 IP 地址和 PROFINET 设备名称。 • 设置日期、时间和时区 • 设置操作模式 (RUN/STOP) • 执行 CPU 存储器复位或复位为出厂设置 • 禁用和启用密码 • 使用显示密码禁用/启用显示 • 格式化 SIMATIC 存储卡 • 执行固件更新和显示状态 • 转换 SIMATIC 存储卡或",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Topology Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0083",
+          "sha256": "ec4ddf2bb94a05305002630501d566576c6860f1977f21f2e9fd527c9175c619",
+          "visual_type": "diagnostic_alarm_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_08_EV_14",
+        "asset_id": "VIS_0084",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E41815205-AH",
+        "page": 867,
+        "section": "基本信息 > S7-1500R/H 冗余系统 > 14 维护 > 14.1 冗余运行期间的系统修改 (CiR) > 14.1.5 重新组态 I/O 模块",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "结果 通过 CiR 添加新组件时，只有在成功下载 CiR 并按下“完成”(Finish) 按钮后，才会将新 IO 设备 投入运行。 R/H 系统在 RUN-Redundant 系统状态下保持不间断。 说明 如果在 CiR 下载过程中出错，则检查消息显示屏或诊断缓冲区中是否出现 CiR 特定的报警。 如果在消息显示屏或诊断缓冲区中未显示 CiR 特定的报警，则说明 CiR 下载过程已中止，且 R/H 系统的硬件配置尚未更改。 如果 R/H 系统在某个传入 CiR 特定报警后切换到 RUN-Solo 系统状态，则会生成一个正在进行 的 CiR 特定报警。 14.1.5 重新组态 I/O 模块 简介 在 R/H 系统的 PROFINET 网络中，可以重新组态以下 IO 设备的 I/O 模块的参数： • S1 设备 • S2 设备 • R1 设备 下面介绍了更改硬件结构、硬件配置和用户程序的各种场景。 注意事项 • R 或 H 系统：更改 I/O 模块的参数后，只有具有 CiR 功能的 S2 或 R1 设备才能断开/恢复。 • 在具有 CiR 功能的 S2 或 R1 设备的重新组态 I/O 模块的重新组态期间，关联 IO 设备将失去 其系统冗余。通过调用 OB 70（I/O 冗余错误）报告冗余丢失。重新组态时间过后，将恢复 系统冗余。 说明 S1 设备（无系统冗余）在重新组态期间短暂发生故障。 449 维护 14.1 冗余运行期间的系统修改 (CiR) S7-1500R/H 冗余系统 系统手册, 11/2025, A5E41815205-AH",
+        "compact_excerpt": "结果 通过 CiR 添加新组件时，只有在成功下载 CiR 并按下“完成”(Finish) 按钮后，才会将新 IO 设备 投入运行。 R/H 系统在 RUN-Redundant 系统状态下保持不间断。 说明 如果在 CiR 下载过程中出错，则检查消息显示屏或诊断缓冲区中是否出现 CiR 特定的报警。 如果在消息显示屏或诊断缓冲区中未显示 CiR 特定的报警，则说明 CiR 下载过程已中止，且 R/H 系统的硬件配置尚未更改。 如果 R/H 系统在某个传入 CiR 特定报警后切换到 RUN-Solo 系统状态，则会生成一个正在进行 的 CiR 特定报警。 14.1.5 重新组态 I/O 模块 简介 在 R/H 系统的 PROFINET 网络中，可以重新组态以下 IO 设备的 I/O 模块的参数： • S1 设备 • S2 设备 • R1 设备 下面介绍了更改硬件结构、硬件配置和用户程序的各种场景。 注意事项 • R 或 H 系统：更改 I/O 模块的参数后，只有具有 CiR 功能的 S2 或 R1 设备才能断开/恢复。 • 在具有 CiR 功能的 S2 或 R1 设备的重新组态 I/O 模块的重新组态期间，关联 IO 设备将失去 其系统冗余。通过调用 OB 70（I/O 冗余错误）报告冗余丢失。重新组态时间过后，将恢复 系统冗余。 说明 S1 设备（无系统冗余）在重新组态期间短暂发生故障。 449 维护 14.1 冗余运行期间的系统修改 (CiR) S7-1500R/H 冗余系统 系统手册, 11/2025, A5E41815205-AH",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Topology Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0084",
+          "sha256": "80b8380efa7a83831598a7ce5ea3529667fe612a043b34ef768ee1a4240e63b7",
+          "visual_type": "diagnostic_alarm_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_08_EV_15",
+        "asset_id": "VIS_0085",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E41815205-AH",
+        "page": 788,
+        "section": "基本信息 > S7-1500R/H 冗余系统 > 12 调试 > 12.3 调试过程 > 12.3.3 CPU 配对",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "12.3.2 CPU 首次上电 要求 • SIMATIC S7-1500R/H 冗余系统已安装。 • 系统已接线。 • SIMATIC 存储卡已插入 CPU。 操作步骤 要调试 CPU，请按以下步骤操作： 1. 启动系统电源/负载电流电源。 结果： • CPU 运行 LED 测试。所有 LED 指示灯以 2 Hz 频率闪烁。 – RUN/STOP LED 指示灯呈黄色/绿色交替闪烁 – ERROR-LED 指示灯呈红色 – MAINT LED 指示灯呈黄色。 • CPU 执行系统初始化并对 SIMATIC 存储卡进行评估： – RUN/STOP LED 指示灯以 2 Hz 的频率呈黄色闪烁。 • 系统初始化完成后，CPU 切换为 STOP 模式： – RUN/STOP LED 指示灯呈黄色点亮。 12.3.3 CPU 配对 简介 配对是指两个 CPU 在网络中相互识别。配对过程中，CPU 会交换信息，以便相互识别。示 例：查看匹配的订货号和固件版本。 两个 CPU 成功配对是冗余操作的基本要求。 要求 要成功进行配对，CPU 的固件版本必须相同，且订货号必须相同。 如果所使用的组态方式无效，则两个 CPU 将无法配对。例如，PROFINET 环网中 R-CPU 的数量 超过两个。配对错误显示在诊断缓冲区中。 370 S7-1500R/H 冗余系统 系统手册, 11/2025, A5E41815205-AH 调试 12.3 调试过程",
+        "compact_excerpt": "12.3.2 CPU 首次上电 要求 • SIMATIC S7-1500R/H 冗余系统已安装。 • 系统已接线。 • SIMATIC 存储卡已插入 CPU。 操作步骤 要调试 CPU，请按以下步骤操作： 1. 启动系统电源/负载电流电源。 结果： • CPU 运行 LED 测试。所有 LED 指示灯以 2 Hz 频率闪烁。 – RUN/STOP LED 指示灯呈黄色/绿色交替闪烁 – ERROR-LED 指示灯呈红色 – MAINT LED 指示灯呈黄色。 • CPU 执行系统初始化并对 SIMATIC 存储卡进行评估： – RUN/STOP LED 指示灯以 2 Hz 的频率呈黄色闪烁。 • 系统初始化完成后，CPU 切换为 STOP 模式： – RUN/STOP LED 指示灯呈黄色点亮。 12.3.3 CPU 配对 简介 配对是指两个 CPU 在网络中相互识别。配对过程中，CPU 会交换信息，以便相互识别。示 例：查看匹配的订货号和固件版本。 两个 CPU 成功配对是冗余操作的基本要求。 要求 要成功进行配对，CPU 的固件版本必须相同，且订货号必须相同。 如果所使用的组态方式无效，则两个 CPU 将无法配对。例如，PROFINET 环网中 R-CPU 的数量 超过两个。配对错误显示在诊断缓冲区中。 370 S7-1500R/H 冗余系统 系统手册, 11/2025, A5E41815205-AH 调试 12.3 调试过程",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Topology Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0085",
+          "sha256": "2c7f8101116896803cebb169b1991beb694facebcf59dae437a731298cdc94c7",
+          "visual_type": "front_panel_or_led_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      }
+    ],
+    "metadata": {
+      "source": "offline_demo_snapshot",
+      "visual_asset_count": 15,
+      "cross_model_blocked": 0,
+      "rejected_evidence": []
+    }
+  },
+  "judge_decision": {
+    "verdict": "PASS",
+    "confidence": "MEDIUM",
+    "decision_reason": "离线快照仅采用资产清单中可解码、可追溯且经身份检查的手册页。",
+    "final_evidence_ids": [
+      "HIDDEN_08_EV_01",
+      "HIDDEN_08_EV_02"
+    ],
+    "accepted_agent_outputs": [
+      "Troubleshooting Agent",
+      "Topology Agent"
+    ],
+    "rejected_agent_outputs": [],
+    "supported_claims": [
+      "按低风险顺序排查：先检查 CPU、ET 200MP 的 PROFINET 线缆、端口链路灯和接口模块供电；再核对设备名称；然后核对 IP、子网和重复地址；接着比较 TIA Portal 硬件组态与实际模块；最后读取 CPU 和 ET 200MP 接口模块诊断缓冲区。BF 红闪而 SF 未亮不能替代上述逐项查证，检查前禁止带电插拔。"
+    ],
+    "unsupported_claims": [],
+    "conflicting_claims": [],
+    "coverage": {
+      "main": {
+        "answered": true
+      }
+    },
+    "model_consistency": {
+      "pass": true,
+      "rejected_evidence_ids": []
+    },
+    "metadata": {
+      "accepted_claims": [
+        {
+          "claim_id": "HIDDEN_08_CLAIM_01",
+          "claim_text": "按低风险顺序排查：先检查 CPU、ET 200MP 的 PROFINET 线缆、端口链路灯和接口模块供电；再核对设备名称；然后核对 IP、子网和重复地址；接着比较 TIA Portal 硬件组态与实际模块；最后读取 CPU 和 ET 200MP 接口模块诊断缓冲区。BF 红闪而 SF 未亮不能替代上述逐项查证，检查前禁止带电插拔。",
+          "claim_type": "technical_guidance",
+          "model_scope": "CPU 1517-3 PN/DP",
+          "confidence": "MEDIUM",
+          "evidence_ids": [
+            "HIDDEN_08_EV_01",
+            "HIDDEN_08_EV_02"
+          ],
+          "direct_support": true,
+          "metadata": {
+            "offline_curated": true
+          }
+        }
+      ]
+    }
+  },
+  "verifier": {
+    "figure_requirement_pass": true,
+    "numeric_mismatch_claim_ids": [],
+    "grounded_claim_ids": [
+      "HIDDEN_08_CLAIM_01"
+    ],
+    "passed": true
+  },
+  "answer": {
+    "status": "ANSWER",
+    "text": "按低风险顺序排查：先检查 CPU、ET 200MP 的 PROFINET 线缆、端口链路灯和接口模块供电；再核对设备名称；然后核对 IP、子网和重复地址；接着比较 TIA Portal 硬件组态与实际模块；最后读取 CPU 和 ET 200MP 接口模块诊断缓冲区。BF 红闪而 SF 未亮不能替代上述逐项查证，检查前禁止带电插拔。",
+    "evidence_ids": [
+      "HIDDEN_08_EV_01",
+      "HIDDEN_08_EV_02"
+    ]
+  },
+  "final_answer": "按低风险顺序排查：先检查 CPU、ET 200MP 的 PROFINET 线缆、端口链路灯和接口模块供电；再核对设备名称；然后核对 IP、子网和重复地址；接着比较 TIA Portal 硬件组态与实际模块；最后读取 CPU 和 ET 200MP 接口模块诊断缓冲区。BF 红闪而 SF 未亮不能替代上述逐项查证，检查前禁止带电插拔。",
+  "work_order": {
+    "status": "not_requested",
+    "risk_tip": ""
+  },
+  "visual_asset_ids": [
+    "VIS_0027",
+    "VIS_0028",
+    "VIS_0073",
+    "VIS_0074",
+    "VIS_0075",
+    "VIS_0076",
+    "VIS_0077",
+    "VIS_0078",
+    "VIS_0079",
+    "VIS_0080",
+    "VIS_0081",
+    "VIS_0082",
+    "VIS_0083",
+    "VIS_0084",
+    "VIS_0085"
+  ],
+  "visual_evidence": [
+    {
+      "asset_id": "VIS_0027",
+      "evidence_id": "HIDDEN_08_EV_01",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0028",
+      "evidence_id": "HIDDEN_08_EV_02",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0073",
+      "evidence_id": "HIDDEN_08_EV_03",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0074",
+      "evidence_id": "HIDDEN_08_EV_04",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0075",
+      "evidence_id": "HIDDEN_08_EV_05",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0076",
+      "evidence_id": "HIDDEN_08_EV_06",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0077",
+      "evidence_id": "HIDDEN_08_EV_07",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0078",
+      "evidence_id": "HIDDEN_08_EV_08",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0079",
+      "evidence_id": "HIDDEN_08_EV_09",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0080",
+      "evidence_id": "HIDDEN_08_EV_10",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0081",
+      "evidence_id": "HIDDEN_08_EV_11",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0082",
+      "evidence_id": "HIDDEN_08_EV_12",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0083",
+      "evidence_id": "HIDDEN_08_EV_13",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0084",
+      "evidence_id": "HIDDEN_08_EV_14",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0085",
+      "evidence_id": "HIDDEN_08_EV_15",
+      "status": "image_available"
+    }
+  ],
+  "visual_coverage_reason": {
+    "VIS_0027": "front_panel_or_led_page，资料页 2476，direct target evidence",
+    "VIS_0028": "front_panel_or_led_page，资料页 2481，direct target evidence",
+    "VIS_0073": "diagnostic_alarm_page，资料页 5355，supporting manual context",
+    "VIS_0074": "diagnostic_alarm_page，资料页 6795，supporting manual context",
+    "VIS_0075": "diagnostic_alarm_page，资料页 601，supporting manual context",
+    "VIS_0076": "front_panel_or_led_page，资料页 612，supporting manual context",
+    "VIS_0077": "front_panel_or_led_page，资料页 616，supporting manual context",
+    "VIS_0078": "front_panel_or_led_page，资料页 883，supporting manual context",
+    "VIS_0079": "front_panel_or_led_page，资料页 2876，supporting manual context",
+    "VIS_0080": "diagnostic_alarm_page，资料页 6870，supporting manual context",
+    "VIS_0081": "diagnostic_alarm_page，资料页 6954，supporting manual context",
+    "VIS_0082": "diagnostic_alarm_page，资料页 7828，supporting manual context",
+    "VIS_0083": "diagnostic_alarm_page，资料页 851，supporting manual context",
+    "VIS_0084": "diagnostic_alarm_page，资料页 867，supporting manual context",
+    "VIS_0085": "front_panel_or_led_page，资料页 788，supporting manual context"
+  },
+  "generated_from_commit": "8403213d89d3f2200b9f40ee1f72d23673c9b4f6",
+  "snapshot_validation": {
+    "valid": true,
+    "errors": []
+  },
+  "warnings": [
+    "该结果是基于仓库内真实手册页面整理的离线 SAMPLE 快照，未调用 FULL 检索后端。"
+  ]
+}

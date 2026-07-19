@@ -24,7 +24,10 @@ SafePLC-Assist Box supports **Python 3.10 and Python 3.11**.
 ```bash
 python -m safeplc_assist_box.agents.orchestrator "CPU 1517-3 PN 的 X1 接口在哪里" --mode SAMPLE --json
 python -m safeplc_assist_box.evaluation.run_agent_benchmark --cases-dir benchmark/sample_regression --mode SAMPLE --method full
-streamlit run app.py
+python -m streamlit run app.py \
+  --server.address 0.0.0.0 \
+  --server.port 8502 \
+  --server.headless true
 ```
 
 ## Frontend Quick Start
@@ -48,15 +51,43 @@ pip install -r requirements.txt
 SAFEPLC_FRONTEND_MODE=demo \
 SAFEPLC_ENABLE_DEMO=1 \
 SAFEPLC_MODE=SAMPLE \
-streamlit run app.py
+python -m streamlit run app.py \
+  --server.address 0.0.0.0 \
+  --server.port 8502 \
+  --server.headless true
 ```
 
 `demo` only reads immutable SAMPLE response snapshots declared in `safeplc_assist_box/frontend/data/demo_cases.json`. Snapshot use is bound to the case query, context, device scope, task hint, and pipeline mode. The status header marks the result as an offline SAMPLE snapshot and does not report Text/Figure Chroma as connected.
 
+The repository also contains an audited pool of 802 unique, decodable real-manual visuals with page and section traceability. A 150-asset acceptance subset is referenced in place by 15 private onsite snapshots, so the image files are not duplicated. These snapshots are disabled by default, are absent from public presets, and accept only normalized exact queries or approved exact aliases.
+
+```bash
+SAFEPLC_FRONTEND_MODE=demo \
+SAFEPLC_ENABLE_DEMO=1 \
+SAFEPLC_ENABLE_HIDDEN_DEMO=1 \
+SAFEPLC_SHOW_HIDDEN_DEMO_DEBUG=0 \
+SAFEPLC_MODE=SAMPLE \
+python -m streamlit run app.py \
+  --server.address 0.0.0.0 \
+  --server.port 8502 \
+  --server.headless true
+```
+
+Validate the packaged visuals and private snapshots without contacting a FULL backend:
+
+```bash
+python scripts/audit_demo_visual_assets.py
+python scripts/validate_hidden_demo_package.py
+python scripts/smoke_hidden_demo_15.py
+```
+
 ```bash
 SAFEPLC_FRONTEND_MODE=auto \
 SAFEPLC_MODE=SAMPLE \
-streamlit run app.py
+python -m streamlit run app.py \
+  --server.address 0.0.0.0 \
+  --server.port 8502 \
+  --server.headless true
 ```
 
 `auto` calls the real unified orchestrator first. If that call raises an error, an offline snapshot is allowed only when the user explicitly loaded a matching, unchanged demo case. A free-form or modified question is never replaced with demo output.
@@ -78,10 +109,33 @@ set +a
 
 SAFEPLC_FRONTEND_MODE=online \
 SAFEPLC_MODE=FULL \
-streamlit run app.py
+python -m streamlit run app.py \
+  --server.address 0.0.0.0 \
+  --server.port 8502 \
+  --server.headless true
 ```
 
 `online` only calls the unified orchestrator and exposes backend errors without substituting demo evidence. Do not source `config/full.env.example` unchanged: it contains placeholders and is not a runnable server configuration. The edited `config/full.env` file is ignored by Git.
+
+### Demo Endpoint And Cloudflare
+
+All demo entrypoints use port `8502`. The checked-in Streamlit configuration and startup script apply the same address, port, and headless settings.
+
+```bash
+python -m streamlit run app.py \
+  --server.address 0.0.0.0 \
+  --server.port 8502 \
+  --server.headless true
+```
+
+Expose that local endpoint through Cloudflare with HTTP/2:
+
+```bash
+./cloudflared tunnel \
+  --url http://127.0.0.1:8502 \
+  --protocol http2 \
+  --no-autoupdate
+```
 
 ### FULL Assets
 

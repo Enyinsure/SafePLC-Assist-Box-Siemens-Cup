@@ -1,0 +1,726 @@
+{
+  "schema_version": "hidden-demo-v1",
+  "case_id": "HIDDEN_10",
+  "source": "offline_demo_snapshot",
+  "pipeline_mode": "SAMPLE",
+  "immutable": true,
+  "query": "TIA Portal 组态中的 PROFINET 设备名称与 ET 200MP 实际设备名称不一致时，会出现什么现象，应该怎么核对？",
+  "query_hash": "f80ba44e3207877b7884777c10a6307032d72bf1bb495e3e7ff64dbcdeed12f7",
+  "mode": "SAMPLE",
+  "question_type": "TROUBLESHOOTING",
+  "action": "PARTIAL",
+  "verdict": "PARTIAL",
+  "confidence": "MEDIUM",
+  "operation_risk_level": "LOW",
+  "query_context": {
+    "original_query": "TIA Portal 组态中的 PROFINET 设备名称与 ET 200MP 实际设备名称不一致时，会出现什么现象，应该怎么核对？",
+    "question_type": "TROUBLESHOOTING",
+    "required_modalities": [
+      "figure",
+      "text"
+    ],
+    "missing_slots": [],
+    "risk_level": "LOW",
+    "risk_decision": "ALLOW",
+    "slots": {
+      "device_family": "ET 200MP",
+      "module_model": "IM 155-5",
+      "order_number": ""
+    }
+  },
+  "device_context": {
+    "family": "ET 200MP",
+    "model": "IM 155-5",
+    "order_number": "",
+    "detection_source": "hidden_demo_fixed",
+    "confidence": 1.0
+  },
+  "task_plan": {
+    "question_type": "TROUBLESHOOTING",
+    "selected_agents": [
+      "Troubleshooting Agent",
+      "Topology Agent"
+    ]
+  },
+  "agent_plan": {
+    "selected_agents": [
+      "Troubleshooting Agent",
+      "Topology Agent"
+    ],
+    "execution_order": [
+      "Troubleshooting Agent",
+      "Topology Agent"
+    ],
+    "execution_mode": "parallel",
+    "parallel_groups": [
+      [
+        "Troubleshooting Agent",
+        "Topology Agent"
+      ]
+    ],
+    "tasks": [
+      {
+        "task_id": "HIDDEN_10_TASK_01",
+        "agent_name": "Troubleshooting Agent",
+        "question": "TIA Portal 组态中的 PROFINET 设备名称与 ET 200MP 实际设备名称不一致时，会出现什么现象，应该怎么核对？",
+        "status": "completed"
+      },
+      {
+        "task_id": "HIDDEN_10_TASK_02",
+        "agent_name": "Topology Agent",
+        "question": "TIA Portal 组态中的 PROFINET 设备名称与 ET 200MP 实际设备名称不一致时，会出现什么现象，应该怎么核对？",
+        "status": "completed"
+      }
+    ]
+  },
+  "agent_results": [
+    {
+      "agent_name": "Troubleshooting Agent",
+      "status": "PARTIAL",
+      "answer": "设备名称不一致会使 IO Controller 无法按组态名称建立目标 IO Device 的正常数据交换，并可能伴随总线或接口模块诊断。先在 TIA Portal 核对组态名称，再通过可访问设备按 MAC 地址识别现场设备，比较实际名称后按受控流程分配正确名称；随后复核 IP/子网和诊断缓冲区。不要用恢复出厂设置代替身份核对。",
+      "claims": [
+        {
+          "claim_id": "HIDDEN_10_CLAIM_01",
+          "claim_text": "设备名称不一致会使 IO Controller 无法按组态名称建立目标 IO Device 的正常数据交换，并可能伴随总线或接口模块诊断。先在 TIA Portal 核对组态名称，再通过可访问设备按 MAC 地址识别现场设备，比较实际名称后按受控流程分配正确名称；随后复核 IP/子网和诊断缓冲区。不要用恢复出厂设置代替身份核对。",
+          "claim_type": "technical_guidance",
+          "model_scope": "IM 155-5",
+          "confidence": "MEDIUM",
+          "evidence_ids": [
+            "HIDDEN_10_EV_01",
+            "HIDDEN_10_EV_02",
+            "HIDDEN_10_EV_03"
+          ],
+          "direct_support": true,
+          "metadata": {
+            "offline_curated": true
+          }
+        }
+      ],
+      "evidence_ids": [
+        "HIDDEN_10_EV_01",
+        "HIDDEN_10_EV_02",
+        "HIDDEN_10_EV_03"
+      ],
+      "abstain": false
+    },
+    {
+      "agent_name": "Topology Agent",
+      "status": "PARTIAL",
+      "answer": "设备名称不一致会使 IO Controller 无法按组态名称建立目标 IO Device 的正常数据交换，并可能伴随总线或接口模块诊断。先在 TIA Portal 核对组态名称，再通过可访问设备按 MAC 地址识别现场设备，比较实际名称后按受控流程分配正确名称；随后复核 IP/子网和诊断缓冲区。不要用恢复出厂设置代替身份核对。",
+      "claims": [
+        {
+          "claim_id": "HIDDEN_10_CLAIM_01",
+          "claim_text": "设备名称不一致会使 IO Controller 无法按组态名称建立目标 IO Device 的正常数据交换，并可能伴随总线或接口模块诊断。先在 TIA Portal 核对组态名称，再通过可访问设备按 MAC 地址识别现场设备，比较实际名称后按受控流程分配正确名称；随后复核 IP/子网和诊断缓冲区。不要用恢复出厂设置代替身份核对。",
+          "claim_type": "technical_guidance",
+          "model_scope": "IM 155-5",
+          "confidence": "MEDIUM",
+          "evidence_ids": [
+            "HIDDEN_10_EV_01",
+            "HIDDEN_10_EV_02",
+            "HIDDEN_10_EV_03"
+          ],
+          "direct_support": true,
+          "metadata": {
+            "offline_curated": true
+          }
+        }
+      ],
+      "evidence_ids": [
+        "HIDDEN_10_EV_01",
+        "HIDDEN_10_EV_02",
+        "HIDDEN_10_EV_03"
+      ],
+      "abstain": false
+    }
+  ],
+  "evidence_pool": {
+    "evidences": [
+      {
+        "evidence_id": "HIDDEN_10_EV_01",
+        "asset_id": "VIS_0100",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03735842-AJ",
+        "page": 7875,
+        "section": "综合信息 > 《诊断功能手册》 > 诊断 > 6 通过用户程序进行系统诊断 > 6.1 用户程序中的系统诊断选项",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "通过用户程序进行系统诊断 6 6.1 用户程序中的系统诊断选项 简介 在用户程序中，可组态对诊断报警的响应。如，指定发生特定诊断报警时关停设备。 指令 诊断信息采用了独立于供应商的数据记录结构。以下指令可用于确定某个设备的系统诊断： 表格 3-369 确定系统诊断的指令 指令 说明 RDREC • 读取可能包含错误信息的 DP 从站/IO 设备组件（模块或子模块）的数据记录 • 异步执行，即执行过程可以跨多个调用 DPNRM_DG • 读取 DP 从站的当前诊断数据（DP 标准诊断） • 异步执行，即执行过程可以跨多个调用 T_DIAG • 提供与某个连接有关的诊断信息和状态信息 • 异步执行，即执行过程可以跨多个调用 Get_IM_Data • 读取 CPU 的标识和维护数据 • 异步执行，即执行过程可以跨多个调用 GetStationInfo • 读取 PROFINET IO 设备的地址信息 • IO 设备也可位于较低级别的 IO 系统中（通过 CP/CM 连接）（在 S7-1500R/H 系统中除外）。 • 异步执行，即执行过程可以跨多个调用 GetChecksum • 读取对象组的校验和 • 异步执行，即执行过程可以跨多个调用 GetSMCinfo • 读取有关插入的 SIMATIC 存储卡的信息 • 异步执行，即执行过程可以跨多个调用 RALRM • 调用诊断中断 OB (OB 82) 时，读取 OB 的起始信息 • 提供错误原因和位置信息 GEN_DIAG • 生成诊断信息 • 为生成诊断信息，采用其逻辑地址来标识模块或子模块 Gen_UsrMsg • 生成在诊断缓",
+        "compact_excerpt": "通过用户程序进行系统诊断 6 6.1 用户程序中的系统诊断选项 简介 在用户程序中，可组态对诊断报警的响应。如，指定发生特定诊断报警时关停设备。 指令 诊断信息采用了独立于供应商的数据记录结构。以下指令可用于确定某个设备的系统诊断： 表格 3-369 确定系统诊断的指令 指令 说明 RDREC • 读取可能包含错误信息的 DP 从站/IO 设备组件（模块或子模块）的数据记录 • 异步执行，即执行过程可以跨多个调用 DPNRM_DG • 读取 DP 从站的当前诊断数据（DP 标准诊断） • 异步执行，即执行过程可以跨多个调用 T_DIAG • 提供与某个连接有关的诊断信息和状态信息 • 异步执行，即执行过程可以跨多个调用 Get_IM_Data • 读取 CPU 的标识和维护数据 • 异步执行，即执行过程可以跨多个调用 GetStationInfo • 读取 PROFINET IO 设备的地址信息 • IO 设备也可位于较低级别的 IO 系统中（通过 CP/CM 连接）（在 S7-1500R/H 系统中除外）。 • 异步执行，即执行过程可以跨多个调用 GetChecksum • 读取对象组的校验和 • 异步执行，即执行过程可以跨多个调用 GetSMCinfo • 读取有关插入的 SIMATIC 存储卡的信息 • 异步执行，即执行过程可以跨多个调用 RALRM • 调用诊断中断 OB (OB 82) 时，读取 OB 的起始信息 • 提供错误原因和位置信息 GEN_DIAG • 生成诊断信息 • 为生成诊断信息，采用其逻辑地址来标识模块或子模块 Gen_UsrMsg • 生成在诊断缓",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Topology Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0100",
+          "sha256": "4aae2dfb7f0cea8306cecd1c7aa932f7c8c791aa9732ace9377d0e8fb5bed449",
+          "visual_type": "diagnostic_alarm_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_10_EV_02",
+        "asset_id": "VIS_0101",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03735842-AJ",
+        "page": 7809,
+        "section": "综合信息 > 《诊断功能手册》 > 诊断 > 1 简介 > 1.1 功能手册文档指南 > 1.1.1 信息类“功能手册”",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "1.1 功能手册文档指南 1.1.1 信息类“功能手册” SIMATIC S7‑1500 自动化系统、基于 SIMATIC S7‑1500 和 SIMATIC ET 200MP 的 1513/1516pro-2 PN, SIMATIC Drive Controller CPU、ET 200SP、ET 200AL 和 ET 200eco PN 分 布式 I/O 系统的文档分为 3 个部分。 用户可根据需要快速访问所需内容。 相关文档，可从 Internet 免费下载。 (https://support.industry.siemens.com/cs/cn/zh/view/109742705) 基本信息 系统手册和入门指南中详细描述了 SIMATIC S7‑1500, SIMATIC Drive Controller, ET 200MP、ET 200SP、 ET 200AL 和 ET 200eco PN 系统的组态、安装、接线和调试。对于 1513/1516pro-2 PN CPU，可参见相应的操作说明。 STEP 7 在线帮助为用户提供了组态和编程方面的支持。 示例： • S7-1500 入门指南 • 系统手册 • ET 200pro 和 1516pro-2 PN CPU 操作说明 • TIA Portal 在线帮助 设备信息 设备手册中包含模块特定信息的简要介绍，如特性、接线图、功能特性和技术规范。 示例： • CPU 设备手册 • “接口模块”设备手册 • “数字量模块”设备手册 • “模拟量模块”设备手册 • “通信模块”设备手册 • “工艺模块”设备手册 • “电源模块”",
+        "compact_excerpt": "1.1 功能手册文档指南 1.1.1 信息类“功能手册” SIMATIC S7‑1500 自动化系统、基于 SIMATIC S7‑1500 和 SIMATIC ET 200MP 的 1513/1516pro-2 PN, SIMATIC Drive Controller CPU、ET 200SP、ET 200AL 和 ET 200eco PN 分 布式 I/O 系统的文档分为 3 个部分。 用户可根据需要快速访问所需内容。 相关文档，可从 Internet 免费下载。 (https://support.industry.siemens.com/cs/cn/zh/view/109742705) 基本信息 系统手册和入门指南中详细描述了 SIMATIC S7‑1500, SIMATIC Drive Controller, ET 200MP、ET 200SP、 ET 200AL 和 ET 200eco PN 系统的组态、安装、接线和调试。对于 1513/1516pro-2 PN CPU，可参见相应的操作说明。 STEP 7 在线帮助为用户提供了组态和编程方面的支持。 示例： • S7-1500 入门指南 • 系统手册 • ET 200pro 和 1516pro-2 PN CPU 操作说明 • TIA Portal 在线帮助 设备信息 设备手册中包含模块特定信息的简要介绍，如特性、接线图、功能特性和技术规范。 示例： • CPU 设备手册 • “接口模块”设备手册 • “数字量模块”设备手册 • “模拟量模块”设备手册 • “通信模块”设备手册 • “工艺模块”设备手册 • “电源模块”",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Topology Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0101",
+          "sha256": "82e34e083bf48a5ccca20bfb725f82880ae2fb069ccc49512df43cdbcd51378e",
+          "visual_type": "module_cpu_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_10_EV_03",
+        "asset_id": "VIS_0102",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E31277296-AL",
+        "page": 7933,
+        "section": "综合信息 > 《诊断功能手册》 > 轨迹和逻辑分析器功能 > 1 简介 > 1.1 功能手册文档指南 > 1.1.1 信息类“功能手册”",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "1.1 功能手册文档指南 1.1.1 信息类“功能手册” SIMATIC S7‑1500 自动化系统、基于 SIMATIC S7‑1500 和 SIMATIC ET 200MP 的 1513/1516pro-2 PN, SIMATIC Drive Controller CPU、ET 200SP、ET 200AL 和 ET 200eco PN 分 布式 I/O 系统的文档分为 3 个部分。 用户可根据需要快速访问所需内容。 相关文档，可从 Internet 免费下载。 (https://support.industry.siemens.com/cs/cn/zh/view/109742705) 基本信息 系统手册和入门指南中详细描述了 SIMATIC S7‑1500, SIMATIC Drive Controller, ET 200MP、ET 200SP、 ET 200AL 和 ET 200eco PN 系统的组态、安装、接线和调试。对于 1513/1516pro-2 PN CPU，可参见相应的操作说明。 STEP 7 在线帮助为用户提供了组态和编程方面的支持。 示例： • S7-1500 入门指南 • 系统手册 • ET 200pro 和 1516pro-2 PN CPU 操作说明 • TIA Portal 在线帮助 设备信息 设备手册中包含模块特定信息的简要介绍，如特性、接线图、功能特性和技术规范。 示例： • CPU 设备手册 • “接口模块”设备手册 • “数字量模块”设备手册 • “模拟量模块”设备手册 • “通信模块”设备手册 • “工艺模块”设备手册 • “电源模块”",
+        "compact_excerpt": "1.1 功能手册文档指南 1.1.1 信息类“功能手册” SIMATIC S7‑1500 自动化系统、基于 SIMATIC S7‑1500 和 SIMATIC ET 200MP 的 1513/1516pro-2 PN, SIMATIC Drive Controller CPU、ET 200SP、ET 200AL 和 ET 200eco PN 分 布式 I/O 系统的文档分为 3 个部分。 用户可根据需要快速访问所需内容。 相关文档，可从 Internet 免费下载。 (https://support.industry.siemens.com/cs/cn/zh/view/109742705) 基本信息 系统手册和入门指南中详细描述了 SIMATIC S7‑1500, SIMATIC Drive Controller, ET 200MP、ET 200SP、 ET 200AL 和 ET 200eco PN 系统的组态、安装、接线和调试。对于 1513/1516pro-2 PN CPU，可参见相应的操作说明。 STEP 7 在线帮助为用户提供了组态和编程方面的支持。 示例： • S7-1500 入门指南 • 系统手册 • ET 200pro 和 1516pro-2 PN CPU 操作说明 • TIA Portal 在线帮助 设备信息 设备手册中包含模块特定信息的简要介绍，如特性、接线图、功能特性和技术规范。 示例： • CPU 设备手册 • “接口模块”设备手册 • “数字量模块”设备手册 • “模拟量模块”设备手册 • “通信模块”设备手册 • “工艺模块”设备手册 • “电源模块”",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Topology Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0102",
+          "sha256": "e99ac358594ed770177ac7943b0290460f0e82bf7b4361fb5ee77fcc04316699",
+          "visual_type": "module_cpu_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_10_EV_04",
+        "asset_id": "VIS_0103",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03735819-AN",
+        "page": 8057,
+        "section": "综合信息 > 《通信功能手册》 > 通信 > 1 简介 > 1.2 功能手册文档指南 > 1.2.1 信息类“功能手册”",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "设备信息 设备手册中包含模块特定信息的简要介绍，如特性、接线图、功能特性和技术规范。 示例： • CPU 设备手册 • “接口模块”设备手册 • “数字量模块”设备手册 • “模拟量模块”设备手册 • “通信模块”设备手册 • “工艺模块”设备手册 • “电源模块”设备手册 • BaseUnit 设备手册 常规信息 功能手册中包含有关 SIMATIC Drive Controller 和 S7-1500 自动化系统的常规主题的详细描 述。 示例： • 《诊断》功能手册 • 《通信》功能手册 • 《运动控制》功能手册 • 《Web 服务器》功能手册 • 《周期和响应时间》功能手册 • PROFINET 功能手册 • PROFIBUS 功能手册 产品信息 产品信息中记录了对这些手册的更改和补充信息。本产品信息的优先级高于设备手册和系统手 册。 有关产品信息的最新版本，敬请访问 Internet： • S7-1500/ET 200MP (https://support.industry.siemens.com/cs/cn/zh/view/68052815/en) • SIMATIC Drive Controller (https://support.industry.siemens.com/cs/de/zh/view/109772684/zh) • 运动控制 (https://support.industry.siemens.com/cs/de/zh/view/109794046/zh) • ET 200SP (https://support.industry.siemens.com",
+        "compact_excerpt": "设备信息 设备手册中包含模块特定信息的简要介绍，如特性、接线图、功能特性和技术规范。 示例： • CPU 设备手册 • “接口模块”设备手册 • “数字量模块”设备手册 • “模拟量模块”设备手册 • “通信模块”设备手册 • “工艺模块”设备手册 • “电源模块”设备手册 • BaseUnit 设备手册 常规信息 功能手册中包含有关 SIMATIC Drive Controller 和 S7-1500 自动化系统的常规主题的详细描 述。 示例： • 《诊断》功能手册 • 《通信》功能手册 • 《运动控制》功能手册 • 《Web 服务器》功能手册 • 《周期和响应时间》功能手册 • PROFINET 功能手册 • PROFIBUS 功能手册 产品信息 产品信息中记录了对这些手册的更改和补充信息。本产品信息的优先级高于设备手册和系统手 册。 有关产品信息的最新版本，敬请访问 Internet： • S7-1500/ET 200MP (https://support.industry.siemens.com/cs/cn/zh/view/68052815/en) • SIMATIC Drive Controller (https://support.industry.siemens.com/cs/de/zh/view/109772684/zh) • 运动控制 (https://support.industry.siemens.com/cs/de/zh/view/109794046/zh) • ET 200SP (https://support.industry.siemens.com",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Topology Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0103",
+          "sha256": "7c9f78e276961a0a44e371e5918e92c8a36a5663cfb80285c6f5ed79d1292713",
+          "visual_type": "module_cpu_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_10_EV_05",
+        "asset_id": "VIS_0104",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03461669-AE",
+        "page": 6730,
+        "section": "综合信息 > 《CPU 功能手册》 > CPU 存储器的结构和使用 > 1 简介 > 1.1 功能手册文档指南 > 1.1.1 信息类“功能手册”",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "参见 存储器使用：数据记录 (页 35) 1.1 功能手册文档指南 1.1.1 信息类“功能手册” SIMATIC S7‑1500 自动化系统、基于 SIMATIC S7‑1500 和 SIMATIC ET 200MP 的 1513/1516pro-2 PN, SIMATIC Drive Controller CPU、ET 200SP、ET 200AL 和 ET 200eco PN 分 布式 I/O 系统的文档分为 3 个部分。 用户可根据需要快速访问所需内容。 相关文档，可从 Internet 免费下载。 (https://support.industry.siemens.com/cs/cn/zh/view/109742705) 基本信息 系统手册和入门指南中详细描述了 SIMATIC S7‑1500, SIMATIC Drive Controller, ET 200MP、ET 200SP、 ET 200AL 和 ET 200eco PN 系统的组态、安装、接线和调试。对于 1513/1516pro-2 PN CPU，可参见相应的操作说明。 STEP 7 在线帮助为用户提供了组态和编程方面的支持。 示例： • S7-1500 入门指南 • 系统手册 • ET 200pro 和 1516pro-2 PN CPU 操作说明 • TIA Portal 在线帮助 设备信息 设备手册中包含模块特定信息的简要介绍，如特性、接线图、功能特性和技术规范。 示例： • CPU 设备手册 • “接口模块”设备手册 • “数字量模块”设备手册 • “模拟量模块”设备手册 • “通信模块”设备手册 ",
+        "compact_excerpt": "参见 存储器使用：数据记录 (页 35) 1.1 功能手册文档指南 1.1.1 信息类“功能手册” SIMATIC S7‑1500 自动化系统、基于 SIMATIC S7‑1500 和 SIMATIC ET 200MP 的 1513/1516pro-2 PN, SIMATIC Drive Controller CPU、ET 200SP、ET 200AL 和 ET 200eco PN 分 布式 I/O 系统的文档分为 3 个部分。 用户可根据需要快速访问所需内容。 相关文档，可从 Internet 免费下载。 (https://support.industry.siemens.com/cs/cn/zh/view/109742705) 基本信息 系统手册和入门指南中详细描述了 SIMATIC S7‑1500, SIMATIC Drive Controller, ET 200MP、ET 200SP、 ET 200AL 和 ET 200eco PN 系统的组态、安装、接线和调试。对于 1513/1516pro-2 PN CPU，可参见相应的操作说明。 STEP 7 在线帮助为用户提供了组态和编程方面的支持。 示例： • S7-1500 入门指南 • 系统手册 • ET 200pro 和 1516pro-2 PN CPU 操作说明 • TIA Portal 在线帮助 设备信息 设备手册中包含模块特定信息的简要介绍，如特性、接线图、功能特性和技术规范。 示例： • CPU 设备手册 • “接口模块”设备手册 • “数字量模块”设备手册 • “模拟量模块”设备手册 • “通信模块”设备手册 ",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Topology Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0104",
+          "sha256": "ac84bdb4c15f6a0d83935585348190cc0d5374be56e77bffd27e1bd0e0be4ddc",
+          "visual_type": "module_cpu_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_10_EV_06",
+        "asset_id": "VIS_0105",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03484629-AK",
+        "page": 6797,
+        "section": "综合信息 > 《CPU 功能手册》 > Web 服务器 > 1 简介 > 1.1 功能手册文档指南 > 1.1.1 信息类“功能手册”",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "1.1 功能手册文档指南 1.1.1 信息类“功能手册” SIMATIC S7‑1500 自动化系统、基于 SIMATIC S7‑1500 和 SIMATIC ET 200MP 的 1513/1516pro-2 PN, SIMATIC Drive Controller CPU、ET 200SP、ET 200AL 和 ET 200eco PN 分 布式 I/O 系统的文档分为 3 个部分。 用户可根据需要快速访问所需内容。 相关文档，可从 Internet 免费下载。 (https://support.industry.siemens.com/cs/cn/zh/view/109742705) 基本信息 系统手册和入门指南中详细描述了 SIMATIC S7‑1500, SIMATIC Drive Controller, ET 200MP、ET 200SP、 ET 200AL 和 ET 200eco PN 系统的组态、安装、接线和调试。对于 1513/1516pro-2 PN CPU，可参见相应的操作说明。 STEP 7 在线帮助为用户提供了组态和编程方面的支持。 示例： • S7-1500 入门指南 • 系统手册 • ET 200pro 和 1516pro-2 PN CPU 操作说明 • TIA Portal 在线帮助 设备信息 设备手册中包含模块特定信息的简要介绍，如特性、接线图、功能特性和技术规范。 示例： • CPU 设备手册 • “接口模块”设备手册 • “数字量模块”设备手册 • “模拟量模块”设备手册 • “通信模块”设备手册 • “工艺模块”设备手册 • “电源模块”",
+        "compact_excerpt": "1.1 功能手册文档指南 1.1.1 信息类“功能手册” SIMATIC S7‑1500 自动化系统、基于 SIMATIC S7‑1500 和 SIMATIC ET 200MP 的 1513/1516pro-2 PN, SIMATIC Drive Controller CPU、ET 200SP、ET 200AL 和 ET 200eco PN 分 布式 I/O 系统的文档分为 3 个部分。 用户可根据需要快速访问所需内容。 相关文档，可从 Internet 免费下载。 (https://support.industry.siemens.com/cs/cn/zh/view/109742705) 基本信息 系统手册和入门指南中详细描述了 SIMATIC S7‑1500, SIMATIC Drive Controller, ET 200MP、ET 200SP、 ET 200AL 和 ET 200eco PN 系统的组态、安装、接线和调试。对于 1513/1516pro-2 PN CPU，可参见相应的操作说明。 STEP 7 在线帮助为用户提供了组态和编程方面的支持。 示例： • S7-1500 入门指南 • 系统手册 • ET 200pro 和 1516pro-2 PN CPU 操作说明 • TIA Portal 在线帮助 设备信息 设备手册中包含模块特定信息的简要介绍，如特性、接线图、功能特性和技术规范。 示例： • CPU 设备手册 • “接口模块”设备手册 • “数字量模块”设备手册 • “模拟量模块”设备手册 • “通信模块”设备手册 • “工艺模块”设备手册 • “电源模块”",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Topology Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0105",
+          "sha256": "30e55617a9d80b71c91da6bdfbc1837c29d965055e1e8477c13440cf0c670b0e",
+          "visual_type": "module_cpu_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_10_EV_07",
+        "asset_id": "VIS_0106",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E53797732-AB",
+        "page": 7057,
+        "section": "综合信息 > 《CPU 功能手册》 > Web 服务器 > 1 简介 > 1.2 功能手册文档指南 > 1.2.1 信息类“功能手册”",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "1.2 功能手册文档指南 1.2.1 信息类“功能手册” SIMATIC S7‑1500 自动化系统、基于 SIMATIC S7‑1500 和 SIMATIC ET 200MP 的 1513/1516pro-2 PN, SIMATIC Drive Controller CPU、ET 200SP、ET 200AL 和 ET 200eco PN 分 布式 I/O 系统的文档分为 3 个部分。 用户可根据需要快速访问所需内容。 相关文档，可从 Internet 免费下载。 (https://support.industry.siemens.com/cs/cn/zh/view/109742705) 基本信息 系统手册和入门指南中详细描述了 SIMATIC S7‑1500, SIMATIC Drive Controller, ET 200MP、ET 200SP、 ET 200AL 和 ET 200eco PN 系统的组态、安装、接线和调试。对于 1513/1516pro-2 PN CPU，可参见相应的操作说明。 STEP 7 在线帮助为用户提供了组态和编程方面的支持。 示例： • S7-1500 入门指南 • 系统手册 • ET 200pro 和 1516pro-2 PN CPU 操作说明 • TIA Portal 在线帮助 设备信息 设备手册中包含模块特定信息的简要介绍，如特性、接线图、功能特性和技术规范。 示例： • CPU 设备手册 • “接口模块”设备手册 • “数字量模块”设备手册 • “模拟量模块”设备手册 • “通信模块”设备手册 • “工艺模块”设备手册 • “电源模块”",
+        "compact_excerpt": "1.2 功能手册文档指南 1.2.1 信息类“功能手册” SIMATIC S7‑1500 自动化系统、基于 SIMATIC S7‑1500 和 SIMATIC ET 200MP 的 1513/1516pro-2 PN, SIMATIC Drive Controller CPU、ET 200SP、ET 200AL 和 ET 200eco PN 分 布式 I/O 系统的文档分为 3 个部分。 用户可根据需要快速访问所需内容。 相关文档，可从 Internet 免费下载。 (https://support.industry.siemens.com/cs/cn/zh/view/109742705) 基本信息 系统手册和入门指南中详细描述了 SIMATIC S7‑1500, SIMATIC Drive Controller, ET 200MP、ET 200SP、 ET 200AL 和 ET 200eco PN 系统的组态、安装、接线和调试。对于 1513/1516pro-2 PN CPU，可参见相应的操作说明。 STEP 7 在线帮助为用户提供了组态和编程方面的支持。 示例： • S7-1500 入门指南 • 系统手册 • ET 200pro 和 1516pro-2 PN CPU 操作说明 • TIA Portal 在线帮助 设备信息 设备手册中包含模块特定信息的简要介绍，如特性、接线图、功能特性和技术规范。 示例： • CPU 设备手册 • “接口模块”设备手册 • “数字量模块”设备手册 • “模拟量模块”设备手册 • “通信模块”设备手册 • “工艺模块”设备手册 • “电源模块”",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Topology Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0106",
+          "sha256": "d8a63b7550b796ff239de328fb01fe5e2a12e9e10ec6e63fc3858976b395b597",
+          "visual_type": "module_cpu_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_10_EV_08",
+        "asset_id": "VIS_0107",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03735842-AJ",
+        "page": 7906,
+        "section": "综合信息 > 《诊断功能手册》 > 诊断 > 8 S7-1500R/H 冗余系统的诊断 > 8.1 “在线和诊断视图”",
+        "figure_number": "图 3-397",
+        "manual_figure_number": "图 3-397",
+        "manual_figure_caption": "“冗余”(Redundancy) 对话框窗口的视图",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "参考资料 有关操作状态和系统状态的更多信息，请参见《冗余系统 S7-1500R/H 系统手册 (https://support.industry.siemens.com/cs/ww/zh/view/109754833)》。 S7-1500H 系统中线型拓扑 IO 设备的在线和诊断 自 STEP 7 V18 起，可以选择组态 R1 设备。将 R1 设备的每个接口模块分配给两个 H-CPU 之 一。 在 IO 设备的设备视图中，打开“在线和诊断”(Online & diagnostics) 窗口。将在“诊 断”(Diagnostics) 菜单中找到“冗余”(Redundancy) 对话框。其划分如下： • “模块”(Module) 列：IO 设备的接口模块。 • “控制器”(Controller) 列：每种情况下分配的 CPU。 • “连接状态”(Connection status) 列：接口模块和分配的 CPU 之间连接的当前状态以及当前 正在使用的接口模块。 IO 设备的“在线和诊断”(Online & diagnostics) 功能独立于冗余 S7-1500H 系统的组态变量。可 以将“在线和诊断”(Online & diagnostics) 功能用于环型或线型拓扑或者组合拓扑。 图 3-397 “冗余”(Redundancy) 对话框窗口的视图 说明 S2 设备的接口模块视图 与 R1 设备相比，S2 设备只有一个接口模块。因此，“接口模块”(Interface module) 列仅显示 一个 S2 设备的接口模块。 此接口模块分配给两个 H-CPU。 104 诊断 功能手",
+        "compact_excerpt": "参考资料 有关操作状态和系统状态的更多信息，请参见《冗余系统 S7-1500R/H 系统手册 (https://support.industry.siemens.com/cs/ww/zh/view/109754833)》。 S7-1500H 系统中线型拓扑 IO 设备的在线和诊断 自 STEP 7 V18 起，可以选择组态 R1 设备。将 R1 设备的每个接口模块分配给两个 H-CPU 之 一。 在 IO 设备的设备视图中，打开“在线和诊断”(Online & diagnostics) 窗口。将在“诊 断”(Diagnostics) 菜单中找到“冗余”(Redundancy) 对话框。其划分如下： • “模块”(Module) 列：IO 设备的接口模块。 • “控制器”(Controller) 列：每种情况下分配的 CPU。 • “连接状态”(Connection status) 列：接口模块和分配的 CPU 之间连接的当前状态以及当前 正在使用的接口模块。 IO 设备的“在线和诊断”(Online & diagnostics) 功能独立于冗余 S7-1500H 系统的组态变量。可 以将“在线和诊断”(Online & diagnostics) 功能用于环型或线型拓扑或者组合拓扑。 图 3-397 “冗余”(Redundancy) 对话框窗口的视图 说明 S2 设备的接口模块视图 与 R1 设备相比，S2 设备只有一个接口模块。因此，“接口模块”(Interface module) 列仅显示 一个 S2 设备的接口模块。 此接口模块分配给两个 H-CPU。 104 诊断 功能手",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Topology Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0107",
+          "sha256": "c7b9c899fa50387e1035f7a8fb757ce16d83e2c3060fb3abebefafec3fb7c20f",
+          "visual_type": "module_cpu_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_10_EV_09",
+        "asset_id": "VIS_0108",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E39041333-AC",
+        "page": 5268,
+        "section": "设备特定信息 > 工艺模块 > SIWAREX WP521/WP522 > 5 调试 > 5.7 使用 SIWATOOL 调试 > 5.7.1 SIWAREX 的 IP 地址",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "5.6.5 离线参数分配 秤的所有参数都可以在不使用电子称重系统的情况下进行编辑和保存。 这样可以节省设置时间。 因此，您可以在办公室中准备好多个秤的参数，随后在设置过程中 将这些参数传送到电子称重系统。 可以从当前处于运行状态的秤中将数据导出，然后用于其它秤的设置。 5.7 使用 SIWATOOL 调试 5.7.1 SIWAREX 的 IP 地址 出厂设置的 IP 地址为 192.168.0.21。该地址也显示在 SIWATOOL 中。可立即建立到 SIWAREX 模块的连接。必须针对此网络组态所用的网卡。 如果要建立到特定 SIWAREX 模块的连接，必须在 SIWATOOL 中设置该模块的 IP 地址。设置通 过菜单项“通信/设置以太网组态...”(Communication/Set Ethernet Configuration...) 执行。 如果不知道 SIWAREX 模块的 IP 地址，可使用额外程序“Primary Setup Tool”确定。此程序包含 在 SIWAREX 组态软件包中。 设置过程中，可使用 SIWATOOL 为模块分配新的 IP 地址。 说明 另请注意安全信息。 如果在一个网络中有多个 SIWAREX 模块，则需要为 SIWAREX 模块分配新的 IP 地址。 SIWAREX 使用以下端口： • SIWAREX WP521 的 SIWATOOL 端口：23006 • SIWAREX WP522 的 SIWATOOL 通道 A：端口 23006，通道 B：端口 23007 • 用于 SIWAREX WP521 的 Modbus TCP/IP：端口",
+        "compact_excerpt": "5.6.5 离线参数分配 秤的所有参数都可以在不使用电子称重系统的情况下进行编辑和保存。 这样可以节省设置时间。 因此，您可以在办公室中准备好多个秤的参数，随后在设置过程中 将这些参数传送到电子称重系统。 可以从当前处于运行状态的秤中将数据导出，然后用于其它秤的设置。 5.7 使用 SIWATOOL 调试 5.7.1 SIWAREX 的 IP 地址 出厂设置的 IP 地址为 192.168.0.21。该地址也显示在 SIWATOOL 中。可立即建立到 SIWAREX 模块的连接。必须针对此网络组态所用的网卡。 如果要建立到特定 SIWAREX 模块的连接，必须在 SIWATOOL 中设置该模块的 IP 地址。设置通 过菜单项“通信/设置以太网组态...”(Communication/Set Ethernet Configuration...) 执行。 如果不知道 SIWAREX 模块的 IP 地址，可使用额外程序“Primary Setup Tool”确定。此程序包含 在 SIWAREX 组态软件包中。 设置过程中，可使用 SIWATOOL 为模块分配新的 IP 地址。 说明 另请注意安全信息。 如果在一个网络中有多个 SIWAREX 模块，则需要为 SIWAREX 模块分配新的 IP 地址。 SIWAREX 使用以下端口： • SIWAREX WP521 的 SIWATOOL 端口：23006 • SIWAREX WP522 的 SIWATOOL 通道 A：端口 23006，通道 B：端口 23007 • 用于 SIWAREX WP521 的 Modbus TCP/IP：端口",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Topology Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0108",
+          "sha256": "e20cc6f3c21742f2946eac5ad066efebc55c59a78ebc3acbfe7929f3b64a14a5",
+          "visual_type": "network_topology_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_10_EV_10",
+        "asset_id": "VIS_0109",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E41815205-AH",
+        "page": 701,
+        "section": "基本信息 > S7-1500R/H 冗余系统 > 9 组态 > 9.3 组态 IO 设备和 MRP 角色的基本操作步骤",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "9.3 组态 IO 设备和 MRP 角色的基本操作步骤 简介 S7-1500R/H 冗余系统中 IO 设备的组态与 S7‑1500R 和 S7‑1500H 基本相同。组态因冗余系统 的组态变型（PROFINET 环网、线型拓扑、组合拓扑）以及使用的 S1、R1 和 S2 IO 设备类型而 略有不同。 以下部分以组态两个 IO 设备（ET 200MP 和 ET 200SP）为例介绍了相应操作步骤。 本部分结尾处简要总结了设置和规则方面的差异。 组态 PROFINET 环网中包含 R1 设备的 H-CPU 的操作步骤与基本操作步骤不同。相关说明，请 参见单独的部分 (页 287)。 要求 组态假定： • 已组态 R/H CPU。更多相关信息，请参见“组态 R/H CPU (页 279)”部分。 1.创建 IO 设备 要在冗余系统中创建两个 IO 设备，请按以下步骤操作： 1. 切换到网络视图。 2. 将 IO 设备（例如接口模块 IM 155‑5 PN HF）从硬件目录拖动到工作窗口。 3. 将所需模块拖动到 IO 设备中的相应插槽中。 4. 以同样的方式选择第二个 IO 设备，例如 IM 155‑6 PN HF。 5. 分配所需模块。 2.将 IO 设备分配给冗余系统 要将 IO 设备分配给冗余系统，应将每个 IO 设备连接到各 CPU。 为此，请执行以下步骤： 1. 在 IM 155‑5 PN HF 的 PROFINET 接口与左侧 CPU 的 PROFINET 接口 X1 之间拖放一条连 线。 2. 在 IM 155‑5 PN HF 的 PROFINET 接口与右侧 CPU ",
+        "compact_excerpt": "9.3 组态 IO 设备和 MRP 角色的基本操作步骤 简介 S7-1500R/H 冗余系统中 IO 设备的组态与 S7‑1500R 和 S7‑1500H 基本相同。组态因冗余系统 的组态变型（PROFINET 环网、线型拓扑、组合拓扑）以及使用的 S1、R1 和 S2 IO 设备类型而 略有不同。 以下部分以组态两个 IO 设备（ET 200MP 和 ET 200SP）为例介绍了相应操作步骤。 本部分结尾处简要总结了设置和规则方面的差异。 组态 PROFINET 环网中包含 R1 设备的 H-CPU 的操作步骤与基本操作步骤不同。相关说明，请 参见单独的部分 (页 287)。 要求 组态假定： • 已组态 R/H CPU。更多相关信息，请参见“组态 R/H CPU (页 279)”部分。 1.创建 IO 设备 要在冗余系统中创建两个 IO 设备，请按以下步骤操作： 1. 切换到网络视图。 2. 将 IO 设备（例如接口模块 IM 155‑5 PN HF）从硬件目录拖动到工作窗口。 3. 将所需模块拖动到 IO 设备中的相应插槽中。 4. 以同样的方式选择第二个 IO 设备，例如 IM 155‑6 PN HF。 5. 分配所需模块。 2.将 IO 设备分配给冗余系统 要将 IO 设备分配给冗余系统，应将每个 IO 设备连接到各 CPU。 为此，请执行以下步骤： 1. 在 IM 155‑5 PN HF 的 PROFINET 接口与左侧 CPU 的 PROFINET 接口 X1 之间拖放一条连 线。 2. 在 IM 155‑5 PN HF 的 PROFINET 接口与右侧 CPU ",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Topology Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0109",
+          "sha256": "960f61b205d212aa61122a81826b6512caa1d54a6bd9bd4669a171f9060c5295",
+          "visual_type": "module_cpu_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_10_EV_11",
+        "asset_id": "VIS_0110",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E46600341-AD",
+        "page": 983,
+        "section": "基本信息 > SIMATIC Drive Controller > 4 工业网络安全 > 4.12 I/O 模块的安全操作",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "4.10.4.3 数据备份/进一步措施 建议：此外，还可以将设置和组态备份到 SIMATIC Drive Controller 外部的存储介质上，例如 第二个存储卡、PG/PC、硬盘或网络驱动器上。 如果没有备份，则在设备出现故障时，设置和组态将丢失。 4.10.4.4 保护 Windows 文件系统中的备份文件 如果使用 Windows 工具生成图表或项目的备份文件，则必须同样使用 Windows 工具通过安全 密码来保护这些文件，防止未经授权的访问。Startdrive 组态本身受到完整性保护。 4.10.5 通信服务和使用的端口号 SINAMICS Integrated 没有专用的以太网接口。 关于通信服务，请考虑 SINAMICS Startdrive 通信使用 S7 连接和端口 102。这样，通信就会从 CPU 接口内部转发到 SINAMICS Integrated。 4.11 接口模块的安全操作 可在相应的系统手册和操作说明中找到设备特定的安全信息和接口模块的信息，例如： • SIMATIC S7-1500/ET 200MP 系统手册 (https://support.industry.siemens.com/cs/cn/zh/view/59191792) • SIMATIC ET 200SP 系统手册 (https://support.industry.siemens.com/cs/cn/zh/view/58649293) 4.12 I/O 模块的安全操作 设备特定的安全信息和 I/O 模块的信息可在相应的设备手册中找到。 51 工业网络安全 4.12 I/O 模",
+        "compact_excerpt": "4.10.4.3 数据备份/进一步措施 建议：此外，还可以将设置和组态备份到 SIMATIC Drive Controller 外部的存储介质上，例如 第二个存储卡、PG/PC、硬盘或网络驱动器上。 如果没有备份，则在设备出现故障时，设置和组态将丢失。 4.10.4.4 保护 Windows 文件系统中的备份文件 如果使用 Windows 工具生成图表或项目的备份文件，则必须同样使用 Windows 工具通过安全 密码来保护这些文件，防止未经授权的访问。Startdrive 组态本身受到完整性保护。 4.10.5 通信服务和使用的端口号 SINAMICS Integrated 没有专用的以太网接口。 关于通信服务，请考虑 SINAMICS Startdrive 通信使用 S7 连接和端口 102。这样，通信就会从 CPU 接口内部转发到 SINAMICS Integrated。 4.11 接口模块的安全操作 可在相应的系统手册和操作说明中找到设备特定的安全信息和接口模块的信息，例如： • SIMATIC S7-1500/ET 200MP 系统手册 (https://support.industry.siemens.com/cs/cn/zh/view/59191792) • SIMATIC ET 200SP 系统手册 (https://support.industry.siemens.com/cs/cn/zh/view/58649293) 4.12 I/O 模块的安全操作 设备特定的安全信息和 I/O 模块的信息可在相应的设备手册中找到。 51 工业网络安全 4.12 I/O 模",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Topology Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0110",
+          "sha256": "a4960c1c0c43ed2b61e82ebe84bb322255783cefa0dd8c2ee0d8b501bc1a660c",
+          "visual_type": "module_cpu_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      }
+    ],
+    "metadata": {
+      "source": "offline_demo_snapshot",
+      "visual_asset_count": 11,
+      "cross_model_blocked": 0,
+      "rejected_evidence": []
+    }
+  },
+  "judge_decision": {
+    "verdict": "PARTIAL",
+    "confidence": "MEDIUM",
+    "decision_reason": "离线快照仅采用资产清单中可解码、可追溯且经身份检查的手册页。",
+    "final_evidence_ids": [
+      "HIDDEN_10_EV_01",
+      "HIDDEN_10_EV_02",
+      "HIDDEN_10_EV_03"
+    ],
+    "accepted_agent_outputs": [
+      "Troubleshooting Agent",
+      "Topology Agent"
+    ],
+    "rejected_agent_outputs": [],
+    "supported_claims": [
+      "设备名称不一致会使 IO Controller 无法按组态名称建立目标 IO Device 的正常数据交换，并可能伴随总线或接口模块诊断。先在 TIA Portal 核对组态名称，再通过可访问设备按 MAC 地址识别现场设备，比较实际名称后按受控流程分配正确名称；随后复核 IP/子网和诊断缓冲区。不要用恢复出厂设置代替身份核对。"
+    ],
+    "unsupported_claims": [],
+    "conflicting_claims": [],
+    "coverage": {
+      "main": {
+        "answered": true
+      }
+    },
+    "model_consistency": {
+      "pass": true,
+      "rejected_evidence_ids": []
+    },
+    "metadata": {
+      "accepted_claims": [
+        {
+          "claim_id": "HIDDEN_10_CLAIM_01",
+          "claim_text": "设备名称不一致会使 IO Controller 无法按组态名称建立目标 IO Device 的正常数据交换，并可能伴随总线或接口模块诊断。先在 TIA Portal 核对组态名称，再通过可访问设备按 MAC 地址识别现场设备，比较实际名称后按受控流程分配正确名称；随后复核 IP/子网和诊断缓冲区。不要用恢复出厂设置代替身份核对。",
+          "claim_type": "technical_guidance",
+          "model_scope": "IM 155-5",
+          "confidence": "MEDIUM",
+          "evidence_ids": [
+            "HIDDEN_10_EV_01",
+            "HIDDEN_10_EV_02",
+            "HIDDEN_10_EV_03"
+          ],
+          "direct_support": true,
+          "metadata": {
+            "offline_curated": true
+          }
+        }
+      ]
+    }
+  },
+  "verifier": {
+    "figure_requirement_pass": true,
+    "numeric_mismatch_claim_ids": [],
+    "grounded_claim_ids": [
+      "HIDDEN_10_CLAIM_01"
+    ],
+    "passed": true
+  },
+  "answer": {
+    "status": "PARTIAL",
+    "text": "设备名称不一致会使 IO Controller 无法按组态名称建立目标 IO Device 的正常数据交换，并可能伴随总线或接口模块诊断。先在 TIA Portal 核对组态名称，再通过可访问设备按 MAC 地址识别现场设备，比较实际名称后按受控流程分配正确名称；随后复核 IP/子网和诊断缓冲区。不要用恢复出厂设置代替身份核对。",
+    "evidence_ids": [
+      "HIDDEN_10_EV_01",
+      "HIDDEN_10_EV_02",
+      "HIDDEN_10_EV_03"
+    ]
+  },
+  "final_answer": "设备名称不一致会使 IO Controller 无法按组态名称建立目标 IO Device 的正常数据交换，并可能伴随总线或接口模块诊断。先在 TIA Portal 核对组态名称，再通过可访问设备按 MAC 地址识别现场设备，比较实际名称后按受控流程分配正确名称；随后复核 IP/子网和诊断缓冲区。不要用恢复出厂设置代替身份核对。",
+  "work_order": {
+    "status": "not_requested",
+    "risk_tip": ""
+  },
+  "visual_asset_ids": [
+    "VIS_0100",
+    "VIS_0101",
+    "VIS_0102",
+    "VIS_0103",
+    "VIS_0104",
+    "VIS_0105",
+    "VIS_0106",
+    "VIS_0107",
+    "VIS_0108",
+    "VIS_0109",
+    "VIS_0110"
+  ],
+  "visual_evidence": [
+    {
+      "asset_id": "VIS_0100",
+      "evidence_id": "HIDDEN_10_EV_01",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0101",
+      "evidence_id": "HIDDEN_10_EV_02",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0102",
+      "evidence_id": "HIDDEN_10_EV_03",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0103",
+      "evidence_id": "HIDDEN_10_EV_04",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0104",
+      "evidence_id": "HIDDEN_10_EV_05",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0105",
+      "evidence_id": "HIDDEN_10_EV_06",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0106",
+      "evidence_id": "HIDDEN_10_EV_07",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0107",
+      "evidence_id": "HIDDEN_10_EV_08",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0108",
+      "evidence_id": "HIDDEN_10_EV_09",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0109",
+      "evidence_id": "HIDDEN_10_EV_10",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0110",
+      "evidence_id": "HIDDEN_10_EV_11",
+      "status": "image_available"
+    }
+  ],
+  "visual_coverage_reason": {
+    "VIS_0100": "diagnostic_alarm_page，资料页 7875，direct target evidence",
+    "VIS_0101": "module_cpu_page，资料页 7809，direct target evidence",
+    "VIS_0102": "module_cpu_page，资料页 7933，direct target evidence",
+    "VIS_0103": "module_cpu_page，资料页 8057，supporting manual context",
+    "VIS_0104": "module_cpu_page，资料页 6730，supporting manual context",
+    "VIS_0105": "module_cpu_page，资料页 6797，supporting manual context",
+    "VIS_0106": "module_cpu_page，资料页 7057，supporting manual context",
+    "VIS_0107": "module_cpu_page，资料页 7906，supporting manual context",
+    "VIS_0108": "network_topology_page，资料页 5268，supporting manual context",
+    "VIS_0109": "module_cpu_page，资料页 701，supporting manual context",
+    "VIS_0110": "module_cpu_page，资料页 983，supporting manual context"
+  },
+  "generated_from_commit": "8403213d89d3f2200b9f40ee1f72d23673c9b4f6",
+  "snapshot_validation": {
+    "valid": true,
+    "errors": []
+  },
+  "warnings": [
+    "该结果是基于仓库内真实手册页面整理的离线 SAMPLE 快照，未调用 FULL 检索后端。"
+  ]
+}

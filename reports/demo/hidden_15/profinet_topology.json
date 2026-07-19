@@ -1,0 +1,899 @@
+{
+  "schema_version": "hidden-demo-v1",
+  "case_id": "HIDDEN_07",
+  "source": "offline_demo_snapshot",
+  "pipeline_mode": "SAMPLE",
+  "immutable": true,
+  "query": "请给出 CPU 1517-3 PN/DP、HMI 和 ET 200MP 组成的典型 PROFINET 拓扑，并说明设备名称和 IP 配置注意事项。",
+  "query_hash": "5a54ed315b2c259f09a1af48fe57c353642eef70a2e8ba369e4485a3a2c3630e",
+  "mode": "SAMPLE",
+  "question_type": "TOPOLOGY",
+  "action": "ANSWER",
+  "verdict": "PASS",
+  "confidence": "MEDIUM",
+  "operation_risk_level": "LOW",
+  "query_context": {
+    "original_query": "请给出 CPU 1517-3 PN/DP、HMI 和 ET 200MP 组成的典型 PROFINET 拓扑，并说明设备名称和 IP 配置注意事项。",
+    "question_type": "TOPOLOGY",
+    "required_modalities": [
+      "figure",
+      "text"
+    ],
+    "missing_slots": [],
+    "risk_level": "LOW",
+    "risk_decision": "ALLOW",
+    "slots": {
+      "device_family": "S7-1500 / ET 200MP",
+      "module_model": "CPU 1517-3 PN/DP",
+      "order_number": "6ES7517-3AP00-0AB0"
+    }
+  },
+  "device_context": {
+    "family": "S7-1500 / ET 200MP",
+    "model": "CPU 1517-3 PN/DP",
+    "order_number": "6ES7517-3AP00-0AB0",
+    "detection_source": "hidden_demo_fixed",
+    "confidence": 1.0
+  },
+  "task_plan": {
+    "question_type": "TOPOLOGY",
+    "selected_agents": [
+      "Topology Agent",
+      "Figure Agent"
+    ]
+  },
+  "agent_plan": {
+    "selected_agents": [
+      "Topology Agent",
+      "Figure Agent"
+    ],
+    "execution_order": [
+      "Topology Agent",
+      "Figure Agent"
+    ],
+    "execution_mode": "parallel",
+    "parallel_groups": [
+      [
+        "Topology Agent",
+        "Figure Agent"
+      ]
+    ],
+    "tasks": [
+      {
+        "task_id": "HIDDEN_07_TASK_01",
+        "agent_name": "Topology Agent",
+        "question": "请给出 CPU 1517-3 PN/DP、HMI 和 ET 200MP 组成的典型 PROFINET 拓扑，并说明设备名称和 IP 配置注意事项。",
+        "status": "completed"
+      },
+      {
+        "task_id": "HIDDEN_07_TASK_02",
+        "agent_name": "Figure Agent",
+        "question": "请给出 CPU 1517-3 PN/DP、HMI 和 ET 200MP 组成的典型 PROFINET 拓扑，并说明设备名称和 IP 配置注意事项。",
+        "status": "completed"
+      }
+    ]
+  },
+  "agent_results": [
+    {
+      "agent_name": "Topology Agent",
+      "status": "ANSWERED",
+      "answer": "典型连接可由 CPU 1517-3 PN/DP 的 X1 双端口形成 CPU、HMI、ET 200MP 的线型 PROFINET 网络，也可按网络分段使用 X2。上线前逐台核对唯一设备名称、IP 地址、子网掩码和无重复地址，并确认 TIA Portal 中的设备与端口拓扑和现场一致。CPU 接口依据见页 2476、2481。",
+      "claims": [
+        {
+          "claim_id": "HIDDEN_07_CLAIM_01",
+          "claim_text": "典型连接可由 CPU 1517-3 PN/DP 的 X1 双端口形成 CPU、HMI、ET 200MP 的线型 PROFINET 网络，也可按网络分段使用 X2。上线前逐台核对唯一设备名称、IP 地址、子网掩码和无重复地址，并确认 TIA Portal 中的设备与端口拓扑和现场一致。CPU 接口依据见页 2476、2481。",
+          "claim_type": "technical_guidance",
+          "model_scope": "CPU 1517-3 PN/DP",
+          "confidence": "MEDIUM",
+          "evidence_ids": [
+            "HIDDEN_07_EV_01",
+            "HIDDEN_07_EV_02"
+          ],
+          "direct_support": true,
+          "metadata": {
+            "offline_curated": true
+          }
+        }
+      ],
+      "evidence_ids": [
+        "HIDDEN_07_EV_01",
+        "HIDDEN_07_EV_02"
+      ],
+      "abstain": false
+    },
+    {
+      "agent_name": "Figure Agent",
+      "status": "ANSWERED",
+      "answer": "典型连接可由 CPU 1517-3 PN/DP 的 X1 双端口形成 CPU、HMI、ET 200MP 的线型 PROFINET 网络，也可按网络分段使用 X2。上线前逐台核对唯一设备名称、IP 地址、子网掩码和无重复地址，并确认 TIA Portal 中的设备与端口拓扑和现场一致。CPU 接口依据见页 2476、2481。",
+      "claims": [
+        {
+          "claim_id": "HIDDEN_07_CLAIM_01",
+          "claim_text": "典型连接可由 CPU 1517-3 PN/DP 的 X1 双端口形成 CPU、HMI、ET 200MP 的线型 PROFINET 网络，也可按网络分段使用 X2。上线前逐台核对唯一设备名称、IP 地址、子网掩码和无重复地址，并确认 TIA Portal 中的设备与端口拓扑和现场一致。CPU 接口依据见页 2476、2481。",
+          "claim_type": "technical_guidance",
+          "model_scope": "CPU 1517-3 PN/DP",
+          "confidence": "MEDIUM",
+          "evidence_ids": [
+            "HIDDEN_07_EV_01",
+            "HIDDEN_07_EV_02"
+          ],
+          "direct_support": true,
+          "metadata": {
+            "offline_curated": true
+          }
+        }
+      ],
+      "evidence_ids": [
+        "HIDDEN_07_EV_01",
+        "HIDDEN_07_EV_02"
+      ],
+      "abstain": false
+    }
+  ],
+  "evidence_pool": {
+    "evidences": [
+      {
+        "evidence_id": "HIDDEN_07_EV_01",
+        "asset_id": "VIS_0027",
+        "source": "CPU 1517-3 PN/DP device manual",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "CPU 1517-3 PN/DP device manual",
+        "document_id": "A5E33595080-AF",
+        "page": 2476,
+        "section": "设备特定信息 > 中央处理单元 > CPU 1517-3 PN/DP > 3 产品概述 > 3.5 操作员控件和显示元件",
+        "figure_number": "图 2-237",
+        "manual_figure_number": "图 2-237",
+        "manual_figure_caption": "不带前面板的 CPU 1517-3 PN/DP 的前视图",
+        "device_family": "S7-1500",
+        "module_model": "CPU 1517-3 PN/DP",
+        "order_number": "6ES7517-3AP00-0AB0",
+        "text": "图 2-237 标注 CPU 1517-3 PN/DP 的前视图，PROFINET IO 接口 X1 对应标号 ⑦，X2 对应标号 ⑥。",
+        "compact_excerpt": "图 2-237 标注 CPU 1517-3 PN/DP 的前视图，PROFINET IO 接口 X1 对应标号 ⑦，X2 对应标号 ⑥。",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Topology Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0027",
+          "sha256": "7e73d63df0848cf4b5c101084b7b2a52f48b8a96cfeeb6c3c543866881d0389c",
+          "visual_type": "front_panel_or_led_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_07_EV_02",
+        "asset_id": "VIS_0028",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E33595080-AF",
+        "page": 2481,
+        "section": "设备特定信息 > 中央处理单元 > CPU 1517-3 PN/DP (6ES7517-3AP00-0AB0) > 4 接线",
+        "figure_number": "图 2-239",
+        "manual_figure_number": "图 2-239",
+        "manual_figure_caption": "CPU 1517‑3 PN/DP 的方框图",
+        "device_family": "S7-1500",
+        "module_model": "CPU 1517-3 PN/DP",
+        "order_number": "6ES7517-3AP00-0AB0",
+        "text": "方框图 下图显示了 CPU 1517‑3 PN/DP 的电路示意图。 \u0017 \u0014 \u0019 \u0018 \u0016 \u001a \u0015 /\u000e 0 ;\u0018\u0013 ;\u0014\u00033\u0014 31 ;\u0014\u00033\u00145 ;\u0015\u00033\u0014 31 ;\u0015\u00033\u0014 3%\u0003;\u0016 ;\u0014\u00033\u0015 5\u00126 (5 07 31 ;\u0014\u00033\u00155 ;\u001b\u0013\u0003'&\u0003\u0015\u0017\u00039 ① 显示屏 PN X1 P1R PROFINET 接口 X1 端口 1 ② RUN/STOP/MRES 模式选择器开关 PN X1 P2R PROFINET 接口 X1 端口 2 ③ 电子元件 PN X2 P1 PROFINET 接口 X2 端口 1 ④ PROFINET 双端口交换机 PB X3 PROFIBUS 接口 X3 ⑤ PROFIBUS DP 驱动程序 L+ 24 V DC 电源电压 ⑥ 背板总线接口 M 接地 ⑦ 内部电源电压 R/S RUN/STOP LED 指示灯（黄色/绿色） X50 SIMATIC 存储卡 ER ERROR LED 指示灯（红色） X80 24 V DC 电源电压供电 MT MAINT LED 指示灯（黄色） X1 P1、X1 P2、X2 P1 Link TX/RX LED 指示灯 图 2-239 CPU 1517‑3 PN/DP 的方框图 29 接线 CPU 1517-3 PN/DP (6ES7517-3AP00-0AB0) 设备手册, 11/2023, A5E33595080-AF",
+        "compact_excerpt": "方框图 下图显示了 CPU 1517‑3 PN/DP 的电路示意图。 \u0017 \u0014 \u0019 \u0018 \u0016 \u001a \u0015 /\u000e 0 ;\u0018\u0013 ;\u0014\u00033\u0014 31 ;\u0014\u00033\u00145 ;\u0015\u00033\u0014 31 ;\u0015\u00033\u0014 3%\u0003;\u0016 ;\u0014\u00033\u0015 5\u00126 (5 07 31 ;\u0014\u00033\u00155 ;\u001b\u0013\u0003'&\u0003\u0015\u0017\u00039 ① 显示屏 PN X1 P1R PROFINET 接口 X1 端口 1 ② RUN/STOP/MRES 模式选择器开关 PN X1 P2R PROFINET 接口 X1 端口 2 ③ 电子元件 PN X2 P1 PROFINET 接口 X2 端口 1 ④ PROFINET 双端口交换机 PB X3 PROFIBUS 接口 X3 ⑤ PROFIBUS DP 驱动程序 L+ 24 V DC 电源电压 ⑥ 背板总线接口 M 接地 ⑦ 内部电源电压 R/S RUN/STOP LED 指示灯（黄色/绿色） X50 SIMATIC 存储卡 ER ERROR LED 指示灯（红色） X80 24 V DC 电源电压供电 MT MAINT LED 指示灯（黄色） X1 P1、X1 P2、X2 P1 Link TX/RX LED 指示灯 图 2-239 CPU 1517‑3 PN/DP 的方框图 29 接线 CPU 1517-3 PN/DP (6ES7517-3AP00-0AB0) 设备手册, 11/2023, A5E33595080-AF",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Topology Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0028",
+          "sha256": "f81c8b7e0024dd456ed999107dcd549ac22baaeb74fa633554b93cd65ba9c15d",
+          "visual_type": "front_panel_or_led_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_07_EV_03",
+        "asset_id": "VIS_0060",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03735819-AN",
+        "page": 8059,
+        "section": "综合信息 > 《通信功能手册》 > 通信 > 1 简介 > 1.2 功能手册文档指南 > 1.2.2 基本工具",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "PRONETA SIEMENS PRONETA（PROFINET 网络分析）是一款调试和诊断工具，用于 PROFINET 网络。 PRONETA Basic 有两个核心功能： • 在网络分析中，您可以概览 PROFINET 拓扑。将真实组态与参考安装进行比较或进行简单 的参数更改，例如设备的名称和 IP 地址。 • 通过 IO 测试，可简单、快速完成工厂接线和模块组态测试，其中包括测试结果的记录。 有关 SIEMENS PRONETA Basic，敬请访问 Internet。 (https://support.industry.siemens.com/cs/cn/zh/view/67460624) SIEMENS PRONETA Professional 是为用户提供附加功能的许可产品。它提供在 PROFINET 网络 中轻松管理资产的能力，还通过各种功能为自动化系统的操作员自动收集/获取所用组件的数 据提供支持： • 用户界面 (API) 提供自动化单元的访问点，以使用 MQTT 或命令行自动执行扫描功能。 • 借助 PROFIenergy 诊断，可以快速检测支持 PROFIenergy 的设备的当前暂停模式或运行准 备情况，并根据需要进行更改。 • 数据记录向导可支持 PROFINET 开发人员在无需 PLC 和工程组态的情况下快速轻松地读取 和写入非循环 PROFINET 数据记录。 可从 Internet 上下载 SIEMENS PRONETA Professional。 (https://www.siemens.com/proneta- professional) S",
+        "compact_excerpt": "PRONETA SIEMENS PRONETA（PROFINET 网络分析）是一款调试和诊断工具，用于 PROFINET 网络。 PRONETA Basic 有两个核心功能： • 在网络分析中，您可以概览 PROFINET 拓扑。将真实组态与参考安装进行比较或进行简单 的参数更改，例如设备的名称和 IP 地址。 • 通过 IO 测试，可简单、快速完成工厂接线和模块组态测试，其中包括测试结果的记录。 有关 SIEMENS PRONETA Basic，敬请访问 Internet。 (https://support.industry.siemens.com/cs/cn/zh/view/67460624) SIEMENS PRONETA Professional 是为用户提供附加功能的许可产品。它提供在 PROFINET 网络 中轻松管理资产的能力，还通过各种功能为自动化系统的操作员自动收集/获取所用组件的数 据提供支持： • 用户界面 (API) 提供自动化单元的访问点，以使用 MQTT 或命令行自动执行扫描功能。 • 借助 PROFIenergy 诊断，可以快速检测支持 PROFIenergy 的设备的当前暂停模式或运行准 备情况，并根据需要进行更改。 • 数据记录向导可支持 PROFINET 开发人员在无需 PLC 和工程组态的情况下快速轻松地读取 和写入非循环 PROFINET 数据记录。 可从 Internet 上下载 SIEMENS PRONETA Professional。 (https://www.siemens.com/proneta- professional) S",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Topology Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0060",
+          "sha256": "498f0dc33c7ed9bb136e5cd2437a5b41625ea100e4d24b789de704bb3c9c023e",
+          "visual_type": "network_topology_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_07_EV_04",
+        "asset_id": "VIS_0061",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E41815205-AH",
+        "page": 446,
+        "section": "基本信息 > S7-1500R/H 冗余系统 > 3 新属性/功能",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "S7-1500R/H 冗余系统 系统手册, 11/2025, A5E41815205-AH 28 新属性/功能 3 与 11/2024 版相比，11/2025 版《S7-1500R/H 冗余系统系统手册》中新增的内容 新增内容 客户获益 信息出处 冗余运行期间的系统修 改 (CiR) 冗余运行期间，可通过 CiR 进行以下组态更改： • 添加 IO 设备 • 重新组态 I/O 模块 可以在 R/H 系统的 PROFINET 网络中进行组态更改。 环型拓扑、线型拓扑或组合拓扑均支持 CiR。 冗余运行期间的系统修改 (CiR) (页 439) 部分 OB 83（拔/插中断 OB）自固件版本 V4.1 起，OB 83（拉出/插入中断 OB）支 持在冗余运行 (CiR) 期间进行系统修改的附加事件： • S7-1500R/H 系统处于 RUN-Redundant 系统状 态，通过 CiR 重新设置已组态 I/O 模块的参数已开 始。 • S7-1500R/H 系统处于 RUN-Redundant 系统状 态，通过 CiR 重新设置已组态 I/O 模块的参数已完 成。 • S7-1500R/H 系统处于 RUN-Redundant 系统状 态，无法通过 CiR 重新设置已组态 I/O 模块（IO 设 备拒绝新组态）。 S7-1500R/H 编程 (页 307)部分 工艺对象 TO_Ident 自固件版本 V4.1 起，R/H 系统支持 TO_Ident 工艺对 象。 SIMATIC Ident 产品的“TO_Ident”工艺对象可简化 TIA Portal 中 Ident 系统的参数分",
+        "compact_excerpt": "S7-1500R/H 冗余系统 系统手册, 11/2025, A5E41815205-AH 28 新属性/功能 3 与 11/2024 版相比，11/2025 版《S7-1500R/H 冗余系统系统手册》中新增的内容 新增内容 客户获益 信息出处 冗余运行期间的系统修 改 (CiR) 冗余运行期间，可通过 CiR 进行以下组态更改： • 添加 IO 设备 • 重新组态 I/O 模块 可以在 R/H 系统的 PROFINET 网络中进行组态更改。 环型拓扑、线型拓扑或组合拓扑均支持 CiR。 冗余运行期间的系统修改 (CiR) (页 439) 部分 OB 83（拔/插中断 OB）自固件版本 V4.1 起，OB 83（拉出/插入中断 OB）支 持在冗余运行 (CiR) 期间进行系统修改的附加事件： • S7-1500R/H 系统处于 RUN-Redundant 系统状 态，通过 CiR 重新设置已组态 I/O 模块的参数已开 始。 • S7-1500R/H 系统处于 RUN-Redundant 系统状 态，通过 CiR 重新设置已组态 I/O 模块的参数已完 成。 • S7-1500R/H 系统处于 RUN-Redundant 系统状 态，无法通过 CiR 重新设置已组态 I/O 模块（IO 设 备拒绝新组态）。 S7-1500R/H 编程 (页 307)部分 工艺对象 TO_Ident 自固件版本 V4.1 起，R/H 系统支持 TO_Ident 工艺对 象。 SIMATIC Ident 产品的“TO_Ident”工艺对象可简化 TIA Portal 中 Ident 系统的参数分",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Topology Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0061",
+          "sha256": "e8906b972e9d3198c450675400bc9e211b9ddc49b7aae22f765794bf16e9e987",
+          "visual_type": "network_topology_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_07_EV_05",
+        "asset_id": "VIS_0062",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E41815205-AH",
+        "page": 535,
+        "section": "基本信息 > S7-1500R/H 冗余系统 > 5 系统概述 > 5.4 通信 > 5.4.2 集成通信接口",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "mode=15 调用“RH_CTRL”指令。系统 IP 地址 W1 便会分配给备用 CPU。随后会通过备用 CPU 的冗余 CP 建立新的通信连接。 如果主 CPU 上的另一个 CP 发生故障，仅可通过分配的设备 IP 地址在冗余 CP 上建立新的通信 连接。 如果 CP 发生故障，则操作系统会调用插拔 OB (OB 83)，并生成诊断报警。 说明 如果通过设备 IP 地址与冗余系统通信，则最好使用主 CPU 的设备 IP 地址。通过主 CPU 的设 备 IP 地址，传输速率更高，通信负载更低。 更多关于“RH_CTRL”指令的信息，请参见 STEP 7 在线帮助。 有关组态 W1 虚拟接口的系统 IP 地址和虚拟 MAC 地址的信息，请参见“组态使用通信处理器 CP 1543‑1 的 R-CPU (页 292)”部分。 更多信息 有关 S7‑1500R/H 冗余系统中系统 IP 地址的更多信息，请参见《通信功能手册 (https://support.industry.siemens.com/cs/ww/zh/view/59192925)》。 5.4.2 集成通信接口 下表简要列出了 S7‑1500R/H 冗余系统中的 CPU 通信选项： 表格 1-71 S7-1500R/H 通信选项 服务提供源： PROFINET 接 口 X1 PROFINET 接 口 X21) PROFINET 接 口 X32) 虚拟接口 W1 通信选项 设备 IP 地址 设备 IP 地址 设备 IP 地址 系统 IP 地址（位于 X1、X2 和 X3 接口） 设备 IP 地址 系统 IP 地址 PROF",
+        "compact_excerpt": "mode=15 调用“RH_CTRL”指令。系统 IP 地址 W1 便会分配给备用 CPU。随后会通过备用 CPU 的冗余 CP 建立新的通信连接。 如果主 CPU 上的另一个 CP 发生故障，仅可通过分配的设备 IP 地址在冗余 CP 上建立新的通信 连接。 如果 CP 发生故障，则操作系统会调用插拔 OB (OB 83)，并生成诊断报警。 说明 如果通过设备 IP 地址与冗余系统通信，则最好使用主 CPU 的设备 IP 地址。通过主 CPU 的设 备 IP 地址，传输速率更高，通信负载更低。 更多关于“RH_CTRL”指令的信息，请参见 STEP 7 在线帮助。 有关组态 W1 虚拟接口的系统 IP 地址和虚拟 MAC 地址的信息，请参见“组态使用通信处理器 CP 1543‑1 的 R-CPU (页 292)”部分。 更多信息 有关 S7‑1500R/H 冗余系统中系统 IP 地址的更多信息，请参见《通信功能手册 (https://support.industry.siemens.com/cs/ww/zh/view/59192925)》。 5.4.2 集成通信接口 下表简要列出了 S7‑1500R/H 冗余系统中的 CPU 通信选项： 表格 1-71 S7-1500R/H 通信选项 服务提供源： PROFINET 接 口 X1 PROFINET 接 口 X21) PROFINET 接 口 X32) 虚拟接口 W1 通信选项 设备 IP 地址 设备 IP 地址 设备 IP 地址 系统 IP 地址（位于 X1、X2 和 X3 接口） 设备 IP 地址 系统 IP 地址 PROF",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Topology Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0062",
+          "sha256": "b29b3140875bf0350cec1bc25e2015409f7a4309b03d176d383726411f5deffd",
+          "visual_type": "network_topology_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_07_EV_06",
+        "asset_id": "VIS_0063",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E46600341-AD",
+        "page": 1065,
+        "section": "基本信息 > SIMATIC Drive Controller > 9 组态 > 9.5 组态信息 > 9.5.1 组态软件注意事项",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "拓扑视图 由于拓扑视图与 SINAMICS Integrated 无关，因此仅显示 SIMATIC Drive Controller 的 CPU。 设备视图 SIMATIC Drive Controller 的两个组件均有一个单独的设备视图。 • CPU 设备视图：CPU（包括通信接口）的参数分配 • SINAMICS Integrated 设备：SINAMICS S120 驱动器组件（电源模块、电机模块和电机等） 和驱动器框架等的组态 可以通过链接方便轻松地在两个视图之间切换。 在网络视图中，巡视窗口会根据设备视图中的选择显示不同的内容。 9.5 组态信息 9.5.1 组态软件注意事项 路由 PROFIdrive Integrated 代表低层网络。通过 PROFINET/PROFIBUS 连接的编程设备使用路由来访 问 SINAMICS Integrated 。 设置与 SINAMICS Integrated 的在线连接时必须满足以下要求： • 需要为要连接编程设备的接口组态一个子网。仅当组态了子网时，才可以路由到 SINAMICS Integrated。 • 必须将组态载入 CPU，CPU 路由信息才可用。 可访问的设备 由于 SINAMICS Integrated 已分配给低层网络，因此只能通过“可访问设备”(Accessible devices) 访问高层 CPU，而不能访问 SINAMICS Integrated。 PROFINET 接口的 IP 地址 使用 SIMATIC Drive Controller 时，IP 地址 192.168.215.240 到192.",
+        "compact_excerpt": "拓扑视图 由于拓扑视图与 SINAMICS Integrated 无关，因此仅显示 SIMATIC Drive Controller 的 CPU。 设备视图 SIMATIC Drive Controller 的两个组件均有一个单独的设备视图。 • CPU 设备视图：CPU（包括通信接口）的参数分配 • SINAMICS Integrated 设备：SINAMICS S120 驱动器组件（电源模块、电机模块和电机等） 和驱动器框架等的组态 可以通过链接方便轻松地在两个视图之间切换。 在网络视图中，巡视窗口会根据设备视图中的选择显示不同的内容。 9.5 组态信息 9.5.1 组态软件注意事项 路由 PROFIdrive Integrated 代表低层网络。通过 PROFINET/PROFIBUS 连接的编程设备使用路由来访 问 SINAMICS Integrated 。 设置与 SINAMICS Integrated 的在线连接时必须满足以下要求： • 需要为要连接编程设备的接口组态一个子网。仅当组态了子网时，才可以路由到 SINAMICS Integrated。 • 必须将组态载入 CPU，CPU 路由信息才可用。 可访问的设备 由于 SINAMICS Integrated 已分配给低层网络，因此只能通过“可访问设备”(Accessible devices) 访问高层 CPU，而不能访问 SINAMICS Integrated。 PROFINET 接口的 IP 地址 使用 SIMATIC Drive Controller 时，IP 地址 192.168.215.240 到192.",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Topology Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0063",
+          "sha256": "718cd321aa09e50dca121a4e321b3b60c5e635a46680247026bc8d38d41d3e19",
+          "visual_type": "network_topology_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_07_EV_07",
+        "asset_id": "VIS_0064",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E31876150-BH",
+        "page": 1272,
+        "section": "基本信息 > S7-1500/ET 200MP、S7-1500R/H 文档的产品信息 > 对 SIMATIC S7-1500R/H 文档的修订",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "ET 200MP",
+        "module_model": "ET 200MP",
+        "order_number": "",
+        "text": "对 SIMATIC S7-1500R/H 文档的修订 R/H CPU 设备手册，版本 11/2024 章节“产品概览”，新功能 固件版本 V4.1 的新功能 应用 客户收益 冗余运行期间的系统修改 (CiR) 可以在 R/H 系统的 PROFINET 网络中进行 组态更改。环型拓扑、线型拓扑或组合拓 扑均支持 CiR。 冗余运行期间，可通过 CiR 进行以下组态更 改。 • 添加 IO 设备 • 重新组态 I/O 模块 OB 83（拔/插 OB） 自存储字版本 V4.1 起，OB 83（拉出/插入 中断 OB）支持在冗余运行 (CiR) 期间进行 系统修改的附加事件。 附加事件： • S7-1500R/H 系统处于 RUN-Redundant 系 统状态，通过 CiR 重新设置已组态 I/O 模块 的参数已开始。 • S7-1500R/H 系统处于 RUN-Redundant 系 统状态，通过 CiR 重新设置已组态 I/O 模块 的参数已完成。 • S7-1500R/H 系统处于 RUN-Redundant 系 统状态，无法通过 CiR 重新设置已组态 I/O 模块（IO 设备拒绝新组态）。 工艺对象 TO_Ident 自固件版本 V4.1 起，R/H 系统支持 TO_Ident 工艺对象，即 SIMATIC Ident 产 品的工艺对象。 使用“TO_Ident”可在 TIA Portal 中对 Ident 系统 执行简单的参数设置。它可以在已组态硬件 和“SIMATIC Ident”库中的功能块之间创建一个 易于组态的接口。 可在 H CPU 上使用的 IO 设备最大数 ",
+        "compact_excerpt": "对 SIMATIC S7-1500R/H 文档的修订 R/H CPU 设备手册，版本 11/2024 章节“产品概览”，新功能 固件版本 V4.1 的新功能 应用 客户收益 冗余运行期间的系统修改 (CiR) 可以在 R/H 系统的 PROFINET 网络中进行 组态更改。环型拓扑、线型拓扑或组合拓 扑均支持 CiR。 冗余运行期间，可通过 CiR 进行以下组态更 改。 • 添加 IO 设备 • 重新组态 I/O 模块 OB 83（拔/插 OB） 自存储字版本 V4.1 起，OB 83（拉出/插入 中断 OB）支持在冗余运行 (CiR) 期间进行 系统修改的附加事件。 附加事件： • S7-1500R/H 系统处于 RUN-Redundant 系 统状态，通过 CiR 重新设置已组态 I/O 模块 的参数已开始。 • S7-1500R/H 系统处于 RUN-Redundant 系 统状态，通过 CiR 重新设置已组态 I/O 模块 的参数已完成。 • S7-1500R/H 系统处于 RUN-Redundant 系 统状态，无法通过 CiR 重新设置已组态 I/O 模块（IO 设备拒绝新组态）。 工艺对象 TO_Ident 自固件版本 V4.1 起，R/H 系统支持 TO_Ident 工艺对象，即 SIMATIC Ident 产 品的工艺对象。 使用“TO_Ident”可在 TIA Portal 中对 Ident 系统 执行简单的参数设置。它可以在已组态硬件 和“SIMATIC Ident”库中的功能块之间创建一个 易于组态的接口。 可在 H CPU 上使用的 IO 设备最大数 ",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Topology Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0064",
+          "sha256": "e076345507ded3b3377a4484104d9e24d8afa0d21edcb478b7d96d65a85f6301",
+          "visual_type": "network_topology_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_07_EV_08",
+        "asset_id": "VIS_0065",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03461511-AJ",
+        "page": 6654,
+        "section": "综合信息 > 《CPU 功能手册》 > 循环和响应时间 > 1 简介 > 1.1 功能手册文档指南 > 1.1.2 基本工具",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "PRONETA SIEMENS PRONETA（PROFINET 网络分析）是一款调试和诊断工具，用于 PROFINET 网络。 PRONETA Basic 有两个核心功能： • 在网络分析中，您可以概览 PROFINET 拓扑。将真实组态与参考安装进行比较或进行简单 的参数更改，例如设备的名称和 IP 地址。 • 通过 IO 测试，可简单、快速完成工厂接线和模块组态测试，其中包括测试结果的记录。 有关 SIEMENS PRONETA Basic，敬请访问 Internet。 (https://support.industry.siemens.com/cs/cn/zh/view/67460624) SIEMENS PRONETA Professional 是为用户提供附加功能的许可产品。它提供在 PROFINET 网络 中轻松管理资产的能力，还通过各种功能为自动化系统的操作员自动收集/获取所用组件的数 据提供支持： • 用户界面 (API) 提供自动化单元的访问点，以使用 MQTT 或命令行自动执行扫描功能。 • 借助 PROFIenergy 诊断，可以快速检测支持 PROFIenergy 的设备的当前暂停模式或运行准 备情况，并根据需要进行更改。 • 数据记录向导可支持 PROFINET 开发人员在无需 PLC 和工程组态的情况下快速轻松地读取 和写入非循环 PROFINET 数据记录。 可从 Internet 上下载 SIEMENS PRONETA Professional。 (https://www.siemens.com/proneta- professional) S",
+        "compact_excerpt": "PRONETA SIEMENS PRONETA（PROFINET 网络分析）是一款调试和诊断工具，用于 PROFINET 网络。 PRONETA Basic 有两个核心功能： • 在网络分析中，您可以概览 PROFINET 拓扑。将真实组态与参考安装进行比较或进行简单 的参数更改，例如设备的名称和 IP 地址。 • 通过 IO 测试，可简单、快速完成工厂接线和模块组态测试，其中包括测试结果的记录。 有关 SIEMENS PRONETA Basic，敬请访问 Internet。 (https://support.industry.siemens.com/cs/cn/zh/view/67460624) SIEMENS PRONETA Professional 是为用户提供附加功能的许可产品。它提供在 PROFINET 网络 中轻松管理资产的能力，还通过各种功能为自动化系统的操作员自动收集/获取所用组件的数 据提供支持： • 用户界面 (API) 提供自动化单元的访问点，以使用 MQTT 或命令行自动执行扫描功能。 • 借助 PROFIenergy 诊断，可以快速检测支持 PROFIenergy 的设备的当前暂停模式或运行准 备情况，并根据需要进行更改。 • 数据记录向导可支持 PROFINET 开发人员在无需 PLC 和工程组态的情况下快速轻松地读取 和写入非循环 PROFINET 数据记录。 可从 Internet 上下载 SIEMENS PRONETA Professional。 (https://www.siemens.com/proneta- professional) S",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Topology Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0065",
+          "sha256": "d20b97d42ee747e5fb850d12b0594cea6b26c1b90eeec7d315c31f80e0914216",
+          "visual_type": "network_topology_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_07_EV_09",
+        "asset_id": "VIS_0066",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03461669-AE",
+        "page": 6733,
+        "section": "综合信息 > 《CPU 功能手册》 > CPU 存储器的结构和使用 > 1 简介 > 1.1 功能手册文档指南 > 1.1.2 基本工具",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "PRONETA SIEMENS PRONETA（PROFINET 网络分析）是一款调试和诊断工具，用于 PROFINET 网络。 PRONETA Basic 有两个核心功能： • 在网络分析中，您可以概览 PROFINET 拓扑。将真实组态与参考安装进行比较或进行简单 的参数更改，例如设备的名称和 IP 地址。 • 通过 IO 测试，可简单、快速完成工厂接线和模块组态测试，其中包括测试结果的记录。 有关 SIEMENS PRONETA Basic，敬请访问 Internet。 (https://support.industry.siemens.com/cs/cn/zh/view/67460624) SIEMENS PRONETA Professional 是为用户提供附加功能的许可产品。它提供在 PROFINET 网络 中轻松管理资产的能力，还通过各种功能为自动化系统的操作员自动收集/获取所用组件的数 据提供支持： • 用户界面 (API) 提供自动化单元的访问点，以使用 MQTT 或命令行自动执行扫描功能。 • 借助 PROFIenergy 诊断，可以快速检测支持 PROFIenergy 的设备的当前暂停模式或运行准 备情况，并根据需要进行更改。 • 数据记录向导可支持 PROFINET 开发人员在无需 PLC 和工程组态的情况下快速轻松地读取 和写入非循环 PROFINET 数据记录。 可从 Internet 上下载 SIEMENS PRONETA Professional。 (https://www.siemens.com/proneta- professional) S",
+        "compact_excerpt": "PRONETA SIEMENS PRONETA（PROFINET 网络分析）是一款调试和诊断工具，用于 PROFINET 网络。 PRONETA Basic 有两个核心功能： • 在网络分析中，您可以概览 PROFINET 拓扑。将真实组态与参考安装进行比较或进行简单 的参数更改，例如设备的名称和 IP 地址。 • 通过 IO 测试，可简单、快速完成工厂接线和模块组态测试，其中包括测试结果的记录。 有关 SIEMENS PRONETA Basic，敬请访问 Internet。 (https://support.industry.siemens.com/cs/cn/zh/view/67460624) SIEMENS PRONETA Professional 是为用户提供附加功能的许可产品。它提供在 PROFINET 网络 中轻松管理资产的能力，还通过各种功能为自动化系统的操作员自动收集/获取所用组件的数 据提供支持： • 用户界面 (API) 提供自动化单元的访问点，以使用 MQTT 或命令行自动执行扫描功能。 • 借助 PROFIenergy 诊断，可以快速检测支持 PROFIenergy 的设备的当前暂停模式或运行准 备情况，并根据需要进行更改。 • 数据记录向导可支持 PROFINET 开发人员在无需 PLC 和工程组态的情况下快速轻松地读取 和写入非循环 PROFINET 数据记录。 可从 Internet 上下载 SIEMENS PRONETA Professional。 (https://www.siemens.com/proneta- professional) S",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Topology Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0066",
+          "sha256": "6e91bfa5fb5f3d820c22fff6892f658e7090163f77e1d68c107ff3c7b1137814",
+          "visual_type": "network_topology_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_07_EV_10",
+        "asset_id": "VIS_0067",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03484629-AK",
+        "page": 6800,
+        "section": "综合信息 > 《CPU 功能手册》 > Web 服务器 > 1 简介 > 1.1 功能手册文档指南 > 1.1.2 基本工具",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "PRONETA SIEMENS PRONETA（PROFINET 网络分析）是一款调试和诊断工具，用于 PROFINET 网络。 PRONETA Basic 有两个核心功能： • 在网络分析中，您可以概览 PROFINET 拓扑。将真实组态与参考安装进行比较或进行简单 的参数更改，例如设备的名称和 IP 地址。 • 通过 IO 测试，可简单、快速完成工厂接线和模块组态测试，其中包括测试结果的记录。 有关 SIEMENS PRONETA Basic，敬请访问 Internet。 (https://support.industry.siemens.com/cs/cn/zh/view/67460624) SIEMENS PRONETA Professional 是为用户提供附加功能的许可产品。它提供在 PROFINET 网络 中轻松管理资产的能力，还通过各种功能为自动化系统的操作员自动收集/获取所用组件的数 据提供支持： • 用户界面 (API) 提供自动化单元的访问点，以使用 MQTT 或命令行自动执行扫描功能。 • 借助 PROFIenergy 诊断，可以快速检测支持 PROFIenergy 的设备的当前暂停模式或运行准 备情况，并根据需要进行更改。 • 数据记录向导可支持 PROFINET 开发人员在无需 PLC 和工程组态的情况下快速轻松地读取 和写入非循环 PROFINET 数据记录。 可从 Internet 上下载 SIEMENS PRONETA Professional。 (https://www.siemens.com/proneta- professional) S",
+        "compact_excerpt": "PRONETA SIEMENS PRONETA（PROFINET 网络分析）是一款调试和诊断工具，用于 PROFINET 网络。 PRONETA Basic 有两个核心功能： • 在网络分析中，您可以概览 PROFINET 拓扑。将真实组态与参考安装进行比较或进行简单 的参数更改，例如设备的名称和 IP 地址。 • 通过 IO 测试，可简单、快速完成工厂接线和模块组态测试，其中包括测试结果的记录。 有关 SIEMENS PRONETA Basic，敬请访问 Internet。 (https://support.industry.siemens.com/cs/cn/zh/view/67460624) SIEMENS PRONETA Professional 是为用户提供附加功能的许可产品。它提供在 PROFINET 网络 中轻松管理资产的能力，还通过各种功能为自动化系统的操作员自动收集/获取所用组件的数 据提供支持： • 用户界面 (API) 提供自动化单元的访问点，以使用 MQTT 或命令行自动执行扫描功能。 • 借助 PROFIenergy 诊断，可以快速检测支持 PROFIenergy 的设备的当前暂停模式或运行准 备情况，并根据需要进行更改。 • 数据记录向导可支持 PROFINET 开发人员在无需 PLC 和工程组态的情况下快速轻松地读取 和写入非循环 PROFINET 数据记录。 可从 Internet 上下载 SIEMENS PRONETA Professional。 (https://www.siemens.com/proneta- professional) S",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Topology Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0067",
+          "sha256": "b451a7a1bd1f52e53bca06cb1dcc37a20c320d913ec8efe0e29adf22ade4a071",
+          "visual_type": "network_topology_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_07_EV_11",
+        "asset_id": "VIS_0068",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E53797732-AB",
+        "page": 7060,
+        "section": "综合信息 > 《CPU 功能手册》 > Web 服务器 > 1 简介 > 1.2 功能手册文档指南 > 1.2.2 基本工具",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "PRONETA SIEMENS PRONETA（PROFINET 网络分析）是一款调试和诊断工具，用于 PROFINET 网络。 PRONETA Basic 有两个核心功能： • 在网络分析中，您可以概览 PROFINET 拓扑。将真实组态与参考安装进行比较或进行简单 的参数更改，例如设备的名称和 IP 地址。 • 通过 IO 测试，可简单、快速完成工厂接线和模块组态测试，其中包括测试结果的记录。 有关 SIEMENS PRONETA Basic，敬请访问 Internet。 (https://support.industry.siemens.com/cs/cn/zh/view/67460624) SIEMENS PRONETA Professional 是为用户提供附加功能的许可产品。它提供在 PROFINET 网络 中轻松管理资产的能力，还通过各种功能为自动化系统的操作员自动收集/获取所用组件的数 据提供支持： • 用户界面 (API) 提供自动化单元的访问点，以使用 MQTT 或命令行自动执行扫描功能。 • 借助 PROFIenergy 诊断，可以快速检测支持 PROFIenergy 的设备的当前暂停模式或运行准 备情况，并根据需要进行更改。 • 数据记录向导可支持 PROFINET 开发人员在无需 PLC 和工程组态的情况下快速轻松地读取 和写入非循环 PROFINET 数据记录。 可从 Internet 上下载 SIEMENS PRONETA Professional。 (https://www.siemens.com/proneta- professional) S",
+        "compact_excerpt": "PRONETA SIEMENS PRONETA（PROFINET 网络分析）是一款调试和诊断工具，用于 PROFINET 网络。 PRONETA Basic 有两个核心功能： • 在网络分析中，您可以概览 PROFINET 拓扑。将真实组态与参考安装进行比较或进行简单 的参数更改，例如设备的名称和 IP 地址。 • 通过 IO 测试，可简单、快速完成工厂接线和模块组态测试，其中包括测试结果的记录。 有关 SIEMENS PRONETA Basic，敬请访问 Internet。 (https://support.industry.siemens.com/cs/cn/zh/view/67460624) SIEMENS PRONETA Professional 是为用户提供附加功能的许可产品。它提供在 PROFINET 网络 中轻松管理资产的能力，还通过各种功能为自动化系统的操作员自动收集/获取所用组件的数 据提供支持： • 用户界面 (API) 提供自动化单元的访问点，以使用 MQTT 或命令行自动执行扫描功能。 • 借助 PROFIenergy 诊断，可以快速检测支持 PROFIenergy 的设备的当前暂停模式或运行准 备情况，并根据需要进行更改。 • 数据记录向导可支持 PROFINET 开发人员在无需 PLC 和工程组态的情况下快速轻松地读取 和写入非循环 PROFINET 数据记录。 可从 Internet 上下载 SIEMENS PRONETA Professional。 (https://www.siemens.com/proneta- professional) S",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Topology Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0068",
+          "sha256": "562f7ef67e247079e45343a7987283c21250ad74d5e0927e9bee643a54c99406",
+          "visual_type": "network_topology_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_07_EV_12",
+        "asset_id": "VIS_0069",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03735842-AJ",
+        "page": 7812,
+        "section": "综合信息 > 《诊断功能手册》 > 诊断 > 1 简介 > 1.1 功能手册文档指南 > 1.1.2 基本工具",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "PRONETA SIEMENS PRONETA（PROFINET 网络分析）是一款调试和诊断工具，用于 PROFINET 网络。 PRONETA Basic 有两个核心功能： • 在网络分析中，您可以概览 PROFINET 拓扑。将真实组态与参考安装进行比较或进行简单 的参数更改，例如设备的名称和 IP 地址。 • 通过 IO 测试，可简单、快速完成工厂接线和模块组态测试，其中包括测试结果的记录。 有关 SIEMENS PRONETA Basic，敬请访问 Internet。 (https://support.industry.siemens.com/cs/cn/zh/view/67460624) SIEMENS PRONETA Professional 是为用户提供附加功能的许可产品。它提供在 PROFINET 网络 中轻松管理资产的能力，还通过各种功能为自动化系统的操作员自动收集/获取所用组件的数 据提供支持： • 用户界面 (API) 提供自动化单元的访问点，以使用 MQTT 或命令行自动执行扫描功能。 • 借助 PROFIenergy 诊断，可以快速检测支持 PROFIenergy 的设备的当前暂停模式或运行准 备情况，并根据需要进行更改。 • 数据记录向导可支持 PROFINET 开发人员在无需 PLC 和工程组态的情况下快速轻松地读取 和写入非循环 PROFINET 数据记录。 可从 Internet 上下载 SIEMENS PRONETA Professional。 (https://www.siemens.com/proneta- professional) S",
+        "compact_excerpt": "PRONETA SIEMENS PRONETA（PROFINET 网络分析）是一款调试和诊断工具，用于 PROFINET 网络。 PRONETA Basic 有两个核心功能： • 在网络分析中，您可以概览 PROFINET 拓扑。将真实组态与参考安装进行比较或进行简单 的参数更改，例如设备的名称和 IP 地址。 • 通过 IO 测试，可简单、快速完成工厂接线和模块组态测试，其中包括测试结果的记录。 有关 SIEMENS PRONETA Basic，敬请访问 Internet。 (https://support.industry.siemens.com/cs/cn/zh/view/67460624) SIEMENS PRONETA Professional 是为用户提供附加功能的许可产品。它提供在 PROFINET 网络 中轻松管理资产的能力，还通过各种功能为自动化系统的操作员自动收集/获取所用组件的数 据提供支持： • 用户界面 (API) 提供自动化单元的访问点，以使用 MQTT 或命令行自动执行扫描功能。 • 借助 PROFIenergy 诊断，可以快速检测支持 PROFIenergy 的设备的当前暂停模式或运行准 备情况，并根据需要进行更改。 • 数据记录向导可支持 PROFINET 开发人员在无需 PLC 和工程组态的情况下快速轻松地读取 和写入非循环 PROFINET 数据记录。 可从 Internet 上下载 SIEMENS PRONETA Professional。 (https://www.siemens.com/proneta- professional) S",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Topology Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0069",
+          "sha256": "11d1210aa92af5a906ea25646e5080044840ec4f99711cbc0dc6e899b0b29842",
+          "visual_type": "network_topology_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_07_EV_13",
+        "asset_id": "VIS_0070",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E31277296-AL",
+        "page": 7936,
+        "section": "综合信息 > 《诊断功能手册》 > 轨迹和逻辑分析器功能 > 1 简介 > 1.1 功能手册文档指南 > 1.1.2 基本工具",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "PRONETA SIEMENS PRONETA（PROFINET 网络分析）是一款调试和诊断工具，用于 PROFINET 网络。 PRONETA Basic 有两个核心功能： • 在网络分析中，您可以概览 PROFINET 拓扑。将真实组态与参考安装进行比较或进行简单 的参数更改，例如设备的名称和 IP 地址。 • 通过 IO 测试，可简单、快速完成工厂接线和模块组态测试，其中包括测试结果的记录。 有关 SIEMENS PRONETA Basic，敬请访问 Internet。 (https://support.industry.siemens.com/cs/cn/zh/view/67460624) SIEMENS PRONETA Professional 是为用户提供附加功能的许可产品。它提供在 PROFINET 网络 中轻松管理资产的能力，还通过各种功能为自动化系统的操作员自动收集/获取所用组件的数 据提供支持： • 用户界面 (API) 提供自动化单元的访问点，以使用 MQTT 或命令行自动执行扫描功能。 • 借助 PROFIenergy 诊断，可以快速检测支持 PROFIenergy 的设备的当前暂停模式或运行准 备情况，并根据需要进行更改。 • 数据记录向导可支持 PROFINET 开发人员在无需 PLC 和工程组态的情况下快速轻松地读取 和写入非循环 PROFINET 数据记录。 可从 Internet 上下载 SIEMENS PRONETA Professional。 (https://www.siemens.com/proneta- professional) S",
+        "compact_excerpt": "PRONETA SIEMENS PRONETA（PROFINET 网络分析）是一款调试和诊断工具，用于 PROFINET 网络。 PRONETA Basic 有两个核心功能： • 在网络分析中，您可以概览 PROFINET 拓扑。将真实组态与参考安装进行比较或进行简单 的参数更改，例如设备的名称和 IP 地址。 • 通过 IO 测试，可简单、快速完成工厂接线和模块组态测试，其中包括测试结果的记录。 有关 SIEMENS PRONETA Basic，敬请访问 Internet。 (https://support.industry.siemens.com/cs/cn/zh/view/67460624) SIEMENS PRONETA Professional 是为用户提供附加功能的许可产品。它提供在 PROFINET 网络 中轻松管理资产的能力，还通过各种功能为自动化系统的操作员自动收集/获取所用组件的数 据提供支持： • 用户界面 (API) 提供自动化单元的访问点，以使用 MQTT 或命令行自动执行扫描功能。 • 借助 PROFIenergy 诊断，可以快速检测支持 PROFIenergy 的设备的当前暂停模式或运行准 备情况，并根据需要进行更改。 • 数据记录向导可支持 PROFINET 开发人员在无需 PLC 和工程组态的情况下快速轻松地读取 和写入非循环 PROFINET 数据记录。 可从 Internet 上下载 SIEMENS PRONETA Professional。 (https://www.siemens.com/proneta- professional) S",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Topology Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0070",
+          "sha256": "fc4dfbbb773b1329ef5ed2b76b34193227c05e5d61eb9601401cdb11812ad9d0",
+          "visual_type": "network_topology_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_07_EV_14",
+        "asset_id": "VIS_0071",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E41815205-AH",
+        "page": 709,
+        "section": "基本信息 > S7-1500R/H 冗余系统 > 9 组态 > 9.5 组态其它拓扑",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "参考 有关 S7-1500R/H 冗余系统 PROFINET 拓扑的信息，请参见《PROFINET 功能手册 (https://support.industry.siemens.com/cs/ww/zh/view/49948856)》。 9.5 组态其它拓扑 简介 在本部分中，将介绍有关组态 S7-500H 冗余系统其它组态变型的信息。 组态包含 R1 设备和 Y 型交换机的 PROFINET 环网或线型拓扑 重新对仅可通过 H-CPU 访问的 S2 设备的操作模式进行参数设置 如果 S2 设备只能由一个 CPU 访问，则 H-CPU 的默认操作模式“IO 设备 (S2)”（例如用于交换 机）会触发 MAINT 诊断。H-CPU 上的 MAINT LED 点亮。为避免进行 MAINT 诊断，必须将操 作模式从“IO 设备 (S2)”更改为“IO 设备 (S1)”。可在 STEP 7 的“I/O 通信”(I/O communication) 视 图中为每个 S2 设备设置参数操作模式。 组态采用 DNA 冗余的冗余 Y 型交换机 可通过以下几种方式组态 DNA 冗余： • 通过 Y 型交换机的基于 Web 的管理组态 DNA 冗余。结果：未在 STEP 7 中将 Y 型交换机作 为 IO 设备集成。 • 建议：可在硬件配置中组态 DNA 冗余，并将 Y 型交换机参数化为 IO 设备。这样便可评估 Y 型交换机的 PROFINET 诊断并快速执行故障排除。 下级 PROFINET 环网的 Y 型交换机和 IO 设备的 MRP 角色 分配以下 MRP 角色： • 对于 Y 型交换机：",
+        "compact_excerpt": "参考 有关 S7-1500R/H 冗余系统 PROFINET 拓扑的信息，请参见《PROFINET 功能手册 (https://support.industry.siemens.com/cs/ww/zh/view/49948856)》。 9.5 组态其它拓扑 简介 在本部分中，将介绍有关组态 S7-500H 冗余系统其它组态变型的信息。 组态包含 R1 设备和 Y 型交换机的 PROFINET 环网或线型拓扑 重新对仅可通过 H-CPU 访问的 S2 设备的操作模式进行参数设置 如果 S2 设备只能由一个 CPU 访问，则 H-CPU 的默认操作模式“IO 设备 (S2)”（例如用于交换 机）会触发 MAINT 诊断。H-CPU 上的 MAINT LED 点亮。为避免进行 MAINT 诊断，必须将操 作模式从“IO 设备 (S2)”更改为“IO 设备 (S1)”。可在 STEP 7 的“I/O 通信”(I/O communication) 视 图中为每个 S2 设备设置参数操作模式。 组态采用 DNA 冗余的冗余 Y 型交换机 可通过以下几种方式组态 DNA 冗余： • 通过 Y 型交换机的基于 Web 的管理组态 DNA 冗余。结果：未在 STEP 7 中将 Y 型交换机作 为 IO 设备集成。 • 建议：可在硬件配置中组态 DNA 冗余，并将 Y 型交换机参数化为 IO 设备。这样便可评估 Y 型交换机的 PROFINET 诊断并快速执行故障排除。 下级 PROFINET 环网的 Y 型交换机和 IO 设备的 MRP 角色 分配以下 MRP 角色： • 对于 Y 型交换机：",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Topology Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0071",
+          "sha256": "244c74cbb0bd19407623c40e1d929cf24c110ed2375fc549eb709d40143d9651",
+          "visual_type": "network_topology_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_07_EV_15",
+        "asset_id": "VIS_0072",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E46385002-AE",
+        "page": 5169,
+        "section": "设备特定信息 > 工艺模块 > 工艺模块 TM NPU > 3 产品概述 > 3.1 S7-1500/ET 200MP 文档指南 > 3.1.2 基本工具",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "PRONETA SIEMENS PRONETA（PROFINET 网络分析）是一款调试和诊断工具，用于 PROFINET 网络。 PRONETA Basic 有两个核心功能： • 在网络分析中，您可以概览 PROFINET 拓扑。将真实组态与参考安装进行比较或进行简单 的参数更改，例如设备的名称和 IP 地址。 • 通过 IO 测试，可简单、快速完成工厂接线和模块组态测试，其中包括测试结果的记录。 有关 SIEMENS PRONETA Basic，敬请访问 Internet。 (https://support.industry.siemens.com/cs/cn/zh/view/67460624) SIEMENS PRONETA Professional 是为用户提供附加功能的许可产品。它提供在 PROFINET 网络 中轻松管理资产的能力，还通过各种功能为自动化系统的操作员自动收集/获取所用组件的数 据提供支持： • 用户界面 (API) 提供自动化单元的访问点，以使用 MQTT 或命令行自动执行扫描功能。 • 借助 PROFIenergy 诊断，可以快速检测支持 PROFIenergy 的设备的当前暂停模式或运行准 备情况，并根据需要进行更改。 • 数据记录向导可支持 PROFINET 开发人员在无需 PLC 和工程组态的情况下快速轻松地读取 和写入非循环 PROFINET 数据记录。 可从 Internet 上下载 SIEMENS PRONETA Professional。 (https://www.siemens.com/proneta- professional) S",
+        "compact_excerpt": "PRONETA SIEMENS PRONETA（PROFINET 网络分析）是一款调试和诊断工具，用于 PROFINET 网络。 PRONETA Basic 有两个核心功能： • 在网络分析中，您可以概览 PROFINET 拓扑。将真实组态与参考安装进行比较或进行简单 的参数更改，例如设备的名称和 IP 地址。 • 通过 IO 测试，可简单、快速完成工厂接线和模块组态测试，其中包括测试结果的记录。 有关 SIEMENS PRONETA Basic，敬请访问 Internet。 (https://support.industry.siemens.com/cs/cn/zh/view/67460624) SIEMENS PRONETA Professional 是为用户提供附加功能的许可产品。它提供在 PROFINET 网络 中轻松管理资产的能力，还通过各种功能为自动化系统的操作员自动收集/获取所用组件的数 据提供支持： • 用户界面 (API) 提供自动化单元的访问点，以使用 MQTT 或命令行自动执行扫描功能。 • 借助 PROFIenergy 诊断，可以快速检测支持 PROFIenergy 的设备的当前暂停模式或运行准 备情况，并根据需要进行更改。 • 数据记录向导可支持 PROFINET 开发人员在无需 PLC 和工程组态的情况下快速轻松地读取 和写入非循环 PROFINET 数据记录。 可从 Internet 上下载 SIEMENS PRONETA Professional。 (https://www.siemens.com/proneta- professional) S",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Topology Agent",
+          "Figure Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0072",
+          "sha256": "bbcebbb23f0a3713a6009858d25b2d2c90647e29071160f345d3796f5be79e93",
+          "visual_type": "network_topology_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      }
+    ],
+    "metadata": {
+      "source": "offline_demo_snapshot",
+      "visual_asset_count": 15,
+      "cross_model_blocked": 0,
+      "rejected_evidence": []
+    }
+  },
+  "judge_decision": {
+    "verdict": "PASS",
+    "confidence": "MEDIUM",
+    "decision_reason": "离线快照仅采用资产清单中可解码、可追溯且经身份检查的手册页。",
+    "final_evidence_ids": [
+      "HIDDEN_07_EV_01",
+      "HIDDEN_07_EV_02"
+    ],
+    "accepted_agent_outputs": [
+      "Topology Agent",
+      "Figure Agent"
+    ],
+    "rejected_agent_outputs": [],
+    "supported_claims": [
+      "典型连接可由 CPU 1517-3 PN/DP 的 X1 双端口形成 CPU、HMI、ET 200MP 的线型 PROFINET 网络，也可按网络分段使用 X2。上线前逐台核对唯一设备名称、IP 地址、子网掩码和无重复地址，并确认 TIA Portal 中的设备与端口拓扑和现场一致。CPU 接口依据见页 2476、2481。"
+    ],
+    "unsupported_claims": [],
+    "conflicting_claims": [],
+    "coverage": {
+      "main": {
+        "answered": true
+      }
+    },
+    "model_consistency": {
+      "pass": true,
+      "rejected_evidence_ids": []
+    },
+    "metadata": {
+      "accepted_claims": [
+        {
+          "claim_id": "HIDDEN_07_CLAIM_01",
+          "claim_text": "典型连接可由 CPU 1517-3 PN/DP 的 X1 双端口形成 CPU、HMI、ET 200MP 的线型 PROFINET 网络，也可按网络分段使用 X2。上线前逐台核对唯一设备名称、IP 地址、子网掩码和无重复地址，并确认 TIA Portal 中的设备与端口拓扑和现场一致。CPU 接口依据见页 2476、2481。",
+          "claim_type": "technical_guidance",
+          "model_scope": "CPU 1517-3 PN/DP",
+          "confidence": "MEDIUM",
+          "evidence_ids": [
+            "HIDDEN_07_EV_01",
+            "HIDDEN_07_EV_02"
+          ],
+          "direct_support": true,
+          "metadata": {
+            "offline_curated": true
+          }
+        }
+      ]
+    }
+  },
+  "verifier": {
+    "figure_requirement_pass": true,
+    "numeric_mismatch_claim_ids": [],
+    "grounded_claim_ids": [
+      "HIDDEN_07_CLAIM_01"
+    ],
+    "passed": true
+  },
+  "answer": {
+    "status": "ANSWER",
+    "text": "典型连接可由 CPU 1517-3 PN/DP 的 X1 双端口形成 CPU、HMI、ET 200MP 的线型 PROFINET 网络，也可按网络分段使用 X2。上线前逐台核对唯一设备名称、IP 地址、子网掩码和无重复地址，并确认 TIA Portal 中的设备与端口拓扑和现场一致。CPU 接口依据见页 2476、2481。",
+    "evidence_ids": [
+      "HIDDEN_07_EV_01",
+      "HIDDEN_07_EV_02"
+    ]
+  },
+  "final_answer": "典型连接可由 CPU 1517-3 PN/DP 的 X1 双端口形成 CPU、HMI、ET 200MP 的线型 PROFINET 网络，也可按网络分段使用 X2。上线前逐台核对唯一设备名称、IP 地址、子网掩码和无重复地址，并确认 TIA Portal 中的设备与端口拓扑和现场一致。CPU 接口依据见页 2476、2481。",
+  "work_order": {
+    "status": "not_requested",
+    "risk_tip": ""
+  },
+  "visual_asset_ids": [
+    "VIS_0027",
+    "VIS_0028",
+    "VIS_0060",
+    "VIS_0061",
+    "VIS_0062",
+    "VIS_0063",
+    "VIS_0064",
+    "VIS_0065",
+    "VIS_0066",
+    "VIS_0067",
+    "VIS_0068",
+    "VIS_0069",
+    "VIS_0070",
+    "VIS_0071",
+    "VIS_0072"
+  ],
+  "visual_evidence": [
+    {
+      "asset_id": "VIS_0027",
+      "evidence_id": "HIDDEN_07_EV_01",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0028",
+      "evidence_id": "HIDDEN_07_EV_02",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0060",
+      "evidence_id": "HIDDEN_07_EV_03",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0061",
+      "evidence_id": "HIDDEN_07_EV_04",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0062",
+      "evidence_id": "HIDDEN_07_EV_05",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0063",
+      "evidence_id": "HIDDEN_07_EV_06",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0064",
+      "evidence_id": "HIDDEN_07_EV_07",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0065",
+      "evidence_id": "HIDDEN_07_EV_08",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0066",
+      "evidence_id": "HIDDEN_07_EV_09",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0067",
+      "evidence_id": "HIDDEN_07_EV_10",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0068",
+      "evidence_id": "HIDDEN_07_EV_11",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0069",
+      "evidence_id": "HIDDEN_07_EV_12",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0070",
+      "evidence_id": "HIDDEN_07_EV_13",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0071",
+      "evidence_id": "HIDDEN_07_EV_14",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0072",
+      "evidence_id": "HIDDEN_07_EV_15",
+      "status": "image_available"
+    }
+  ],
+  "visual_coverage_reason": {
+    "VIS_0027": "front_panel_or_led_page，资料页 2476，direct target evidence",
+    "VIS_0028": "front_panel_or_led_page，资料页 2481，direct target evidence",
+    "VIS_0060": "network_topology_page，资料页 8059，supporting manual context",
+    "VIS_0061": "network_topology_page，资料页 446，supporting manual context",
+    "VIS_0062": "network_topology_page，资料页 535，supporting manual context",
+    "VIS_0063": "network_topology_page，资料页 1065，supporting manual context",
+    "VIS_0064": "network_topology_page，资料页 1272，supporting manual context",
+    "VIS_0065": "network_topology_page，资料页 6654，supporting manual context",
+    "VIS_0066": "network_topology_page，资料页 6733，supporting manual context",
+    "VIS_0067": "network_topology_page，资料页 6800，supporting manual context",
+    "VIS_0068": "network_topology_page，资料页 7060，supporting manual context",
+    "VIS_0069": "network_topology_page，资料页 7812，supporting manual context",
+    "VIS_0070": "network_topology_page，资料页 7936，supporting manual context",
+    "VIS_0071": "network_topology_page，资料页 709，supporting manual context",
+    "VIS_0072": "network_topology_page，资料页 5169，supporting manual context"
+  },
+  "generated_from_commit": "8403213d89d3f2200b9f40ee1f72d23673c9b4f6",
+  "snapshot_validation": {
+    "valid": true,
+    "errors": []
+  },
+  "warnings": [
+    "该结果是基于仓库内真实手册页面整理的离线 SAMPLE 快照，未调用 FULL 检索后端。"
+  ]
+}

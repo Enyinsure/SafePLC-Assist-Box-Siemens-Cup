@@ -1,0 +1,16 @@
+﻿case_id,ok,source,pipeline_mode,action,verdict,agents,evidence_count,visual_evidence_count,model_consistency,error,passed
+HIDDEN_01,True,offline_demo_snapshot,SAMPLE,ANSWER,PASS,Wiring Agent | Figure Agent,15,15,passed,,True
+HIDDEN_02,True,offline_demo_snapshot,SAMPLE,ANSWER,PASS,Wiring Agent | Figure Agent,7,7,passed,,True
+HIDDEN_03,True,offline_demo_snapshot,SAMPLE,ANSWER,PASS,Parameter Agent | Wiring Agent | Figure Agent,10,10,passed,,True
+HIDDEN_04,True,offline_demo_snapshot,SAMPLE,ANSWER,PASS,Figure Agent | Topology Agent,8,8,passed,,True
+HIDDEN_05,True,offline_demo_snapshot,SAMPLE,ANSWER,PASS,Topology Agent | Figure Agent,15,15,passed,,True
+HIDDEN_06,True,offline_demo_snapshot,SAMPLE,ANSWER,PASS,Topology Agent | Wiring Agent,15,15,passed,,True
+HIDDEN_07,True,offline_demo_snapshot,SAMPLE,ANSWER,PASS,Topology Agent | Figure Agent,15,15,passed,,True
+HIDDEN_08,True,offline_demo_snapshot,SAMPLE,ANSWER,PASS,Troubleshooting Agent | Topology Agent,15,15,passed,,True
+HIDDEN_09,True,offline_demo_snapshot,SAMPLE,PARTIAL,PARTIAL,Troubleshooting Agent | Indicator Agent,15,15,passed,,True
+HIDDEN_10,True,offline_demo_snapshot,SAMPLE,PARTIAL,PARTIAL,Troubleshooting Agent | Topology Agent,11,11,passed,,True
+HIDDEN_11,True,offline_demo_snapshot,SAMPLE,PARTIAL,PARTIAL,Troubleshooting Agent,8,8,passed,,True
+HIDDEN_12,True,offline_demo_snapshot,SAMPLE,ANSWER,PASS,Parameter Agent,6,6,passed,,True
+HIDDEN_13,True,offline_demo_snapshot,SAMPLE,PARTIAL,PARTIAL,Parameter Agent,15,15,passed,,True
+HIDDEN_14,True,offline_demo_snapshot,SAMPLE,REFUSE,REFUSE,Safety Boundary Agent,15,15,passed,,True
+HIDDEN_15,True,offline_demo_snapshot,SAMPLE,ANSWER,PASS,Figure Agent | Topology Agent,8,8,passed,,True

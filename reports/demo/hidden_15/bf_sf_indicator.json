@@ -1,0 +1,892 @@
+{
+  "schema_version": "hidden-demo-v1",
+  "case_id": "HIDDEN_09",
+  "source": "offline_demo_snapshot",
+  "pipeline_mode": "SAMPLE",
+  "immutable": true,
+  "query": "S7-1500 CPU 上 BF 与 SF 指示灯分别反映什么问题？出现 BF 红闪而 SF 未亮时应优先检查什么？",
+  "query_hash": "e0f26f35d62bbacb696b16daf4ae0e075ca2cf32573072d1332b3b36cac943b8",
+  "mode": "SAMPLE",
+  "question_type": "INDICATOR_DIAGNOSIS",
+  "action": "PARTIAL",
+  "verdict": "PARTIAL",
+  "confidence": "MEDIUM",
+  "operation_risk_level": "LOW",
+  "query_context": {
+    "original_query": "S7-1500 CPU 上 BF 与 SF 指示灯分别反映什么问题？出现 BF 红闪而 SF 未亮时应优先检查什么？",
+    "question_type": "INDICATOR_DIAGNOSIS",
+    "required_modalities": [
+      "figure",
+      "text"
+    ],
+    "missing_slots": [],
+    "risk_level": "LOW",
+    "risk_decision": "ALLOW",
+    "slots": {
+      "device_family": "S7-1500",
+      "module_model": "CPU 1517-3 PN/DP",
+      "order_number": "6ES7517-3AP00-0AB0"
+    }
+  },
+  "device_context": {
+    "family": "S7-1500",
+    "model": "CPU 1517-3 PN/DP",
+    "order_number": "6ES7517-3AP00-0AB0",
+    "detection_source": "hidden_demo_fixed",
+    "confidence": 1.0
+  },
+  "task_plan": {
+    "question_type": "INDICATOR_DIAGNOSIS",
+    "selected_agents": [
+      "Troubleshooting Agent",
+      "Indicator Agent"
+    ]
+  },
+  "agent_plan": {
+    "selected_agents": [
+      "Troubleshooting Agent",
+      "Indicator Agent"
+    ],
+    "execution_order": [
+      "Troubleshooting Agent",
+      "Indicator Agent"
+    ],
+    "execution_mode": "parallel",
+    "parallel_groups": [
+      [
+        "Troubleshooting Agent",
+        "Indicator Agent"
+      ]
+    ],
+    "tasks": [
+      {
+        "task_id": "HIDDEN_09_TASK_01",
+        "agent_name": "Troubleshooting Agent",
+        "question": "S7-1500 CPU 上 BF 与 SF 指示灯分别反映什么问题？出现 BF 红闪而 SF 未亮时应优先检查什么？",
+        "status": "completed"
+      },
+      {
+        "task_id": "HIDDEN_09_TASK_02",
+        "agent_name": "Indicator Agent",
+        "question": "S7-1500 CPU 上 BF 与 SF 指示灯分别反映什么问题？出现 BF 红闪而 SF 未亮时应优先检查什么？",
+        "status": "completed"
+      }
+    ]
+  },
+  "agent_results": [
+    {
+      "agent_name": "Troubleshooting Agent",
+      "status": "PARTIAL",
+      "answer": "当前目标 CPU 手册页直接给出 RUN/STOP、ERROR、MAINT 及端口状态显示，但不能把所有系列上的 BF、SF 名称机械等同。对“BF 红闪、SF 未亮”的现场描述，应优先按总线通信故障方向检查链路、设备名称、IP/子网、组态一致性和诊断缓冲区；SF 未亮不代表网络通信正常。具体灯态仍应以现场 CPU 和接口模块型号手册为准。",
+      "claims": [
+        {
+          "claim_id": "HIDDEN_09_CLAIM_01",
+          "claim_text": "当前目标 CPU 手册页直接给出 RUN/STOP、ERROR、MAINT 及端口状态显示，但不能把所有系列上的 BF、SF 名称机械等同。对“BF 红闪、SF 未亮”的现场描述，应优先按总线通信故障方向检查链路、设备名称、IP/子网、组态一致性和诊断缓冲区；SF 未亮不代表网络通信正常。具体灯态仍应以现场 CPU 和接口模块型号手册为准。",
+          "claim_type": "technical_guidance",
+          "model_scope": "CPU 1517-3 PN/DP",
+          "confidence": "MEDIUM",
+          "evidence_ids": [
+            "HIDDEN_09_EV_01"
+          ],
+          "direct_support": true,
+          "metadata": {
+            "offline_curated": true
+          }
+        }
+      ],
+      "evidence_ids": [
+        "HIDDEN_09_EV_01"
+      ],
+      "abstain": false
+    },
+    {
+      "agent_name": "Indicator Agent",
+      "status": "PARTIAL",
+      "answer": "当前目标 CPU 手册页直接给出 RUN/STOP、ERROR、MAINT 及端口状态显示，但不能把所有系列上的 BF、SF 名称机械等同。对“BF 红闪、SF 未亮”的现场描述，应优先按总线通信故障方向检查链路、设备名称、IP/子网、组态一致性和诊断缓冲区；SF 未亮不代表网络通信正常。具体灯态仍应以现场 CPU 和接口模块型号手册为准。",
+      "claims": [
+        {
+          "claim_id": "HIDDEN_09_CLAIM_01",
+          "claim_text": "当前目标 CPU 手册页直接给出 RUN/STOP、ERROR、MAINT 及端口状态显示，但不能把所有系列上的 BF、SF 名称机械等同。对“BF 红闪、SF 未亮”的现场描述，应优先按总线通信故障方向检查链路、设备名称、IP/子网、组态一致性和诊断缓冲区；SF 未亮不代表网络通信正常。具体灯态仍应以现场 CPU 和接口模块型号手册为准。",
+          "claim_type": "technical_guidance",
+          "model_scope": "CPU 1517-3 PN/DP",
+          "confidence": "MEDIUM",
+          "evidence_ids": [
+            "HIDDEN_09_EV_01"
+          ],
+          "direct_support": true,
+          "metadata": {
+            "offline_curated": true
+          }
+        }
+      ],
+      "evidence_ids": [
+        "HIDDEN_09_EV_01"
+      ],
+      "abstain": false
+    }
+  ],
+  "evidence_pool": {
+    "evidences": [
+      {
+        "evidence_id": "HIDDEN_09_EV_01",
+        "asset_id": "VIS_0027",
+        "source": "CPU 1517-3 PN/DP device manual",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "CPU 1517-3 PN/DP device manual",
+        "document_id": "A5E33595080-AF",
+        "page": 2476,
+        "section": "设备特定信息 > 中央处理单元 > CPU 1517-3 PN/DP > 3 产品概述 > 3.5 操作员控件和显示元件",
+        "figure_number": "图 2-237",
+        "manual_figure_number": "图 2-237",
+        "manual_figure_caption": "不带前面板的 CPU 1517-3 PN/DP 的前视图",
+        "device_family": "S7-1500",
+        "module_model": "CPU 1517-3 PN/DP",
+        "order_number": "6ES7517-3AP00-0AB0",
+        "text": "图 2-237 标注 CPU 1517-3 PN/DP 的前视图，PROFINET IO 接口 X1 对应标号 ⑦，X2 对应标号 ⑥。",
+        "compact_excerpt": "图 2-237 标注 CPU 1517-3 PN/DP 的前视图，PROFINET IO 接口 X1 对应标号 ⑦，X2 对应标号 ⑥。",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Indicator Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0027",
+          "sha256": "7e73d63df0848cf4b5c101084b7b2a52f48b8a96cfeeb6c3c543866881d0389c",
+          "visual_type": "front_panel_or_led_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_09_EV_02",
+        "asset_id": "VIS_0086",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E46600341-AD",
+        "page": 1238,
+        "section": "基本信息 > SIMATIC Drive Controller > 16 测试和维护功能 > 16.2 读取/保存服务数据",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "如果未满足功能选择的要求（例如，设置了写保护、未插入卡），则 7 段显示器显示状 态“F”（故障）并持续 10 秒，且该功能不执行。接下来，菜单关闭，7 段显示器显示“0”。 如果保存过程中出现错误： • RUN/STOP LED 指示灯会根据之前的操作状态呈黄色 (STOP) 或绿色 (RUN) 闪烁 • ERROR LED 指示灯呈红色闪烁 在这种情况下，DUMP.S7S 文件夹中的文本文件包含有关已发生的错误的信息。 说明 在功能选择模式下，短按此按钮（不超过 3 秒）会选择下一功能（功能“1”、“2”或“3”）。最后一个功能是“E”。如果按下按钮至少 3 秒 钟，则将退出功能选择模块。如果 10 秒内未按下任何键，则也会退出功能选择模式。 在 SIMATIC Drive Controller 启动期间保存服务数据 在启动期间，仅会保存 CPU 的服务数据，而不会保存 SINAMICS Integrated 的服务数据。 1. 关闭 SIMATIC Drive Controller 电源。 2. 按住 FUNCT 按钮。 3. 接通 SIMATIC Drive Controller 电源。 4. 要开始保存过程，请在 7 段显示器至少闪烁一次（上电后约 1 至 2 秒钟）后松开 FUNCT 按钮。 保存过程在大约 45 秒钟后才会开始，并以黄色闪烁的 RUN/STOP LED 指示。ERROR 和 MAINT LED 熄灭。随着保存过程的进行，7 段显示器显示“d”(DUMP)，并且 ACT LED 指示灯 闪烁。保存过程完成后，7 段显示屏将显示“0”。 结果：CPU ",
+        "compact_excerpt": "如果未满足功能选择的要求（例如，设置了写保护、未插入卡），则 7 段显示器显示状 态“F”（故障）并持续 10 秒，且该功能不执行。接下来，菜单关闭，7 段显示器显示“0”。 如果保存过程中出现错误： • RUN/STOP LED 指示灯会根据之前的操作状态呈黄色 (STOP) 或绿色 (RUN) 闪烁 • ERROR LED 指示灯呈红色闪烁 在这种情况下，DUMP.S7S 文件夹中的文本文件包含有关已发生的错误的信息。 说明 在功能选择模式下，短按此按钮（不超过 3 秒）会选择下一功能（功能“1”、“2”或“3”）。最后一个功能是“E”。如果按下按钮至少 3 秒 钟，则将退出功能选择模块。如果 10 秒内未按下任何键，则也会退出功能选择模式。 在 SIMATIC Drive Controller 启动期间保存服务数据 在启动期间，仅会保存 CPU 的服务数据，而不会保存 SINAMICS Integrated 的服务数据。 1. 关闭 SIMATIC Drive Controller 电源。 2. 按住 FUNCT 按钮。 3. 接通 SIMATIC Drive Controller 电源。 4. 要开始保存过程，请在 7 段显示器至少闪烁一次（上电后约 1 至 2 秒钟）后松开 FUNCT 按钮。 保存过程在大约 45 秒钟后才会开始，并以黄色闪烁的 RUN/STOP LED 指示。ERROR 和 MAINT LED 熄灭。随着保存过程的进行，7 段显示器显示“d”(DUMP)，并且 ACT LED 指示灯 闪烁。保存过程完成后，7 段显示屏将显示“0”。 结果：CPU ",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Indicator Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0086",
+          "sha256": "07784edba7b5c119e662ae36f091f80deb93ae93cd0603a93dbd3a20a85354b8",
+          "visual_type": "front_panel_or_led_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_09_EV_03",
+        "asset_id": "VIS_0087",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E46600377-AD",
+        "page": 2874,
+        "section": "设备特定信息 > 中央处理单元 > SIMATIC Drive Controller > 5 中断、诊断报警、错误消息和系统报警 > 5.1 状态和错误指示灯 > 5.1.1 概述",
+        "figure_number": "图 2-333",
+        "manual_figure_number": "图 2-333",
+        "manual_figure_caption": "SIMATIC Drive Controller 状态指示灯",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "SIMATIC Drive Controller 设备手册, 11/2023, A5E46600377-AD 58 中断、诊断报警、错误消息和系统报警 5 5.1 状态和错误指示灯 5.1.1 概述 状态指示灯的位置 下图显示了 SIMATIC Drive Controller 上状态指示灯的位置。LED ① 到 ③ 指示 CPU 的操作状 态。LED ④ 和 ⑤ 指示 SINAMICS Integrated 的操作状态。7 段显示器 ⑦ 显示特定操作状态 下的其它状态信息。ACT LED ⑧ 指示对 SIMATIC 存储卡的写/读访问。 \u0014\u0015 )6 \u0019(6\u001a\u0019\u0014\u0018\u0010\u0017')\u0014\u0013\u0010\u0013$%\u0013 7\u00105\u001a \u0013\u0013\u0013\u0015\u0014\u0017 $\u0018(\u0017\u0016 \u0015\u0019\u0014\u001a \u0014 \u0015 \u0016 \u0017 \u0018 \u0019 \u001a \u001b ① RUN/STOP LED，绿色/黄色 ② ERROR LED，红色/黄色 ③ MAINT LED，黄色 ④ RDY LED，红色/绿色/黄色 ⑤ COM LED，红色/绿色/黄色 ⑥ 无功能 ⑦ 7 段显示器 ⑧ ACT LED，黄色 图 2-333 SIMATIC Drive Controller 状态指示灯",
+        "compact_excerpt": "SIMATIC Drive Controller 设备手册, 11/2023, A5E46600377-AD 58 中断、诊断报警、错误消息和系统报警 5 5.1 状态和错误指示灯 5.1.1 概述 状态指示灯的位置 下图显示了 SIMATIC Drive Controller 上状态指示灯的位置。LED ① 到 ③ 指示 CPU 的操作状 态。LED ④ 和 ⑤ 指示 SINAMICS Integrated 的操作状态。7 段显示器 ⑦ 显示特定操作状态 下的其它状态信息。ACT LED ⑧ 指示对 SIMATIC 存储卡的写/读访问。 \u0014\u0015 )6 \u0019(6\u001a\u0019\u0014\u0018\u0010\u0017')\u0014\u0013\u0010\u0013$%\u0013 7\u00105\u001a \u0013\u0013\u0013\u0015\u0014\u0017 $\u0018(\u0017\u0016 \u0015\u0019\u0014\u001a \u0014 \u0015 \u0016 \u0017 \u0018 \u0019 \u001a \u001b ① RUN/STOP LED，绿色/黄色 ② ERROR LED，红色/黄色 ③ MAINT LED，黄色 ④ RDY LED，红色/绿色/黄色 ⑤ COM LED，红色/绿色/黄色 ⑥ 无功能 ⑦ 7 段显示器 ⑧ ACT LED，黄色 图 2-333 SIMATIC Drive Controller 状态指示灯",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Indicator Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0087",
+          "sha256": "59e39d3149268a89d6a4c1525166d6dd16a47857879f5ff54e2ac6c0c13aed37",
+          "visual_type": "front_panel_or_led_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_09_EV_04",
+        "asset_id": "VIS_0088",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E46600377-AD",
+        "page": 2875,
+        "section": "设备特定信息 > 中央处理单元 > SIMATIC Drive Controller > 5 中断、诊断报警、错误消息和系统报警 > 5.1 状态和错误指示灯 > 5.1.2 CPU 的状态和错误显示",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "重置期间的 LED 指示灯 上电时，SIMATIC Drive Controller 执行重置。重置期间，所有 LED 指示灯均呈黄色点亮（灯 泡测试）。 5.1.2 CPU 的状态和错误显示 RUN/STOP、ERROR 和 MAINT LED 指示灯的含义 SIMATIC Drive Controller 上配有三个 LED 指示灯，用于指示 CPU 的当前操作状态和诊断状 态。下表列出了 RUN/STOP、ERROR 和 MAINT LED 指示灯各种颜色组合的含义。 表格 2-361 LED 指示灯的含义 RUN/STOP LED 指 示灯 ERROR LED 指示灯MAINT LED 指示灯 含义 LED 指示灯熄灭 LED 指示灯熄灭 LED 指示灯熄灭 CPU 上的电源电压缺失或不足。 LED 指示灯熄灭 LED 指示灯红色闪 烁 LED 指示灯熄灭 发生错误。 LED 指示灯呈绿色 点亮 LED 指示灯熄灭 LED 指示灯熄灭 CPU 处于 RUN 模式。 诊断事件未决。 LED 指示灯呈绿色 点亮 LED 指示灯红色闪 烁 LED 指示灯熄灭 RUN 下的服务数据备份结束，并出现错 误。 设备要求维护（例如，警告：CPU 过 热）。 必须在短时间内检查/更换受影响的硬件。 激活的强制作业 LED 指示灯呈绿色 点亮 LED 指示灯熄灭 LED 指示灯呈黄色 点亮 CPU 的 OPC UA 服务器预期通过 GDS 推送 功能收到初始信任列表和 CRL。 LED 指示灯呈绿色 点亮 LED 指示灯熄灭 LED 指示灯黄色闪 烁 组态错误 LED 指示灯呈黄色 点亮",
+        "compact_excerpt": "重置期间的 LED 指示灯 上电时，SIMATIC Drive Controller 执行重置。重置期间，所有 LED 指示灯均呈黄色点亮（灯 泡测试）。 5.1.2 CPU 的状态和错误显示 RUN/STOP、ERROR 和 MAINT LED 指示灯的含义 SIMATIC Drive Controller 上配有三个 LED 指示灯，用于指示 CPU 的当前操作状态和诊断状 态。下表列出了 RUN/STOP、ERROR 和 MAINT LED 指示灯各种颜色组合的含义。 表格 2-361 LED 指示灯的含义 RUN/STOP LED 指 示灯 ERROR LED 指示灯MAINT LED 指示灯 含义 LED 指示灯熄灭 LED 指示灯熄灭 LED 指示灯熄灭 CPU 上的电源电压缺失或不足。 LED 指示灯熄灭 LED 指示灯红色闪 烁 LED 指示灯熄灭 发生错误。 LED 指示灯呈绿色 点亮 LED 指示灯熄灭 LED 指示灯熄灭 CPU 处于 RUN 模式。 诊断事件未决。 LED 指示灯呈绿色 点亮 LED 指示灯红色闪 烁 LED 指示灯熄灭 RUN 下的服务数据备份结束，并出现错 误。 设备要求维护（例如，警告：CPU 过 热）。 必须在短时间内检查/更换受影响的硬件。 激活的强制作业 LED 指示灯呈绿色 点亮 LED 指示灯熄灭 LED 指示灯呈黄色 点亮 CPU 的 OPC UA 服务器预期通过 GDS 推送 功能收到初始信任列表和 CRL。 LED 指示灯呈绿色 点亮 LED 指示灯熄灭 LED 指示灯黄色闪 烁 组态错误 LED 指示灯呈黄色 点亮",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Indicator Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0088",
+          "sha256": "d6339dc25b79038b7ceb5f765cac97769fab4193a8cd627d56a5febd7c21d611",
+          "visual_type": "front_panel_or_led_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_09_EV_05",
+        "asset_id": "VIS_0089",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03735842-AJ",
+        "page": 7922,
+        "section": "综合信息 > 《诊断功能手册》 > 诊断 > 8 S7-1500R/H 冗余系统的诊断 > 8.4 RUN-Redundant 系统状态下的诊断",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "在显示器上评估诊断结果 在示例 2 中，CPU PLC_2 的显示屏中显示如下所示： • 在“总览”(Overview) 命令菜单中：在下一页的较低位置处将显示一条消息。 • 在“诊断”(Diagnostics) 菜单命令中：在下一页的较低位置处将显示一条消息。 • 在“模块”(Modules) 菜单命令中：发生错误。 要对显示信息进行评估，请按以下步骤操作： 1. 使用菜单命令“概述>冗余”(Overview > Redundancy)，导航到“配对状态”(Pairing state)。 2. 将显示以下配对状态：单配对 (X4)。 即，在 H-Sync 接口 X4 处进行了冗余连接，但 X3处未进行冗余连接。 3. 使用“诊断”(Diagnostics) 菜单命令，导航到“报警”(Alarms) 处。 4. 查看报警详细信息（评估诊断缓冲区）。 S7-1500H 示例 3： S7-1500H 中的一条冗余连接断开。 通过 CPU 上的 X3 和 X4 LED 指示灯评估诊断结果 CPU PLC_1 上的 LED X4 指示灯未点亮。即， • 在 H-Sync 接口 X4 处，同步模块上的冗余连接断开。 或 • 在 H-Sync 接口 X4 处，未连接同步模块。 STEP 7 中的诊断 CPU 的诊断缓冲区指示： • 仅一条冗余连接 • CPU 和同步模块的光纤规范错误 项目树中的诊断将显示： • S7-1500H 系统中下层组件要求维护 • PLC_1 和 PLC_2 的下位组件要求维护 • PLC_1 和 PLC_2 本地模块的下位组件要求维护 在网络视图中诊断指示： •",
+        "compact_excerpt": "在显示器上评估诊断结果 在示例 2 中，CPU PLC_2 的显示屏中显示如下所示： • 在“总览”(Overview) 命令菜单中：在下一页的较低位置处将显示一条消息。 • 在“诊断”(Diagnostics) 菜单命令中：在下一页的较低位置处将显示一条消息。 • 在“模块”(Modules) 菜单命令中：发生错误。 要对显示信息进行评估，请按以下步骤操作： 1. 使用菜单命令“概述>冗余”(Overview > Redundancy)，导航到“配对状态”(Pairing state)。 2. 将显示以下配对状态：单配对 (X4)。 即，在 H-Sync 接口 X4 处进行了冗余连接，但 X3处未进行冗余连接。 3. 使用“诊断”(Diagnostics) 菜单命令，导航到“报警”(Alarms) 处。 4. 查看报警详细信息（评估诊断缓冲区）。 S7-1500H 示例 3： S7-1500H 中的一条冗余连接断开。 通过 CPU 上的 X3 和 X4 LED 指示灯评估诊断结果 CPU PLC_1 上的 LED X4 指示灯未点亮。即， • 在 H-Sync 接口 X4 处，同步模块上的冗余连接断开。 或 • 在 H-Sync 接口 X4 处，未连接同步模块。 STEP 7 中的诊断 CPU 的诊断缓冲区指示： • 仅一条冗余连接 • CPU 和同步模块的光纤规范错误 项目树中的诊断将显示： • S7-1500H 系统中下层组件要求维护 • PLC_1 和 PLC_2 的下位组件要求维护 • PLC_1 和 PLC_2 本地模块的下位组件要求维护 在网络视图中诊断指示： •",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Indicator Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0089",
+          "sha256": "93ffc773ada5dfb9e5b5d64b2c4816466909bbdb12bc937293d3e4dddaf90c13",
+          "visual_type": "diagnostic_alarm_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_09_EV_06",
+        "asset_id": "VIS_0090",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03735842-AJ",
+        "page": 7831,
+        "section": "综合信息 > 《诊断功能手册》 > 诊断 > 5 组态和确定系统诊断 > 5.3 系统诊断的显示方式 > 5.3.1 设备上的诊断信息 > 5.3.1.1 LED 指示灯",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "5.3.1 设备上的诊断信息 5.3.1.1 LED 指示灯 概述 诸如 CPU、接口模块和模块的所有硬件组件，都可以通过 LED 指示灯指示有关操作模式和内 部/外部错误的信息。 通过 LED 指示灯进行诊断是确定错误的原始工具。 下图为一些模块上 LED 指示灯布局的示例。 表格 3-362 模块上的 LED 指示灯 CPU 1516-3 PN/DP IM 155-5 PN ST DI 32x24VDC HF PS 25W 24VDC \u0015 \u0016 \u0014 \u0017 \u0018 \u0019 \u0013 \u0014 \u0012 \u0015 \u0016 \u0015 \u0016 \u0014 \u0017 \u0013 \u0014 \u0012 ① RUN/STOP LED 指示灯 （双色 LED 指示灯： 绿色/黄色） RUN LED 指示灯 （双色 LED 指示灯： 绿 色/黄色） RUN LED 指示灯 （单色 LED 指示灯： 绿 色） RUN LED 指示灯 （单色 LED 指示灯： 绿 色） ② ERROR LED 指示灯 （单色 LED 指示灯： 红色） ERROR LED 指示灯 （单色 LED 指示灯：红 色） ERROR LED 指示灯 （单色 LED 指示灯： 红 色） ERROR LED 指示灯 （单色 LED 指示灯： 红 色） ③ MAINT LED 指示灯 （单色 LED 指示灯： 黄色） MAINT LED 指示灯 （单色 LED 指示灯： 黄 色） 无功能 MAINT LED 指示灯 （单色 LED 指示灯： 黄 色） ④ X1 P1 （双色 LED 指示灯： 绿色/黄色） X1 P1 （单色 LED 指示灯： 绿 色） LED CHx 指示灯 （双色 LED 指示灯： 绿 色/",
+        "compact_excerpt": "5.3.1 设备上的诊断信息 5.3.1.1 LED 指示灯 概述 诸如 CPU、接口模块和模块的所有硬件组件，都可以通过 LED 指示灯指示有关操作模式和内 部/外部错误的信息。 通过 LED 指示灯进行诊断是确定错误的原始工具。 下图为一些模块上 LED 指示灯布局的示例。 表格 3-362 模块上的 LED 指示灯 CPU 1516-3 PN/DP IM 155-5 PN ST DI 32x24VDC HF PS 25W 24VDC \u0015 \u0016 \u0014 \u0017 \u0018 \u0019 \u0013 \u0014 \u0012 \u0015 \u0016 \u0015 \u0016 \u0014 \u0017 \u0013 \u0014 \u0012 ① RUN/STOP LED 指示灯 （双色 LED 指示灯： 绿色/黄色） RUN LED 指示灯 （双色 LED 指示灯： 绿 色/黄色） RUN LED 指示灯 （单色 LED 指示灯： 绿 色） RUN LED 指示灯 （单色 LED 指示灯： 绿 色） ② ERROR LED 指示灯 （单色 LED 指示灯： 红色） ERROR LED 指示灯 （单色 LED 指示灯：红 色） ERROR LED 指示灯 （单色 LED 指示灯： 红 色） ERROR LED 指示灯 （单色 LED 指示灯： 红 色） ③ MAINT LED 指示灯 （单色 LED 指示灯： 黄色） MAINT LED 指示灯 （单色 LED 指示灯： 黄 色） 无功能 MAINT LED 指示灯 （单色 LED 指示灯： 黄 色） ④ X1 P1 （双色 LED 指示灯： 绿色/黄色） X1 P1 （单色 LED 指示灯： 绿 色） LED CHx 指示灯 （双色 LED 指示灯： 绿 色/",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Indicator Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0090",
+          "sha256": "ecf1858d18cee235a05ca39ef0811bdb8d8712ef42f4c30edc84db9a3bd9be26",
+          "visual_type": "front_panel_or_led_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_09_EV_07",
+        "asset_id": "VIS_0091",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E46600341-AD",
+        "page": 1229,
+        "section": "基本信息 > SIMATIC Drive Controller > 15 维护 > 15.8 温度监视",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "15.8 温度监视 SIMATIC Drive Controller 集成了温度监视功能。温度监视可确保 SIMATIC Drive Controller 仅 在允许的温度范围内运行。这样可以防止设备缺陷和避免不确定的设备行为。 功能 温度传感器用于监视内部温度。过热时对应的温度阈值和响应如下： 内部温度 维护 事件 响应 上限违例 阈值 1 CPU 过热 （警告，到达） MAINT LED 指示灯黄色点亮。 在诊断缓冲区中输入一个条目。 调用诊断中断 OB（OB82，到达事件）。 有关详细信息，请参见“评估中断”。 下限违例 阈值 1 CPU 过热 （警告，离去） MAINT LED 熄灭。 在诊断缓冲区中输入一个条目。 调用诊断中断 OB（OB82，离去事件）。 有关详细信息，请参见“评估中断”部分。 上限违例 阈值 2 CPU 过热 （错误） MAINT LED 指示灯黄色点亮。 ERROR LED 指示灯红色闪烁。 输入到诊断缓冲区中（不调用 OB82）。 SIMATIC Drive Controller 切换到 STOP 模式并设置启动 锁定（需要关闭/打开电源）。 评估中断 用“RALRM”指令评估中断和相应的信息。 在诊断中断 OB (OB82) 中调用“RALRM”指令。 表格 1-194 过热警告中其它中断信息的结构 字节 数据类型 含义 0 到 1 WORD 用作附加中断信息的以下数据组态的格式标识符。 过热信息附带格式标识符 W#16#8002（高级通道诊断）。 2 至 3 WORD 触发中断的组件的通道编号： W#16#0C72：PLC 硬件 位 0： ",
+        "compact_excerpt": "15.8 温度监视 SIMATIC Drive Controller 集成了温度监视功能。温度监视可确保 SIMATIC Drive Controller 仅 在允许的温度范围内运行。这样可以防止设备缺陷和避免不确定的设备行为。 功能 温度传感器用于监视内部温度。过热时对应的温度阈值和响应如下： 内部温度 维护 事件 响应 上限违例 阈值 1 CPU 过热 （警告，到达） MAINT LED 指示灯黄色点亮。 在诊断缓冲区中输入一个条目。 调用诊断中断 OB（OB82，到达事件）。 有关详细信息，请参见“评估中断”。 下限违例 阈值 1 CPU 过热 （警告，离去） MAINT LED 熄灭。 在诊断缓冲区中输入一个条目。 调用诊断中断 OB（OB82，离去事件）。 有关详细信息，请参见“评估中断”部分。 上限违例 阈值 2 CPU 过热 （错误） MAINT LED 指示灯黄色点亮。 ERROR LED 指示灯红色闪烁。 输入到诊断缓冲区中（不调用 OB82）。 SIMATIC Drive Controller 切换到 STOP 模式并设置启动 锁定（需要关闭/打开电源）。 评估中断 用“RALRM”指令评估中断和相应的信息。 在诊断中断 OB (OB82) 中调用“RALRM”指令。 表格 1-194 过热警告中其它中断信息的结构 字节 数据类型 含义 0 到 1 WORD 用作附加中断信息的以下数据组态的格式标识符。 过热信息附带格式标识符 W#16#8002（高级通道诊断）。 2 至 3 WORD 触发中断的组件的通道编号： W#16#0C72：PLC 硬件 位 0： ",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Indicator Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0091",
+          "sha256": "fad3cb6d41eb94664464660ab356ed1a34bacbaa3f512ee317a26559f06d5575",
+          "visual_type": "diagnostic_alarm_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_09_EV_08",
+        "asset_id": "VIS_0092",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E46600341-AD",
+        "page": 1235,
+        "section": "基本信息 > SIMATIC Drive Controller > 16 测试和维护功能 > 16.1 测试功能",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "通过数据块编辑器进行测试 在数据块编辑器中，可通过各种不同方式对变量进行监视和修改。这些功能可直接访问在线程 序中变量的实际值。实际值是指在程序执行过程中，CPU 工作存储器中变量的当前值。数据库 编辑器中的以下功能可用于监视和修改。 • 在线监视变量 • 修改各个实际值 • 创建实际值的快照 • 使用快照覆盖实际值 说明 在调试过程中设置数据值 工厂调试过程中，通常需要调整数据值，以使程序适应当地条件。对此，数据块的声明表中包 含有相应功能。 通过 LED 指示灯闪烁进行测试 在许多在线对话框中，都可执行 LED 指示灯闪烁测试。在不确定硬件配置中的哪个设备对应 于软件中当前所选设备时，此功能很有用。 如果在 STEP 7 中单击“在线与诊断（在线访问）”(Online & diagnostics (online access)) 下 的“闪烁 LED 指示灯”(Flash LED) 按钮，当前所选设备上的 LED 指示灯将闪烁。CPU 上的 RUN/STOP、ERROR 和 MAINT LED 指示灯将闪烁。LED 指示灯将始终闪烁，直至闪烁测试终 止。 使用 CPU 跟踪进行测试 跟踪功能用于根据可设置的触发条件记录 CPU 变量。变量示例为 CPU 的系统变量和用户变 量。如果驱动器参数已使用相关消息帧与 CPU 变量互连，则也可以记录工厂状态。 CPU 将保存记录结果。如有必要，可以使用 STEP 7 或通过 Web 服务器显示和评估记录。可以 从项目树中 CPU 文件夹的“跟踪”(Traces) 下调用跟踪功能。 有关跟踪功能的信息，另请参见 Internet (h",
+        "compact_excerpt": "通过数据块编辑器进行测试 在数据块编辑器中，可通过各种不同方式对变量进行监视和修改。这些功能可直接访问在线程 序中变量的实际值。实际值是指在程序执行过程中，CPU 工作存储器中变量的当前值。数据库 编辑器中的以下功能可用于监视和修改。 • 在线监视变量 • 修改各个实际值 • 创建实际值的快照 • 使用快照覆盖实际值 说明 在调试过程中设置数据值 工厂调试过程中，通常需要调整数据值，以使程序适应当地条件。对此，数据块的声明表中包 含有相应功能。 通过 LED 指示灯闪烁进行测试 在许多在线对话框中，都可执行 LED 指示灯闪烁测试。在不确定硬件配置中的哪个设备对应 于软件中当前所选设备时，此功能很有用。 如果在 STEP 7 中单击“在线与诊断（在线访问）”(Online & diagnostics (online access)) 下 的“闪烁 LED 指示灯”(Flash LED) 按钮，当前所选设备上的 LED 指示灯将闪烁。CPU 上的 RUN/STOP、ERROR 和 MAINT LED 指示灯将闪烁。LED 指示灯将始终闪烁，直至闪烁测试终 止。 使用 CPU 跟踪进行测试 跟踪功能用于根据可设置的触发条件记录 CPU 变量。变量示例为 CPU 的系统变量和用户变 量。如果驱动器参数已使用相关消息帧与 CPU 变量互连，则也可以记录工厂状态。 CPU 将保存记录结果。如有必要，可以使用 STEP 7 或通过 Web 服务器显示和评估记录。可以 从项目树中 CPU 文件夹的“跟踪”(Traces) 下调用跟踪功能。 有关跟踪功能的信息，另请参见 Internet (h",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Indicator Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0092",
+          "sha256": "b758389f14df60593d7b8a709fceef4ae94517c2549c9fa2f238de0db94f4466",
+          "visual_type": "front_panel_or_led_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_09_EV_09",
+        "asset_id": "VIS_0093",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E46600341-AD",
+        "page": 1237,
+        "section": "基本信息 > SIMATIC Drive Controller > 16 测试和维护功能 > 16.2 读取/保存服务数据",
+        "figure_number": "图 1-442",
+        "manual_figure_number": "图 1-442",
+        "manual_figure_caption": "SIMATIC Drive Controller FUNCT 按钮",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "使用 FUNCT 按钮的步骤 可以通过 FUNCT 按钮将服务数据保存到 SIMATIC Drive Controller 上的 SIMATIC 存储卡。 原则上，有 2 种方式可读取服务数据： • 在 SIMATIC Drive Controller 的 STOP 或 RUN 状态下读取服务数据 • 在 SIMATIC Drive Controller 启动时读取服务数据 在 STOP 或 RUN 状态下读取服务数据时，可以快速轻松地将数据备份到存储卡上。如果无法 再进行备份（例如，由于持续性错误），还可以在开机后立即启动期间备份服务数据。在这种 情况下，仅会保存 CPU 的服务数据，而不会保存 SINAMICS Integrated 的服务数据。 \u0014 \u0015 \u0014\u0015 )6 \u0019(6\u001a\u0019\u0014\u0018\u0010\u0017')\u0014\u0013\u0010\u0013$%\u0013 7\u00105\u001a \u0013\u0013\u0013\u0015\u0014\u0017 $\u0018(\u0017\u0016 \u0015\u0019\u0014\u001a ① FUNCT 按钮 ② 7 段显示屏 图 1-442 SIMATIC Drive Controller FUNCT 按钮 要求： • 存储卡已插入；未设置卡的写保护。 • 卡上有足够的可用内存。 在 SIMATIC Drive Controller 的 STOP 或 RUN 状态下保存服务数据 1. 要进入功能选择模式，请用尖锐物体按下 FUNCT 按钮并持续至少 3 秒钟，然后松开。作为 辅助方法，7 段显示器在此期间每隔一秒将闪烁一次“0”。 松开按钮后，将进入功能选择模式。7 段显示屏将显示功能“1”（保存服务数据）。 2. 要确认选择，请在 10 秒内按下 FUNCT 按钮并持续至少 3 秒钟，然后松开。将保存服务数 ",
+        "compact_excerpt": "使用 FUNCT 按钮的步骤 可以通过 FUNCT 按钮将服务数据保存到 SIMATIC Drive Controller 上的 SIMATIC 存储卡。 原则上，有 2 种方式可读取服务数据： • 在 SIMATIC Drive Controller 的 STOP 或 RUN 状态下读取服务数据 • 在 SIMATIC Drive Controller 启动时读取服务数据 在 STOP 或 RUN 状态下读取服务数据时，可以快速轻松地将数据备份到存储卡上。如果无法 再进行备份（例如，由于持续性错误），还可以在开机后立即启动期间备份服务数据。在这种 情况下，仅会保存 CPU 的服务数据，而不会保存 SINAMICS Integrated 的服务数据。 \u0014 \u0015 \u0014\u0015 )6 \u0019(6\u001a\u0019\u0014\u0018\u0010\u0017')\u0014\u0013\u0010\u0013$%\u0013 7\u00105\u001a \u0013\u0013\u0013\u0015\u0014\u0017 $\u0018(\u0017\u0016 \u0015\u0019\u0014\u001a ① FUNCT 按钮 ② 7 段显示屏 图 1-442 SIMATIC Drive Controller FUNCT 按钮 要求： • 存储卡已插入；未设置卡的写保护。 • 卡上有足够的可用内存。 在 SIMATIC Drive Controller 的 STOP 或 RUN 状态下保存服务数据 1. 要进入功能选择模式，请用尖锐物体按下 FUNCT 按钮并持续至少 3 秒钟，然后松开。作为 辅助方法，7 段显示器在此期间每隔一秒将闪烁一次“0”。 松开按钮后，将进入功能选择模式。7 段显示屏将显示功能“1”（保存服务数据）。 2. 要确认选择，请在 10 秒内按下 FUNCT 按钮并持续至少 3 秒钟，然后松开。将保存服务数 ",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Indicator Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0093",
+          "sha256": "138426c875b80907a5a25376955bc78e35e9289677d8308784c5eff43daeedf9",
+          "visual_type": "front_panel_or_led_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_09_EV_10",
+        "asset_id": "VIS_0094",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03461186-AN",
+        "page": 373,
+        "section": "基本信息 > 自动化系统 > 16 测试和维护功能 > 16.1 测试功能",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "通过 PLC 变量表进行测试 在 PLC 变量表中，可直接监视 CPU 中变量的当前值。为此，需打开 PLC 变量表并启动监视功 能。 此外，也可将 PLC 变量复制到监控表或强制表中，并在该表格中进行监视或强制。 通过数据块编辑器进行测试 在数据块编辑器中，可通过各种不同方式对变量进行监视和修改。这些功能可直接访问在线程 序中变量的实际值。实际值是指在程序执行过程中，CPU 工作存储器中变量的当前值。数据库 编辑器中的以下功能可用于监视和修改。 • 在线监视变量 • 修改各个实际值 • 创建实际值的快照 • 使用快照覆盖实际值 说明 在调试过程中设置数据值 设备调试过程中，通常需要调整数据值，以使程序适应局部条件。 为此，声明表提供了一些数据块功能。 通过 LED 指示灯闪烁进行测试 在许多在线对话框中，都可执行 LED 指示灯闪烁测试。在不确定硬件配置中的哪个设备对应 于软件中当前所选设备时，此功能很有用。 如果在 STEP 7 中单击“在线与诊断（在线访问）”(Online & diagnostics (online access)) 下 的“闪烁 LED”(Flash LED) 按钮，当前所选设备上的 LED 指示灯将闪烁。CPU 上的 RUN/STOP、 ERROR 和 MAINT LED 指示灯将闪烁。LED 指示灯将始终闪烁，直至闪烁测试终止。 测试跟踪功能 跟踪功能用于根据可设置的触发条件记录 CPU 变量。例如，变量为 CPU 的驱动参数或系统和 用户变量。CPU 将保存记录结果。必要时可以使用 STEP 7 显示和评估记录结果。 操作步骤：可从项目树中 CP",
+        "compact_excerpt": "通过 PLC 变量表进行测试 在 PLC 变量表中，可直接监视 CPU 中变量的当前值。为此，需打开 PLC 变量表并启动监视功 能。 此外，也可将 PLC 变量复制到监控表或强制表中，并在该表格中进行监视或强制。 通过数据块编辑器进行测试 在数据块编辑器中，可通过各种不同方式对变量进行监视和修改。这些功能可直接访问在线程 序中变量的实际值。实际值是指在程序执行过程中，CPU 工作存储器中变量的当前值。数据库 编辑器中的以下功能可用于监视和修改。 • 在线监视变量 • 修改各个实际值 • 创建实际值的快照 • 使用快照覆盖实际值 说明 在调试过程中设置数据值 设备调试过程中，通常需要调整数据值，以使程序适应局部条件。 为此，声明表提供了一些数据块功能。 通过 LED 指示灯闪烁进行测试 在许多在线对话框中，都可执行 LED 指示灯闪烁测试。在不确定硬件配置中的哪个设备对应 于软件中当前所选设备时，此功能很有用。 如果在 STEP 7 中单击“在线与诊断（在线访问）”(Online & diagnostics (online access)) 下 的“闪烁 LED”(Flash LED) 按钮，当前所选设备上的 LED 指示灯将闪烁。CPU 上的 RUN/STOP、 ERROR 和 MAINT LED 指示灯将闪烁。LED 指示灯将始终闪烁，直至闪烁测试终止。 测试跟踪功能 跟踪功能用于根据可设置的触发条件记录 CPU 变量。例如，变量为 CPU 的驱动参数或系统和 用户变量。CPU 将保存记录结果。必要时可以使用 STEP 7 显示和评估记录结果。 操作步骤：可从项目树中 CP",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Indicator Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0094",
+          "sha256": "32821a1135e6a0b2af1997a530f6d53fc8c5b0bb6e654a101c4afb04dbaccdc2",
+          "visual_type": "front_panel_or_led_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_09_EV_11",
+        "asset_id": "VIS_0095",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E41815205-AH",
+        "page": 792,
+        "section": "基本信息 > S7-1500R/H 冗余系统 > 12 调试 > 12.3 调试过程 > 12.3.4 冗余 ID",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "可使用以下选项为 CPU 分配不同的冗余 ID： • 自动分配 • 使用显示屏进行分配 自动分配 要求： 冗余系统两个真实 CPU 的冗余 ID 相同（例如，都为“1”）。 自动分配选项： • 两个 CPU 均处于 STOP 模式。两个 R-CPU 之间已配对。ERROR LED 指示灯红色闪烁。 操作步骤：将组态中的左侧 CPU 切换为 RUN 操作状态。结果：组态中的右侧 CPU 会更改 其冗余 ID。 • 组态中左侧 CPU 处于 RUN 操作状态。组态中右侧 CPU 处于 STOP 操作状态。两个冗余连接 是分开的，因此两个 CPU 之间未配对。 操作步骤：建立至少一个冗余连接，在两个 CPU 之间实施配对。结果：组态中的右侧 CPU 会更改其冗余 ID。 • 组态中左侧 CPU 处于 RUN 操作状态。组态中的右侧 CPU 处于 POWER OFF 操作状态。至少 建立了一个冗余连接。由于断电，两个 CPU 之间未配对。 操作步骤：为组态中的右侧 CPU 上电。结果：组态中的右侧 CPU 会更改其冗余 ID。 使用显示屏进行分配 要求： 两个实际 CPU 位于冗余系统中： • 两个 CPU 相互连接 • 具有冗余 ID 1 • CPU 的模式选择开关处于 STOP 位置 • 两个 CPU 均处于断电模式。 操作步骤： 要通过 CPU 显示屏分配冗余 ID，请按以下步骤操作： 1. 对要为其分配冗余 ID 2 的 CPU 上电。 2. 在该 CPU 的显示屏上，选择菜单命令“概述>冗余”(Overview > Redundancy)。为该 CPU 分 配冗余 ID 2。",
+        "compact_excerpt": "可使用以下选项为 CPU 分配不同的冗余 ID： • 自动分配 • 使用显示屏进行分配 自动分配 要求： 冗余系统两个真实 CPU 的冗余 ID 相同（例如，都为“1”）。 自动分配选项： • 两个 CPU 均处于 STOP 模式。两个 R-CPU 之间已配对。ERROR LED 指示灯红色闪烁。 操作步骤：将组态中的左侧 CPU 切换为 RUN 操作状态。结果：组态中的右侧 CPU 会更改 其冗余 ID。 • 组态中左侧 CPU 处于 RUN 操作状态。组态中右侧 CPU 处于 STOP 操作状态。两个冗余连接 是分开的，因此两个 CPU 之间未配对。 操作步骤：建立至少一个冗余连接，在两个 CPU 之间实施配对。结果：组态中的右侧 CPU 会更改其冗余 ID。 • 组态中左侧 CPU 处于 RUN 操作状态。组态中的右侧 CPU 处于 POWER OFF 操作状态。至少 建立了一个冗余连接。由于断电，两个 CPU 之间未配对。 操作步骤：为组态中的右侧 CPU 上电。结果：组态中的右侧 CPU 会更改其冗余 ID。 使用显示屏进行分配 要求： 两个实际 CPU 位于冗余系统中： • 两个 CPU 相互连接 • 具有冗余 ID 1 • CPU 的模式选择开关处于 STOP 位置 • 两个 CPU 均处于断电模式。 操作步骤： 要通过 CPU 显示屏分配冗余 ID，请按以下步骤操作： 1. 对要为其分配冗余 ID 2 的 CPU 上电。 2. 在该 CPU 的显示屏上，选择菜单命令“概述>冗余”(Overview > Redundancy)。为该 CPU 分 配冗余 ID 2。",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Indicator Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0095",
+          "sha256": "c78423f9f55571687ab41cafc0fda897fd413f6e6c5739a533b41c15a60b2fc1",
+          "visual_type": "front_panel_or_led_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_09_EV_12",
+        "asset_id": "VIS_0096",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E41815205-AH",
+        "page": 905,
+        "section": "基本信息 > S7-1500R/H 冗余系统 > 15 测试和维护功能 > 15.1 测试功能",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "可以强制各个外设输入或输出。 – 外设输入：为程序指定固定值，强制外设输入“绕过”传感器/输入。程序会接收到强制值 而非实际输入值（通过过程映像或直接访问）。 – 外设输出：为执行器指定固定值，强制外设输出“绕过”整个程序。 强制表的优势是可以模拟不同的测试环境并用固定值覆盖 CPU 中的变量。这样用户能够干预 正在运行的过程来进行调整。 通过 PLC 变量表进行测试 在 PLC 变量表中，可直接监视 CPU 中变量的当前值。为此，需打开 PLC 变量表并启动监视功 能。 还可以将 PLC 变量复制到监视表或强制表，并在其中对其进行监视、修改或强制。 通过数据块编辑器进行测试 在数据块编辑器中，可通过各种不同方式对变量进行监视和修改。这些功能可直接访问在线程 序中变量的实际值。实际值是指在程序执行过程中的任何给定时刻，CPU 工作存储器中变量的 当前值。数据库编辑器中的以下功能可用于监视和修改。 • 在线监视变量 • 修改各个实际值 • 创建实际值的快照 说明 在调试过程中设置数据值 设备调试过程中，通常需要调整数据值，以使程序适应局部条件。 对此，数据块的声明表中包含有相应功能。 通过 LED 指示灯闪烁进行测试 在许多在线对话框中，都可执行 LED 指示灯闪烁测试。在不确定硬件配置中的哪个设备对应 于软件中当前所选设备时，此功能很有用。 如果在 STEP 7 中单击“在线与诊断（在线访问）”(Online & diagnostics (online access)) 下 的“闪烁 LED”(Flash LED) 按钮，当前所选设备上的相应 LED 指示灯将闪烁。CPU 上的",
+        "compact_excerpt": "可以强制各个外设输入或输出。 – 外设输入：为程序指定固定值，强制外设输入“绕过”传感器/输入。程序会接收到强制值 而非实际输入值（通过过程映像或直接访问）。 – 外设输出：为执行器指定固定值，强制外设输出“绕过”整个程序。 强制表的优势是可以模拟不同的测试环境并用固定值覆盖 CPU 中的变量。这样用户能够干预 正在运行的过程来进行调整。 通过 PLC 变量表进行测试 在 PLC 变量表中，可直接监视 CPU 中变量的当前值。为此，需打开 PLC 变量表并启动监视功 能。 还可以将 PLC 变量复制到监视表或强制表，并在其中对其进行监视、修改或强制。 通过数据块编辑器进行测试 在数据块编辑器中，可通过各种不同方式对变量进行监视和修改。这些功能可直接访问在线程 序中变量的实际值。实际值是指在程序执行过程中的任何给定时刻，CPU 工作存储器中变量的 当前值。数据库编辑器中的以下功能可用于监视和修改。 • 在线监视变量 • 修改各个实际值 • 创建实际值的快照 说明 在调试过程中设置数据值 设备调试过程中，通常需要调整数据值，以使程序适应局部条件。 对此，数据块的声明表中包含有相应功能。 通过 LED 指示灯闪烁进行测试 在许多在线对话框中，都可执行 LED 指示灯闪烁测试。在不确定硬件配置中的哪个设备对应 于软件中当前所选设备时，此功能很有用。 如果在 STEP 7 中单击“在线与诊断（在线访问）”(Online & diagnostics (online access)) 下 的“闪烁 LED”(Flash LED) 按钮，当前所选设备上的相应 LED 指示灯将闪烁。CPU 上的",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Indicator Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0096",
+          "sha256": "fe32211d7f8f5e63887f45a3aa21cb822f22050fa161eaa0dec8febe668c3541",
+          "visual_type": "front_panel_or_led_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_09_EV_13",
+        "asset_id": "VIS_0097",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E44913199-AA",
+        "page": 1549,
+        "section": "基本信息 > S7-1500R/H 冗余系统 > 4 调试",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "操作步骤： 1. 要在加载完成后启动主 CPU，请在“操作”(Action) 列选择“启动模块”(Start module)。 2. 要完成加载，请单击“完成”(Finish)。 结果：主 CPU 切换为 RUN 操作状态。 3. 将备用 CPU 切换为 RUN 操作状态。 结果：将主 CPU 和备用 CPU 成功同步后，S7-1500R/H 系统会切换为冗余模式（系统状态 RUN=Redundant）。 评估 CPU 上的 LED 和显示画面 如果 CPU 处于“目标”系统状态 RUN-Redundant 并且没有事件、要求和错误，则两个 CPU 显示 以下 LED 画面： • RUN/STOP LED 显示绿色 • ERROR-LED 熄灭 • MAINT LED 熄灭 CPU 的状态信息显示在显示屏上。在系统状态 RUN-Redundant 下，“RUN-Redundant”显示在 两个 CPU 显示屏上的绿色栏中。 结果 已根据示例的任务完全创建并下载了组态和用户程序。 44 S7-1500R/H 冗余系统 入门指南, 10/2018, A5E44913199-AA 调试",
+        "compact_excerpt": "操作步骤： 1. 要在加载完成后启动主 CPU，请在“操作”(Action) 列选择“启动模块”(Start module)。 2. 要完成加载，请单击“完成”(Finish)。 结果：主 CPU 切换为 RUN 操作状态。 3. 将备用 CPU 切换为 RUN 操作状态。 结果：将主 CPU 和备用 CPU 成功同步后，S7-1500R/H 系统会切换为冗余模式（系统状态 RUN=Redundant）。 评估 CPU 上的 LED 和显示画面 如果 CPU 处于“目标”系统状态 RUN-Redundant 并且没有事件、要求和错误，则两个 CPU 显示 以下 LED 画面： • RUN/STOP LED 显示绿色 • ERROR-LED 熄灭 • MAINT LED 熄灭 CPU 的状态信息显示在显示屏上。在系统状态 RUN-Redundant 下，“RUN-Redundant”显示在 两个 CPU 显示屏上的绿色栏中。 结果 已根据示例的任务完全创建并下载了组态和用户程序。 44 S7-1500R/H 冗余系统 入门指南, 10/2018, A5E44913199-AA 调试",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Indicator Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0097",
+          "sha256": "a2641e5f3fbaea57a56c9991843223eaff58122f7b9717fa7bcd0ce41738852b",
+          "visual_type": "front_panel_or_led_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_09_EV_14",
+        "asset_id": "VIS_0098",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03461186-AN",
+        "page": 309,
+        "section": "基本信息 > 自动化系统 > 13 调试 > 13.3 S7-1500 自动化系统调试步骤 > 13.3.2 CPU 首次上电",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "CPU 评估 SIMATIC 存储卡，并通过使 RUN/STOP LED 指示灯闪烁加以指示。 说明 将 SIMATIC 存储卡用作固件更新卡 如果将 SIMATIC 存储卡用作固件更新卡，取出和插入该卡不会导致保持性数据丢失。 参考 更多关于 SIMATIC 存储卡的信息，请参见功能手册《CPU 存储器的结构和使用 (https://support.industry.siemens.com/cs/cn/zh/view/59193101)》。 13.3.2 CPU 首次上电 要求 • S7-1500 自动化系统已安装。 • 系统已接线。 • SIMATIC 存储卡已插入 CPU 中。 操作步骤 要调试 CPU，请按以下步骤操作： • 接通系统电源和负载电流电源。 结果： • CPU 执行闪烁测试： – 所有 LED 指示灯以 2 Hz 频率闪烁 – RUN/STOP 黄色/绿色 LED 指示灯交替闪烁 – ERROR 红色 LED 指示灯闪烁 – MAINT 黄色 LED 指示灯闪烁 • CPU 执行系统初始化并评估 SIMATIC 存储卡： – RUN/STOP 黄色 LED 指示灯以 2 Hz 为频率闪烁 • 系统初始化完成后，CPU 进入 STOP 模式： – RUN/STOP LED 指示灯点亮为黄色 302 自动化系统 系统手册, 11/2025, A5E03461186-AN 调试 13.3 S7-1500 自动化系统调试步骤",
+        "compact_excerpt": "CPU 评估 SIMATIC 存储卡，并通过使 RUN/STOP LED 指示灯闪烁加以指示。 说明 将 SIMATIC 存储卡用作固件更新卡 如果将 SIMATIC 存储卡用作固件更新卡，取出和插入该卡不会导致保持性数据丢失。 参考 更多关于 SIMATIC 存储卡的信息，请参见功能手册《CPU 存储器的结构和使用 (https://support.industry.siemens.com/cs/cn/zh/view/59193101)》。 13.3.2 CPU 首次上电 要求 • S7-1500 自动化系统已安装。 • 系统已接线。 • SIMATIC 存储卡已插入 CPU 中。 操作步骤 要调试 CPU，请按以下步骤操作： • 接通系统电源和负载电流电源。 结果： • CPU 执行闪烁测试： – 所有 LED 指示灯以 2 Hz 频率闪烁 – RUN/STOP 黄色/绿色 LED 指示灯交替闪烁 – ERROR 红色 LED 指示灯闪烁 – MAINT 黄色 LED 指示灯闪烁 • CPU 执行系统初始化并评估 SIMATIC 存储卡： – RUN/STOP 黄色 LED 指示灯以 2 Hz 为频率闪烁 • 系统初始化完成后，CPU 进入 STOP 模式： – RUN/STOP LED 指示灯点亮为黄色 302 自动化系统 系统手册, 11/2025, A5E03461186-AN 调试 13.3 S7-1500 自动化系统调试步骤",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Indicator Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0098",
+          "sha256": "5e46b8944ce3d85d747bd4ab530ffd92083e2d5ad78d03d6b9aa6e459bfa5a62",
+          "visual_type": "front_panel_or_led_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_09_EV_15",
+        "asset_id": "VIS_0099",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03461186-AN",
+        "page": 360,
+        "section": "基本信息 > 自动化系统 > 15 维护 > 15.5 固件更新",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "使用 SIMATIC 存储卡的步骤 要通过 SIMATIC 存储卡进行固件更新，请按以下步骤操作： 1. 将 SIMATIC 存储卡插到 PG/PC 的 SD 读卡器中。 2. 要在 SIMATIC 存储卡上存储更新文件，在项目导航的“读卡器/USB 存储器”(Card Reader/USB memory) 文件夹中选择 SIMATIC 存储卡。 3. 选择“项目”(Project) 菜单中的“读卡器/USB 存储器 > 创建固件更新存储卡”(Card Reader/USB memory > Create firmware update memory card) 命令。 4. 使用文件选择对话框浏览到固件更新文件。之后，可确定删除 SIMATIC 存储卡中的内容， 或是将固件更新文件添加到 SIMATIC 存储卡中。 5. 将包含有固件更新文件的 SIMATIC 存储卡插入 CPU 中。 插入 SIMATIC 存储卡后立即开始固件更新。 显示屏上会指示 CPU 处于 STOP 模式，并且正在执行固件更新：“STOP - FW UPDATE”。显 示屏显示固件更新的进度。CPU 会在显示屏上显示在固件更新期间发生的任何错误。 显示屏在固件更新完成后显示结果画面。 6. 固件更新完成后，取出 SIMATIC 存储卡。 CPU 上的 RUN LED 指示灯呈黄色点亮，MAINT LED 指示灯呈黄色闪烁。 如果之后将 SIMATIC 存储卡用作程序卡，则将 SIMATIC 存储卡保留在 CPU 中。为此，在固 件更新完成后，需在显示屏上选择菜单项“转换存储卡”(Convert mem",
+        "compact_excerpt": "使用 SIMATIC 存储卡的步骤 要通过 SIMATIC 存储卡进行固件更新，请按以下步骤操作： 1. 将 SIMATIC 存储卡插到 PG/PC 的 SD 读卡器中。 2. 要在 SIMATIC 存储卡上存储更新文件，在项目导航的“读卡器/USB 存储器”(Card Reader/USB memory) 文件夹中选择 SIMATIC 存储卡。 3. 选择“项目”(Project) 菜单中的“读卡器/USB 存储器 > 创建固件更新存储卡”(Card Reader/USB memory > Create firmware update memory card) 命令。 4. 使用文件选择对话框浏览到固件更新文件。之后，可确定删除 SIMATIC 存储卡中的内容， 或是将固件更新文件添加到 SIMATIC 存储卡中。 5. 将包含有固件更新文件的 SIMATIC 存储卡插入 CPU 中。 插入 SIMATIC 存储卡后立即开始固件更新。 显示屏上会指示 CPU 处于 STOP 模式，并且正在执行固件更新：“STOP - FW UPDATE”。显 示屏显示固件更新的进度。CPU 会在显示屏上显示在固件更新期间发生的任何错误。 显示屏在固件更新完成后显示结果画面。 6. 固件更新完成后，取出 SIMATIC 存储卡。 CPU 上的 RUN LED 指示灯呈黄色点亮，MAINT LED 指示灯呈黄色闪烁。 如果之后将 SIMATIC 存储卡用作程序卡，则将 SIMATIC 存储卡保留在 CPU 中。为此，在固 件更新完成后，需在显示屏上选择菜单项“转换存储卡”(Convert mem",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent",
+          "Indicator Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0099",
+          "sha256": "0fd8fee4b8b0c2de31e8b62d2efdfcacb3749c7a8a02c32d527dca84097798ee",
+          "visual_type": "front_panel_or_led_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      }
+    ],
+    "metadata": {
+      "source": "offline_demo_snapshot",
+      "visual_asset_count": 15,
+      "cross_model_blocked": 0,
+      "rejected_evidence": []
+    }
+  },
+  "judge_decision": {
+    "verdict": "PARTIAL",
+    "confidence": "MEDIUM",
+    "decision_reason": "离线快照仅采用资产清单中可解码、可追溯且经身份检查的手册页。",
+    "final_evidence_ids": [
+      "HIDDEN_09_EV_01"
+    ],
+    "accepted_agent_outputs": [
+      "Troubleshooting Agent",
+      "Indicator Agent"
+    ],
+    "rejected_agent_outputs": [],
+    "supported_claims": [
+      "当前目标 CPU 手册页直接给出 RUN/STOP、ERROR、MAINT 及端口状态显示，但不能把所有系列上的 BF、SF 名称机械等同。对“BF 红闪、SF 未亮”的现场描述，应优先按总线通信故障方向检查链路、设备名称、IP/子网、组态一致性和诊断缓冲区；SF 未亮不代表网络通信正常。具体灯态仍应以现场 CPU 和接口模块型号手册为准。"
+    ],
+    "unsupported_claims": [],
+    "conflicting_claims": [],
+    "coverage": {
+      "main": {
+        "answered": true
+      }
+    },
+    "model_consistency": {
+      "pass": true,
+      "rejected_evidence_ids": []
+    },
+    "metadata": {
+      "accepted_claims": [
+        {
+          "claim_id": "HIDDEN_09_CLAIM_01",
+          "claim_text": "当前目标 CPU 手册页直接给出 RUN/STOP、ERROR、MAINT 及端口状态显示，但不能把所有系列上的 BF、SF 名称机械等同。对“BF 红闪、SF 未亮”的现场描述，应优先按总线通信故障方向检查链路、设备名称、IP/子网、组态一致性和诊断缓冲区；SF 未亮不代表网络通信正常。具体灯态仍应以现场 CPU 和接口模块型号手册为准。",
+          "claim_type": "technical_guidance",
+          "model_scope": "CPU 1517-3 PN/DP",
+          "confidence": "MEDIUM",
+          "evidence_ids": [
+            "HIDDEN_09_EV_01"
+          ],
+          "direct_support": true,
+          "metadata": {
+            "offline_curated": true
+          }
+        }
+      ]
+    }
+  },
+  "verifier": {
+    "figure_requirement_pass": true,
+    "numeric_mismatch_claim_ids": [],
+    "grounded_claim_ids": [
+      "HIDDEN_09_CLAIM_01"
+    ],
+    "passed": true
+  },
+  "answer": {
+    "status": "PARTIAL",
+    "text": "当前目标 CPU 手册页直接给出 RUN/STOP、ERROR、MAINT 及端口状态显示，但不能把所有系列上的 BF、SF 名称机械等同。对“BF 红闪、SF 未亮”的现场描述，应优先按总线通信故障方向检查链路、设备名称、IP/子网、组态一致性和诊断缓冲区；SF 未亮不代表网络通信正常。具体灯态仍应以现场 CPU 和接口模块型号手册为准。",
+    "evidence_ids": [
+      "HIDDEN_09_EV_01"
+    ]
+  },
+  "final_answer": "当前目标 CPU 手册页直接给出 RUN/STOP、ERROR、MAINT 及端口状态显示，但不能把所有系列上的 BF、SF 名称机械等同。对“BF 红闪、SF 未亮”的现场描述，应优先按总线通信故障方向检查链路、设备名称、IP/子网、组态一致性和诊断缓冲区；SF 未亮不代表网络通信正常。具体灯态仍应以现场 CPU 和接口模块型号手册为准。",
+  "work_order": {
+    "status": "not_requested",
+    "risk_tip": ""
+  },
+  "visual_asset_ids": [
+    "VIS_0027",
+    "VIS_0086",
+    "VIS_0087",
+    "VIS_0088",
+    "VIS_0089",
+    "VIS_0090",
+    "VIS_0091",
+    "VIS_0092",
+    "VIS_0093",
+    "VIS_0094",
+    "VIS_0095",
+    "VIS_0096",
+    "VIS_0097",
+    "VIS_0098",
+    "VIS_0099"
+  ],
+  "visual_evidence": [
+    {
+      "asset_id": "VIS_0027",
+      "evidence_id": "HIDDEN_09_EV_01",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0086",
+      "evidence_id": "HIDDEN_09_EV_02",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0087",
+      "evidence_id": "HIDDEN_09_EV_03",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0088",
+      "evidence_id": "HIDDEN_09_EV_04",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0089",
+      "evidence_id": "HIDDEN_09_EV_05",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0090",
+      "evidence_id": "HIDDEN_09_EV_06",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0091",
+      "evidence_id": "HIDDEN_09_EV_07",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0092",
+      "evidence_id": "HIDDEN_09_EV_08",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0093",
+      "evidence_id": "HIDDEN_09_EV_09",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0094",
+      "evidence_id": "HIDDEN_09_EV_10",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0095",
+      "evidence_id": "HIDDEN_09_EV_11",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0096",
+      "evidence_id": "HIDDEN_09_EV_12",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0097",
+      "evidence_id": "HIDDEN_09_EV_13",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0098",
+      "evidence_id": "HIDDEN_09_EV_14",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0099",
+      "evidence_id": "HIDDEN_09_EV_15",
+      "status": "image_available"
+    }
+  ],
+  "visual_coverage_reason": {
+    "VIS_0027": "front_panel_or_led_page，资料页 2476，direct target evidence",
+    "VIS_0086": "front_panel_or_led_page，资料页 1238，supporting manual context",
+    "VIS_0087": "front_panel_or_led_page，资料页 2874，supporting manual context",
+    "VIS_0088": "front_panel_or_led_page，资料页 2875，supporting manual context",
+    "VIS_0089": "diagnostic_alarm_page，资料页 7922，supporting manual context",
+    "VIS_0090": "front_panel_or_led_page，资料页 7831，supporting manual context",
+    "VIS_0091": "diagnostic_alarm_page，资料页 1229，supporting manual context",
+    "VIS_0092": "front_panel_or_led_page，资料页 1235，supporting manual context",
+    "VIS_0093": "front_panel_or_led_page，资料页 1237，supporting manual context",
+    "VIS_0094": "front_panel_or_led_page，资料页 373，supporting manual context",
+    "VIS_0095": "front_panel_or_led_page，资料页 792，supporting manual context",
+    "VIS_0096": "front_panel_or_led_page，资料页 905，supporting manual context",
+    "VIS_0097": "front_panel_or_led_page，资料页 1549，supporting manual context",
+    "VIS_0098": "front_panel_or_led_page，资料页 309，supporting manual context",
+    "VIS_0099": "front_panel_or_led_page，资料页 360，supporting manual context"
+  },
+  "generated_from_commit": "8403213d89d3f2200b9f40ee1f72d23673c9b4f6",
+  "snapshot_validation": {
+    "valid": true,
+    "errors": []
+  },
+  "warnings": [
+    "该结果是基于仓库内真实手册页面整理的离线 SAMPLE 快照，未调用 FULL 检索后端。"
+  ]
+}

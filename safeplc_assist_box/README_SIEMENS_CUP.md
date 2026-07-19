@@ -18,7 +18,10 @@ SafePLC-Assist Box 面向 PLC 教学、实训和维护查证，围绕 S7-1500、
 
 ```bash
 python -m safeplc_assist_box.agents.orchestrator "CPU 1517-3 PN 的 X1 接口在哪里？" --mode SAMPLE --json
-streamlit run safeplc_assist_box/app_assist_box.py
+python -m streamlit run app.py \
+  --server.address 0.0.0.0 \
+  --server.port 8502 \
+  --server.headless true
 ```
 
 SAMPLE 仅用于本地功能回归。FULL 需要用户在目标服务器显式配置 collection、embedding 和资产路径，并按 `docs/FULL_SERVER_VALIDATION.md` 自行验证；仓库不声明真实服务器、Chroma、图片或性能已通过验收。

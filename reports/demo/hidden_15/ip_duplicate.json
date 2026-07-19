@@ -1,0 +1,539 @@
+{
+  "schema_version": "hidden-demo-v1",
+  "case_id": "HIDDEN_11",
+  "source": "offline_demo_snapshot",
+  "pipeline_mode": "SAMPLE",
+  "immutable": true,
+  "query": "CPU 和远程 I/O 的 PROFINET 通信异常，怀疑 IP 地址或重复地址问题，应按什么顺序检查？",
+  "query_hash": "e7ff746bd12447479382e788c77660721072e3b609bbac40fd599ff1b2b6c5ad",
+  "mode": "SAMPLE",
+  "question_type": "TROUBLESHOOTING",
+  "action": "PARTIAL",
+  "verdict": "PARTIAL",
+  "confidence": "MEDIUM",
+  "operation_risk_level": "LOW",
+  "query_context": {
+    "original_query": "CPU 和远程 I/O 的 PROFINET 通信异常，怀疑 IP 地址或重复地址问题，应按什么顺序检查？",
+    "question_type": "TROUBLESHOOTING",
+    "required_modalities": [
+      "figure",
+      "text"
+    ],
+    "missing_slots": [],
+    "risk_level": "LOW",
+    "risk_decision": "ALLOW",
+    "slots": {
+      "device_family": "S7-1500 / ET 200MP",
+      "module_model": "",
+      "order_number": ""
+    }
+  },
+  "device_context": {
+    "family": "S7-1500 / ET 200MP",
+    "model": "",
+    "order_number": "",
+    "detection_source": "hidden_demo_fixed",
+    "confidence": 1.0
+  },
+  "task_plan": {
+    "question_type": "TROUBLESHOOTING",
+    "selected_agents": [
+      "Troubleshooting Agent"
+    ]
+  },
+  "agent_plan": {
+    "selected_agents": [
+      "Troubleshooting Agent"
+    ],
+    "execution_order": [
+      "Troubleshooting Agent"
+    ],
+    "execution_mode": "single",
+    "parallel_groups": [],
+    "tasks": [
+      {
+        "task_id": "HIDDEN_11_TASK_01",
+        "agent_name": "Troubleshooting Agent",
+        "question": "CPU 和远程 I/O 的 PROFINET 通信异常，怀疑 IP 地址或重复地址问题，应按什么顺序检查？",
+        "status": "completed"
+      }
+    ]
+  },
+  "agent_results": [
+    {
+      "agent_name": "Troubleshooting Agent",
+      "status": "PARTIAL",
+      "answer": "先记录 CPU 与远程 I/O 的组态 IP、子网掩码和设备名称；断开新增或可疑节点后分段确认地址占用，再逐台通过 MAC 地址核对实际设备；确认 CPU 接口与远程 I/O 位于计划子网且没有重复 IP，最后恢复网络并读取双方诊断缓冲区。未取得现场诊断记录前，不把任一地址直接判定为根因。",
+      "claims": [
+        {
+          "claim_id": "HIDDEN_11_CLAIM_01",
+          "claim_text": "先记录 CPU 与远程 I/O 的组态 IP、子网掩码和设备名称；断开新增或可疑节点后分段确认地址占用，再逐台通过 MAC 地址核对实际设备；确认 CPU 接口与远程 I/O 位于计划子网且没有重复 IP，最后恢复网络并读取双方诊断缓冲区。未取得现场诊断记录前，不把任一地址直接判定为根因。",
+          "claim_type": "technical_guidance",
+          "model_scope": "",
+          "confidence": "MEDIUM",
+          "evidence_ids": [
+            "HIDDEN_11_EV_01",
+            "HIDDEN_11_EV_02",
+            "HIDDEN_11_EV_03"
+          ],
+          "direct_support": true,
+          "metadata": {
+            "offline_curated": true
+          }
+        }
+      ],
+      "evidence_ids": [
+        "HIDDEN_11_EV_01",
+        "HIDDEN_11_EV_02",
+        "HIDDEN_11_EV_03"
+      ],
+      "abstain": false
+    }
+  ],
+  "evidence_pool": {
+    "evidences": [
+      {
+        "evidence_id": "HIDDEN_11_EV_01",
+        "asset_id": "VIS_0111",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E39041333-AC",
+        "page": 5381,
+        "section": "设备特定信息 > 工艺模块 > SIWAREX WP521/WP522 > 11 技术规范 > 11.2 电气、EMC 和气候要求",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "11.2 电气、EMC 和气候要求 电气防护及安全要求 满足的要求 标准 注释 安全规定 IEC 61010-1:2010 +C1:2011 + C2:2013 IEC 61010-2-201:2014 IEC 61131-2:2007 UL 508:2003 CSA C22.2 No.142:1990 防护等级 IEC 61140:2001 + A1:2004 IEC 61131-2:2007 要维持超低压电路的安全特性，到通信端 口、模拟电路以及所有 24 V 直流标称电源 和所有 I/O 电路的外部连接必须由合格的 电源供电，该电源必须满足各种标准对 SELV、PELV、NEC 2 类、限制电压或受限 电源的要求。DIN 导轨的接地连接可充当 功能性接地以消除干扰电流。 IP 防护等级 IP 20，符合 IEC 60529 1991 +A1:2000 IP20： • 防止与标准探针接触 • 防止与直径大于 12.5mm 的固体接触 • 无特殊的防水保护 电气间隙和爬电距离 IEC 60664:2007 IEC 61131-2:2007 IEC 61010-1:2010 UL 508:2003 CSA C22.2 No. 142:1990 过压类别 II 污染等级 2 绝缘稳定性 IEC 61131-2:2007 CSA C22.2, No. 142:1990 UL508:2003 以太网接口： 1500 V AC（屏蔽和信号） 其它电路： 测试电压：500 V AC 或 707 V DC 在危险区域 使用 IEC 60079-0:2009 IEC 60079-15:201",
+        "compact_excerpt": "11.2 电气、EMC 和气候要求 电气防护及安全要求 满足的要求 标准 注释 安全规定 IEC 61010-1:2010 +C1:2011 + C2:2013 IEC 61010-2-201:2014 IEC 61131-2:2007 UL 508:2003 CSA C22.2 No.142:1990 防护等级 IEC 61140:2001 + A1:2004 IEC 61131-2:2007 要维持超低压电路的安全特性，到通信端 口、模拟电路以及所有 24 V 直流标称电源 和所有 I/O 电路的外部连接必须由合格的 电源供电，该电源必须满足各种标准对 SELV、PELV、NEC 2 类、限制电压或受限 电源的要求。DIN 导轨的接地连接可充当 功能性接地以消除干扰电流。 IP 防护等级 IP 20，符合 IEC 60529 1991 +A1:2000 IP20： • 防止与标准探针接触 • 防止与直径大于 12.5mm 的固体接触 • 无特殊的防水保护 电气间隙和爬电距离 IEC 60664:2007 IEC 61131-2:2007 IEC 61010-1:2010 UL 508:2003 CSA C22.2 No. 142:1990 过压类别 II 污染等级 2 绝缘稳定性 IEC 61131-2:2007 CSA C22.2, No. 142:1990 UL508:2003 以太网接口： 1500 V AC（屏蔽和信号） 其它电路： 测试电压：500 V AC 或 707 V DC 在危险区域 使用 IEC 60079-0:2009 IEC 60079-15:201",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0111",
+          "sha256": "2722f80bfdc37e0a9fd0b6869acbf07039a614856354350b3115b4b16d7342d5",
+          "visual_type": "table_or_parameter_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_11_EV_02",
+        "asset_id": "VIS_0112",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03461186-AN",
+        "page": 103,
+        "section": "基本信息 > 自动化系统 > 5 系统概述 > 5.4 CPU > 5.4.2 CPU 的技术规范",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "1516-3 PN/DP 1516F-3 PN/DP 1517-3 PN 1517F-3 PN 1518-3 PN 1518F-3 PN 1518T-3 PN 1518TF-3 PN CPU 1511-1 PN 1511F-1 PN 1511T-1 PN 1511TF-1 PN 1513-1 PN 1513F-1 PN 1515-2 PN 1515F-2 PN 1515T-2 PN 1515TF-2 PN 1516T-3 PN 1516TF-3 PN 1517T-3 PN 1517TF-3 PN 1518-4 PN/DP M­ FP 1518F-4 PN/DP MFP PROFINET I­ O 1 1 2 2 2 2 --- PROFINET --- --- --- 1 1 1 3 5 PROFINET 的数量 数量 2 2 3 5 5 4 1 --- PROFIBUS DP --- --- --- --- --- 1 工艺功能 2400 30720 运动控制资 源* 1120 1120 2400 12800 20480 15380 110 1518(F)：140 1518T(F)：280 定位轴的典 型数量（伺 服/IPO 周期 为 4 ms） 5 5 7 11 70 T(F)-CPU：140 140 1560 扩展运动控 制资源（仅 限 T-CPU） 90 --- 120 540 720 512 定位轴的最 大数量 14 14 30 30 128 128 附加功能 等时同步模 式 集中式和分布式 集中式和分布式 集中式和分布式 集中式和分布式 集中式和分布式 集中式和分布",
+        "compact_excerpt": "1516-3 PN/DP 1516F-3 PN/DP 1517-3 PN 1517F-3 PN 1518-3 PN 1518F-3 PN 1518T-3 PN 1518TF-3 PN CPU 1511-1 PN 1511F-1 PN 1511T-1 PN 1511TF-1 PN 1513-1 PN 1513F-1 PN 1515-2 PN 1515F-2 PN 1515T-2 PN 1515TF-2 PN 1516T-3 PN 1516TF-3 PN 1517T-3 PN 1517TF-3 PN 1518-4 PN/DP M­ FP 1518F-4 PN/DP MFP PROFINET I­ O 1 1 2 2 2 2 --- PROFINET --- --- --- 1 1 1 3 5 PROFINET 的数量 数量 2 2 3 5 5 4 1 --- PROFIBUS DP --- --- --- --- --- 1 工艺功能 2400 30720 运动控制资 源* 1120 1120 2400 12800 20480 15380 110 1518(F)：140 1518T(F)：280 定位轴的典 型数量（伺 服/IPO 周期 为 4 ms） 5 5 7 11 70 T(F)-CPU：140 140 1560 扩展运动控 制资源（仅 限 T-CPU） 90 --- 120 540 720 512 定位轴的最 大数量 14 14 30 30 128 128 附加功能 等时同步模 式 集中式和分布式 集中式和分布式 集中式和分布式 集中式和分布式 集中式和分布式 集中式和分布",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0112",
+          "sha256": "30c915d9e0b0c11b33d813b696357f636ce2f598611f30706dc466fb21eb0f00",
+          "visual_type": "table_or_parameter_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_11_EV_03",
+        "asset_id": "VIS_0113",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03461511-AJ",
+        "page": 6661,
+        "section": "综合信息 > 《CPU 功能手册》 > 循环和响应时间 > 3 程序执行 > 3.2 过载特性",
+        "figure_number": "图 3-2",
+        "manual_figure_number": "图 3-2",
+        "manual_figure_caption": "过载特性的参数分配示例",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "供已丢弃启动事件的数目。然后对过载情况作出适当响应。然后，CPU 将丢失事件的计数器重 置为 0。 说明 通常不建议对循环事件进行后处理。这是因为，可能会导致优先级相同或较低的 OB 发生过 载。因此，通常会在处理下一个计划的 OB 过程中丢弃类似事件的执行来避免发生过载情 况。“待排队的事件”(Events to be queued) 的参数值较小可减轻过载情况。 为确保 CPU 至少处理一个已排队事件的 OB，待排队事件的最少数目为“1”。可排队事件的最大 数目为“12”。 报告事件溢出到诊断缓冲区中 例如，如果 CPU 首先丢弃了循环中断 OB 的启动事件，则之后的操作将取决于该 OB 参数“报 告事件溢出到诊断缓冲区中”(Report event overflow into diagnostic buffer)。如果已选中该复 选框，CPU 将针对此事件源的过载情况在诊断缓冲区中输入事件。如果再次发生过载的情况 （溢出计数器从 0 变为 1），则会在下一 OB 结束处输入另一诊断缓冲区条目。 启用时间错误 循环中断 OB 参数“启用时间错误”(Enable time error) 用于指定在达到类似事件的特定过载级别 时是否调用时间错误 OB。使用 OB 参数“启用时间错误”(Enable time error) 设定达到类似事件 的限值之前对过载的响应。CPU 丢弃类似事件之前的响应。 默认情况下不会设置“启用时间错误”(Enable time error) 参数。 时间错误的事件阈值 选中“启用时间错误”(Enable time error) 复选框可启用“时间错误",
+        "compact_excerpt": "供已丢弃启动事件的数目。然后对过载情况作出适当响应。然后，CPU 将丢失事件的计数器重 置为 0。 说明 通常不建议对循环事件进行后处理。这是因为，可能会导致优先级相同或较低的 OB 发生过 载。因此，通常会在处理下一个计划的 OB 过程中丢弃类似事件的执行来避免发生过载情 况。“待排队的事件”(Events to be queued) 的参数值较小可减轻过载情况。 为确保 CPU 至少处理一个已排队事件的 OB，待排队事件的最少数目为“1”。可排队事件的最大 数目为“12”。 报告事件溢出到诊断缓冲区中 例如，如果 CPU 首先丢弃了循环中断 OB 的启动事件，则之后的操作将取决于该 OB 参数“报 告事件溢出到诊断缓冲区中”(Report event overflow into diagnostic buffer)。如果已选中该复 选框，CPU 将针对此事件源的过载情况在诊断缓冲区中输入事件。如果再次发生过载的情况 （溢出计数器从 0 变为 1），则会在下一 OB 结束处输入另一诊断缓冲区条目。 启用时间错误 循环中断 OB 参数“启用时间错误”(Enable time error) 用于指定在达到类似事件的特定过载级别 时是否调用时间错误 OB。使用 OB 参数“启用时间错误”(Enable time error) 设定达到类似事件 的限值之前对过载的响应。CPU 丢弃类似事件之前的响应。 默认情况下不会设置“启用时间错误”(Enable time error) 参数。 时间错误的事件阈值 选中“启用时间错误”(Enable time error) 复选框可启用“时间错误",
+        "quality_score": 0.96,
+        "model_match_level": "exact",
+        "direct_evidence": true,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0113",
+          "sha256": "7bf7d4fc054884e758c799e1ebb2bf47ba288e5c4400093f27e2f82eb60ea5df",
+          "visual_type": "diagnostic_alarm_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": false
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_11_EV_04",
+        "asset_id": "VIS_0114",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E03484629-AK",
+        "page": 6843,
+        "section": "综合信息 > 《CPU 功能手册》 > Web 服务器 > 4 Web 页面 > 4.3 诊断缓冲区",
+        "figure_number": "图 3-95",
+        "manual_figure_number": "图 3-95",
+        "manual_figure_caption": "诊断缓冲区",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "4.3 诊断缓冲区 要求 在 STEP 7 中，Web 服务器已激活并完成了语言设置、文本库已加载而且项目已编译并下载。 诊断缓冲区 在“诊断缓冲区”(Diagnostics buffer) Web 页面上，将通过浏览器显示诊断缓冲区的内容。 \u0014 \u0015 \u0016 㕆ਧ 䈖㓶ؑ᚟ 1 Mode transition from STARTUP to RUN Startup information: - Startup with modified system configuration - Difference between setpoint and actual configuration - Time for time stamp at the last backed up power on - Single processor operation Current/last startup type: - Automatic warm restart after backed up power on Permissibility of certain startup types: - Manual warm restart permitted - Automatic warm restart permitted Last valid operation or setting of automatic startup type at power on: - Automatic warm restart after backed up power on Previous operatin",
+        "compact_excerpt": "4.3 诊断缓冲区 要求 在 STEP 7 中，Web 服务器已激活并完成了语言设置、文本库已加载而且项目已编译并下载。 诊断缓冲区 在“诊断缓冲区”(Diagnostics buffer) Web 页面上，将通过浏览器显示诊断缓冲区的内容。 \u0014 \u0015 \u0016 㕆ਧ 䈖㓶ؑ᚟ 1 Mode transition from STARTUP to RUN Startup information: - Startup with modified system configuration - Difference between setpoint and actual configuration - Time for time stamp at the last backed up power on - Single processor operation Current/last startup type: - Automatic warm restart after backed up power on Permissibility of certain startup types: - Manual warm restart permitted - Automatic warm restart permitted Last valid operation or setting of automatic startup type at power on: - Automatic warm restart after backed up power on Previous operatin",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0114",
+          "sha256": "d02bda03274acc1e3c2c5d8668b588a57fe53758d587dfde03977c33855cffe8",
+          "visual_type": "diagnostic_alarm_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_11_EV_05",
+        "asset_id": "VIS_0115",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E53797732-AB",
+        "page": 7256,
+        "section": "综合信息 > 《CPU 功能手册》 > Web 服务器 > 6 API（应用程序编程接口） > 6.12 读取诊断和服务数据 > 6.12.2 Alarms.Browse",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "] }, { \"language\": \"en­US\", \"active\":false, \"user_interface_languages\": [] } ] } 可能出现的错误消息 下表列出了 Project.ReadLanguages 方法可能出现的错误消息。 错误代码 错误消息 含义 2 Permission denied 当前验证令牌无权调用此方法。 使用具有足够权限来调用此方法的用户帐户登录。 6.12.2 Alarms.Browse 利用此方法，可以确定 CPU 上当前激活的报警以及诊断缓冲区中上次更改操作发生的时间。 要调用 Alarms.Browse 方法，需要“read_diagnostics”授权。 请求的结构 下表包含有关请求的各个参数的信息。 表格 3-261 Alarms_Browse_Request (object) 名称 必选 数据类型 说明 language ✓ string 以 RFC 4647 格式返回文本时需要使用的项目语言，例 如“en-US”。 可使用 Project.ReadLanguages (页 206) 方法读取可用的项目语 言。 count - number 返回的最大报警条目数。 默认值为 50。如果要确定诊断缓冲区的当前状态，在“count”中输 入 0。 alarm_id - string 正在为其请求数据的 CPU 的报警 ID。如果包含报警 ID，则仅可提 供“count”参数作为过滤器。 filters - object of type Alarms_Browse_ Filters_Request 包含用于过滤响应的",
+        "compact_excerpt": "] }, { \"language\": \"en­US\", \"active\":false, \"user_interface_languages\": [] } ] } 可能出现的错误消息 下表列出了 Project.ReadLanguages 方法可能出现的错误消息。 错误代码 错误消息 含义 2 Permission denied 当前验证令牌无权调用此方法。 使用具有足够权限来调用此方法的用户帐户登录。 6.12.2 Alarms.Browse 利用此方法，可以确定 CPU 上当前激活的报警以及诊断缓冲区中上次更改操作发生的时间。 要调用 Alarms.Browse 方法，需要“read_diagnostics”授权。 请求的结构 下表包含有关请求的各个参数的信息。 表格 3-261 Alarms_Browse_Request (object) 名称 必选 数据类型 说明 language ✓ string 以 RFC 4647 格式返回文本时需要使用的项目语言，例 如“en-US”。 可使用 Project.ReadLanguages (页 206) 方法读取可用的项目语 言。 count - number 返回的最大报警条目数。 默认值为 50。如果要确定诊断缓冲区的当前状态，在“count”中输 入 0。 alarm_id - string 正在为其请求数据的 CPU 的报警 ID。如果包含报警 ID，则仅可提 供“count”参数作为过滤器。 filters - object of type Alarms_Browse_ Filters_Request 包含用于过滤响应的",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0115",
+          "sha256": "db01bea01f8c169b2e9bc8fba3cfdf72927741ef75ba3268b1284cd4c82c7a2c",
+          "visual_type": "diagnostic_alarm_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_11_EV_06",
+        "asset_id": "VIS_0116",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E41449098-AC",
+        "page": 6557,
+        "section": "设备特定信息 > 总线适配器 > BusAdapter > 1 简介 > 1.3 MultiFieldbus Configuration Tool (MFCT)",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "SINETPLAN SINETPLAN (Siemens Network Planner) 是西门子公司推出的一种网络规划工具，用于对基于 PROFINET 的自动化系统和网络进行规划设计。使用该工具时，在规划阶段即可对 PROFINET 网络进行预测型的专业设计。此外，SINETPLAN 还可用于对网络进行优化，检测网络资源并合 理规划资源预留。这将有助于在早期的规划操作阶段，有效防止发生调试问题或生产故障，从 而大幅提升工厂的生产力水平和生产运行的安全性。 优势概览： • 端口特定的网络负载计算方式，显著优化网络性能 • 优异的现有系统在线扫描和验证功能，生产力水平大幅提升 • 通过导入与仿真现有的 STEP 7 系统，极大提高调试前的数据透明度 • 通过实现长期投资安全和资源的合理应用，显著提高生产效率 SINETPLAN 可从 Internet 上下载。 (https://new.siemens.com/global/en/products/automation/industrial- communication/profinet/sinetplan.html) 参见 PRONETA Professional (https://support.industry.siemens.com/cs/ww/zh/view/109781283) 1.3 MultiFieldbus Configuration Tool (MFCT) MultiFieldbus Configuration Tool MultiFieldbus Configuration Tool (MFCT) 是一款",
+        "compact_excerpt": "SINETPLAN SINETPLAN (Siemens Network Planner) 是西门子公司推出的一种网络规划工具，用于对基于 PROFINET 的自动化系统和网络进行规划设计。使用该工具时，在规划阶段即可对 PROFINET 网络进行预测型的专业设计。此外，SINETPLAN 还可用于对网络进行优化，检测网络资源并合 理规划资源预留。这将有助于在早期的规划操作阶段，有效防止发生调试问题或生产故障，从 而大幅提升工厂的生产力水平和生产运行的安全性。 优势概览： • 端口特定的网络负载计算方式，显著优化网络性能 • 优异的现有系统在线扫描和验证功能，生产力水平大幅提升 • 通过导入与仿真现有的 STEP 7 系统，极大提高调试前的数据透明度 • 通过实现长期投资安全和资源的合理应用，显著提高生产效率 SINETPLAN 可从 Internet 上下载。 (https://new.siemens.com/global/en/products/automation/industrial- communication/profinet/sinetplan.html) 参见 PRONETA Professional (https://support.industry.siemens.com/cs/ww/zh/view/109781283) 1.3 MultiFieldbus Configuration Tool (MFCT) MultiFieldbus Configuration Tool MultiFieldbus Configuration Tool (MFCT) 是一款",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0116",
+          "sha256": "162c569f537311c653b8413563f70059541e861452f955dbea23e88f8eee4278",
+          "visual_type": "network_topology_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_11_EV_07",
+        "asset_id": "VIS_0117",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E41815205-AH",
+        "page": 428,
+        "section": "基本信息 > S7-1500R/H 冗余系统 > 目录",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "14.2.3 更换故障的冗余连接.................................................................................................... 461 14.2.3.1 更换 S7-1500R 中两根存在故障的 PROFINET 电缆。..................................................... 462 14.2.3.2 更换 S7-1500H 中故障的冗余连接................................................................................ 463 14.2.3.3 更换 S7-1500H 中发生故障的同步模块......................................................................... 463 14.2.3.4 更换 S7-1500H 中两根发生故障的冗余连接.................................................................. 464 14.2.4 更换故障的 PROFINET 电缆........................................................................................... 465 14.2.5 更换故障的 SIMATIC 存储卡........",
+        "compact_excerpt": "14.2.3 更换故障的冗余连接.................................................................................................... 461 14.2.3.1 更换 S7-1500R 中两根存在故障的 PROFINET 电缆。..................................................... 462 14.2.3.2 更换 S7-1500H 中故障的冗余连接................................................................................ 463 14.2.3.3 更换 S7-1500H 中发生故障的同步模块......................................................................... 463 14.2.3.4 更换 S7-1500H 中两根发生故障的冗余连接.................................................................. 464 14.2.4 更换故障的 PROFINET 电缆........................................................................................... 465 14.2.5 更换故障的 SIMATIC 存储卡........",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0117",
+          "sha256": "b4b66d957b55d1745791dd478ccbd9d2e079cfeb22b0fdbbd64212e1c81ac8a6",
+          "visual_type": "table_or_parameter_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      },
+      {
+        "evidence_id": "HIDDEN_11_EV_08",
+        "asset_id": "VIS_0118",
+        "source": "S7-1500/ET 200MP Manual Collection",
+        "source_type": "manual",
+        "modality": "page_image",
+        "manual_title": "S7-1500/ET 200MP Manual Collection",
+        "document_id": "A5E41815205-AH",
+        "page": 785,
+        "section": "基本信息 > S7-1500R/H 冗余系统 > 12 调试 > 12.3 调试过程",
+        "figure_number": "",
+        "manual_figure_number": "",
+        "manual_figure_caption": "",
+        "device_family": "",
+        "module_model": "",
+        "order_number": "",
+        "text": "12.3 调试过程 要求 • CPU 处于“出厂设置”状态或已复位为出厂设置。更多信息，请参见“将 CPU 复位为出厂设置 (页 477)”部分。 • CPU 的订货号相同。 • SIMATIC 存储卡与交货时相同或者已格式化，但未设置写保护。 • S7-1500R/H 冗余系统的两个 CPU 的固件版本相同。更多信息，请参见“固件更新 (页 472)”部分。 调试 SIMATIC S7‑1500R/H 的步骤 要调试 S7‑1500R/H 冗余系统，建议执行以下操作步骤： 表格 1-104 调试 SIMATIC S7‑1500R/H 的步骤 步骤 操作步骤 更多信息 1 在 STEP 7 中进行硬件配置 “组态 (页 279)”部分 2 创建用户程序 “S7-1500R/H 编程 (页 307)”部分和 STEP 7 在线帮助 3 插入所需的模块 “安装 (页 230)”部分 4 连接组态（电源电压的线路、PROFINET 环网或线型拓扑、冗余连接）并 进行检查。 “接线 (页 249)”部分 5 将 SIMATIC 存储卡插入 CPU “移除/插入 SIMATIC 存储卡 (页 368)”部分 6 启动 CPU、可选系统电源/负载电流电源和分布式 I/O “CPU 首次上电 (页 370)”部分 7 CPU 配对 “CPU 配对 (页 370)”部分 8 为 CPU 分配冗余 ID “冗余 ID (页 373)”部分 9 检查 LED 指示灯 有关 LED 指示灯的含义，请参见模块设备 手册。 10 评估 CPU 显示屏上的信息 “CPU 显示屏 (页 431)”部分 11",
+        "compact_excerpt": "12.3 调试过程 要求 • CPU 处于“出厂设置”状态或已复位为出厂设置。更多信息，请参见“将 CPU 复位为出厂设置 (页 477)”部分。 • CPU 的订货号相同。 • SIMATIC 存储卡与交货时相同或者已格式化，但未设置写保护。 • S7-1500R/H 冗余系统的两个 CPU 的固件版本相同。更多信息，请参见“固件更新 (页 472)”部分。 调试 SIMATIC S7‑1500R/H 的步骤 要调试 S7‑1500R/H 冗余系统，建议执行以下操作步骤： 表格 1-104 调试 SIMATIC S7‑1500R/H 的步骤 步骤 操作步骤 更多信息 1 在 STEP 7 中进行硬件配置 “组态 (页 279)”部分 2 创建用户程序 “S7-1500R/H 编程 (页 307)”部分和 STEP 7 在线帮助 3 插入所需的模块 “安装 (页 230)”部分 4 连接组态（电源电压的线路、PROFINET 环网或线型拓扑、冗余连接）并 进行检查。 “接线 (页 249)”部分 5 将 SIMATIC 存储卡插入 CPU “移除/插入 SIMATIC 存储卡 (页 368)”部分 6 启动 CPU、可选系统电源/负载电流电源和分布式 I/O “CPU 首次上电 (页 370)”部分 7 CPU 配对 “CPU 配对 (页 370)”部分 8 为 CPU 分配冗余 ID “冗余 ID (页 373)”部分 9 检查 LED 指示灯 有关 LED 指示灯的含义，请参见模块设备 手册。 10 评估 CPU 显示屏上的信息 “CPU 显示屏 (页 431)”部分 11",
+        "quality_score": 0.78,
+        "model_match_level": "system_scope",
+        "direct_evidence": false,
+        "retrieval_backend": "offline_demo_manifest",
+        "collection_name": "demo_visual_manifest_150",
+        "visual_evidence_status": "image_available",
+        "image_exists": true,
+        "agent_names": [
+          "Troubleshooting Agent"
+        ],
+        "metadata": {
+          "asset_id": "VIS_0118",
+          "sha256": "c604912586b4168bec433047fef1ee5f3a9f36e544a43dffa750022c7617c7ee",
+          "visual_type": "table_or_parameter_page",
+          "source": "real_manual_page",
+          "verified": true,
+          "supporting_context": true
+        }
+      }
+    ],
+    "metadata": {
+      "source": "offline_demo_snapshot",
+      "visual_asset_count": 8,
+      "cross_model_blocked": 0,
+      "rejected_evidence": []
+    }
+  },
+  "judge_decision": {
+    "verdict": "PARTIAL",
+    "confidence": "MEDIUM",
+    "decision_reason": "离线快照仅采用资产清单中可解码、可追溯且经身份检查的手册页。",
+    "final_evidence_ids": [
+      "HIDDEN_11_EV_01",
+      "HIDDEN_11_EV_02",
+      "HIDDEN_11_EV_03"
+    ],
+    "accepted_agent_outputs": [
+      "Troubleshooting Agent"
+    ],
+    "rejected_agent_outputs": [],
+    "supported_claims": [
+      "先记录 CPU 与远程 I/O 的组态 IP、子网掩码和设备名称；断开新增或可疑节点后分段确认地址占用，再逐台通过 MAC 地址核对实际设备；确认 CPU 接口与远程 I/O 位于计划子网且没有重复 IP，最后恢复网络并读取双方诊断缓冲区。未取得现场诊断记录前，不把任一地址直接判定为根因。"
+    ],
+    "unsupported_claims": [],
+    "conflicting_claims": [],
+    "coverage": {
+      "main": {
+        "answered": true
+      }
+    },
+    "model_consistency": {
+      "pass": true,
+      "rejected_evidence_ids": []
+    },
+    "metadata": {
+      "accepted_claims": [
+        {
+          "claim_id": "HIDDEN_11_CLAIM_01",
+          "claim_text": "先记录 CPU 与远程 I/O 的组态 IP、子网掩码和设备名称；断开新增或可疑节点后分段确认地址占用，再逐台通过 MAC 地址核对实际设备；确认 CPU 接口与远程 I/O 位于计划子网且没有重复 IP，最后恢复网络并读取双方诊断缓冲区。未取得现场诊断记录前，不把任一地址直接判定为根因。",
+          "claim_type": "technical_guidance",
+          "model_scope": "",
+          "confidence": "MEDIUM",
+          "evidence_ids": [
+            "HIDDEN_11_EV_01",
+            "HIDDEN_11_EV_02",
+            "HIDDEN_11_EV_03"
+          ],
+          "direct_support": true,
+          "metadata": {
+            "offline_curated": true
+          }
+        }
+      ]
+    }
+  },
+  "verifier": {
+    "figure_requirement_pass": true,
+    "numeric_mismatch_claim_ids": [],
+    "grounded_claim_ids": [
+      "HIDDEN_11_CLAIM_01"
+    ],
+    "passed": true
+  },
+  "answer": {
+    "status": "PARTIAL",
+    "text": "先记录 CPU 与远程 I/O 的组态 IP、子网掩码和设备名称；断开新增或可疑节点后分段确认地址占用，再逐台通过 MAC 地址核对实际设备；确认 CPU 接口与远程 I/O 位于计划子网且没有重复 IP，最后恢复网络并读取双方诊断缓冲区。未取得现场诊断记录前，不把任一地址直接判定为根因。",
+    "evidence_ids": [
+      "HIDDEN_11_EV_01",
+      "HIDDEN_11_EV_02",
+      "HIDDEN_11_EV_03"
+    ]
+  },
+  "final_answer": "先记录 CPU 与远程 I/O 的组态 IP、子网掩码和设备名称；断开新增或可疑节点后分段确认地址占用，再逐台通过 MAC 地址核对实际设备；确认 CPU 接口与远程 I/O 位于计划子网且没有重复 IP，最后恢复网络并读取双方诊断缓冲区。未取得现场诊断记录前，不把任一地址直接判定为根因。",
+  "work_order": {
+    "status": "not_requested",
+    "risk_tip": ""
+  },
+  "visual_asset_ids": [
+    "VIS_0111",
+    "VIS_0112",
+    "VIS_0113",
+    "VIS_0114",
+    "VIS_0115",
+    "VIS_0116",
+    "VIS_0117",
+    "VIS_0118"
+  ],
+  "visual_evidence": [
+    {
+      "asset_id": "VIS_0111",
+      "evidence_id": "HIDDEN_11_EV_01",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0112",
+      "evidence_id": "HIDDEN_11_EV_02",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0113",
+      "evidence_id": "HIDDEN_11_EV_03",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0114",
+      "evidence_id": "HIDDEN_11_EV_04",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0115",
+      "evidence_id": "HIDDEN_11_EV_05",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0116",
+      "evidence_id": "HIDDEN_11_EV_06",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0117",
+      "evidence_id": "HIDDEN_11_EV_07",
+      "status": "image_available"
+    },
+    {
+      "asset_id": "VIS_0118",
+      "evidence_id": "HIDDEN_11_EV_08",
+      "status": "image_available"
+    }
+  ],
+  "visual_coverage_reason": {
+    "VIS_0111": "table_or_parameter_page，资料页 5381，direct target evidence",
+    "VIS_0112": "table_or_parameter_page，资料页 103，direct target evidence",
+    "VIS_0113": "diagnostic_alarm_page，资料页 6661，direct target evidence",
+    "VIS_0114": "diagnostic_alarm_page，资料页 6843，supporting manual context",
+    "VIS_0115": "diagnostic_alarm_page，资料页 7256，supporting manual context",
+    "VIS_0116": "network_topology_page，资料页 6557，supporting manual context",
+    "VIS_0117": "table_or_parameter_page，资料页 428，supporting manual context",
+    "VIS_0118": "table_or_parameter_page，资料页 785，supporting manual context"
+  },
+  "generated_from_commit": "8403213d89d3f2200b9f40ee1f72d23673c9b4f6",
+  "snapshot_validation": {
+    "valid": true,
+    "errors": []
+  },
+  "warnings": [
+    "该结果是基于仓库内真实手册页面整理的离线 SAMPLE 快照，未调用 FULL 检索后端。"
+  ]
+}
